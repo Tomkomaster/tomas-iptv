@@ -243,8 +243,12 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
     """
     Return (decision, explanation).
 
-    'Verified' here means suitable for OUR shared playlist after manual
-    playback checks and provenance review. It is not a legal certification.
+    "Verified" means manually verified for OUR playlist:
+    - works in VLC
+    - works on Samsung
+    - language is not known to be wrong
+
+    Provenance remains a separate field. "Verified" is NOT a legal certification.
     """
     explicit = (item.get("decision") or "auto").strip().casefold().replace(" ", "_")
     if explicit in {"verified", "needs_review", "rejected"}:
@@ -258,9 +262,12 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
     vlc = normalize_test_status(str(item.get("vlc", "")))
     samsung = normalize_test_status(str(item.get("samsung", "")))
     language = (item.get("language") or "Unknown").strip().casefold()
-    provenance = (item.get("provenance") or "Unknown").strip().casefold()
 
-    wrong_languages = {"english", "wrong", "wrong language", "not hungarian", "non-hungarian"}
+    wrong_languages = {
+        "english", "wrong", "wrong language", "not hungarian",
+        "non-hungarian", "not_hungarian"
+    }
+
     if language in wrong_languages:
         return "Rejected", "Wrong language for the Hungarian playlist."
 
@@ -268,36 +275,162 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
         return "Rejected", "Fails the VLC playback test."
 
     if samsung == "fails":
-        return "Rejected", "Fails the Samsung playback test for the shared TV playlist."
+        return "Rejected", "Fails the Samsung playback test."
 
-    acceptable_provenance = {
-        "official",
-        "broadcaster-associated",
-        "broadcaster associated",
-        "official/public",
-        "official public",
-    }
-
-    if vlc == "works" and samsung == "works" and provenance in acceptable_provenance:
+    if vlc == "works" and samsung == "works":
         return "Verified", ""
 
     return "Needs review", str(item.get("reason") or "").strip()
 
 
+def infer_protocol(url: str) -> str:
+    value = (url or "").strip().lower()
+    if value.startswith("rtmp://"):
+        return "RTMP"
+    if ".m3u8" in value:
+        return "HLS"
+    if value.startswith("https://"):
+        return "HTTPS"
+    if value.startswith("http://"):
+        return "HTTP"
+    return ""
+
+
+def audit_match_key(item: dict) -> tuple[str, str]:
+    url = str(item.get("stream_url") or item.get("url") or "").strip()
+    if url:
+        return ("url", url)
+
+    tvg_id = normalized_tvg_id(str(item.get("tvg_id") or ""))
+    if tvg_id:
+        return ("tvg_id", tvg_id)
+
+    name = normalize_text(str(item.get("channel") or item.get("channel_name") or ""))
+    return ("name", name)
+
+
 def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> list[dict]:
-    final_urls = {(e.get("url") or "").strip() for e in final_entries if e.get("url")}
-    rows = []
+    """
+    Automatically create a manual-test row for EVERY stream in the final playlist,
+    then overlay saved results from audit.json.
+
+    audit.json therefore only needs to contain channels we have actually reviewed
+    plus candidates/rejected channels that are not currently in the playlist.
+    """
+    manual_by_url: dict[str, dict] = {}
+    manual_by_tvg_id: dict[str, dict] = {}
+    manual_by_name: dict[str, dict] = {}
 
     for raw in audit_items:
         item = dict(raw)
-        stream_url = str(item.get("stream_url") or "").strip()
+        url = str(item.get("stream_url") or "").strip()
+        tvg_id = normalized_tvg_id(str(item.get("tvg_id") or ""))
+        name = normalize_text(str(item.get("channel") or ""))
+
+        if url:
+            manual_by_url[url] = item
+        if tvg_id:
+            manual_by_tvg_id[tvg_id] = item
+        if name:
+            manual_by_name[name] = item
+
+    used_manual_ids: set[int] = set()
+    rows: list[dict] = []
+
+    for entry in final_entries:
+        url = str(entry.get("url") or "").strip()
+        tvg_id = str(entry.get("tvg_id") or "").strip()
+        clean_name = str(entry.get("channel_name") or entry.get("display_name") or "Unnamed channel").strip()
+
+        manual = None
+        if url and url in manual_by_url:
+            manual = manual_by_url[url]
+        elif normalized_tvg_id(tvg_id) and normalized_tvg_id(tvg_id) in manual_by_tvg_id:
+            manual = manual_by_tvg_id[normalized_tvg_id(tvg_id)]
+        elif normalize_text(clean_name) in manual_by_name:
+            manual = manual_by_name[normalize_text(clean_name)]
+
+        default_provenance = (
+            "Our curated extra"
+            if entry.get("source_kind") == "extras"
+            else "IPTV-org source (unreviewed)"
+        )
+
+        item = {
+            "channel": clean_name,
+            "tvg_id": tvg_id,
+            "source": str(entry.get("source") or ""),
+            "discovery": str(entry.get("source") or "Current playlist"),
+            "stream_url": url,
+            "protocol": infer_protocol(url),
+            "language": "Unknown",
+            "provenance": default_provenance,
+            "vlc": "not_tested",
+            "samsung": "not_tested",
+            "decision": "auto",
+            "reason": "",
+            "notes": "Auto-added from current tv.m3u for manual testing.",
+        }
+
+        if manual is not None:
+            used_manual_ids.add(id(manual))
+            # Manual values override defaults, but empty strings do not erase useful
+            # automatically-derived fields such as URL/source/protocol.
+            for key, value in manual.items():
+                if value not in ("", None):
+                    item[key] = value
+
         decision, auto_reason = calculate_audit_decision(item)
 
         rows.append({
+            "channel": str(item.get("channel") or clean_name).strip(),
+            "tvg_id": str(item.get("tvg_id") or tvg_id).strip(),
+            "source": str(item.get("source") or entry.get("source") or "").strip(),
+            "discovery": str(item.get("discovery") or entry.get("source") or "").strip(),
+            "stream_url": str(item.get("stream_url") or url).strip(),
+            "protocol": str(item.get("protocol") or infer_protocol(url)).strip(),
+            "language": str(item.get("language") or "Unknown").strip(),
+            "provenance": str(item.get("provenance") or default_provenance).strip(),
+            "vlc": normalize_test_status(str(item.get("vlc") or "")),
+            "samsung": normalize_test_status(str(item.get("samsung") or "")),
+            "decision": decision,
+            "reason": str(item.get("reason") or auto_reason or "").strip(),
+            "notes": str(item.get("notes") or "").strip(),
+            "in_playlist": True,
+        })
+
+    # Keep manually tracked candidates/rejections that are not currently in tv.m3u.
+    final_urls = {(e.get("url") or "").strip() for e in final_entries if e.get("url")}
+    final_tvg_ids = {
+        normalized_tvg_id(str(e.get("tvg_id") or ""))
+        for e in final_entries if normalized_tvg_id(str(e.get("tvg_id") or ""))
+    }
+    final_names = {
+        normalize_text(str(e.get("channel_name") or e.get("display_name") or ""))
+        for e in final_entries
+    }
+
+    for raw in audit_items:
+        if id(raw) in used_manual_ids:
+            continue
+
+        item = dict(raw)
+        url = str(item.get("stream_url") or "").strip()
+        tvg_id = normalized_tvg_id(str(item.get("tvg_id") or ""))
+        name = normalize_text(str(item.get("channel") or ""))
+
+        # If it matches a current item by another key, don't duplicate it.
+        if (url and url in final_urls) or (tvg_id and tvg_id in final_tvg_ids) or (name and name in final_names):
+            continue
+
+        decision, auto_reason = calculate_audit_decision(item)
+        rows.append({
             "channel": str(item.get("channel") or "Unnamed channel").strip(),
+            "tvg_id": str(item.get("tvg_id") or "").strip(),
+            "source": str(item.get("source") or "").strip(),
             "discovery": str(item.get("discovery") or "").strip(),
-            "stream_url": stream_url,
-            "protocol": str(item.get("protocol") or "").strip(),
+            "stream_url": url,
+            "protocol": str(item.get("protocol") or infer_protocol(url)).strip(),
             "language": str(item.get("language") or "Unknown").strip(),
             "provenance": str(item.get("provenance") or "Unknown").strip(),
             "vlc": normalize_test_status(str(item.get("vlc") or "")),
@@ -305,14 +438,25 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "decision": decision,
             "reason": str(item.get("reason") or auto_reason or "").strip(),
             "notes": str(item.get("notes") or "").strip(),
-            "in_playlist": bool(stream_url and stream_url in final_urls),
+            "in_playlist": False,
         })
 
-    priority = {"Needs review": 0, "Verified": 1, "Rejected": 2}
+    # Testing queue first: not-tested/current items, then partial tests, then verified,
+    # then rejected. Alphabetical inside each bucket.
+    def progress_rank(row: dict) -> int:
+        if row["decision"] == "Rejected":
+            return 4
+        if row["decision"] == "Verified":
+            return 3
+        if row["vlc"] == "not_tested" and row["samsung"] == "not_tested":
+            return 0
+        return 1
+
     return sorted(
         rows,
         key=lambda x: (
-            priority.get(x["decision"], 9),
+            progress_rank(x),
+            0 if x["in_playlist"] else 1,
             normalize_text(x["channel"]),
         ),
     )
@@ -337,6 +481,13 @@ def make_dashboard(
     audit_verified = sum(1 for e in audit_rows if e["decision"] == "Verified")
     audit_review = sum(1 for e in audit_rows if e["decision"] == "Needs review")
     audit_rejected = sum(1 for e in audit_rows if e["decision"] == "Rejected")
+    audit_current = [e for e in audit_rows if e["in_playlist"]]
+    audit_both_tested = sum(
+        1 for e in audit_current
+        if e["vlc"] in {"works", "fails"} and e["samsung"] in {"works", "fails"}
+    )
+    audit_vlc_pending = sum(1 for e in audit_current if e["vlc"] == "not_tested")
+    audit_samsung_pending = sum(1 for e in audit_current if e["samsung"] == "not_tested")
 
     def esc(v) -> str:
         return html.escape(str(v or ""))
@@ -419,8 +570,10 @@ def make_dashboard(
 
         audit_table_rows.append(
             f"""
-            <tr data-audit-decision="{esc(a["decision"])}">
+            <tr data-audit-decision="{esc(a["decision"])}" data-audit-vlc="{esc(a["vlc"])}" data-audit-samsung="{esc(a["samsung"])}">
               <td class="channel">{esc(a["channel"])}</td>
+              <td>{esc(a.get("tvg_id", "") or "—")}</td>
+              <td>{esc(a.get("source", "") or "—")}</td>
               <td>{esc(a["discovery"])}</td>
               <td>{esc(a["protocol"] or "—")}</td>
               <td>{esc(a["language"])}</td>
@@ -575,7 +728,7 @@ tr:last-child td {{ border-bottom: 0; }}
 }}
 .controls {{
   display: grid;
-  grid-template-columns: minmax(250px, 2fr) minmax(180px, 1fr) minmax(180px, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 10px;
   margin: 14px 0;
 }}
@@ -630,6 +783,10 @@ details ul {{ max-height: 260px; overflow: auto; }}
   </p>
 
   <div class="audit-summary">
+    <div class="card"><div class="value">{len(audit_current)}</div><div class="label">Channels/streams in testing queue</div></div>
+    <div class="card"><div class="value">{audit_both_tested}</div><div class="label">Tested on both devices</div></div>
+    <div class="card"><div class="value">{audit_vlc_pending}</div><div class="label">VLC tests remaining</div></div>
+    <div class="card"><div class="value">{audit_samsung_pending}</div><div class="label">Samsung tests remaining</div></div>
     <div class="card"><div class="value">{audit_verified}</div><div class="label">✓ Verified</div></div>
     <div class="card"><div class="value">{audit_review}</div><div class="label">? Needs review</div></div>
     <div class="card"><div class="value">{audit_rejected}</div><div class="label">✕ Rejected</div></div>
@@ -643,6 +800,18 @@ details ul {{ max-height: 260px; overflow: auto; }}
       <option value="Needs review">Needs review</option>
       <option value="Rejected">Rejected</option>
     </select>
+    <select id="auditVlcFilter">
+      <option value="">All VLC statuses</option>
+      <option value="works">VLC works</option>
+      <option value="fails">VLC fails</option>
+      <option value="not_tested">VLC not tested</option>
+    </select>
+    <select id="auditSamsungFilter">
+      <option value="">All Samsung statuses</option>
+      <option value="works">Samsung works</option>
+      <option value="fails">Samsung fails</option>
+      <option value="not_tested">Samsung not tested</option>
+    </select>
   </div>
   <p id="auditVisibleCount" class="muted"></p>
 
@@ -651,6 +820,8 @@ details ul {{ max-height: 260px; overflow: auto; }}
       <thead>
         <tr>
           <th>Channel</th>
+          <th>TVG ID</th>
+          <th>Source</th>
           <th>Discovery</th>
           <th>Protocol</th>
           <th>Language</th>
@@ -756,18 +927,24 @@ function applyFilters() {{
 
 const auditSearch = document.getElementById('auditSearch');
 const auditDecisionFilter = document.getElementById('auditDecisionFilter');
+const auditVlcFilter = document.getElementById('auditVlcFilter');
+const auditSamsungFilter = document.getElementById('auditSamsungFilter');
 const auditRows = Array.from(document.querySelectorAll('#auditTable tbody tr'));
 const auditVisibleCount = document.getElementById('auditVisibleCount');
 
 function applyAuditFilters() {{
   const q = auditSearch.value.trim().toLowerCase();
   const decision = auditDecisionFilter.value;
+  const vlc = auditVlcFilter.value;
+  const samsung = auditSamsungFilter.value;
   let shown = 0;
 
   for (const row of auditRows) {{
     const matchesText = !q || row.innerText.toLowerCase().includes(q);
     const matchesDecision = !decision || row.dataset.auditDecision === decision;
-    const show = matchesText && matchesDecision;
+    const matchesVlc = !vlc || row.dataset.auditVlc === vlc;
+    const matchesSamsung = !samsung || row.dataset.auditSamsung === samsung;
+    const show = matchesText && matchesDecision && matchesVlc && matchesSamsung;
     row.style.display = show ? '' : 'none';
     if (show) shown++;
   }}
@@ -777,6 +954,8 @@ function applyAuditFilters() {{
 
 auditSearch.addEventListener('input', applyAuditFilters);
 auditDecisionFilter.addEventListener('change', applyAuditFilters);
+auditVlcFilter.addEventListener('change', applyAuditFilters);
+auditSamsungFilter.addEventListener('change', applyAuditFilters);
 applyAuditFilters();
 
 search.addEventListener('input', applyFilters);
@@ -950,7 +1129,7 @@ def main() -> None:
     out_lines = [
         "#EXTM3U",
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v3",
+        "# Tomas IPTV smart builder v4",
         "",
     ]
     for entry in final_entries:
@@ -985,7 +1164,7 @@ def main() -> None:
     write_csv(
         public_dir / "audit.csv",
         [
-            "channel", "discovery", "stream_url", "protocol", "language",
+            "channel", "tvg_id", "source", "discovery", "stream_url", "protocol", "language",
             "provenance", "vlc", "samsung", "decision", "in_playlist",
             "reason", "notes"
         ],
@@ -993,7 +1172,7 @@ def main() -> None:
     )
 
     report = {
-        "schema_version": 3,
+        "schema_version": 4,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
@@ -1010,6 +1189,13 @@ def main() -> None:
         "changes": changes,
         "audit": {
             "summary": {
+                "current_playlist_rows": sum(1 for e in audit_rows if e["in_playlist"]),
+                "tested_on_both": sum(
+                    1 for e in audit_rows
+                    if e["in_playlist"]
+                    and e["vlc"] in {"works", "fails"}
+                    and e["samsung"] in {"works", "fails"}
+                ),
                 "verified": sum(1 for e in audit_rows if e["decision"] == "Verified"),
                 "needs_review": sum(1 for e in audit_rows if e["decision"] == "Needs review"),
                 "rejected": sum(1 for e in audit_rows if e["decision"] == "Rejected"),
