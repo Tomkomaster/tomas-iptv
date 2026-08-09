@@ -1272,29 +1272,45 @@ def main() -> None:
 
     audit_rows = prepare_audit_rows(audit_items, final_entries)
 
-    audit_by_url = {row["stream_url"]: row for row in audit_rows if row.get("stream_url")}
+    audit_by_url = {
+        row["stream_url"]: row
+        for row in audit_rows
+        if row.get("stream_url")
+    }
+
+    # Legacy fallbacks are intentionally limited to old audit rows that do not
+    # identify a specific stream URL. A per-URL result must never "bleed" into
+    # another feed of the same channel.
     audit_by_tvg = {
         normalized_tvg_id(row.get("tvg_id", "")): row
-        for row in audit_rows if normalized_tvg_id(row.get("tvg_id", ""))
+        for row in audit_rows
+        if not row.get("stream_url")
+        and normalized_tvg_id(row.get("tvg_id", ""))
     }
     audit_by_name = {
         normalize_text(row.get("channel", "")): row
-        for row in audit_rows if row.get("channel")
+        for row in audit_rows
+        if not row.get("stream_url")
+        and row.get("channel")
     }
 
     def audit_for_entry(entry: dict) -> dict | None:
         url = str(entry.get("url") or "").strip()
         if url and url in audit_by_url:
             return audit_by_url[url]
+
         tid = normalized_tvg_id(str(entry.get("tvg_id") or ""))
         if tid and tid in audit_by_tvg:
             return audit_by_tvg[tid]
-        return audit_by_name.get(normalize_text(entry.get("channel_name", "")))
 
-    published_entries: list[dict] = []
+        return audit_by_name.get(
+            normalize_text(entry.get("channel_name", ""))
+        )
+
+    candidate_entries: list[dict] = []
     excluded_rows: list[dict] = []
 
-    for entry in final_entries:
+    for source_order, entry in enumerate(final_entries):
         audit = audit_for_entry(entry)
         decision = audit.get("decision", "Needs review") if audit else "Needs review"
         exclude = bool(audit.get("exclude_from_playlist")) if audit else False
@@ -1305,37 +1321,125 @@ def main() -> None:
                 "tvg_id": entry.get("tvg_id", ""),
                 "source": entry.get("source", ""),
                 "stream_url": entry.get("url", ""),
-                "reason": (audit or {}).get("reason") or (audit or {}).get("notes") or "Rejected by manual audit",
+                "reason": (
+                    (audit or {}).get("reason")
+                    or (audit or {}).get("notes")
+                    or "Rejected by manual audit"
+                ),
             })
             continue
 
-        lang = str(
-            (audit or {}).get("language_code")
-            or entry.get("language_code")
-            or cfg.get("default_language_code")
-            or "HU"
-        ).upper()
-        suffix = playlist_status_suffix(decision)
-        original_display = strip_custom_prefix(entry.get("display_name", ""))
-        feed_index = int(entry.get("variant_index") or 1)
-        feed_count = int(entry.get("variant_count") or 1)
-        feed_suffix = (
-            f" [Feed {feed_index}/{feed_count}]"
-            if feed_count > 1 else ""
-        )
-        published_name = f"[{lang} {suffix}] {original_display}{feed_suffix}"
-        group_title = f"{lang} | {decision}"
+        candidate = dict(entry)
+        candidate["_audit"] = audit or {}
+        candidate["_decision"] = decision
+        candidate["_source_order"] = source_order
+        candidate_entries.append(candidate)
 
-        published = dict(entry)
-        published["published_name"] = published_name
-        published["test_status"] = decision
-        published["group_title"] = group_title
-        published["lines"] = rewrite_entry_lines(entry["lines"], published_name, group_title)
-        published_entries.append(published)
+    # Group non-rejected candidate feeds by logical channel.
+    candidate_groups: dict[str, list[dict]] = {}
+    for entry in candidate_entries:
+        candidate_groups.setdefault(entry["channel_key"], []).append(entry)
+
+    def verified_feed_rank(entry: dict) -> tuple:
+        audit = entry.get("_audit") or {}
+        vlc = str(audit.get("vlc") or "")
+        samsung = str(audit.get("samsung") or "")
+
+        # User preference: if several feeds work, one is enough.
+        # Prefer the feed that works without a VLC certificate/warning.
+        vlc_rank = {
+            "works": 3,
+            "works_with_warning": 2,
+        }.get(vlc, 0)
+
+        samsung_rank = 1 if samsung == "works" else 0
+
+        # Prefer the earlier/base source when two feeds are otherwise equal.
+        source_rank = -int(entry.get("_source_order") or 0)
+
+        return (vlc_rank, samsung_rank, source_rank)
+
+    selected_candidates: list[dict] = []
+
+    for channel_key_value, group in candidate_groups.items():
+        verified = [e for e in group if e.get("_decision") == "Verified"]
+
+        if verified:
+            winner = max(verified, key=verified_feed_rank)
+            selected_candidates.append(winner)
+
+            for entry in group:
+                if entry is winner:
+                    continue
+                excluded_rows.append({
+                    "channel_name": entry.get("channel_name", ""),
+                    "tvg_id": entry.get("tvg_id", ""),
+                    "source": entry.get("source", ""),
+                    "stream_url": entry.get("url", ""),
+                    "reason": (
+                        "Suppressed because another feed for this channel is "
+                        "already Verified on both VLC and Samsung."
+                    ),
+                })
+        else:
+            # No fully verified winner yet, so keep the remaining candidates in
+            # the playlist for manual testing.
+            selected_candidates.extend(group)
+
+    # Re-number only the feeds that are actually visible in the playlist.
+    visible_groups: dict[str, list[dict]] = {}
+    for entry in selected_candidates:
+        visible_groups.setdefault(entry["channel_key"], []).append(entry)
+
+    published_entries: list[dict] = []
+
+    for channel_key_value, group in visible_groups.items():
+        group.sort(key=lambda e: int(e.get("_source_order") or 0))
+        visible_count = len(group)
+
+        for visible_index, entry in enumerate(group, start=1):
+            audit = entry.get("_audit") or {}
+            decision = entry.get("_decision", "Needs review")
+
+            lang = str(
+                audit.get("language_code")
+                or entry.get("language_code")
+                or cfg.get("default_language_code")
+                or "HU"
+            ).upper()
+
+            suffix = playlist_status_suffix(decision)
+            original_display = strip_custom_prefix(entry.get("display_name", ""))
+
+            # If only one feed survives, don't clutter the channel name with
+            # Feed 1/2-style labels. Multiple unresolved feeds remain numbered.
+            feed_suffix = (
+                f" [Feed {visible_index}/{visible_count}]"
+                if visible_count > 1
+                else ""
+            )
+
+            published_name = f"[{lang} {suffix}] {original_display}{feed_suffix}"
+            group_title = f"{lang} | {decision}"
+
+            published = dict(entry)
+            published["published_name"] = published_name
+            published["test_status"] = decision
+            published["group_title"] = group_title
+            published["visible_feed_index"] = visible_index
+            published["visible_feed_count"] = visible_count
+            published["lines"] = rewrite_entry_lines(
+                entry["lines"], published_name, group_title
+            )
+            published_entries.append(published)
 
     published_entries.sort(
         key=lambda e: (
-            str(e.get("language_code") or cfg.get("default_language_code") or "").upper(),
+            str(
+                e.get("language_code")
+                or cfg.get("default_language_code")
+                or ""
+            ).upper(),
             normalize_text(e.get("channel_name", "")),
             normalize_text(e.get("published_name", "")),
         )
@@ -1404,7 +1508,7 @@ def main() -> None:
     out_lines = [
         "#EXTM3U",
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v8",
+        "# Tomas IPTV smart builder v14",
         "",
     ]
     for entry in published_entries:
@@ -1417,11 +1521,11 @@ def main() -> None:
             "playlist_name": e.get("published_name", e["channel_name"]),
             "channel_name": e["channel_name"],
             "feed_label": (
-                f"Feed {int(e.get('variant_index') or 1)}/{int(e.get('variant_count') or 1)}"
-                if int(e.get("variant_count") or 1) > 1 else "Single"
+                f"Feed {int(e.get('visible_feed_index') or 1)}/{int(e.get('visible_feed_count') or 1)}"
+                if int(e.get("visible_feed_count") or 1) > 1 else "Single"
             ),
-            "feed_index": int(e.get("variant_index") or 1),
-            "feed_count": int(e.get("variant_count") or 1),
+            "feed_index": int(e.get("visible_feed_index") or 1),
+            "feed_count": int(e.get("visible_feed_count") or 1),
             "tvg_id": e.get("tvg_id", ""),
             "group_title": e.get("group_title", ""),
             "test_status": e.get("test_status", "Needs review"),
@@ -1468,7 +1572,7 @@ def main() -> None:
     )
 
     report = {
-        "schema_version": 8,
+        "schema_version": 14,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
