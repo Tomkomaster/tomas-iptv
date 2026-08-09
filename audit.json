@@ -2370,6 +2370,25 @@
       "tested_on": "2026-08-09",
       "reason": "",
       "notes": "Do not reject yet. Test on Samsung. The broadcaster's own site currently publishes https://tv.hegyvidek.hu/stream_mpeg.flv as its live address, so the Eurocable HLS should be treated as a separate candidate."
+    },
+    {
+      "stream_url": "https://tv.hegyvidek.hu/stream_mpeg.flv",
+      "channel": "Hegyvidek Tv Budapest",
+      "tvg_id": "HegyvidekTV.hu@SD",
+      "protocol": "FLV",
+      "language": "Unknown",
+      "language_code": "HU",
+      "provenance": "Official Hegyvidék/BUDA TV published live URL",
+      "discovery": "IPTV-org Hungary + official Hegyvidék/BUDA TV site",
+      "vlc": "needs_review",
+      "samsung": "not_tested",
+      "vlc_note": "User tested the official FLV URL in VLC; it did not work.",
+      "samsung_note": "",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-09",
+      "reason": "",
+      "notes": "Official FLV did not work in VLC. Keep as Needs review until Samsung is tested or the broadcaster provides a newer stream."
     }
   ]
 }
