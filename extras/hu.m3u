@@ -13,20 +13,3 @@ http://212.92.13.108:8080/live/livestream1.m3u8
 # Classics TV — manually verified on VLC + Samsung
 #EXTINF:-1 tvg-name="Classics TV",Classics TV
 http://s01.diazol.hu:9150/live.m3u8
-
-# ============================================================
-# V13 REPLACEMENT TEST CANDIDATES
-# Current monitored HLS candidates. Not verified yet.
-# ============================================================
-
-# Daru TV - current MediaLive CDN candidate
-#EXTINF:-1 tvg-id="DaruTV.hu@SD" tvg-name="Daru TV",Daru TV MediaLive candidate
-https://darutv.medialivecdn.hu:443/darutv/7ca4e13b035b7c1ff5608c2c1e6f71e2.sdp/playlist.m3u8
-
-# Soltvadkerti Televízió - current MediaLive CDN candidate
-#EXTINF:-1 tvg-id="SoltvadkertiTelevizio.hu@SD" tvg-name="Soltvadkerti Televízió",Soltvadkerti Televízió MediaLive candidate
-https://soltvadkert.medialivecdn.hu:443/soltvadkerttv/135f0ef3069df243438549b446f911ab.sdp/playlist.m3u8
-
-# Gran TV - current MediaLive CDN candidate
-#EXTINF:-1 tvg-id="GranTV.hu@SD" tvg-name="Gran TV",Gran TV MediaLive candidate
-https://grantv.medialivecdn.hu:443/gran/51328567842cc1ba78b4b851ee9c46b4.sdp/playlist.m3u8
