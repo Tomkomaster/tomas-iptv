@@ -1,7 +1,8 @@
 {
   "output": "public/tv.m3u",
   "sources": [
-    "https://iptv-org.github.io/iptv/countries/hu.m3u"
+    "https://iptv-org.github.io/iptv/countries/hu.m3u",
+    "https://iptv-org.github.io/iptv/languages/hun.m3u"
   ],
   "extras": [
     "extras/hu.m3u"
