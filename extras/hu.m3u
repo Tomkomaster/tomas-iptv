@@ -1,0 +1,13 @@
+#EXTM3U
+# Tomas IPTV - manually curated Hungary extras.
+#
+# Only add streams here when we have a reasonable basis that the broadcaster
+# intentionally provides the stream publicly. Do not add subscription,
+# pirated/restreamed, account-specific, DRM-bypassed, or expiring-token feeds.
+#
+# Hungarian Parliament official live feeds:
+#EXTINF:-1 tvg-id="OrszaggyulesOGYplenaris.hu@SD" group-title="Hungary | Public",Országgyűlés - Plenáris [Official]
+https://plenaris.parlament.hu:446/edgelive/smil:mkogyplen.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="OrszaggyulesOGYTAB.hu@SD" group-title="Hungary | Public",Országgyűlés - Törvényalkotási bizottság [Official]
+https://tab.parlament.hu:446/edgelive/smil:mkogytab.smil/playlist.m3u8
