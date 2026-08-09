@@ -1,18 +1,19 @@
 #EXTM3U
+# Tomas IPTV - Hungarian extras / test candidates.
+# Status prefixes are applied automatically from audit.json.
 
-# ============================================================
-# TOMAS IPTV - HUNGARY EXTRAS
-#
-# Manually verified working Hungarian streams.
-# ============================================================
-
-
-# ------------------------------------------------------------
-# LOCAL / REGIONAL
-# ------------------------------------------------------------
-
-#EXTINF:-1 tvg-id="NyiregyhaziTV.hu" tvg-name="Nyíregyházi Televízió" group-title="Hungary | Local",Nyíregyházi Televízió (1080p) [Verified]
+# Nyíregyházi Televízió — manually verified on VLC + Samsung
+#EXTINF:-1 tvg-name="Nyíregyházi Televízió",Nyíregyházi Televízió (1080p)
 https://nytvlive.hu:443/nytv/playlist.m3u8
 
-#EXTINF:-1 tvg-id="MakoiVarosiTV.hu" tvg-name="Makói Városi Televízió" group-title="Hungary | Local",Makói Városi Televízió [Verified]
-http://makomedia.mikrohalo.hu/hls/makotv.m3u8
+# Halom TV — new HLS candidate
+#EXTINF:-1 tvg-name="Halom TV",Halom TV (540p)
+http://212.92.13.108:8080/live/livestream1.m3u8
+
+# Classics TV — new candidate replacing the old dead s03 URL
+#EXTINF:-1 tvg-name="Classics TV",Classics TV
+http://s01.diazol.hu:9150/live.m3u8
+
+# Sopron TV — current dynamic HLS redirect candidate
+#EXTINF:-1 tvg-name="Sopron TV",Sopron TV (720p)
+https://redirect.onlinestream.live/sopronmedia.m3u8
