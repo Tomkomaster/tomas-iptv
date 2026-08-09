@@ -1,10 +1,24 @@
 {
+  "site_title": "Tomas IPTV — Hungary",
   "output": "public/tv.m3u",
+  "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
   "sources": [
-    "https://iptv-org.github.io/iptv/countries/hu.m3u",
-    "https://iptv-org.github.io/iptv/languages/hun.m3u"
+    {
+      "name": "IPTV-org Hungary",
+      "kind": "base",
+      "url": "https://iptv-org.github.io/iptv/countries/hu.m3u"
+    },
+    {
+      "name": "IPTV-org Hungarian language",
+      "kind": "language",
+      "url": "https://iptv-org.github.io/iptv/languages/hun.m3u"
+    }
   ],
   "extras": [
-    "extras/hu.m3u"
+    {
+      "name": "Our Hungarian extras",
+      "kind": "extras",
+      "path": "extras/hu.m3u"
+    }
   ]
 }
