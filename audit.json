@@ -1,0 +1,136 @@
+{
+  "channels": [
+    {
+      "channel": "Nyíregyházi Televízió",
+      "discovery": "Broadcaster-associated stream; missing from IPTV-org Hungary",
+      "stream_url": "https://nytvlive.hu:443/nytv/playlist.m3u8",
+      "protocol": "HLS",
+      "language": "Hungarian",
+      "provenance": "Broadcaster-associated",
+      "vlc": "works",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "notes": "Already added to extras. Confirm on Samsung to become Verified."
+    },
+    {
+      "channel": "Makói Városi Televízió",
+      "discovery": "Manually found; now also present in IPTV-org Hungary",
+      "stream_url": "http://makomedia.mikrohalo.hu/hls/makotv.m3u8",
+      "protocol": "HLS",
+      "language": "Hungarian",
+      "provenance": "Broadcaster-associated",
+      "vlc": "works",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "notes": "IPTV-org now carries this exact URL, so it does not need to remain duplicated in extras."
+    },
+    {
+      "channel": "Halom TV",
+      "discovery": "Official Halom TV live page",
+      "stream_url": "rtmp://212.92.13.108/live/livestream1",
+      "protocol": "RTMP",
+      "language": "Hungarian",
+      "provenance": "Official",
+      "vlc": "works",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "notes": "Official RTMP works in VLC. Old HLS URL failed; test this RTMP on Samsung."
+    },
+    {
+      "channel": "Miskolc TV",
+      "discovery": "Old external HLS lead",
+      "stream_url": "https://video.mhzrt.hu/live/mitv/playlist.m3u8",
+      "protocol": "HLS",
+      "language": "Hungarian",
+      "provenance": "Broadcaster-associated",
+      "vlc": "fails",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "reason": "Dead/unusable stream in manual VLC test."
+    },
+    {
+      "channel": "BabyFirst",
+      "discovery": "IPTV-org Hungarian-language list (source later removed)",
+      "stream_url": "",
+      "protocol": "",
+      "language": "English",
+      "provenance": "Unknown",
+      "vlc": "works",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "reason": "English-language feed; not suitable for our Hungarian expansion."
+    },
+    {
+      "channel": "EBS",
+      "discovery": "IPTV-org Hungarian-language list (source later removed)",
+      "stream_url": "",
+      "protocol": "",
+      "language": "English",
+      "provenance": "Unknown",
+      "vlc": "works",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "reason": "English-language feed; not suitable for our Hungarian expansion."
+    },
+    {
+      "channel": "EBS Plus",
+      "discovery": "IPTV-org Hungarian-language list (source later removed)",
+      "stream_url": "",
+      "protocol": "",
+      "language": "English",
+      "provenance": "Unknown",
+      "vlc": "works",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "reason": "English-language feed; not suitable for our Hungarian expansion."
+    },
+    {
+      "channel": "Love Nature",
+      "discovery": "IPTV-org Hungarian-language list (source later removed)",
+      "stream_url": "",
+      "protocol": "",
+      "language": "English",
+      "provenance": "Unknown",
+      "vlc": "works",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "reason": "English-language feed; not suitable for our Hungarian expansion."
+    },
+    {
+      "channel": "Classics TV",
+      "discovery": "Official live channel exists; direct stream from community lead",
+      "stream_url": "https://s03.diazol.hu:7152/live.m3u8",
+      "protocol": "HLS",
+      "language": "Hungarian",
+      "provenance": "Third-party lead",
+      "vlc": "not_tested",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "notes": "Candidate only. Test before adding to extras."
+    },
+    {
+      "channel": "Sopron TV",
+      "discovery": "Official SopronMédia live page",
+      "stream_url": "",
+      "protocol": "Dynamic web stream",
+      "language": "Hungarian",
+      "provenance": "Official",
+      "vlc": "not_tested",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "notes": "Official live service exists, but a stable direct M3U8 has not yet been verified."
+    },
+    {
+      "channel": "Total Dance TV",
+      "discovery": "Official Total Dance TV live page",
+      "stream_url": "",
+      "protocol": "Web live stream",
+      "language": "Hungarian",
+      "provenance": "Official",
+      "vlc": "not_tested",
+      "samsung": "not_tested",
+      "decision": "auto",
+      "notes": "Official live service exists; stable direct M3U8 still needs to be identified."
+    }
+  ]
+}
