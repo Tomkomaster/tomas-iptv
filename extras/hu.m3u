@@ -2,14 +2,7 @@
 
 # ============================================================
 # TOMAS IPTV - HUNGARY EXTRAS
-# Channels missing from the IPTV-org Hungary playlist.
 #
-# Only publicly accessible / broadcaster-associated streams
-# that we have manually investigated should be added here.
+# Only channels personally verified as currently working
+# and legitimately publicly available will be added here.
 # ============================================================
-
-
-# --- LOCAL / REGIONAL TV ---
-
-#EXTINF:-1 tvg-id="MiskolcTV.hu" group-title="Hungary | Local",Miskolc TV (720p) [Official/Public]
-https://video.mhzrt.hu/live/mitv/playlist.m3u8
