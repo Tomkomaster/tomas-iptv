@@ -10,6 +10,12 @@
       "kind": "base",
       "language_code": "HU",
       "url": "https://iptv-org.github.io/iptv/countries/hu.m3u"
+    },
+    {
+      "name": "IPTV-org Hungary raw alternatives",
+      "kind": "alternatives",
+      "language_code": "HU",
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hu.m3u"
     }
   ],
   "extras": [
