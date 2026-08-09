@@ -199,6 +199,125 @@ def write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
             writer.writerow({k: safe_csv_value(str(row.get(k, ""))) for k in fieldnames})
 
 
+
+def load_audit(path: str | None) -> list[dict]:
+    if not path:
+        return []
+
+    p = ROOT / path
+    if not p.exists():
+        print(f"Audit file not found: {path}")
+        return []
+
+    data = json.loads(p.read_text(encoding="utf-8"))
+    if isinstance(data, dict):
+        data = data.get("channels", [])
+
+    if not isinstance(data, list):
+        raise RuntimeError("audit.json must contain a list or an object with a 'channels' list.")
+
+    return [dict(item) for item in data if isinstance(item, dict)]
+
+
+def normalize_test_status(value: str) -> str:
+    value = (value or "").strip().casefold().replace(" ", "_")
+    aliases = {
+        "ok": "works",
+        "working": "works",
+        "pass": "works",
+        "passed": "works",
+        "yes": "works",
+        "error": "fails",
+        "failed": "fails",
+        "fail": "fails",
+        "no": "fails",
+        "pending": "not_tested",
+        "untested": "not_tested",
+        "not-tested": "not_tested",
+        "": "not_tested",
+    }
+    return aliases.get(value, value)
+
+
+def calculate_audit_decision(item: dict) -> tuple[str, str]:
+    """
+    Return (decision, explanation).
+
+    'Verified' here means suitable for OUR shared playlist after manual
+    playback checks and provenance review. It is not a legal certification.
+    """
+    explicit = (item.get("decision") or "auto").strip().casefold().replace(" ", "_")
+    if explicit in {"verified", "needs_review", "rejected"}:
+        label = {
+            "verified": "Verified",
+            "needs_review": "Needs review",
+            "rejected": "Rejected",
+        }[explicit]
+        return label, str(item.get("reason") or "").strip()
+
+    vlc = normalize_test_status(str(item.get("vlc", "")))
+    samsung = normalize_test_status(str(item.get("samsung", "")))
+    language = (item.get("language") or "Unknown").strip().casefold()
+    provenance = (item.get("provenance") or "Unknown").strip().casefold()
+
+    wrong_languages = {"english", "wrong", "wrong language", "not hungarian", "non-hungarian"}
+    if language in wrong_languages:
+        return "Rejected", "Wrong language for the Hungarian playlist."
+
+    if vlc == "fails":
+        return "Rejected", "Fails the VLC playback test."
+
+    if samsung == "fails":
+        return "Rejected", "Fails the Samsung playback test for the shared TV playlist."
+
+    acceptable_provenance = {
+        "official",
+        "broadcaster-associated",
+        "broadcaster associated",
+        "official/public",
+        "official public",
+    }
+
+    if vlc == "works" and samsung == "works" and provenance in acceptable_provenance:
+        return "Verified", ""
+
+    return "Needs review", str(item.get("reason") or "").strip()
+
+
+def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> list[dict]:
+    final_urls = {(e.get("url") or "").strip() for e in final_entries if e.get("url")}
+    rows = []
+
+    for raw in audit_items:
+        item = dict(raw)
+        stream_url = str(item.get("stream_url") or "").strip()
+        decision, auto_reason = calculate_audit_decision(item)
+
+        rows.append({
+            "channel": str(item.get("channel") or "Unnamed channel").strip(),
+            "discovery": str(item.get("discovery") or "").strip(),
+            "stream_url": stream_url,
+            "protocol": str(item.get("protocol") or "").strip(),
+            "language": str(item.get("language") or "Unknown").strip(),
+            "provenance": str(item.get("provenance") or "Unknown").strip(),
+            "vlc": normalize_test_status(str(item.get("vlc") or "")),
+            "samsung": normalize_test_status(str(item.get("samsung") or "")),
+            "decision": decision,
+            "reason": str(item.get("reason") or auto_reason or "").strip(),
+            "notes": str(item.get("notes") or "").strip(),
+            "in_playlist": bool(stream_url and stream_url in final_urls),
+        })
+
+    priority = {"Needs review": 0, "Verified": 1, "Rejected": 2}
+    return sorted(
+        rows,
+        key=lambda x: (
+            priority.get(x["decision"], 9),
+            normalize_text(x["channel"]),
+        ),
+    )
+
+
 def make_dashboard(
     cfg: dict,
     generated: str,
@@ -207,6 +326,7 @@ def make_dashboard(
     source_stats: list[dict],
     duplicate_rows: list[dict],
     changes: dict,
+    audit_rows: list[dict],
 ) -> str:
     title = str(cfg.get("site_title") or "Tomas IPTV")
     total_streams = len(final_entries)
@@ -214,6 +334,9 @@ def make_dashboard(
     total_duplicates = len(duplicate_rows)
     total_alternatives = sum(1 for e in final_entries if e["classification"] == "Alternative stream")
     added_from_nonbase = sum(1 for e in final_entries if e["classification"] == "Added channel")
+    audit_verified = sum(1 for e in audit_rows if e["decision"] == "Verified")
+    audit_review = sum(1 for e in audit_rows if e["decision"] == "Needs review")
+    audit_rejected = sum(1 for e in audit_rows if e["decision"] == "Rejected")
 
     def esc(v) -> str:
         return html.escape(str(v or ""))
@@ -256,6 +379,58 @@ def make_dashboard(
               <td>{esc(e["source"])}</td>
               <td><span class="badge {badge_class}">{esc(classification)}</span></td>
               <td class="url"><a href="{esc(e["url"])}" target="_blank" rel="noopener">stream</a></td>
+            </tr>
+            """
+        )
+
+    def test_badge(value: str) -> str:
+        labels = {
+            "works": ("✓ Works", "verified"),
+            "fails": ("✕ Fails", "rejected"),
+            "not_tested": ("? Not tested", "review"),
+            "n/a": ("N/A", "base"),
+        }
+        label, css = labels.get(value, (value or "?", "review"))
+        return f'<span class="badge {css}">{esc(label)}</span>'
+
+    audit_table_rows = []
+    for a in audit_rows:
+        decision_css = {
+            "Verified": "verified",
+            "Needs review": "review",
+            "Rejected": "rejected",
+        }.get(a["decision"], "review")
+
+        in_playlist = (
+            '<span class="badge verified">Yes</span>'
+            if a["in_playlist"]
+            else '<span class="badge base">No</span>'
+        )
+
+        reason_notes = " — ".join(
+            part for part in [a.get("reason", ""), a.get("notes", "")] if part
+        )
+
+        stream_link = (
+            f'<a href="{esc(a["stream_url"])}" target="_blank" rel="noopener">stream</a>'
+            if a.get("stream_url")
+            else "—"
+        )
+
+        audit_table_rows.append(
+            f"""
+            <tr data-audit-decision="{esc(a["decision"])}">
+              <td class="channel">{esc(a["channel"])}</td>
+              <td>{esc(a["discovery"])}</td>
+              <td>{esc(a["protocol"] or "—")}</td>
+              <td>{esc(a["language"])}</td>
+              <td>{esc(a["provenance"])}</td>
+              <td>{test_badge(a["vlc"])}</td>
+              <td>{test_badge(a["samsung"])}</td>
+              <td><span class="badge {decision_css}">{esc(a["decision"])}</span></td>
+              <td>{in_playlist}</td>
+              <td>{esc(reason_notes or "—")}</td>
+              <td class="url">{stream_link}</td>
             </tr>
             """
         )
@@ -314,6 +489,8 @@ def make_dashboard(
   --accent: #58a6ff;
   --good: #3fb950;
   --purple: #a371f7;
+  --warn: #d29922;
+  --bad: #f85149;
 }}
 @media (prefers-color-scheme: light) {{
   :root {{
@@ -387,6 +564,15 @@ tr:last-child td {{ border-bottom: 0; }}
 .badge.base {{ border: 1px solid var(--border); }}
 .badge.added {{ color: var(--good); border: 1px solid var(--good); }}
 .badge.alt {{ color: var(--purple); border: 1px solid var(--purple); }}
+.badge.verified {{ color: var(--good); border: 1px solid var(--good); }}
+.badge.review {{ color: var(--warn); border: 1px solid var(--warn); }}
+.badge.rejected {{ color: var(--bad); border: 1px solid var(--bad); }}
+.audit-summary {{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 12px 0 18px;
+}}
 .controls {{
   display: grid;
   grid-template-columns: minmax(250px, 2fr) minmax(180px, 1fr) minmax(180px, 1fr);
@@ -424,6 +610,7 @@ details ul {{ max-height: 260px; overflow: auto; }}
     <a href="tv.m3u">TV playlist (tv.m3u)</a>
     <a href="channels.csv">Channel inventory (CSV)</a>
     <a href="duplicates.csv">Ignored duplicate URLs (CSV)</a>
+    <a href="audit.csv">Manual verification (CSV)</a>
     <a href="report.json">Machine report (JSON)</a>
   </div>
 
@@ -433,6 +620,51 @@ details ul {{ max-height: 260px; overflow: auto; }}
     <div class="card"><div class="value">{added_from_nonbase}</div><div class="label">Channels added beyond base</div></div>
     <div class="card"><div class="value">{total_alternatives}</div><div class="label">Alternative streams kept</div></div>
     <div class="card"><div class="value">{total_duplicates}</div><div class="label">Duplicate URLs ignored</div></div>
+  </div>
+
+  <h2>Manual verification</h2>
+  <p class="muted">
+    This is our persistent test log. “Verified” means we have accepted the stream
+    for this shared playlist after playback/device checks and provenance review;
+    it is not a legal certification.
+  </p>
+
+  <div class="audit-summary">
+    <div class="card"><div class="value">{audit_verified}</div><div class="label">✓ Verified</div></div>
+    <div class="card"><div class="value">{audit_review}</div><div class="label">? Needs review</div></div>
+    <div class="card"><div class="value">{audit_rejected}</div><div class="label">✕ Rejected</div></div>
+  </div>
+
+  <div class="controls">
+    <input id="auditSearch" type="search" placeholder="Search manual tests...">
+    <select id="auditDecisionFilter">
+      <option value="">All manual decisions</option>
+      <option value="Verified">Verified</option>
+      <option value="Needs review">Needs review</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  </div>
+  <p id="auditVisibleCount" class="muted"></p>
+
+  <div class="table-wrap">
+    <table id="auditTable">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Discovery</th>
+          <th>Protocol</th>
+          <th>Language</th>
+          <th>Provenance</th>
+          <th>VLC</th>
+          <th>Samsung</th>
+          <th>Decision</th>
+          <th>In playlist</th>
+          <th>Reason / notes</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>{''.join(audit_table_rows)}</tbody>
+    </table>
   </div>
 
   <h2>Source contribution</h2>
@@ -522,6 +754,31 @@ function applyFilters() {{
   visibleCount.textContent = `Showing ${{shown}} of ${{rows.length}} stream entries`;
 }}
 
+const auditSearch = document.getElementById('auditSearch');
+const auditDecisionFilter = document.getElementById('auditDecisionFilter');
+const auditRows = Array.from(document.querySelectorAll('#auditTable tbody tr'));
+const auditVisibleCount = document.getElementById('auditVisibleCount');
+
+function applyAuditFilters() {{
+  const q = auditSearch.value.trim().toLowerCase();
+  const decision = auditDecisionFilter.value;
+  let shown = 0;
+
+  for (const row of auditRows) {{
+    const matchesText = !q || row.innerText.toLowerCase().includes(q);
+    const matchesDecision = !decision || row.dataset.auditDecision === decision;
+    const show = matchesText && matchesDecision;
+    row.style.display = show ? '' : 'none';
+    if (show) shown++;
+  }}
+
+  auditVisibleCount.textContent = `Showing ${{shown}} of ${{auditRows.length}} manually reviewed/candidate channels`;
+}}
+
+auditSearch.addEventListener('input', applyAuditFilters);
+auditDecisionFilter.addEventListener('change', applyAuditFilters);
+applyAuditFilters();
+
 search.addEventListener('input', applyFilters);
 sourceFilter.addEventListener('change', applyFilters);
 statusFilter.addEventListener('change', applyFilters);
@@ -534,6 +791,7 @@ applyFilters();
 
 def main() -> None:
     cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    audit_items = load_audit(cfg.get("audit_path", "audit.json"))
 
     source_items: list[dict] = []
 
@@ -632,6 +890,8 @@ def main() -> None:
             "duplicate_urls_ignored": duplicate_urls,
         })
 
+    audit_rows = prepare_audit_rows(audit_items, final_entries)
+
     by_channel: dict[str, dict] = {}
     for entry in final_entries:
         key = entry["channel_key"]
@@ -690,7 +950,7 @@ def main() -> None:
     out_lines = [
         "#EXTM3U",
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v2",
+        "# Tomas IPTV smart builder v3",
         "",
     ]
     for entry in final_entries:
@@ -722,8 +982,18 @@ def main() -> None:
         duplicate_rows,
     )
 
+    write_csv(
+        public_dir / "audit.csv",
+        [
+            "channel", "discovery", "stream_url", "protocol", "language",
+            "provenance", "vlc", "samsung", "decision", "in_playlist",
+            "reason", "notes"
+        ],
+        audit_rows,
+    )
+
     report = {
-        "schema_version": 2,
+        "schema_version": 3,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
@@ -738,6 +1008,14 @@ def main() -> None:
         },
         "sources": source_stats,
         "changes": changes,
+        "audit": {
+            "summary": {
+                "verified": sum(1 for e in audit_rows if e["decision"] == "Verified"),
+                "needs_review": sum(1 for e in audit_rows if e["decision"] == "Needs review"),
+                "rejected": sum(1 for e in audit_rows if e["decision"] == "Rejected"),
+            },
+            "channels": audit_rows,
+        },
         "channels": unique_channels,
     }
 
@@ -755,6 +1033,7 @@ def main() -> None:
             source_stats=source_stats,
             duplicate_rows=duplicate_rows,
             changes=changes,
+            audit_rows=audit_rows,
         ),
         encoding="utf-8",
     )
@@ -766,6 +1045,12 @@ def main() -> None:
     print(f"Unique channels:        {len(unique_channels)}")
     print(f"Unique stream URLs:     {len(final_entries)}")
     print(f"Duplicate URLs ignored: {len(duplicate_rows)}")
+    print(
+        "Manual audit:          "
+        f"{sum(1 for e in audit_rows if e['decision'] == 'Verified')} verified, "
+        f"{sum(1 for e in audit_rows if e['decision'] == 'Needs review')} needs review, "
+        f"{sum(1 for e in audit_rows if e['decision'] == 'Rejected')} rejected"
+    )
     for stats in source_stats:
         print(
             f"- {stats['name']}: "
