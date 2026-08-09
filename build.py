@@ -399,7 +399,31 @@ def audit_match_key(item: dict) -> tuple[str, str]:
 
 
 def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> list[dict]:
-    """Create a test row for every current stream and overlay saved manual results."""
+    """
+    Create one audit row PER STREAM URL.
+
+    Important V8 behavior:
+    - If a channel has multiple stream URLs, each one gets Feed 1/2, Feed 2/2, etc.
+    - A saved audit result with an exact stream_url applies only to that stream.
+    - Older channel-level audit results (no stream_url) apply only to Feed 1.
+      Other feeds remain untested until they are tested separately.
+    """
+    def canonical_name(value: str) -> str:
+        return normalize_text(strip_display_annotations(value or ""))
+
+    # Assign stable feed numbers in current source order.
+    counts: dict[str, int] = {}
+    for entry in final_entries:
+        key = entry.get("channel_key") or channel_key(entry)
+        counts[key] = counts.get(key, 0) + 1
+
+    seen_feed: dict[str, int] = {}
+    for entry in final_entries:
+        key = entry.get("channel_key") or channel_key(entry)
+        seen_feed[key] = seen_feed.get(key, 0) + 1
+        entry["variant_index"] = seen_feed[key]
+        entry["variant_count"] = counts[key]
+
     manual_by_url: dict[str, dict] = {}
     manual_by_tvg_id: dict[str, dict] = {}
     manual_by_name: dict[str, dict] = {}
@@ -408,29 +432,48 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         item = dict(raw)
         url = str(item.get("stream_url") or "").strip()
         tvg_id = normalized_tvg_id(str(item.get("tvg_id") or ""))
-        name = normalize_text(str(item.get("channel") or ""))
+        name = canonical_name(str(item.get("channel") or ""))
+
         if url:
             manual_by_url[url] = item
-        if tvg_id:
+        if tvg_id and not url:
             manual_by_tvg_id[tvg_id] = item
-        if name:
+        if name and not url:
             manual_by_name[name] = item
 
-    used_manual_names: set[str] = set()
+    used_manual_keys: set[tuple[str, str]] = set()
     rows: list[dict] = []
 
     for entry in final_entries:
         url = str(entry.get("url") or "").strip()
         tvg_id = str(entry.get("tvg_id") or "").strip()
-        clean_name = str(entry.get("channel_name") or entry.get("display_name") or "Unnamed channel").strip()
+        clean_name = str(
+            entry.get("channel_name")
+            or entry.get("display_name")
+            or "Unnamed channel"
+        ).strip()
+        feed_index = int(entry.get("variant_index") or 1)
+        feed_count = int(entry.get("variant_count") or 1)
 
         manual = None
+        manual_key = None
+
+        # Exact URL is always authoritative.
         if url and url in manual_by_url:
             manual = manual_by_url[url]
-        elif normalized_tvg_id(tvg_id) and normalized_tvg_id(tvg_id) in manual_by_tvg_id:
-            manual = manual_by_tvg_id[normalized_tvg_id(tvg_id)]
-        elif normalize_text(clean_name) in manual_by_name:
-            manual = manual_by_name[normalize_text(clean_name)]
+            manual_key = ("url", url)
+
+        # Legacy channel-level results only apply to Feed 1.
+        elif feed_index == 1:
+            tid = normalized_tvg_id(tvg_id)
+            cname = canonical_name(clean_name)
+
+            if tid and tid in manual_by_tvg_id:
+                manual = manual_by_tvg_id[tid]
+                manual_key = ("tvg", tid)
+            elif cname and cname in manual_by_name:
+                manual = manual_by_name[cname]
+                manual_key = ("name", cname)
 
         item = {
             "channel": clean_name,
@@ -453,13 +496,18 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "samsung_note": "",
             "decision": "auto",
             "reason": "",
-            "notes": "Auto-added from current tv.m3u for manual testing.",
+            "notes": (
+                "Auto-added from current tv.m3u for manual testing."
+                if feed_count == 1
+                else f"Alternative stream Feed {feed_index}/{feed_count}; test this URL separately."
+            ),
             "exclude_from_playlist": False,
             "tested_on": "",
         }
 
         if manual is not None:
-            used_manual_names.add(normalize_text(str(manual.get("channel") or clean_name)))
+            if manual_key:
+                used_manual_keys.add(manual_key)
             for key, value in manual.items():
                 if value not in ("", None):
                     item[key] = value
@@ -471,6 +519,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         item["source_flags"] = flags
 
         decision, auto_reason = calculate_audit_decision(item)
+
         rows.append({
             "channel": str(item.get("channel") or clean_name).strip(),
             "tvg_id": str(item.get("tvg_id") or tvg_id).strip(),
@@ -479,7 +528,11 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "stream_url": str(item.get("stream_url") or url).strip(),
             "protocol": str(item.get("protocol") or infer_protocol(url)).strip(),
             "language": str(item.get("language") or "Unknown").strip(),
-            "language_code": str(item.get("language_code") or entry.get("language_code") or "HU").strip().upper(),
+            "language_code": str(
+                item.get("language_code")
+                or entry.get("language_code")
+                or "HU"
+            ).strip().upper(),
             "provenance": str(item.get("provenance") or "").strip(),
             "source_flags": flags,
             "vlc": normalize_test_status(str(item.get("vlc") or "")),
@@ -492,23 +545,45 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "exclude_from_playlist": bool(item.get("exclude_from_playlist")),
             "tested_on": str(item.get("tested_on") or "").strip(),
             "in_playlist": True,
+            "feed_index": feed_index,
+            "feed_count": feed_count,
+            "feed_label": (
+                f"Feed {feed_index}/{feed_count}"
+                if feed_count > 1 else "Single"
+            ),
         })
 
+    current_urls = {
+        (e.get("url") or "").strip()
+        for e in final_entries if e.get("url")
+    }
     current_names = {
-        normalize_text(str(e.get("channel_name") or e.get("display_name") or ""))
+        canonical_name(str(e.get("channel_name") or e.get("display_name") or ""))
         for e in final_entries
     }
-    current_urls = {(e.get("url") or "").strip() for e in final_entries if e.get("url")}
 
+    # Keep manually tracked candidates/rejections that are not currently in tv.m3u.
     for raw in audit_items:
-        name_key = normalize_text(str(raw.get("channel") or ""))
-        url = str(raw.get("stream_url") or "").strip()
-        if name_key in used_manual_names:
+        item = dict(raw)
+        url = str(item.get("stream_url") or "").strip()
+        tid = normalized_tvg_id(str(item.get("tvg_id") or ""))
+        cname = canonical_name(str(item.get("channel") or ""))
+
+        if url:
+            manual_key = ("url", url)
+        elif tid:
+            manual_key = ("tvg", tid)
+        else:
+            manual_key = ("name", cname)
+
+        if manual_key in used_manual_keys:
             continue
-        if name_key in current_names or (url and url in current_urls):
+        if url and url in current_urls:
+            continue
+        if not url and cname in current_names:
+            # A legacy channel-level row has already been represented by Feed 1.
             continue
 
-        item = dict(raw)
         decision, auto_reason = calculate_audit_decision(item)
         rows.append({
             "channel": str(item.get("channel") or "Unnamed channel").strip(),
@@ -531,6 +606,9 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "exclude_from_playlist": bool(item.get("exclude_from_playlist")),
             "tested_on": str(item.get("tested_on") or "").strip(),
             "in_playlist": False,
+            "feed_index": 1,
+            "feed_count": 1,
+            "feed_label": "Candidate",
         })
 
     priority = {
@@ -540,12 +618,14 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         "Verified": 3,
         "Rejected": 4,
     }
+
     return sorted(
         rows,
         key=lambda x: (
             priority.get(x["decision"], 9),
             0 if x["in_playlist"] else 1,
             normalize_text(x["channel"]),
+            int(x.get("feed_index") or 1),
         ),
     )
 
@@ -670,6 +750,7 @@ def make_dashboard(
             f"""
             <tr data-audit-decision="{esc(a["decision"])}" data-audit-vlc="{esc(a["vlc"])}" data-audit-samsung="{esc(a["samsung"])}">
               <td class="channel">{esc(a["channel"])}</td>
+              <td>{esc(a.get("feed_label", "Single"))}</td>
               <td>{esc(a.get("tvg_id", "") or "—")}</td>
               <td>{esc(a.get("source", "") or "—")}</td>
               <td>{esc(a["discovery"])}</td>
@@ -934,6 +1015,7 @@ details ul {{ max-height: 260px; overflow: auto; }}
       <thead>
         <tr>
           <th>Channel</th>
+          <th>Feed</th>
           <th>TVG ID</th>
           <th>Source</th>
           <th>Discovery</th>
@@ -1235,7 +1317,13 @@ def main() -> None:
         ).upper()
         suffix = playlist_status_suffix(decision)
         original_display = strip_custom_prefix(entry.get("display_name", ""))
-        published_name = f"[{lang} {suffix}] {original_display}"
+        feed_index = int(entry.get("variant_index") or 1)
+        feed_count = int(entry.get("variant_count") or 1)
+        feed_suffix = (
+            f" [Feed {feed_index}/{feed_count}]"
+            if feed_count > 1 else ""
+        )
+        published_name = f"[{lang} {suffix}] {original_display}{feed_suffix}"
         group_title = f"{lang} | {decision}"
 
         published = dict(entry)
@@ -1316,7 +1404,7 @@ def main() -> None:
     out_lines = [
         "#EXTM3U",
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v5",
+        "# Tomas IPTV smart builder v8",
         "",
     ]
     for entry in published_entries:
@@ -1328,6 +1416,12 @@ def main() -> None:
         {
             "playlist_name": e.get("published_name", e["channel_name"]),
             "channel_name": e["channel_name"],
+            "feed_label": (
+                f"Feed {int(e.get('variant_index') or 1)}/{int(e.get('variant_count') or 1)}"
+                if int(e.get("variant_count") or 1) > 1 else "Single"
+            ),
+            "feed_index": int(e.get("variant_index") or 1),
+            "feed_count": int(e.get("variant_count") or 1),
             "tvg_id": e.get("tvg_id", ""),
             "group_title": e.get("group_title", ""),
             "test_status": e.get("test_status", "Needs review"),
@@ -1342,7 +1436,8 @@ def main() -> None:
     write_csv(
         public_dir / "channels.csv",
         [
-            "playlist_name", "channel_name", "tvg_id", "group_title", "test_status",
+            "playlist_name", "channel_name", "feed_label", "feed_index", "feed_count",
+            "tvg_id", "group_title", "test_status",
             "source_flags", "source", "classification", "stream_url", "logo"
         ],
         inventory_rows,
@@ -1363,7 +1458,8 @@ def main() -> None:
     write_csv(
         public_dir / "audit.csv",
         [
-            "channel", "tvg_id", "source", "discovery", "stream_url", "protocol",
+            "channel", "feed_label", "feed_index", "feed_count", "tvg_id",
+            "source", "discovery", "stream_url", "protocol",
             "language", "language_code", "provenance", "source_flags",
             "vlc", "vlc_note", "samsung", "samsung_note", "decision",
             "exclude_from_playlist", "in_playlist", "tested_on", "reason", "notes"
@@ -1372,7 +1468,7 @@ def main() -> None:
     )
 
     report = {
-        "schema_version": 5,
+        "schema_version": 8,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
