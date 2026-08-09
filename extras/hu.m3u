@@ -3,6 +3,16 @@
 # ============================================================
 # TOMAS IPTV - HUNGARY EXTRAS
 #
-# Only channels personally verified as currently working
-# and legitimately publicly available will be added here.
+# Manually verified working Hungarian streams.
 # ============================================================
+
+
+# ------------------------------------------------------------
+# LOCAL / REGIONAL
+# ------------------------------------------------------------
+
+#EXTINF:-1 tvg-id="NyiregyhaziTV.hu" tvg-name="Nyíregyházi Televízió" group-title="Hungary | Local",Nyíregyházi Televízió (1080p) [Verified]
+https://nytvlive.hu:443/nytv/playlist.m3u8
+
+#EXTINF:-1 tvg-id="MakoiVarosiTV.hu" tvg-name="Makói Városi Televízió" group-title="Hungary | Local",Makói Városi Televízió [Verified]
+http://makomedia.mikrohalo.hu/hls/makotv.m3u8
