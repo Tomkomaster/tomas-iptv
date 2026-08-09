@@ -15,24 +15,18 @@ http://212.92.13.108:8080/live/livestream1.m3u8
 http://s01.diazol.hu:9150/live.m3u8
 
 # ============================================================
-# V12 REPLACEMENT TEST CANDIDATES
-# These are not playback-verified yet. The builder will label
-# them [HU ?] and assign separate Feed numbers.
+# V13 REPLACEMENT TEST CANDIDATES
+# Current monitored HLS candidates. Not verified yet.
 # ============================================================
 
-# Fix TV legacy broadcaster-domain alternative
-#EXTINF:-1 tvg-id="FIXTV.hu@SD" tvg-name="Fix TV",Fix TV legacy HLS candidate
-http://fixhd.tv:8081/fix/1080i/playlist.m3u8
+# Daru TV - current MediaLive CDN candidate
+#EXTINF:-1 tvg-id="DaruTV.hu@SD" tvg-name="Daru TV",Daru TV MediaLive candidate
+https://darutv.medialivecdn.hu:443/darutv/7ca4e13b035b7c1ff5608c2c1e6f71e2.sdp/playlist.m3u8
 
-# Fehérvár TV HDE016 alternative
-#EXTINF:-1 tvg-id="FehervarTV.hu@SD" tvg-name="Fehérvár TV",Fehérvár TV HDE016 candidate
-https://cloudfront44.lexanetwork.com:1440/HDE016/hls/livestream.sdp.m3u8
+# Soltvadkerti Televízió - current MediaLive CDN candidate
+#EXTINF:-1 tvg-id="SoltvadkertiTelevizio.hu@SD" tvg-name="Soltvadkerti Televízió",Soltvadkerti Televízió MediaLive candidate
+https://soltvadkert.medialivecdn.hu:443/soltvadkerttv/135f0ef3069df243438549b446f911ab.sdp/playlist.m3u8
 
-# Budapest Európa TV HDE021 alternative
-#EXTINF:-1 tvg-id="BudapestEuropaTelevizio.hu@SD" tvg-name="Budapest Európa Televízió",Budapest Európa TV HDE021 candidate
-http://cloudfront44.lexanetwork.com:1730/HDE021/hls/livestream.sdp.m3u8
-
-# Kiskőrös TV current monitored MediaLive alternative
-#EXTINF:-1 tvg-id="KiskorosTV.hu@SD" tvg-name="Kiskőrös TV",Kiskőrös TV MediaLive candidate
-https://stream.medialive.hu:1443/kiskorostv/korostvlive/playlist.m3u8
-
+# Gran TV - current MediaLive CDN candidate
+#EXTINF:-1 tvg-id="GranTV.hu@SD" tvg-name="Gran TV",Gran TV MediaLive candidate
+https://grantv.medialivecdn.hu:443/gran/51328567842cc1ba78b4b851ee9c46b4.sdp/playlist.m3u8
