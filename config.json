@@ -1,5 +1,6 @@
 {
   "site_title": "Tomas IPTV — Hungary",
+  "default_language_code": "HU",
   "output": "public/tv.m3u",
   "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
   "audit_path": "audit.json",
@@ -7,13 +8,15 @@
     {
       "name": "IPTV-org Hungary",
       "kind": "base",
+      "language_code": "HU",
       "url": "https://iptv-org.github.io/iptv/countries/hu.m3u"
     }
   ],
   "extras": [
     {
-      "name": "Our verified Hungarian extras",
+      "name": "Our Hungarian test/verified extras",
       "kind": "extras",
+      "language_code": "HU",
       "path": "extras/hu.m3u"
     }
   ]
