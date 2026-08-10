@@ -7,7 +7,7 @@ import json
 import re
 import sys
 import unicodedata
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -138,7 +138,76 @@ def normalized_tvg_id(tvg_id: str) -> str:
     value = TVG_VARIANT_SUFFIX_RE.sub("", value)
     return value.casefold()
 
+def canonical_stream_url(url: str) -> str:
+    """
+    Return a normalized URL used only for stream identity comparisons.
 
+    The original URL must still be preserved for playlist output, reports,
+    audits, and playback.
+
+    Safe normalizations:
+      - trim surrounding whitespace
+      - lowercase scheme
+      - lowercase hostname
+      - remove default HTTPS port :443
+      - remove default HTTP port :80
+      - remove URL fragment
+      - normalize an empty path to /
+      - preserve path case
+      - preserve query string exactly
+      - preserve non-default ports
+    """
+    value = (url or "").strip()
+    if not value:
+        return ""
+
+    parsed = urlparse(value)
+    scheme = parsed.scheme.lower()
+
+    # Leave malformed/non-absolute values alone. Validation elsewhere decides
+    # whether they are acceptable.
+    if not scheme or not parsed.netloc or parsed.hostname is None:
+        return value
+
+    hostname = parsed.hostname.lower()
+
+    # urlparse() removes IPv6 brackets from .hostname, so restore them when
+    # rebuilding the network location.
+    if ":" in hostname and not hostname.startswith("["):
+        hostname = f"[{hostname}]"
+
+    # Preserve user:password@ exactly if a stream URL ever contains it.
+    userinfo = ""
+    if "@" in parsed.netloc:
+        userinfo = parsed.netloc.rsplit("@", 1)[0] + "@"
+
+    try:
+        port = parsed.port
+    except ValueError:
+        # Malformed ports are handled by validation elsewhere.
+        return value
+
+    if (scheme == "https" and port == 443) or (
+        scheme == "http" and port == 80
+    ):
+        port = None
+
+    netloc = f"{userinfo}{hostname}"
+
+    if port is not None:
+        netloc += f":{port}"
+
+    path = parsed.path or "/"
+
+    return urlunparse((
+        scheme,
+        netloc,
+        path,
+        parsed.params,
+        parsed.query,
+        "",
+    ))
+	
 def channel_key(entry: dict) -> str:
     """
     Identify a logical channel.
@@ -444,9 +513,11 @@ def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> 
         if not url:
             continue
 
+        url_key = canonical_stream_url(url)
+
         tid = normalized_tvg_id(str(entry.get("tvg_id") or ""))
         if tid:
-            current_by_tvg.setdefault(tid, set()).add(url)
+            current_by_tvg.setdefault(tid, set()).add(url_key)
 
         for value in (
             entry.get("channel_name"),
@@ -455,7 +526,7 @@ def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> 
         ):
             cname = canonical_audit_name(str(value or ""))
             if cname:
-                current_by_name.setdefault(cname, set()).add(url)
+                current_by_name.setdefault(cname, set()).add(url_key)
 
     seen_urls: dict[str, int] = {}
     seen_legacy_keys: dict[tuple[str, str], int] = {}
@@ -471,23 +542,26 @@ def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> 
             errors.append(f"{label}: missing channel name.")
 
         url = str(item.get("stream_url") or "").strip()
-
         if url:
+            url_key = canonical_stream_url(url)
+
             if any(ch.isspace() for ch in url):
-                errors.append(f"{label}: malformed stream_url contains whitespace: {url!r}.")
+                errors.append(
+                    f"{label}: malformed stream_url contains whitespace: {url!r}."
+                )
             else:
                 parsed = urlparse(url)
                 if not parsed.scheme or not parsed.netloc:
                     errors.append(f"{label}: malformed stream_url: {url!r}.")
 
-            if url in seen_urls:
-                first = seen_urls[url]
+            if url_key in seen_urls:
+                first = seen_urls[url_key]
                 errors.append(
                     f"{label}: duplicate stream_url {url!r}; "
                     f"already used by audit item #{first}."
                 )
             else:
-                seen_urls[url] = index
+                seen_urls[url_key] = index
 
         for field in ("vlc", "samsung"):
             raw_status = str(item.get(field) or "")
@@ -582,7 +656,7 @@ def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> 
 def audit_match_key(item: dict) -> tuple[str, str]:
     url = str(item.get("stream_url") or item.get("url") or "").strip()
     if url:
-        return ("url", url)
+        return ("url", canonical_stream_url(url))
 
     tvg_id = normalized_tvg_id(str(item.get("tvg_id") or ""))
     if tvg_id:
@@ -627,7 +701,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         name = canonical_audit_name(str(item.get("channel") or ""))
 
         if url:
-            manual_by_url[url] = item
+            manual_by_url[canonical_stream_url(url)] = item
         if tvg_id and not url:
             manual_by_tvg_id[tvg_id] = item
         if name and not url:
@@ -638,6 +712,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
 
     for entry in final_entries:
         url = str(entry.get("url") or "").strip()
+        url_key = canonical_stream_url(url)
         tvg_id = str(entry.get("tvg_id") or "").strip()
         clean_name = str(
             entry.get("channel_name")
@@ -650,10 +725,11 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         manual = None
         manual_key = None
 
-        # Exact URL is always authoritative.
-        if url and url in manual_by_url:
-            manual = manual_by_url[url]
-            manual_key = ("url", url)
+        # URL-specific audit is always authoritative. Canonically equivalent
+        # URL spellings identify the same stream.
+        if url_key and url_key in manual_by_url:
+            manual = manual_by_url[url_key]
+            manual_key = ("url", url_key)
 
         # Legacy channel-level results are safe only for a single-feed channel.
         elif feed_count == 1:
@@ -746,8 +822,9 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         })
 
     current_urls = {
-        (e.get("url") or "").strip()
-        for e in final_entries if e.get("url")
+        canonical_stream_url(str(e.get("url") or ""))
+        for e in final_entries
+        if e.get("url")
     }
     current_names = {
         canonical_audit_name(str(e.get("channel_name") or e.get("display_name") or ""))
@@ -758,11 +835,12 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
     for raw in audit_items:
         item = dict(raw)
         url = str(item.get("stream_url") or "").strip()
+        url_key = canonical_stream_url(url)
         tid = normalized_tvg_id(str(item.get("tvg_id") or ""))
         cname = canonical_audit_name(str(item.get("channel") or ""))
 
         if url:
-            manual_key = ("url", url)
+            manual_key = ("url", url_key)
         elif tid:
             manual_key = ("tvg", tid)
         else:
@@ -770,7 +848,8 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
 
         if manual_key in used_manual_keys:
             continue
-        if url and url in current_urls:
+
+        if url_key and url_key in current_urls:
             continue
         if not url and cname in current_names:
             # A legacy channel-level row has already been represented by Feed 1.
@@ -838,16 +917,21 @@ def select_playlist_candidates(
         url = str(row.get("stream_url") or "").strip()
         if not url:
             continue
-        if url in audit_by_url:
+
+        url_key = canonical_stream_url(url)
+
+        if url_key in audit_by_url:
             raise RuntimeError(f"Duplicate prepared audit URL: {url}")
-        audit_by_url[url] = row
+
+        audit_by_url[url_key] = row
 
     candidate_entries: list[dict] = []
     excluded_rows: list[dict] = []
 
     for source_order, entry in enumerate(final_entries):
         url = str(entry.get("url") or "").strip()
-        audit = audit_by_url.get(url)
+        url_key = canonical_stream_url(url)
+        audit = audit_by_url.get(url_key)
         decision = audit.get("decision", "Needs review") if audit else "Needs review"
         exclude = bool(audit.get("exclude_from_playlist")) if audit else False
 
@@ -1509,6 +1593,7 @@ def main() -> None:
             if not url:
                 continue
 
+            url_key = canonical_stream_url(url)
             key = channel_key(entry)
             clean_name = strip_display_annotations(entry.get("display_name", ""))
             entry["channel_key"] = key
@@ -1520,9 +1605,10 @@ def main() -> None:
             ).upper()
             entry["source_flags"] = extract_source_flags(entry.get("display_name", ""))
 
-            if url in seen_urls:
+            if url_key in seen_urls:
                 duplicate_urls += 1
-                first = seen_urls[url]
+                first = seen_urls[url_key]
+
                 duplicate_rows.append({
                     "channel_name": clean_name,
                     "tvg_id": entry.get("tvg_id", ""),
@@ -1547,7 +1633,7 @@ def main() -> None:
 
             entry["classification"] = classification
             final_entries.append(entry)
-            seen_urls[url] = entry
+            seen_urls[url_key] = entry
             kept += 1
 
         source_stats.append({
