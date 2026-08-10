@@ -126,6 +126,7 @@
     },
     {
       "channel": "City TV",
+	  "stream_url": "https://citytv.hu/playlist.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -216,6 +217,7 @@
     },
     {
       "channel": "Euronews Hungarian",
+	  "stream_url": "https://cdn-euronews.akamaized.net/live/eds/euronews-hu/25075/index.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -1496,6 +1498,7 @@
     },
     {
       "channel": "Ózdi Városi TV",
+	  "stream_url": "http://stream.nmih.hu:7980/live.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
