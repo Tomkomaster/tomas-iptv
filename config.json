@@ -1,5 +1,6 @@
 {
-  "site_title": "Tomas IPTV — Hungary",
+  "site_title": "Tomas IPTV",
+
   "default_language_code": "HU",
 
   "country_names": {
@@ -9,18 +10,10 @@
   },
 
   "output": "public/tv.m3u",
-  
-  "epg": {
-    "enabled": true,
-    "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
-    "sites": [
-      "musor.tv"
-    ],
-    "max_connections": 3
-  },
-  
   "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
+
   "audit_path": "audit.json",
+
   "sources": [
     {
       "name": "IPTV-org Hungary",
@@ -33,14 +26,34 @@
       "kind": "alternatives",
       "language_code": "HU",
       "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hu.m3u"
+    },
+
+    {
+      "name": "IPTV-org Slovakia",
+      "kind": "base",
+      "language_code": "SK",
+      "url": "https://iptv-org.github.io/iptv/countries/sk.m3u"
+    },
+    {
+      "name": "IPTV-org Slovakia raw alternatives",
+      "kind": "alternatives",
+      "language_code": "SK",
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sk.m3u"
     }
   ],
+
   "extras": [
     {
       "name": "Our Hungarian test/verified extras",
       "kind": "extras",
       "language_code": "HU",
       "path": "extras/hu.m3u"
+    },
+    {
+      "name": "Our Slovak test/verified extras",
+      "kind": "extras",
+      "language_code": "SK",
+      "path": "extras/sk.m3u"
     }
   ]
 }
