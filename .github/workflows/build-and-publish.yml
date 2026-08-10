@@ -37,7 +37,7 @@ jobs:
 
       - name: Run tests
         run: python3 -m unittest discover -s tests -v
-		
+
       - name: Build IPTV playlist
         run: python3 build.py
 
