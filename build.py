@@ -326,7 +326,16 @@ def normalize_test_status(value: str) -> str:
 
     return "needs_review"
 
+def is_tested_status(value: str) -> bool:
+    """
+    Return True when a device has an actual recorded test result.
 
+    Any normalized status except 'not_tested' means the stream was tested,
+    even if playback failed, kept loading, had a warning, used the wrong
+    language, or still needs review.
+    """
+    return normalize_test_status(value) != "not_tested"
+	
 def calculate_audit_decision(item: dict) -> tuple[str, str]:
     """
     Playback/device status for our playlist, not a legal certification.
@@ -654,10 +663,16 @@ def make_dashboard(
     audit_current = [e for e in audit_rows if e["in_playlist"]]
     audit_both_tested = sum(
         1 for e in audit_current
-        if e["vlc"] != "not_tested" and e["samsung"] != "not_tested"
+        if is_tested_status(e["vlc"]) and is_tested_status(e["samsung"])
     )
-    audit_vlc_pending = sum(1 for e in audit_current if e["vlc"] == "not_tested")
-    audit_samsung_pending = sum(1 for e in audit_current if e["samsung"] == "not_tested")
+    audit_vlc_pending = sum(
+        1 for e in audit_current
+        if not is_tested_status(e["vlc"])
+    )
+    audit_samsung_pending = sum(
+        1 for e in audit_current
+        if not is_tested_status(e["samsung"])
+    )
 
     def esc(v) -> str:
         return html.escape(str(v or ""))
