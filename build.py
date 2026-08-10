@@ -1609,8 +1609,8 @@ def main() -> None:
                 "tested_on_both": sum(
                     1 for e in audit_rows
                     if e["in_playlist"]
-                    and e["vlc"] in {"works", "fails"}
-                    and e["samsung"] in {"works", "fails"}
+                    and is_tested_status(e["vlc"])
+                    and is_tested_status(e["samsung"])
                 ),
                 "verified": sum(1 for e in audit_rows if e["decision"] == "Verified"),
                 "tv_verified": sum(1 for e in audit_rows if e["decision"] == "TV verified"),
