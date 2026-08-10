@@ -9,6 +9,16 @@
   },
 
   "output": "public/tv.m3u",
+  
+  "epg": {
+    "enabled": true,
+    "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
+    "sites": [
+      "musor.tv"
+    ],
+    "max_connections": 3
+  },
+  
   "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
   "audit_path": "audit.json",
   "sources": [
