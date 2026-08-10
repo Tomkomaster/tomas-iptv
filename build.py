@@ -56,8 +56,8 @@ def download_m3u(url: str) -> str:
 
 def read_local(path: str) -> str:
     p = ROOT / path
-    if not p.exists():
-        return "#EXTM3U\n"
+    if not p.is_file():
+        raise RuntimeError(f"Required local source {path} not found")
     return p.read_text(encoding="utf-8-sig")
 
 
