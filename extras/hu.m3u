@@ -13,3 +13,25 @@ http://212.92.13.108:8080/live/livestream1.m3u8
 # Classics TV — manually verified on VLC + Samsung
 #EXTINF:-1 tvg-name="Classics TV",Classics TV
 http://s01.diazol.hu:9150/live.m3u8
+
+# ============================================================
+# V16 TARGETED REPLACEMENT CANDIDATES
+# Distinct URLs from feeds already proven unusable.
+# ============================================================
+
+# Hegyvidék TV — new broadcaster-domain HLS
+#EXTINF:-1 tvg-id="HegyvidekTV.hu@SD" tvg-name="Hegyvidek TV",Hegyvidek TV broadcaster-domain HLS candidate
+https://tv.hegyvidek.hu/hvtv/hvstream.m3u8
+
+# M4 Sport — Connectmedia CDN candidate
+#EXTINF:-1 tvg-id="M4Sport.hu@SD" tvg-name="M4 Sport",M4 Sport Connectmedia candidate
+https://c401-node62-cdn.connectmedia.hu/110110/5dd8dc6d853c9b7f94db85646ed44326/641177e3/index.m3u8
+
+# VTV Füzesabony — alternate current HLS
+#EXTINF:-1 tvg-id="VTVFuzesabony.hu@SD" tvg-name="VTV Füzesabony",VTV Füzesabony UnrealHosting candidate
+https://stream.unrealhosting.hu:443/hls/ftv/live.m3u8
+
+# Lóverseny közvetítés — alternate HTTPS HLS
+#EXTINF:-1 tvg-id="Loversenykozvetites.hu@SD" tvg-name="Lóverseny közvetítés",Lóverseny LexaNetwork candidate
+https://cloudfront41.lexanetwork.com:1344/xrelay/loverseny2.sdp/playlist.m3u8
+
