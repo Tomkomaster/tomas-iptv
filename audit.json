@@ -1539,8 +1539,8 @@
     {
       "channel": "Sopron TV",
       "discovery": "Official SopronMédia live service + third-party live monitor",
-      "stream_url": "",
-      "protocol": "",
+      "stream_url": "https://redirect.onlinestream.live/sopronmedia.m3u8",
+      "protocol": "HLS",
       "language": "Hungarian",
       "provenance": "Official Sopron TV live service exists; stable direct external-player URL still unresolved",
       "vlc": "not_tested",
