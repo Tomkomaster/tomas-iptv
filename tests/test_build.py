@@ -513,6 +513,7 @@ class AuditTests(unittest.TestCase):
             final_entries=entries,
             unique_channels=[],
             source_stats=[],
+            language_stats=[],
             duplicate_rows=[],
             changes={},
             audit_rows=rows,
