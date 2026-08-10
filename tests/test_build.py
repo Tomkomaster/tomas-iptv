@@ -36,6 +36,72 @@ def make_entry(
 
 
 class AuditTests(unittest.TestCase):
+    def test_canonical_stream_url_normalizes_safe_equivalents(self):
+        self.assertEqual(
+            build.canonical_stream_url(
+                "HTTPS://CITYTV.HU:443/playlist.m3u8#player"
+            ),
+            "https://citytv.hu/playlist.m3u8",
+        )
+
+        self.assertEqual(
+            build.canonical_stream_url(
+                "http://EXAMPLE.TEST:80"
+            ),
+            "http://example.test/",
+        )
+
+        self.assertEqual(
+            build.canonical_stream_url(
+                "https://EXAMPLE.TEST:8443/live.m3u8?Token=AbC#player"
+            ),
+            "https://example.test:8443/live.m3u8?Token=AbC",
+        )
+
+    def test_canonical_stream_url_preserves_query_difference(self):
+        first = build.canonical_stream_url(
+            "https://example.test/live.m3u8?token=AAA"
+        )
+        second = build.canonical_stream_url(
+            "https://example.test/live.m3u8?token=BBB"
+        )
+
+        self.assertNotEqual(first, second)
+
+    def test_canonical_equivalent_audit_url_matches_stream(self):
+        stream_url = "https://citytv.hu/playlist.m3u8"
+        audit_url = "HTTPS://CITYTV.HU:443/playlist.m3u8#player"
+
+        entries = [
+            make_entry(
+                stream_url,
+                name="City TV",
+                tvg_id="CityTV.hu",
+            )
+        ]
+
+        audit = [{
+            "channel": "City TV",
+            "tvg_id": "CityTV.hu",
+            "stream_url": audit_url,
+            "vlc": "works",
+            "samsung": "works",
+            "decision": "auto",
+        }]
+
+        build.validate_audit_items(audit, entries)
+
+        rows = build.prepare_audit_rows(audit, entries)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["decision"], "Verified")
+
+        selected, _ = build.select_playlist_candidates(entries, rows)
+
+        self.assertEqual(len(selected), 1)
+
+        # The real playlist URL remains untouched.
+        self.assertEqual(selected[0]["url"], stream_url)
+		
     def test_tvg_sd_hd_variants_collapse(self):
         sd = make_entry("https://example.test/sd.m3u8", tvg_id="DemoTV.hu@SD")
         hd = make_entry("https://example.test/hd.m3u8", tvg_id="DemoTV.hu@HD")
@@ -299,6 +365,21 @@ class AuditTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "duplicate stream_url"):
             build.validate_audit_items(audit, [])
 
+    def test_validator_rejects_canonical_duplicate_stream_url(self):
+        audit = [
+            {
+                "channel": "City TV",
+                "stream_url": "https://citytv.hu/playlist.m3u8",
+            },
+            {
+                "channel": "City TV duplicate",
+                "stream_url": "HTTPS://CITYTV.HU:443/playlist.m3u8#player",
+            },
+        ]
+
+        with self.assertRaisesRegex(RuntimeError, "duplicate stream_url"):
+            build.validate_audit_items(audit, [])
+			
     def test_validator_rejects_duplicate_legacy_key(self):
         audit = [
             {"channel": "Demo TV", "vlc": "works"},
@@ -360,6 +441,84 @@ class AuditTests(unittest.TestCase):
             self.assertEqual(len(duplicates), 1)
             self.assertEqual(duplicates[0]["stream_url"], url)
 
+    def test_city_tv_default_https_port_is_deduplicated(self):
+        base_url = "https://citytv.hu/playlist.m3u8"
+        duplicate_url = "https://citytv.hu:443/playlist.m3u8"
 
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            (root / "audit.json").write_text(
+                '{"channels": []}\n',
+                encoding="utf-8",
+            )
+
+            (root / "one.m3u").write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 tvg-id="CityTV.hu",City TV\n'
+                f'{base_url}\n',
+                encoding="utf-8",
+            )
+
+            (root / "two.m3u").write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 tvg-id="CityTV.hu",City TV duplicate\n'
+                f'{duplicate_url}\n',
+                encoding="utf-8",
+            )
+
+            (root / "config.json").write_text(
+                json.dumps({
+                    "site_title": "Test",
+                    "default_language_code": "HU",
+                    "output": "public/tv.m3u",
+                    "audit_path": "audit.json",
+                    "sources": [
+                        {
+                            "name": "IPTV-org Hungary",
+                            "path": "one.m3u",
+                        },
+                        {
+                            "name": "City TV extra",
+                            "path": "two.m3u",
+                        },
+                    ],
+                    "extras": [],
+                }),
+                encoding="utf-8",
+            )
+
+            old_root = build.ROOT
+
+            try:
+                build.ROOT = root
+                build.main()
+            finally:
+                build.ROOT = old_root
+
+            playlist = (
+                root / "public" / "tv.m3u"
+            ).read_text(encoding="utf-8")
+
+            # The first/original source URL is preserved.
+            self.assertEqual(playlist.count(base_url), 1)
+
+            # The canonically equivalent :443 version is not published.
+            self.assertNotIn(duplicate_url, playlist)
+
+            with (
+                root / "public" / "duplicates.csv"
+            ).open(
+                encoding="utf-8-sig",
+                newline="",
+            ) as f:
+                duplicates = list(csv.DictReader(f))
+
+            self.assertEqual(len(duplicates), 1)
+            self.assertEqual(
+                duplicates[0]["stream_url"],
+                duplicate_url,
+            )
+			
 if __name__ == "__main__":
     unittest.main()
