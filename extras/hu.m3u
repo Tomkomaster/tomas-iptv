@@ -417,3 +417,38 @@ https://cam.idokep.hu:443/live/hight/index.m3u8
 # Szentes Buszpályaudvar — native H.264 HLS
 #EXTINF:-1 tvg-name="Szentes Buszpályaudvar Időkép Webcam",Szentes - Buszpályaudvar [Időkép Webcam] (2560x1440)
 https://cam.idokep.hu:443/live/dedezso/index.m3u8
+
+# DragonHall+ TV — Hungarian web television / anime-oriented channel; direct native HLS
+#EXTINF:-1 tvg-name="DragonHall+ TV",DragonHall+ TV [Web TV] (720x404)
+https://tv.dragonhall.hu:443/live/dragonhall.m3u8
+
+# Máriapócs Kegyhely — Hungarian religious live stream
+#EXTINF:-1 tvg-name="Máriapócs Kegyhely",Máriapócs Kegyhely [Religious] [YouTube HLS] (720p)
+https://ythls.onrender.com/video/j1Gda_XdZZI.m3u8
+
+# Hupikék Törpikék • Magyar — Hungarian kids live web stream
+#EXTINF:-1 tvg-name="Hupikék Törpikék Magyar",Hupikék Törpikék • Magyar [Kids / Web TV] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/hVcNAwiqlFA.m3u8
+
+# Mancs Őrjárat — Hungarian kids live web stream
+#EXTINF:-1 tvg-name="Mancs Őrjárat HU",Mancs Őrjárat [Kids / Web TV] [YouTube HLS]
+https://ythls.onrender.com/video/koEyTdUOuAc.m3u8
+
+# Ripost Online — current news/political web-TV candidate.
+# The source has previously relayed HírTV content, so verify actual identity/content during testing.
+#EXTINF:-1 tvg-name="Ripost Online",Ripost Online [News / Web TV] [Identity check] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/nZVzxM-u30k.m3u8
+
+# Televízia Nové Zámky — active bilingual Slovak/Hungarian local TV.
+# Feed 1: currently catalogued as a working public HLS endpoint.
+#EXTINF:-1 tvg-name="Televízia Nové Zámky",Televízia Nové Zámky [SK/HU]
+http://s1.media-planet.sk/live/novezamky/playlist.m3u8
+
+# Televízia Nové Zámky — older public alternate retained for VLC/Samsung comparison.
+#EXTINF:-1 tvg-name="Televízia Nové Zámky",Televízia Nové Zámky [SK/HU] [Legacy alternate]
+http://s1.media-planet.sk:80/live/novezamky/BratuMarian.m3u8
+
+# Classics TV — newer HTTPS endpoint candidate.
+# Keep the previously verified HTTP feed as well until both are compared on Samsung/VLC.
+#EXTINF:-1 tvg-name="Classics TV",Classics TV [HTTPS alternate] (360p)
+https://s01.diazol.hu:9152/live.m3u8
