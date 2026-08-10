@@ -448,3 +448,29 @@ http://s1.media-planet.sk:80/live/novezamky/BratuMarian.m3u8
 # Keep the previously verified HTTP feed as well until both are compared on Samsung/VLC.
 #EXTINF:-1 tvg-name="Classics TV",Classics TV [HTTPS alternate] (360p)
 https://s01.diazol.hu:9152/live.m3u8
+
+# Sopron TV — official SopronMédia YouTube channel.
+# Channel-based HLS resolver: only works while the YouTube channel has an active live stream.
+#EXTINF:-1 tvg-name="Sopron TV",Sopron TV [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UC8DdO7VhSroToL8BMGI9uyQ.m3u8
+
+# Újbuda TV — official Újbuda Televízió YouTube channel.
+# Channel-based HLS resolver: only works while the YouTube channel has an active live stream.
+#EXTINF:-1 tvg-name="Újbuda TV",Újbuda TV [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UCAyt_SMtWG8_u6JLbIPf8Yg.m3u8
+
+# Veszprém TV — official Veszprém Televízió YouTube channel.
+# Channel-based HLS resolver: only works while the YouTube channel has an active live stream.
+#EXTINF:-1 tvg-name="Veszprém TV",Veszprém TV [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UCpSM-EJekfzVqnmBKWiWlGA.m3u8
+
+# Pécs TV — PécsTV YouTube channel.
+# Channel-based HLS resolver: only works while the YouTube channel has an active live stream.
+#EXTINF:-1 tvg-name="Pécs TV",Pécs TV [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UCfXaXk8PylCl7qMRwB-LLqA.m3u8
+
+# M4 Sport — official M4 Sport YouTube channel.
+# IMPORTANT: this resolves an active YouTube live broadcast/event.
+# It is NOT guaranteed to be the 24/7 linear M4 Sport television feed.
+#EXTINF:-1 tvg-id="M4Sport.hu@SD" tvg-name="M4 Sport",M4 Sport [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UC3PLCyEg6eElkWF-aLDL5Rw.m3u8
