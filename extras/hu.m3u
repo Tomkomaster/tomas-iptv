@@ -109,7 +109,7 @@ https://stream.streaming4u.hu/PlayMusicTVDemo/playlist.m3u8
 #EXTINF:-1 tvg-name="Play Music TV",Play Music TV
 https://stream.streaming4u.hu/PlayMusicTVDemo/index.m3u8
 
-# Disco TV — direct EuroCable HLS; standard HLS
+# Disco TV — direct EuroCable standard HLS; Samsung/VLC test candidate
 #EXTINF:-1 tvg-name="Disco TV",Disco TV
 https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8
 
@@ -121,7 +121,7 @@ https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8
 #EXTINF:-1 tvg-name="Disco TV",Disco TV
 https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.fmp4.m3u8
 
-# Bunyó TV — standard HLS; VLC verified
+# Bunyó TV — standard HLS; manually verified on VLC, Samsung test pending
 #EXTINF:-1 tvg-name="Bunyó TV",Bunyó TV
 https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8
 
@@ -461,8 +461,8 @@ http://s1.media-planet.sk:80/live/novezamky/BratuMarian.m3u8
 #EXTINF:-1 tvg-name="Classics TV",Classics TV [HTTPS alternate] (360p)
 https://s01.diazol.hu:9152/live.m3u8
 
-# Sopron TV — direct HLS endpoint
-# Replaces the current ythls-v2 entry.
+# Sopron TV — active local television; current OnlineStream direct HLS redirect
+# Replaces the previous ythls-v2 entry.
 #EXTINF:-1 tvg-name="Sopron TV",Sopron TV (720p) [TEST]
 https://redirect.onlinestream.live/sopronmedia.m3u8
 
@@ -486,10 +486,6 @@ https://ythls-v2.onrender.com/channel/UCfXaXk8PylCl7qMRwB-LLqA.m3u8
 # It is NOT guaranteed to be the 24/7 linear M4 Sport television feed.
 #EXTINF:-1 tvg-id="M4Sport.hu@SD" tvg-name="M4 Sport",M4 Sport [TEST] [Official YouTube Live]
 https://ythls-v2.onrender.com/channel/UC3PLCyEg6eElkWF-aLDL5Rw.m3u8
-
-# Sopron TV — active local television; current OnlineStream HLS redirect
-#EXTINF:-1 tvg-name="Sopron TV",Sopron TV [TEST] (720p)
-https://redirect.onlinestream.live/sopronmedia.m3u8
 
 # Lengyeltóti Városi TV — current YouTube live exposed by OnlineStream
 # WARNING: YouTube live video ID may rotate
@@ -539,25 +535,9 @@ https://ythls-v2.onrender.com/channel/UC_cU0MmP2TbIbNUwEmO7VaA.m3u8
 #EXTINF:-1 tvg-name="Gyula Televízió",Gyula Televízió [TEST] [Official YouTube]
 https://ythls-v2.onrender.com/channel/UCvUmjmd689vg_wxLFweyWhA.m3u8
 
-# Club Dance Online TV — native direct HLS, no YouTube resolver
+# Club Dance Online TV — Hungarian 24/7 dance music television; native direct HLS, no YouTube resolver
 #EXTINF:-1 tvg-name="Club Dance Online TV",Club Dance Online TV (1080p) [TEST]
 https://stream.clubdance.online:10022/hls/stream.m3u8
-
-# Bunyó TV — direct EuroCable HLS; manually verified on VLC, Samsung test pending
-#EXTINF:-1 tvg-name="Bunyó TV",Bunyó TV
-https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8
-
-# Club Dance Online TV — Hungarian 24/7 dance music television; direct HLS test candidate
-#EXTINF:-1 tvg-name="Club Dance Online TV",Club Dance Online TV (1080p)
-https://stream.clubdance.online:10022/hls/stream.m3u8
-
-# Disco TV — direct EuroCable HLS; Samsung/VLC test candidate
-#EXTINF:-1 tvg-name="Disco TV",Disco TV
-https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8
-
-# Play Music TV — direct Streaming4U HLS; Samsung/VLC test candidate
-#EXTINF:-1 tvg-name="Play Music TV",Play Music TV
-https://stream.streaming4u.hu/PlayMusicTVDemo/index.m3u8
 
 # BUDA TV (Hegyvidék TV) — direct EuroCable HLS; current 720p feed
 #EXTINF:-1 tvg-name="BUDA TV",BUDA TV (720p)
@@ -575,6 +555,3 @@ https://ythls-v2.onrender.com/channel/UCX0hAeM0-IZE4O3Hk_U95cA.m3u8
 #EXTINF:-1 tvg-name="Williams TV",Williams TV [ALT]
 https://wtv.medialivecdn.hu:443/williams/9cc445f3fe303261970006b8e5b4949f.sdp/playlist.m3u8
 
-#EXTM3U x-tvg-url=""
-#EXTINF:-1 tvg-id="" group-title="" tvg-logo="https://static.vecteezy.com/system/resources/previews/008/687/836/non_2x/moose-deer-logo-free-vector.jpg", Rádió 1 Live TV TEST
-https://api.m3use.projectmoose.xyz/m3u/Tomkomaster/Tomas IPTV YouTube Test/6a7a1179bfb8d8325f6685ef.m3u8?uid=Tomkomaster&pkey=bszKnTF9
