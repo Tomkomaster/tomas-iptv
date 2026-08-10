@@ -37,6 +37,112 @@ def make_entry(
 
 
 class AuditTests(unittest.TestCase):
+    def test_country_name_for_language(self):
+        cfg = {
+            "country_names": {
+                "HU": "Hungary",
+                "SK": "Slovakia",
+                "CZ": "Czechia",
+            }
+        }
+
+        self.assertEqual(
+            build.country_name_for_language(
+                cfg,
+                "HU",
+            ),
+            "Hungary",
+        )
+
+        self.assertEqual(
+            build.country_name_for_language(
+                cfg,
+                "SK",
+            ),
+            "Slovakia",
+        )
+
+        self.assertEqual(
+            build.country_name_for_language(
+                cfg,
+                "CZ",
+            ),
+            "Czechia",
+        )
+		
+    def test_content_group_preserves_source_category(self):
+        self.assertEqual(
+            build.normalize_content_group(
+                "Music",
+                country_name="Hungary",
+                language_code="HU",
+            ),
+            "Music",
+        )
+
+        self.assertEqual(
+            build.normalize_content_group(
+                "Sports",
+                country_name="Hungary",
+                language_code="HU",
+            ),
+            "Sports",
+        )
+
+        self.assertEqual(
+            build.normalize_content_group(
+                "Culture;General",
+                country_name="Hungary",
+                language_code="HU",
+            ),
+            "Culture;General",
+        )
+		
+    def test_content_group_undefined_becomes_general(self):
+        for value in (
+            "",
+            "Undefined",
+            "Unknown",
+            "Uncategorized",
+        ):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    build.normalize_content_group(
+                        value,
+                        country_name="Hungary",
+                        language_code="HU",
+                    ),
+                    "General",
+                )
+				
+    def test_old_status_group_becomes_general(self):
+        for value in (
+            "HU | Verified",
+            "HU | TV verified",
+            "HU | PC only",
+            "HU | Needs review",
+            "HU | Rejected",
+        ):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    build.normalize_content_group(
+                        value,
+                        country_name="Hungary",
+                        language_code="HU",
+                    ),
+                    "General",
+                )
+
+    def test_new_country_group_is_idempotent(self):
+        self.assertEqual(
+            build.normalize_content_group(
+                "Hungary | News",
+                country_name="Hungary",
+                language_code="HU",
+            ),
+            "News",
+        )
+		
     def test_canonical_stream_url_normalizes_safe_equivalents(self):
         self.assertEqual(
             build.canonical_stream_url(
@@ -932,6 +1038,211 @@ class AuditTests(unittest.TestCase):
             self.assertEqual(len(duplicates), 1)
             self.assertEqual(duplicates[0]["stream_url"], url)
 
+    def test_build_preserves_category_in_final_group_title(self):
+        url = "https://example.test/news.m3u8"
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            (
+                root / "audit.json"
+            ).write_text(
+                '{"channels": []}\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "source.m3u"
+            ).write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 '
+                'tvg-id="DemoNews.hu@SD" '
+                'tvg-name="Demo News" '
+                'group-title="News",'
+                'Demo News\n'
+                f'{url}\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "config.json"
+            ).write_text(
+                json.dumps({
+                    "site_title": "Test",
+                    "default_language_code": "HU",
+
+                    "country_names": {
+                        "HU": "Hungary",
+                        "SK": "Slovakia",
+                        "CZ": "Czechia",
+                    },
+
+                    "output": "public/tv.m3u",
+                    "audit_path": "audit.json",
+
+                    "sources": [
+                        {
+                            "name": "Hungary",
+                            "kind": "base",
+                            "language_code": "HU",
+                            "path": "source.m3u",
+                        }
+                    ],
+
+                    "extras": [],
+                }),
+                encoding="utf-8",
+            )
+
+            old_root = build.ROOT
+
+            try:
+                build.ROOT = root
+                build.main()
+            finally:
+                build.ROOT = old_root
+
+            playlist = (
+                root
+                / "public"
+                / "tv.m3u"
+            ).read_text(
+                encoding="utf-8"
+            )
+
+            self.assertIn(
+                'group-title="Hungary | News"',
+                playlist,
+            )
+
+            self.assertNotIn(
+                'group-title="HU | Needs review"',
+                playlist,
+            )
+
+            # Verification status remains available in the channel name.
+            self.assertIn(
+                "[HU ?] Demo News",
+                playlist,
+            )
+
+            with (
+                root
+                / "public"
+                / "channels.csv"
+            ).open(
+                encoding="utf-8-sig",
+                newline="",
+            ) as f:
+                rows = list(
+                    csv.DictReader(f)
+                )
+
+            self.assertEqual(
+                len(rows),
+                1,
+            )
+
+            row = rows[0]
+
+            self.assertEqual(
+                row["country_name"],
+                "Hungary",
+            )
+
+            self.assertEqual(
+                row["source_group_title"],
+                "News",
+            )
+
+            self.assertEqual(
+                row["content_group"],
+                "News",
+            )
+
+            self.assertEqual(
+                row["group_title"],
+                "Hungary | News",
+            )
+
+            self.assertEqual(
+                row["test_status"],
+                "Needs review",
+            )
+
+    def test_build_uses_general_when_group_is_missing(self):
+        url = "https://example.test/general.m3u8"
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            (
+                root / "audit.json"
+            ).write_text(
+                '{"channels": []}\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "source.m3u"
+            ).write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 '
+                'tvg-id="DemoTV.hu@SD",'
+                'Demo TV\n'
+                f'{url}\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "config.json"
+            ).write_text(
+                json.dumps({
+                    "site_title": "Test",
+                    "default_language_code": "HU",
+
+                    "country_names": {
+                        "HU": "Hungary",
+                    },
+
+                    "output": "public/tv.m3u",
+                    "audit_path": "audit.json",
+
+                    "sources": [
+                        {
+                            "name": "Hungary",
+                            "kind": "base",
+                            "language_code": "HU",
+                            "path": "source.m3u",
+                        }
+                    ],
+
+                    "extras": [],
+                }),
+                encoding="utf-8",
+            )
+
+            old_root = build.ROOT
+
+            try:
+                build.ROOT = root
+                build.main()
+            finally:
+                build.ROOT = old_root
+
+            playlist = (
+                root
+                / "public"
+                / "tv.m3u"
+            ).read_text(
+                encoding="utf-8"
+            )
+
+            self.assertIn(
+                'group-title="Hungary | General"',
+                playlist,
+            )
+			
     def test_city_tv_default_https_port_is_deduplicated(self):
         base_url = "https://citytv.hu/playlist.m3u8"
         duplicate_url = "https://citytv.hu:443/playlist.m3u8"
