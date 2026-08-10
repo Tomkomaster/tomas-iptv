@@ -483,3 +483,46 @@ https://redirect.onlinestream.live/sopronmedia.m3u8
 # WARNING: YouTube live video ID may rotate
 #EXTINF:-1 tvg-name="Lengyeltóti Városi TV",Lengyeltóti Városi TV [YouTube HLS] [TEST]
 https://ythls.onrender.com/video/2IBRruRnTcg.m3u8
+
+# Ajka TV
+# Official Ajka Városi TV YouTube channel.
+# Frequent live broadcasts observed during 2026.
+#EXTINF:-1 tvg-name="Ajka TV",Ajka TV [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UCufNLOni_xbT2lFNo7fuY8Q.m3u8
+
+# Füred TV
+# Official local television of Balatonfüred.
+#EXTINF:-1 tvg-name="Füred TV",Füred TV [TEST] [Official YouTube]
+https://ythls-v2.onrender.com/channel/UC1V3CsdsELl3uZtqmNzMvnA.m3u8
+
+# Újpest TV
+# Official Újpest television YouTube channel.
+# Uses YouTube for live/event broadcasts.
+#EXTINF:-1 tvg-name="Újpest TV",Újpest TV [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UCfVihSHB50EU6PnTPn0jnyw.m3u8
+
+# Mosonmagyaróvári Városi TV
+# Official city television YouTube channel.
+#EXTINF:-1 tvg-name="Mosonmagyaróvári Városi TV",Mosonmagyaróvári Városi TV [TEST] [Official YouTube]
+https://ythls-v2.onrender.com/channel/UC3_3zyiwtCvKZRyE9AYBcCQ.m3u8
+
+# Kecel Városi TV / Kecel Média
+# Official Kecel Média channel.
+# Live broadcasts are used by the broadcaster.
+#EXTINF:-1 tvg-name="Kecel Városi TV",Kecel Városi TV [TEST] [Official YouTube Live]
+https://ythls-v2.onrender.com/channel/UCoG6SiElHU5ehNKwek9NQiQ.m3u8
+
+# Kalocsa TV
+# Official Kalocsa TV YouTube channel.
+#EXTINF:-1 tvg-name="Kalocsa TV",Kalocsa TV [TEST] [Official YouTube]
+https://ythls-v2.onrender.com/channel/UC_eYb7gwWSAZu1cDji_hiiw.m3u8
+
+# KolorTV Kazincbarcika
+# Official KolorTV / Kazincbarcika YouTube channel.
+#EXTINF:-1 tvg-name="KolorTV Kazincbarcika",KolorTV Kazincbarcika [TEST] [Official YouTube]
+https://ythls-v2.onrender.com/channel/UC_cU0MmP2TbIbNUwEmO7VaA.m3u8
+
+# Gyula Televízió
+# Official Gyula Televízió YouTube channel.
+#EXTINF:-1 tvg-name="Gyula Televízió",Gyula Televízió [TEST] [Official YouTube]
+https://ythls-v2.onrender.com/channel/UCvUmjmd689vg_wxLFweyWhA.m3u8
