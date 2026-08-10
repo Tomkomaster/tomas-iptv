@@ -486,16 +486,31 @@ def audit_status_is_recognized(value: str) -> bool:
     return token == "needs_review"
 
 
-def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> list[str]:
+def validate_audit_items(
+    audit_items: list[dict],
+    final_entries: list[dict],
+    strict: bool = False,
+) -> tuple[list[str], list[str]]:
     """
     Validate audit.json before it can affect playlist selection.
 
-    Returns non-fatal warnings. Raises one aggregated RuntimeError containing
-    every fatal audit problem found in the file.
+    Returns:
+      1. all non-fatal audit warnings
+      2. warnings specifically caused by ambiguous legacy channel-level audits
+
+    In normal mode, a legacy channel-level audit that now matches multiple
+    current feeds is treated as non-fatal. Its old result must not be applied
+    to any of those feeds.
+
+    In strict mode, the same ambiguity is a fatal validation error.
+
+    All genuinely malformed or contradictory audit data remains fatal in
+    both modes.
     """
     errors: list[str] = []
     warnings: list[str] = []
-
+    ambiguity_warnings: list[str] = []
+	
     allowed_decisions = {
         "auto",
         "verified",
@@ -635,11 +650,20 @@ def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> 
 
             if len(matching_urls) > 1:
                 candidates = ", ".join(sorted(matching_urls))
-                errors.append(
-                    f"{label}: channel-level audit is unsafe because this channel has "
-                    f"multiple current feeds. Add stream_url explicitly. "
+                message = (
+                    f"{label}: Legacy verification for "
+                    f"{channel or 'this channel'} became ambiguous after "
+                    f"{len(matching_urls)} feeds were discovered. "
+                    f"The saved channel-level result was not applied to any "
+                    f"current feed. Re-test individual streams. "
                     f"Candidate URLs: {candidates}"
                 )
+
+                if strict:
+                    errors.append(message)
+                else:
+                    warnings.append(message)
+                    ambiguity_warnings.append(message)
             elif len(matching_urls) == 1:
                 only_url = next(iter(matching_urls))
                 warnings.append(
@@ -651,7 +675,7 @@ def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> 
         details = "\n".join(f"  - {message}" for message in errors)
         raise RuntimeError(f"audit.json validation failed:\n{details}")
 
-    return warnings
+    return warnings, ambiguity_warnings
 	
 def audit_match_key(item: dict) -> tuple[str, str]:
     url = str(item.get("stream_url") or item.get("url") or "").strip()
@@ -670,12 +694,15 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
     """
     Create one audit row PER STREAM URL.
 
-    Important V8 behavior:
-    - If a channel has multiple stream URLs, each one gets Feed 1/2, Feed 2/2, etc.
+    Important behavior:
+    - If a channel has multiple stream URLs, each one gets Feed 1/2,
+      Feed 2/2, etc.
     - A saved audit result with an exact stream_url applies only to that stream.
-    - Older channel-level audit results (no stream_url) are allowed only when
-      the current channel has exactly one feed.
-    - Multi-feed channel-level audits are rejected by validate_audit_items().
+    - Older channel-level audit results without stream_url apply only when the
+      current channel has exactly one feed.
+    - If a legacy channel-level audit now matches multiple feeds, its saved
+      result is not applied to any current feed.
+    - Ambiguous legacy results are preserved as historical audit rows.
     """
     # Assign stable feed numbers in current source order.
     counts: dict[str, int] = {}
@@ -826,10 +853,38 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         for e in final_entries
         if e.get("url")
     }
-    current_names = {
-        canonical_audit_name(str(e.get("channel_name") or e.get("display_name") or ""))
-        for e in final_entries
-    }
+    current_by_tvg: dict[str, set[str]] = {}
+    current_by_name: dict[str, set[str]] = {}
+
+    for entry in final_entries:
+        current_url = str(entry.get("url") or "").strip()
+        if not current_url:
+            continue
+
+        current_tvg = normalized_tvg_id(
+            str(entry.get("tvg_id") or "")
+        )
+
+        if current_tvg:
+            current_by_tvg.setdefault(
+                current_tvg,
+                set(),
+            ).add(current_url)
+
+        for value in (
+            entry.get("channel_name"),
+            entry.get("display_name"),
+            entry.get("tvg_name"),
+        ):
+            current_name = canonical_audit_name(
+                str(value or "")
+            )
+
+            if current_name:
+                current_by_name.setdefault(
+                    current_name,
+                    set(),
+                ).add(current_url)
 
     # Keep manually tracked candidates/rejections that are not currently in tv.m3u.
     for raw in audit_items:
@@ -849,13 +904,54 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         if manual_key in used_manual_keys:
             continue
 
-        if url_key and url_key in current_urls:
-            continue
-        if not url and cname in current_names:
-            # A legacy channel-level row has already been represented by Feed 1.
+        if url and url in current_urls:
             continue
 
+        legacy_ambiguous = False
+        legacy_matching_urls: set[str] = set()
+
+        if not url:
+            if tid:
+                legacy_matching_urls = current_by_tvg.get(
+                    tid,
+                    set(),
+                )
+            elif cname:
+                legacy_matching_urls = current_by_name.get(
+                    cname,
+                    set(),
+                )
+
+            # With one current feed, the legacy audit was already safely
+            # attached to that stream above.
+            if len(legacy_matching_urls) == 1:
+                continue
+
+            # With multiple feeds, keep the old audit only as historical
+            # evidence. Never apply it to a current stream.
+            legacy_ambiguous = len(legacy_matching_urls) > 1
+
         decision, auto_reason = calculate_audit_decision(item)
+
+        history_notes = str(item.get("notes") or "").strip()
+
+        if legacy_ambiguous:
+            ambiguity_note = (
+                f"Historical channel-level audit only. "
+                f"{len(legacy_matching_urls)} current feeds now match this "
+                f"channel, so this saved result was not applied to any of "
+                f"them. Re-test the individual stream URLs."
+            )
+
+            history_notes = " — ".join(
+                part
+                for part in (
+                    history_notes,
+                    ambiguity_note,
+                )
+                if part
+            )
+			
         rows.append({
             "channel": str(item.get("channel") or "Unnamed channel").strip(),
             "tvg_id": str(item.get("tvg_id") or "").strip(),
@@ -873,13 +969,21 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "samsung_note": str(item.get("samsung_note") or "").strip(),
             "decision": decision,
             "reason": str(item.get("reason") or auto_reason or "").strip(),
-            "notes": str(item.get("notes") or "").strip(),
+            "notes": history_notes,
             "exclude_from_playlist": bool(item.get("exclude_from_playlist")),
             "tested_on": str(item.get("tested_on") or "").strip(),
             "in_playlist": False,
             "feed_index": 1,
-            "feed_count": 1,
-            "feed_label": "Candidate",
+            "feed_count": (
+                len(legacy_matching_urls)
+                if legacy_ambiguous
+                else 1
+            ),
+            "feed_label": (
+                "Legacy audit"
+                if legacy_ambiguous
+                else "Candidate"
+            ),
         })
 
     priority = {
@@ -1009,6 +1113,7 @@ def make_dashboard(
     duplicate_rows: list[dict],
     changes: dict,
     audit_rows: list[dict],
+    audit_ambiguity_warnings: list[str],
 ) -> str:
     title = str(cfg.get("site_title") or "Tomas IPTV")
     total_streams = len(final_entries)
@@ -1038,6 +1143,30 @@ def make_dashboard(
     def esc(v) -> str:
         return html.escape(str(v or ""))
 
+    audit_warning_html = ""
+
+    if audit_ambiguity_warnings:
+        warning_items = "".join(
+            f"<li>{esc(message)}</li>"
+            for message in audit_ambiguity_warnings
+        )
+
+        audit_warning_html = f"""
+        <div class="panel warning-panel">
+          <strong>
+            ⚠ Audit warnings ({len(audit_ambiguity_warnings)})
+          </strong>
+          <p>
+            One or more old channel-level verification results became
+            ambiguous because multiple current feeds now exist. The old
+            results were not applied to any current stream.
+          </p>
+          <ul>
+            {warning_items}
+          </ul>
+        </div>
+        """
+		
     source_options = "\n".join(
         f'<option value="{esc(s["name"])}">{esc(s["name"])}</option>'
         for s in source_stats
@@ -1239,6 +1368,19 @@ a {{ color: var(--accent); }}
   border-radius: 10px;
   padding: 16px;
 }}
+.warning-panel {{
+  border-color: var(--warn);
+  border-left: 5px solid var(--warn);
+  margin: 18px 0;
+}}
+
+.warning-panel strong {{
+  color: var(--warn);
+}}
+
+.warning-panel ul {{
+  margin-bottom: 0;
+}}
 .card .value {{ font-size: 1.8rem; font-weight: 750; }}
 .card .label {{ color: var(--muted); font-size: .92rem; }}
 .table-wrap {{
@@ -1334,6 +1476,8 @@ details ul {{ max-height: 260px; overflow: auto; }}
     <div class="card"><div class="value">{total_alternatives}</div><div class="label">Alternative streams kept</div></div>
     <div class="card"><div class="value">{total_duplicates}</div><div class="label">Duplicate URLs ignored</div></div>
   </div>
+
+  {audit_warning_html}
 
   <h2>Manual verification</h2>
   <p class="muted">
@@ -1541,7 +1685,7 @@ applyFilters();
 """
 
 
-def main() -> None:
+def main(strict: bool = False) -> None:
     cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
     audit_items = load_audit(cfg.get("audit_path", "audit.json"))
 
@@ -1648,9 +1792,17 @@ def main() -> None:
             "duplicate_urls_ignored": duplicate_urls,
         })
 
-    audit_warnings = validate_audit_items(audit_items, final_entries)
+    audit_warnings, audit_ambiguity_warnings = validate_audit_items(
+        audit_items,
+        final_entries,
+        strict=strict,
+    )
+
     for warning in audit_warnings:
-        print(f"WARNING: {warning}", file=sys.stderr)
+        print(
+            f"WARNING: {warning}",
+            file=sys.stderr,
+        )
 
     audit_rows = prepare_audit_rows(audit_items, final_entries)
     selected_candidates, excluded_rows = select_playlist_candidates(
@@ -1861,7 +2013,12 @@ def main() -> None:
         "sources": source_stats,
         "changes": changes,
         "audit": {
+            "warnings": audit_warnings,
+            "ambiguous_legacy_audits": audit_ambiguity_warnings,
             "summary": {
+                "ambiguous_legacy_audits": len(
+                    audit_ambiguity_warnings
+                ),
                 "current_playlist_rows": sum(1 for e in audit_rows if e["in_playlist"]),
                 "tested_on_both": sum(
                     1 for e in audit_rows
@@ -1895,6 +2052,7 @@ def main() -> None:
             duplicate_rows=duplicate_rows,
             changes=changes,
             audit_rows=audit_rows,
+            audit_ambiguity_warnings=audit_ambiguity_warnings,
         ),
         encoding="utf-8",
     )
@@ -1927,7 +2085,32 @@ def main() -> None:
 
 if __name__ == "__main__":
     try:
-        main()
+        args = sys.argv[1:]
+
+        unknown_args = [
+            arg
+            for arg in args
+            if arg != "--strict"
+        ]
+
+        if unknown_args:
+            raise RuntimeError(
+                "Unknown command-line option(s): "
+                + ", ".join(unknown_args)
+            )
+
+        strict = "--strict" in args
+
+        if strict:
+            print(
+                "Strict audit validation enabled."
+            )
+
+        main(strict=strict)
+
     except Exception as exc:
-        print(f"ERROR: {exc}", file=sys.stderr)
+        print(
+            f"ERROR: {exc}",
+            file=sys.stderr,
+        )
         sys.exit(1)
