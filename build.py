@@ -7,6 +7,7 @@ import json
 import re
 import sys
 import unicodedata
+from urllib.parse import urlparse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -393,7 +394,191 @@ def infer_protocol(url: str) -> str:
         return "HTTP"
     return ""
 
+def canonical_audit_name(value: str) -> str:
+    return normalize_text(strip_display_annotations(value or ""))
 
+
+def normalize_audit_decision_token(value: str) -> str:
+    token = (value or "auto").strip().casefold().replace("-", "_").replace(" ", "_")
+    return token or "auto"
+
+
+def audit_status_is_recognized(value: str) -> bool:
+    raw = (value or "").strip()
+    if not raw:
+        return True
+
+    token = raw.casefold().replace(" ", "_")
+    normalized = normalize_test_status(raw)
+
+    if normalized != "needs_review":
+        return True
+
+    return token == "needs_review"
+
+
+def validate_audit_items(audit_items: list[dict], final_entries: list[dict]) -> list[str]:
+    """
+    Validate audit.json before it can affect playlist selection.
+
+    Returns non-fatal warnings. Raises one aggregated RuntimeError containing
+    every fatal audit problem found in the file.
+    """
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    allowed_decisions = {
+        "auto",
+        "verified",
+        "tv_verified",
+        "pc_only",
+        "needs_review",
+        "rejected",
+    }
+
+    current_by_tvg: dict[str, set[str]] = {}
+    current_by_name: dict[str, set[str]] = {}
+
+    for entry in final_entries:
+        url = str(entry.get("url") or "").strip()
+        if not url:
+            continue
+
+        tid = normalized_tvg_id(str(entry.get("tvg_id") or ""))
+        if tid:
+            current_by_tvg.setdefault(tid, set()).add(url)
+
+        for value in (
+            entry.get("channel_name"),
+            entry.get("display_name"),
+            entry.get("tvg_name"),
+        ):
+            cname = canonical_audit_name(str(value or ""))
+            if cname:
+                current_by_name.setdefault(cname, set()).add(url)
+
+    seen_urls: dict[str, int] = {}
+    seen_legacy_keys: dict[tuple[str, str], int] = {}
+
+    for index, raw in enumerate(audit_items, start=1):
+        item = dict(raw)
+        channel = str(item.get("channel") or item.get("channel_name") or "").strip()
+        label = f"audit item #{index}"
+        if channel:
+            label += f" ({channel})"
+
+        if not channel:
+            errors.append(f"{label}: missing channel name.")
+
+        url = str(item.get("stream_url") or "").strip()
+
+        if url:
+            if any(ch.isspace() for ch in url):
+                errors.append(f"{label}: malformed stream_url contains whitespace: {url!r}.")
+            else:
+                parsed = urlparse(url)
+                if not parsed.scheme or not parsed.netloc:
+                    errors.append(f"{label}: malformed stream_url: {url!r}.")
+
+            if url in seen_urls:
+                first = seen_urls[url]
+                errors.append(
+                    f"{label}: duplicate stream_url {url!r}; "
+                    f"already used by audit item #{first}."
+                )
+            else:
+                seen_urls[url] = index
+
+        for field in ("vlc", "samsung"):
+            raw_status = str(item.get(field) or "")
+            if not audit_status_is_recognized(raw_status):
+                errors.append(
+                    f"{label}: invalid {field} status {raw_status!r}. "
+                    "Use a supported canonical status or recognized legacy value."
+                )
+
+        decision_token = normalize_audit_decision_token(str(item.get("decision") or "auto"))
+        if decision_token not in allowed_decisions:
+            errors.append(
+                f"{label}: invalid decision {item.get('decision')!r}. "
+                f"Allowed values: {', '.join(sorted(allowed_decisions))}."
+            )
+
+        exclude = bool(item.get("exclude_from_playlist"))
+        if exclude and decision_token in {"verified", "tv_verified", "pc_only"}:
+            errors.append(
+                f"{label}: exclude_from_playlist=true conflicts with "
+                f"decision {item.get('decision')!r}."
+            )
+
+        vlc = normalize_test_status(str(item.get("vlc") or ""))
+        samsung = normalize_test_status(str(item.get("samsung") or ""))
+
+        auto_item = dict(item)
+        auto_item["decision"] = "auto"
+        auto_item["exclude_from_playlist"] = False
+        automatic_decision, _ = calculate_audit_decision(auto_item)
+
+        if decision_token == "verified" and automatic_decision != "Verified":
+            errors.append(
+                f"{label}: decision Verified contradicts playback/language results "
+                f"(VLC={vlc}, Samsung={samsung}, auto={automatic_decision})."
+            )
+
+        if decision_token == "tv_verified" and samsung != "works":
+            errors.append(
+                f"{label}: decision TV verified requires Samsung=works; "
+                f"got {samsung}."
+            )
+
+        if decision_token == "pc_only" and automatic_decision != "PC only":
+            errors.append(
+                f"{label}: decision PC only contradicts playback results "
+                f"(VLC={vlc}, Samsung={samsung}, auto={automatic_decision})."
+            )
+
+        if not url:
+            tid = normalized_tvg_id(str(item.get("tvg_id") or ""))
+            cname = canonical_audit_name(channel)
+
+            if tid:
+                legacy_key = ("tvg", tid)
+                matching_urls = current_by_tvg.get(tid, set())
+            else:
+                legacy_key = ("name", cname)
+                matching_urls = current_by_name.get(cname, set())
+
+            if legacy_key[1]:
+                if legacy_key in seen_legacy_keys:
+                    first = seen_legacy_keys[legacy_key]
+                    errors.append(
+                        f"{label}: duplicate channel-level audit key "
+                        f"{legacy_key[0]}={legacy_key[1]!r}; "
+                        f"already used by audit item #{first}."
+                    )
+                else:
+                    seen_legacy_keys[legacy_key] = index
+
+            if len(matching_urls) > 1:
+                candidates = ", ".join(sorted(matching_urls))
+                errors.append(
+                    f"{label}: channel-level audit is unsafe because this channel has "
+                    f"multiple current feeds. Add stream_url explicitly. "
+                    f"Candidate URLs: {candidates}"
+                )
+            elif len(matching_urls) == 1:
+                only_url = next(iter(matching_urls))
+                warnings.append(
+                    f"{label}: legacy channel-level audit still matches one current "
+                    f"feed ({only_url}). Add stream_url when this row is next edited."
+                )
+
+    if errors:
+        details = "\n".join(f"  - {message}" for message in errors)
+        raise RuntimeError(f"audit.json validation failed:\n{details}")
+
+    return warnings
+	
 def audit_match_key(item: dict) -> tuple[str, str]:
     url = str(item.get("stream_url") or item.get("url") or "").strip()
     if url:
@@ -414,12 +599,10 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
     Important V8 behavior:
     - If a channel has multiple stream URLs, each one gets Feed 1/2, Feed 2/2, etc.
     - A saved audit result with an exact stream_url applies only to that stream.
-    - Older channel-level audit results (no stream_url) apply only to Feed 1.
-      Other feeds remain untested until they are tested separately.
+    - Older channel-level audit results (no stream_url) are allowed only when
+      the current channel has exactly one feed.
+    - Multi-feed channel-level audits are rejected by validate_audit_items().
     """
-    def canonical_name(value: str) -> str:
-        return normalize_text(strip_display_annotations(value or ""))
-
     # Assign stable feed numbers in current source order.
     counts: dict[str, int] = {}
     for entry in final_entries:
@@ -441,7 +624,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         item = dict(raw)
         url = str(item.get("stream_url") or "").strip()
         tvg_id = normalized_tvg_id(str(item.get("tvg_id") or ""))
-        name = canonical_name(str(item.get("channel") or ""))
+        name = canonical_audit_name(str(item.get("channel") or ""))
 
         if url:
             manual_by_url[url] = item
@@ -472,10 +655,10 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             manual = manual_by_url[url]
             manual_key = ("url", url)
 
-        # Legacy channel-level results only apply to Feed 1.
-        elif feed_index == 1:
+        # Legacy channel-level results are safe only for a single-feed channel.
+        elif feed_count == 1:
             tid = normalized_tvg_id(tvg_id)
-            cname = canonical_name(clean_name)
+            cname = canonical_audit_name(clean_name)
 
             if tid and tid in manual_by_tvg_id:
                 manual = manual_by_tvg_id[tid]
@@ -567,7 +750,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         for e in final_entries if e.get("url")
     }
     current_names = {
-        canonical_name(str(e.get("channel_name") or e.get("display_name") or ""))
+        canonical_audit_name(str(e.get("channel_name") or e.get("display_name") or ""))
         for e in final_entries
     }
 
@@ -576,7 +759,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         item = dict(raw)
         url = str(item.get("stream_url") or "").strip()
         tid = normalized_tvg_id(str(item.get("tvg_id") or ""))
-        cname = canonical_name(str(item.get("channel") or ""))
+        cname = canonical_audit_name(str(item.get("channel") or ""))
 
         if url:
             manual_key = ("url", url)
@@ -638,7 +821,101 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         ),
     )
 
+def select_playlist_candidates(
+    final_entries: list[dict],
+    audit_rows: list[dict],
+) -> tuple[list[dict], list[dict]]:
+    """
+    Select playlist feeds using exact stream URLs only.
 
+    prepare_audit_rows() may convert a safe single-feed legacy audit into a
+    URL-specific prepared row. Unmatched channel-level history is never used
+    here as a fallback.
+    """
+    audit_by_url: dict[str, dict] = {}
+
+    for row in audit_rows:
+        url = str(row.get("stream_url") or "").strip()
+        if not url:
+            continue
+        if url in audit_by_url:
+            raise RuntimeError(f"Duplicate prepared audit URL: {url}")
+        audit_by_url[url] = row
+
+    candidate_entries: list[dict] = []
+    excluded_rows: list[dict] = []
+
+    for source_order, entry in enumerate(final_entries):
+        url = str(entry.get("url") or "").strip()
+        audit = audit_by_url.get(url)
+        decision = audit.get("decision", "Needs review") if audit else "Needs review"
+        exclude = bool(audit.get("exclude_from_playlist")) if audit else False
+
+        if exclude or decision == "Rejected":
+            excluded_rows.append({
+                "channel_name": entry.get("channel_name", ""),
+                "tvg_id": entry.get("tvg_id", ""),
+                "source": entry.get("source", ""),
+                "stream_url": entry.get("url", ""),
+                "reason": (
+                    (audit or {}).get("reason")
+                    or (audit or {}).get("notes")
+                    or "Rejected by manual audit"
+                ),
+            })
+            continue
+
+        candidate = dict(entry)
+        candidate["_audit"] = audit or {}
+        candidate["_decision"] = decision
+        candidate["_source_order"] = source_order
+        candidate_entries.append(candidate)
+
+    candidate_groups: dict[str, list[dict]] = {}
+    for entry in candidate_entries:
+        candidate_groups.setdefault(entry["channel_key"], []).append(entry)
+
+    def verified_feed_rank(entry: dict) -> tuple:
+        audit = entry.get("_audit") or {}
+        vlc = normalize_test_status(str(audit.get("vlc") or ""))
+        samsung = normalize_test_status(str(audit.get("samsung") or ""))
+
+        vlc_rank = {
+            "works": 3,
+            "works_with_warning": 2,
+        }.get(vlc, 0)
+
+        samsung_rank = 1 if samsung == "works" else 0
+        source_rank = -int(entry.get("_source_order") or 0)
+        return (vlc_rank, samsung_rank, source_rank)
+
+    selected_candidates: list[dict] = []
+
+    for group in candidate_groups.values():
+        verified = [e for e in group if e.get("_decision") == "Verified"]
+
+        if verified:
+            winner = max(verified, key=verified_feed_rank)
+            selected_candidates.append(winner)
+
+            for entry in group:
+                if entry is winner:
+                    continue
+                excluded_rows.append({
+                    "channel_name": entry.get("channel_name", ""),
+                    "tvg_id": entry.get("tvg_id", ""),
+                    "source": entry.get("source", ""),
+                    "stream_url": entry.get("url", ""),
+                    "reason": (
+                        "Suppressed because another feed for this channel is "
+                        "already Verified on both VLC and Samsung."
+                    ),
+                })
+        else:
+            selected_candidates.extend(group)
+
+    return selected_candidates, excluded_rows
+	
 def make_dashboard(
     cfg: dict,
     generated: str,
@@ -1285,121 +1562,15 @@ def main() -> None:
             "duplicate_urls_ignored": duplicate_urls,
         })
 
+    audit_warnings = validate_audit_items(audit_items, final_entries)
+    for warning in audit_warnings:
+        print(f"WARNING: {warning}", file=sys.stderr)
+
     audit_rows = prepare_audit_rows(audit_items, final_entries)
-
-    audit_by_url = {
-        row["stream_url"]: row
-        for row in audit_rows
-        if row.get("stream_url")
-    }
-
-    # Legacy fallbacks are intentionally limited to old audit rows that do not
-    # identify a specific stream URL. A per-URL result must never "bleed" into
-    # another feed of the same channel.
-    audit_by_tvg = {
-        normalized_tvg_id(row.get("tvg_id", "")): row
-        for row in audit_rows
-        if not row.get("stream_url")
-        and normalized_tvg_id(row.get("tvg_id", ""))
-    }
-    audit_by_name = {
-        normalize_text(row.get("channel", "")): row
-        for row in audit_rows
-        if not row.get("stream_url")
-        and row.get("channel")
-    }
-
-    def audit_for_entry(entry: dict) -> dict | None:
-        url = str(entry.get("url") or "").strip()
-        if url and url in audit_by_url:
-            return audit_by_url[url]
-
-        tid = normalized_tvg_id(str(entry.get("tvg_id") or ""))
-        if tid and tid in audit_by_tvg:
-            return audit_by_tvg[tid]
-
-        return audit_by_name.get(
-            normalize_text(entry.get("channel_name", ""))
-        )
-
-    candidate_entries: list[dict] = []
-    excluded_rows: list[dict] = []
-
-    for source_order, entry in enumerate(final_entries):
-        audit = audit_for_entry(entry)
-        decision = audit.get("decision", "Needs review") if audit else "Needs review"
-        exclude = bool(audit.get("exclude_from_playlist")) if audit else False
-
-        if exclude or decision == "Rejected":
-            excluded_rows.append({
-                "channel_name": entry.get("channel_name", ""),
-                "tvg_id": entry.get("tvg_id", ""),
-                "source": entry.get("source", ""),
-                "stream_url": entry.get("url", ""),
-                "reason": (
-                    (audit or {}).get("reason")
-                    or (audit or {}).get("notes")
-                    or "Rejected by manual audit"
-                ),
-            })
-            continue
-
-        candidate = dict(entry)
-        candidate["_audit"] = audit or {}
-        candidate["_decision"] = decision
-        candidate["_source_order"] = source_order
-        candidate_entries.append(candidate)
-
-    # Group non-rejected candidate feeds by logical channel.
-    candidate_groups: dict[str, list[dict]] = {}
-    for entry in candidate_entries:
-        candidate_groups.setdefault(entry["channel_key"], []).append(entry)
-
-    def verified_feed_rank(entry: dict) -> tuple:
-        audit = entry.get("_audit") or {}
-        vlc = str(audit.get("vlc") or "")
-        samsung = str(audit.get("samsung") or "")
-
-        # User preference: if several feeds work, one is enough.
-        # Prefer the feed that works without a VLC certificate/warning.
-        vlc_rank = {
-            "works": 3,
-            "works_with_warning": 2,
-        }.get(vlc, 0)
-
-        samsung_rank = 1 if samsung == "works" else 0
-
-        # Prefer the earlier/base source when two feeds are otherwise equal.
-        source_rank = -int(entry.get("_source_order") or 0)
-
-        return (vlc_rank, samsung_rank, source_rank)
-
-    selected_candidates: list[dict] = []
-
-    for channel_key_value, group in candidate_groups.items():
-        verified = [e for e in group if e.get("_decision") == "Verified"]
-
-        if verified:
-            winner = max(verified, key=verified_feed_rank)
-            selected_candidates.append(winner)
-
-            for entry in group:
-                if entry is winner:
-                    continue
-                excluded_rows.append({
-                    "channel_name": entry.get("channel_name", ""),
-                    "tvg_id": entry.get("tvg_id", ""),
-                    "source": entry.get("source", ""),
-                    "stream_url": entry.get("url", ""),
-                    "reason": (
-                        "Suppressed because another feed for this channel is "
-                        "already Verified on both VLC and Samsung."
-                    ),
-                })
-        else:
-            # No fully verified winner yet, so keep the remaining candidates in
-            # the playlist for manual testing.
-            selected_candidates.extend(group)
+    selected_candidates, excluded_rows = select_playlist_candidates(
+        final_entries,
+        audit_rows,
+    )
 
     # Re-number only the feeds that are actually visible in the playlist.
     visible_groups: dict[str, list[dict]] = {}
