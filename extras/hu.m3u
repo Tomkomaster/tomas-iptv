@@ -538,3 +538,11 @@ https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8
 # Club Dance Online TV — Hungarian 24/7 dance music television; direct HLS test candidate
 #EXTINF:-1 tvg-name="Club Dance Online TV",Club Dance Online TV (1080p)
 https://stream.clubdance.online:10022/hls/stream.m3u8
+
+# Disco TV — direct EuroCable HLS; Samsung/VLC test candidate
+#EXTINF:-1 tvg-name="Disco TV",Disco TV
+https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8
+
+# Play Music TV — direct Streaming4U HLS; Samsung/VLC test candidate
+#EXTINF:-1 tvg-name="Play Music TV",Play Music TV
+https://stream.streaming4u.hu/PlayMusicTVDemo/index.m3u8
