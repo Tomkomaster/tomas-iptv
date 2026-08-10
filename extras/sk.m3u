@@ -70,3 +70,27 @@ https://cdnsk003.panaccess.com/local/TV7/playlist.m3u8
 # TV Reduta — Spišská Nová Ves local television; direct Panaccess HLS candidate
 #EXTINF:-1 tvg-name="TV Reduta",TV Reduta
 https://cdnsk003.panaccess.com/local/TV_SNV_REDUTA/index.m3u8
+
+# TV Hronka — Banská Bystrica / central Slovakia regional TV; current direct stream linked by broadcaster
+#EXTINF:-1 tvg-name="TV Hronka",TV Hronka
+https://public.live.rebit.tv/live/a2ae9668-d37e-442d-ae98-070cb5d607a7/main.m3u8
+
+# Bardejovská TV — Bardejov local television; active broadcaster; experimental legacy Media-Planet HLS
+#EXTINF:-1 tvg-id="BTV.sk" tvg-name="Bardejovská TV",Bardejovská TV
+http://s1.media-planet.sk:80/live/bardejov1/playlist.m3u8
+
+# TV Bratislava — Bratislava metropolitan television; experimental legacy HLS candidate
+#EXTINF:-1 tvg-id="TVBratislava.sk" tvg-name="TV Bratislava",TV Bratislava
+http://88.212.15.9:5000/live/tvbratislava/playlist.m3u8
+
+# KTV Kežmarská televízia — Kežmarok; current web live service exists; experimental legacy stream candidate
+#EXTINF:-1 tvg-name="KTV Kežmarská televízia",KTV Kežmarská televízia
+http://213.81.153.221:8080/kezmarok
+
+# RTV Krea — Galanta regional television; active in 2026; experimental legacy stream candidate
+#EXTINF:-1 tvg-name="RTV Krea",RTV Krea
+http://213.81.153.221:8080/galanta
+
+# Mestská televízia Trnava (MTT) — Trnava local television; experimental legacy stream candidate
+#EXTINF:-1 tvg-name="Mestská televízia Trnava",Mestská televízia Trnava
+http://213.81.153.221:8080/trnava
