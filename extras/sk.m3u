@@ -1,1 +1,28 @@
 #EXTM3U
+
+# Tomas IPTV - Slovak extras / test candidates.
+# TEST STATUS: not yet manually verified on VLC + Samsung.
+
+# ============================================================
+# NEW SLOVAK TEST CANDIDATES — NOT YET MANUALLY TESTED
+# ============================================================
+
+# TA3 — direct Livebox HLS candidate
+#EXTINF:-1 tvg-id="TA3.sk" tvg-name="TA3",TA3
+https://n13.stv.livebox.sk/ta3/685d9a141bd846e8facf83bc378da26b/1.smil/chunklist_b2691072.m3u8
+
+# TV JOJ — direct JOJ CDN candidate
+#EXTINF:-1 tvg-id="TVJOJ.sk" tvg-name="TV JOJ",TV JOJ
+https://live.cdn.joj.sk/live/andromeda/joj-1080.m3u8
+
+# JOJ Plus — direct JOJ CDN candidate
+#EXTINF:-1 tvg-id="JOJPlus.sk" tvg-name="JOJ Plus",JOJ Plus
+https://live.cdn.joj.sk/live/andromeda/plus-1080.m3u8
+
+# JOJ WAU — direct JOJ CDN candidate
+#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ WAU",JOJ WAU
+https://live.cdn.joj.sk/live/andromeda/wau-1080.m3u8
+
+# JOJ 24 — direct JOJ CDN candidate
+#EXTINF:-1 tvg-id="JOJ24.sk" tvg-name="JOJ 24",JOJ 24
+https://live.cdn.joj.sk/live/andromeda/joj_news-1080.m3u8
