@@ -2248,7 +2248,12 @@ def make_dashboard(
             '<a href="guide.xml">'
             'EPG programme guide (guide.xml)'
             '</a>'
-        )	
+            ' · '
+            '<a href="epg-coverage.json">'
+            'EPG coverage report'
+            '</a>'
+        )
+		
     total_streams = len(final_entries)
     total_channels = len(unique_channels)
     total_duplicates = len(duplicate_rows)
