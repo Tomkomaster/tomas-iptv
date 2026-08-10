@@ -117,33 +117,253 @@ class AuditTests(unittest.TestCase):
         self.assertEqual([row["feed_label"] for row in rows], ["Feed 1/2", "Feed 2/2"])
 
     def test_legacy_single_feed_still_applies(self):
-        entries = [make_entry("https://example.test/a.m3u8")]
-        audit = [{
-            "channel": "Demo TV",
-            "vlc": "works",
-            "samsung": "works",
-            "decision": "auto",
-        }]
-        warnings = build.validate_audit_items(audit, entries)
-        self.assertEqual(len(warnings), 1)
-
-        rows = build.prepare_audit_rows(audit, entries)
-        self.assertEqual(rows[0]["decision"], "Verified")
-
-    def test_legacy_multi_feed_is_rejected(self):
         entries = [
-            make_entry("https://example.test/a.m3u8"),
-            make_entry("https://example.test/b.m3u8", source="Source B"),
+            make_entry(
+                "https://example.test/a.m3u8"
+            )
         ]
+
         audit = [{
             "channel": "Demo TV",
             "vlc": "works",
             "samsung": "works",
             "decision": "auto",
         }]
-        with self.assertRaisesRegex(RuntimeError, "multiple current feeds"):
-            build.validate_audit_items(audit, entries)
 
+        warnings, ambiguity_warnings = (
+            build.validate_audit_items(
+                audit,
+                entries,
+            )
+        )
+
+        self.assertEqual(len(warnings), 1)
+        self.assertEqual(
+            ambiguity_warnings,
+            [],
+        )
+
+        rows = build.prepare_audit_rows(
+            audit,
+            entries,
+        )
+
+        self.assertEqual(
+            rows[0]["decision"],
+            "Verified",
+        )
+
+    def test_legacy_multi_feed_warns_and_is_not_applied(self):
+        url1 = "https://example.test/a.m3u8"
+        url2 = "https://example.test/b.m3u8"
+
+        entries = [
+            make_entry(url1),
+            make_entry(
+                url2,
+                source="Source B",
+            ),
+        ]
+
+        audit = [{
+            "channel": "Demo TV",
+            "vlc": "works",
+            "samsung": "works",
+            "decision": "auto",
+            "notes": "Previously verified.",
+        }]
+
+        warnings, ambiguity_warnings = (
+            build.validate_audit_items(
+                audit,
+                entries,
+            )
+        )
+
+        self.assertTrue(warnings)
+        self.assertEqual(
+            len(ambiguity_warnings),
+            1,
+        )
+
+        self.assertIn(
+            "became ambiguous after 2 feeds",
+            ambiguity_warnings[0],
+        )
+
+        rows = build.prepare_audit_rows(
+            audit,
+            entries,
+        )
+
+        current_rows = [
+            row
+            for row in rows
+            if row["in_playlist"]
+        ]
+
+        historical_rows = [
+            row
+            for row in rows
+            if not row["in_playlist"]
+        ]
+
+        # Both current feeds must be treated as completely untested.
+        self.assertEqual(
+            len(current_rows),
+            2,
+        )
+
+        self.assertEqual(
+            [row["decision"] for row in current_rows],
+            [
+                "Needs review",
+                "Needs review",
+            ],
+        )
+
+        self.assertEqual(
+            [row["vlc"] for row in current_rows],
+            [
+                "not_tested",
+                "not_tested",
+            ],
+        )
+
+        self.assertEqual(
+            [row["samsung"] for row in current_rows],
+            [
+                "not_tested",
+                "not_tested",
+            ],
+        )
+
+        # The old Verified result must still exist as history.
+        self.assertEqual(
+            len(historical_rows),
+            1,
+        )
+
+        legacy = historical_rows[0]
+
+        self.assertEqual(
+            legacy["feed_label"],
+            "Legacy audit",
+        )
+
+        self.assertEqual(
+            legacy["decision"],
+            "Verified",
+        )
+
+        self.assertFalse(
+            legacy["in_playlist"]
+        )
+
+        self.assertIn(
+            "Historical channel-level audit only",
+            legacy["notes"],
+        )
+
+        # Since neither current feed is Verified yet, both remain visible
+        # until we test them individually.
+        selected, _ = (
+            build.select_playlist_candidates(
+                entries,
+                rows,
+            )
+        )
+
+        self.assertEqual(
+            {entry["url"] for entry in selected},
+            {url1, url2},
+        )
+
+
+    def test_legacy_multi_feed_is_rejected_in_strict_mode(self):
+        entries = [
+            make_entry(
+                "https://example.test/a.m3u8"
+            ),
+            make_entry(
+                "https://example.test/b.m3u8",
+                source="Source B",
+            ),
+        ]
+
+        audit = [{
+            "channel": "Demo TV",
+            "vlc": "works",
+            "samsung": "works",
+            "decision": "auto",
+        }]
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            "became ambiguous after 2 feeds",
+        ):
+            build.validate_audit_items(
+                audit,
+                entries,
+                strict=True,
+            )
+
+    def test_dashboard_shows_ambiguous_legacy_warning(self):
+        entries = [
+            make_entry(
+                "https://example.test/a.m3u8"
+            ),
+            make_entry(
+                "https://example.test/b.m3u8",
+                source="Source B",
+            ),
+        ]
+
+        audit = [{
+            "channel": "Demo TV",
+            "vlc": "works",
+            "samsung": "works",
+            "decision": "auto",
+        }]
+
+        _warnings, ambiguity_warnings = (
+            build.validate_audit_items(
+                audit,
+                entries,
+            )
+        )
+
+        rows = build.prepare_audit_rows(
+            audit,
+            entries,
+        )
+
+        dashboard = build.make_dashboard(
+            cfg={
+                "site_title": "Test",
+            },
+            generated="2026-08-10 12:00:00 UTC",
+            final_entries=entries,
+            unique_channels=[],
+            source_stats=[],
+            duplicate_rows=[],
+            changes={},
+            audit_rows=rows,
+            audit_ambiguity_warnings=(
+                ambiguity_warnings
+            ),
+        )
+
+        self.assertIn(
+            "Audit warnings",
+            dashboard,
+        )
+
+        self.assertIn(
+            "became ambiguous after 2 feeds",
+            dashboard,
+        )
+		
     def test_exact_url_overrides_legacy_single_feed(self):
         url = "https://example.test/a.m3u8"
         entries = [make_entry(url)]
