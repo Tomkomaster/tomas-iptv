@@ -247,7 +247,175 @@ def extract_source_flags(name: str) -> list[str]:
 def strip_custom_prefix(name: str) -> str:
     return CUSTOM_PREFIX_RE.sub("", (name or "").strip()).strip()
 
+def country_name_for_language(
+    cfg: dict,
+    language_code: str,
+) -> str:
+    """
+    Return the human-readable country/group prefix for a playlist language.
 
+    Examples:
+      HU -> Hungary
+      SK -> Slovakia
+      CZ -> Czechia
+
+    Unknown codes safely fall back to the code itself.
+    """
+    code = str(
+        language_code or ""
+    ).strip().upper()
+
+    country_names = cfg.get(
+        "country_names"
+    ) or {}
+
+    if isinstance(country_names, dict):
+        country = str(
+            country_names.get(code) or ""
+        ).strip()
+
+        if country:
+            return country
+
+    return code or "Other"
+
+
+def normalize_content_group(
+    group_title: str,
+    country_name: str = "",
+    language_code: str = "",
+    default_group: str = "General",
+) -> str:
+    """
+    Convert an upstream M3U group-title into a useful content category.
+
+    Useful source categories are preserved:
+      Music
+      News
+      Sports
+      Movies
+      Culture;General
+      etc.
+
+    Empty/placeholder categories fall back to General.
+
+    The function also understands both our old status groups:
+      HU | Verified
+      HU | Needs review
+
+    and our new country/category groups:
+      Hungary | News
+
+    This keeps rebuilding idempotent instead of producing:
+      Hungary | Hungary | News
+    """
+    fallback = " ".join(
+        str(default_group or "General").split()
+    ).strip() or "General"
+
+    value = " ".join(
+        str(group_title or "").split()
+    ).strip()
+
+    if not value:
+        return fallback
+
+    # Strip an already-generated country/language prefix.
+    for prefix in (
+        country_name,
+        language_code,
+    ):
+        prefix = str(prefix or "").strip()
+
+        if not prefix:
+            continue
+
+        marker = f"{prefix} | "
+
+        if value.casefold().startswith(
+            marker.casefold()
+        ):
+            value = value[
+                len(marker):
+            ].strip()
+            break
+
+    if not value:
+        return fallback
+
+    # Old Tomas IPTV group-title values used verification status as the
+    # category. Never carry those forward as content categories.
+    old_status_groups = {
+        "verified",
+        "tv verified",
+        "pc only",
+        "needs review",
+        "rejected",
+    }
+
+    if normalize_text(value) in {
+        normalize_text(status)
+        for status in old_status_groups
+    }:
+        return fallback
+
+    ignored_groups = {
+        "undefined",
+        "unknown",
+        "uncategorized",
+        "unclassified",
+        "none",
+        "n a",
+    }
+
+    country_key = normalize_text(
+        country_name
+    )
+
+    language_key = normalize_text(
+        language_code
+    )
+
+    categories: list[str] = []
+    seen: set[str] = set()
+
+    # IPTV-org can use multiple categories separated by semicolons.
+    # Preserve all meaningful ones.
+    for raw_part in value.split(";"):
+        part = " ".join(
+            raw_part.split()
+        ).strip()
+
+        if not part:
+            continue
+
+        key = normalize_text(part)
+
+        if not key:
+            continue
+
+        if key in ignored_groups:
+            continue
+
+        # Some external playlists use the country itself as group-title.
+        # "Hungary | Hungary" is not useful, so treat that as General.
+        if key in {
+            country_key,
+            language_key,
+        }:
+            continue
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        categories.append(part)
+
+    if not categories:
+        return fallback
+
+    return ";".join(categories)
+	
 def rewrite_extinf_line(line: str, new_name: str, group_title: str) -> str:
     metadata, _old_name = split_extinf(line)
     safe_group = (group_title or "").replace('"', "'")
@@ -2460,10 +2628,64 @@ def main(strict: bool = False) -> None:
             entry["channel_name"] = clean_name
             entry["source"] = name
             entry["source_kind"] = kind
-            entry["language_code"] = str(
-                spec.get("language_code") or cfg.get("default_language_code") or "HU"
-            ).upper()
-            entry["source_flags"] = extract_source_flags(entry.get("display_name", ""))
+
+            language_code = str(
+                spec.get("language_code")
+                or cfg.get(
+                    "default_language_code"
+                )
+                or "HU"
+            ).strip().upper()
+
+            entry[
+                "language_code"
+            ] = language_code
+
+            country_name = str(
+                spec.get("country_name")
+                or country_name_for_language(
+                    cfg,
+                    language_code,
+                )
+            ).strip()
+
+            entry[
+                "country_name"
+            ] = country_name
+
+            # Preserve exactly what the source supplied before we create
+            # our own final playlist grouping.
+            source_group_title = str(
+                entry.get("group_title")
+                or ""
+            ).strip()
+
+            entry[
+                "source_group_title"
+            ] = source_group_title
+
+            entry[
+                "content_group"
+            ] = normalize_content_group(
+                source_group_title,
+                country_name=country_name,
+                language_code=language_code,
+                default_group=str(
+                    spec.get(
+                        "default_group_title"
+                    )
+                    or "General"
+                ),
+            )
+
+            entry[
+                "source_flags"
+            ] = extract_source_flags(
+                entry.get(
+                    "display_name",
+                    "",
+                )
+            )
 
             if url_key in seen_urls:
                 duplicate_urls += 1
@@ -2549,8 +2771,18 @@ def main(strict: bool = False) -> None:
                 or "HU"
             ).upper()
 
-            suffix = playlist_status_suffix(decision)
-            original_display = strip_custom_prefix(entry.get("display_name", ""))
+            suffix = playlist_status_suffix(
+                decision
+            )
+
+            original_display = (
+                strip_custom_prefix(
+                    entry.get(
+                        "display_name",
+                        "",
+                    )
+                )
+            )
 
             # If only one feed survives, don't clutter the channel name with
             # Feed 1/2-style labels. Multiple unresolved feeds remain numbered.
@@ -2560,13 +2792,64 @@ def main(strict: bool = False) -> None:
                 else ""
             )
 
-            published_name = f"[{lang} {suffix}] {original_display}{feed_suffix}"
-            group_title = f"{lang} | {decision}"
+            published_name = (
+                f"[{lang} {suffix}] "
+                f"{original_display}"
+                f"{feed_suffix}"
+            )
+
+            country_name = str(
+                entry.get("country_name")
+                or country_name_for_language(
+                    cfg,
+                    lang,
+                )
+            ).strip()
+
+            content_group = (
+                normalize_content_group(
+                    entry.get("content_group")
+                    or entry.get(
+                        "source_group_title"
+                    )
+                    or entry.get(
+                        "group_title"
+                    )
+                    or "",
+                    country_name=country_name,
+                    language_code=lang,
+                    default_group="General",
+                )
+            )
+
+            # group-title is now for user-facing content organization.
+            # Verification status stays in the channel prefix, audit data,
+            # dashboard and CSV instead.
+            group_title = (
+                f"{country_name} | "
+                f"{content_group}"
+            )
 
             published = dict(entry)
             published["published_name"] = published_name
             published["test_status"] = decision
             published["group_title"] = group_title
+            published[
+                "country_name"
+            ] = country_name
+
+            published[
+                "content_group"
+            ] = content_group
+
+            published[
+                "source_group_title"
+            ] = str(
+                entry.get(
+                    "source_group_title"
+                )
+                or ""
+            ).strip()			
             published["visible_feed_index"] = visible_index
             published["visible_feed_count"] = visible_count
             published["lines"] = rewrite_entry_lines(
@@ -2576,13 +2859,30 @@ def main(strict: bool = False) -> None:
 
     published_entries.sort(
         key=lambda e: (
-            str(
-                e.get("language_code")
-                or cfg.get("default_language_code")
-                or ""
-            ).upper(),
-            normalize_text(e.get("channel_name", "")),
-            normalize_text(e.get("published_name", "")),
+            normalize_text(
+                e.get(
+                    "country_name",
+                    "",
+                )
+            ),
+            normalize_text(
+                e.get(
+                    "content_group",
+                    "",
+                )
+            ),
+            normalize_text(
+                e.get(
+                    "channel_name",
+                    "",
+                )
+            ),
+            normalize_text(
+                e.get(
+                    "published_name",
+                    "",
+                )
+            ),
         )
     )
 
@@ -2649,7 +2949,7 @@ def main(strict: bool = False) -> None:
     out_lines = [
         "#EXTM3U",
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v15",
+        "# Tomas IPTV smart builder v16",
         "",
     ]
     for entry in published_entries:
@@ -2667,9 +2967,35 @@ def main(strict: bool = False) -> None:
             ),
             "feed_index": int(e.get("visible_feed_index") or 1),
             "feed_count": int(e.get("visible_feed_count") or 1),
-            "tvg_id": e.get("tvg_id", ""),
-            "group_title": e.get("group_title", ""),
-            "test_status": e.get("test_status", "Needs review"),
+            "tvg_id": e.get(
+                "tvg_id",
+                "",
+            ),
+
+            "country_name": e.get(
+                "country_name",
+                "",
+            ),
+
+            "content_group": e.get(
+                "content_group",
+                "",
+            ),
+
+            "source_group_title": e.get(
+                "source_group_title",
+                "",
+            ),
+
+            "group_title": e.get(
+                "group_title",
+                "",
+            ),
+
+            "test_status": e.get(
+                "test_status",
+                "Needs review",
+            ),
             "source_flags": ", ".join(e.get("source_flags") or []),
             "source": e["source"],
             "classification": e["classification"],
@@ -2681,9 +3007,24 @@ def main(strict: bool = False) -> None:
     write_csv(
         public_dir / "channels.csv",
         [
-            "playlist_name", "channel_name", "feed_label", "feed_index", "feed_count",
-            "tvg_id", "group_title", "test_status",
-            "source_flags", "source", "classification", "stream_url", "logo"
+            "playlist_name",
+            "channel_name",
+            "feed_label",
+            "feed_index",
+            "feed_count",
+            "tvg_id",
+
+            "country_name",
+            "content_group",
+            "source_group_title",
+            "group_title",
+
+            "test_status",
+            "source_flags",
+            "source",
+            "classification",
+            "stream_url",
+            "logo",
         ],
         inventory_rows,
     )
@@ -2761,7 +3102,7 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 15,
+        "schema_version": 16,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
