@@ -380,13 +380,6 @@ def normalize_test_status(value: str) -> str:
         return "format_error"
     if "player_error_generic" in lower:
         return "generic_error"
-    if (
-        "czech language" in lower
-        or "german language" in lower
-        or "russian language" in lower
-        or "english language" in lower
-    ):
-        return "wrong_language"
     if "certificate" in lower and ("work" in lower or "play" in lower or "ok" in lower):
         return "works_with_warning"
     if "just loads" in lower:
@@ -405,13 +398,346 @@ def is_tested_status(value: str) -> bool:
     language, or still needs review.
     """
     return normalize_test_status(value) != "not_tested"
+
+LANGUAGE_NAME_TO_CODE = {
+    "hungarian": "HU",
+    "magyar": "HU",
+
+    "slovak": "SK",
+    "slovakian": "SK",
+
+    "czech": "CZ",
+
+    "serbian": "SR",
+    "serb": "SR",
+
+    "english": "EN",
+    "german": "DE",
+    "russian": "RU",
+    "romanian": "RO",
+    "croatian": "HR",
+    "slovenian": "SL",
+    "ukrainian": "UK",
+    "polish": "PL",
+}
+
+
+def normalize_language_code(value: str) -> str:
+    """
+    Normalize one project language code.
+
+    Tomas IPTV currently uses the familiar uppercase HU/SK/CZ-style codes.
+    Legacy language names such as 'Hungarian' and 'Czech' are accepted for
+    backwards compatibility.
+    """
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+
+    name_key = " ".join(
+        raw.casefold()
+        .replace("_", " ")
+        .replace("-", " ")
+        .split()
+    )
+
+    if name_key in LANGUAGE_NAME_TO_CODE:
+        return LANGUAGE_NAME_TO_CODE[name_key]
+
+    upper = raw.upper()
+
+    if re.fullmatch(r"[A-Z]{2,3}", upper):
+        return upper
+
+    return ""
+
+
+def normalize_language_codes(value) -> list[str]:
+    """
+    Normalize a language-code list while preserving order and removing
+    duplicates.
+
+    New audit data should use JSON lists, for example:
+      ["HU"]
+      ["HU", "SR"]
+
+    Strings are also accepted to make migration and legacy data easier.
+    """
+    if value is None:
+        return []
+
+    if isinstance(value, str):
+        values = [
+            part.strip()
+            for part in re.split(r"[,;/+]", value)
+            if part.strip()
+        ]
+    elif isinstance(value, (list, tuple, set)):
+        values = list(value)
+    else:
+        values = [value]
+
+    result: list[str] = []
+
+    for raw in values:
+        code = normalize_language_code(str(raw or ""))
+
+        if code and code not in result:
+            result.append(code)
+
+    return result
+
+
+def normalize_language_match(value: str) -> str:
+    """
+    Normalize the four supported language-match states.
+
+    yes          = observed language matches the expected playlist language
+    no           = observed language does not match
+    unknown      = language has not been confirmed
+    multilingual = expected language is present together with other languages
+    """
+    token = (
+        str(value or "")
+        .strip()
+        .casefold()
+        .replace("-", "_")
+        .replace(" ", "_")
+    )
+
+    aliases = {
+        "yes": "yes",
+        "match": "yes",
+        "matches": "yes",
+        "matching": "yes",
+        "ok": "yes",
+        "true": "yes",
+
+        "no": "no",
+        "mismatch": "no",
+        "wrong": "no",
+        "wrong_language": "no",
+        "false": "no",
+
+        "unknown": "unknown",
+        "not_tested": "unknown",
+        "untested": "unknown",
+        "pending": "unknown",
+
+        "multilingual": "multilingual",
+        "multi": "multilingual",
+        "multiple": "multilingual",
+    }
+
+    return aliases.get(token, "")
+
+
+def legacy_language_is_negative(value: str) -> bool:
+    """
+    Recognize old generic negative language descriptions without mentioning
+    any particular country.
+
+    Examples:
+      wrong
+      wrong language
+      not hungarian
+      not slovak
+      non-hungarian
+      non-czech
+    """
+    token = " ".join(
+        str(value or "")
+        .strip()
+        .casefold()
+        .replace("_", " ")
+        .replace("-", " ")
+        .split()
+    )
+
+    if token in {
+        "wrong",
+        "wrong language",
+        "mismatch",
+        "language mismatch",
+        "non matching",
+        "non matching language",
+    }:
+        return True
+
+    if token.startswith("not "):
+        return True
+
+    if token.startswith("non "):
+        return True
+
+    return False
+
+
+def derive_language_match(
+    expected_codes: list[str],
+    observed_codes: list[str],
+) -> str:
+    """
+    Derive language_match from expected and observed languages.
+    """
+    if not expected_codes or not observed_codes:
+        return "unknown"
+
+    expected = set(expected_codes)
+    observed = set(observed_codes)
+
+    if not expected.intersection(observed):
+        return "no"
+
+    if len(observed_codes) > 1:
+        return "multilingual"
+
+    return "yes"
+
+
+def resolve_language_info(
+    item: dict,
+    default_expected=None,
+) -> tuple[list[str], list[str], str]:
+    """
+    Resolve the new language model while remaining compatible with the old
+    audit.json language/language_code fields.
+    """
+    expected_codes = normalize_language_codes(
+        item.get("expected_language_codes")
+    )
+
+    if not expected_codes:
+        expected_codes = normalize_language_codes(
+            default_expected
+        )
+
+    observed_codes = normalize_language_codes(
+        item.get("observed_language_codes")
+    )
+
+    legacy_language = str(
+        item.get("language") or ""
+    ).strip()
+
+    # Old audit rows usually store the observed language as a human-readable
+    # name such as "Hungarian", "German" or "Czech".
+    if (
+        not observed_codes
+        and legacy_language
+        and legacy_language.casefold() not in {
+            "unknown",
+            "untested",
+            "not tested",
+            "not_tested",
+        }
+        and not legacy_language_is_negative(legacy_language)
+    ):
+        observed_codes = normalize_language_codes(
+            legacy_language
+        )
+
+        # Some legacy rows use language_code for the observed language.
+        if not observed_codes:
+            legacy_code = normalize_language_code(
+                str(item.get("language_code") or "")
+            )
+
+            if legacy_code:
+                observed_codes = [legacy_code]
+
+    raw_match = str(
+        item.get("language_match") or ""
+    ).strip()
+
+    if raw_match:
+        explicit_match = normalize_language_match(
+            raw_match
+        )
+
+        if explicit_match:
+            return (
+                expected_codes,
+                observed_codes,
+                explicit_match,
+            )
+
+    # Backwards compatibility with old audit rows.
+    if (
+        legacy_language_is_negative(legacy_language)
+        or normalize_test_status(
+            str(item.get("vlc") or "")
+        ) == "wrong_language"
+        or normalize_test_status(
+            str(item.get("samsung") or "")
+        ) == "wrong_language"
+    ):
+        return expected_codes, observed_codes, "no"
+
+    return (
+        expected_codes,
+        observed_codes,
+        derive_language_match(
+            expected_codes,
+            observed_codes,
+        ),
+    )
+
+
+def format_language_codes(codes) -> str:
+    normalized = normalize_language_codes(codes)
+
+    if not normalized:
+        return "Unknown"
+
+    return ", ".join(normalized)
+
+
+def language_mismatch_reason(
+    expected_codes: list[str],
+    observed_codes: list[str],
+) -> str:
+    if expected_codes and observed_codes:
+        return (
+            "Observed language(s) "
+            f"{format_language_codes(observed_codes)} "
+            "do not match expected language(s) "
+            f"{format_language_codes(expected_codes)}."
+        )
+
+    if observed_codes:
+        return (
+            "Observed language(s) "
+            f"{format_language_codes(observed_codes)} "
+            "were marked as not matching this playlist."
+        )
+
+    return (
+        "Observed language does not match the expected "
+        "playlist language."
+    )
 	
 def calculate_audit_decision(item: dict) -> tuple[str, str]:
     """
     Playback/device status for our playlist, not a legal certification.
+
+    Language matching is country-agnostic:
+      yes          -> acceptable
+      multilingual -> acceptable because the expected language is present
+      no           -> rejected
+      unknown      -> language alone does not decide the result
     """
-    explicit = (item.get("decision") or "auto").strip().casefold().replace(" ", "_")
-    if explicit in {"verified", "tv_verified", "pc_only", "needs_review", "rejected"}:
+    explicit = (
+        item.get("decision") or "auto"
+    ).strip().casefold().replace(" ", "_")
+
+    if explicit in {
+        "verified",
+        "tv_verified",
+        "pc_only",
+        "needs_review",
+        "rejected",
+    }:
         label = {
             "verified": "Verified",
             "tv_verified": "TV verified",
@@ -419,36 +745,77 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
             "needs_review": "Needs review",
             "rejected": "Rejected",
         }[explicit]
-        return label, str(item.get("reason") or "").strip()
+
+        return (
+            label,
+            str(item.get("reason") or "").strip(),
+        )
 
     if bool(item.get("exclude_from_playlist")):
-        return "Rejected", str(item.get("reason") or "Excluded from this language playlist.").strip()
+        return (
+            "Rejected",
+            str(
+                item.get("reason")
+                or "Excluded from this language playlist."
+            ).strip(),
+        )
 
-    vlc = normalize_test_status(str(item.get("vlc", "")))
-    samsung = normalize_test_status(str(item.get("samsung", "")))
-    language = (item.get("language") or "Unknown").strip().casefold()
+    vlc = normalize_test_status(
+        str(item.get("vlc", ""))
+    )
 
-    wrong_languages = {
-        "english", "czech", "german", "russian",
-        "wrong", "wrong language", "not hungarian",
-        "non-hungarian", "not_hungarian"
+    samsung = normalize_test_status(
+        str(item.get("samsung", ""))
+    )
+
+    (
+        expected_codes,
+        observed_codes,
+        language_match,
+    ) = resolve_language_info(item)
+
+    if language_match == "no":
+        return (
+            "Rejected",
+            language_mismatch_reason(
+                expected_codes,
+                observed_codes,
+            ),
+        )
+
+    pc_good = vlc in {
+        "works",
+        "works_with_warning",
     }
-    if language in wrong_languages or vlc == "wrong_language" or samsung == "wrong_language":
-        return "Rejected", "Observed language does not match this Hungarian playlist."
 
-    pc_good = vlc in {"works", "works_with_warning"}
     tv_good = samsung == "works"
 
     if pc_good and tv_good:
         return "Verified", ""
 
     if tv_good and not pc_good:
-        return "TV verified", "Works on Samsung; VLC needs another look."
+        return (
+            "TV verified",
+            "Works on Samsung; VLC needs another look.",
+        )
 
-    if pc_good and samsung in {"format_error", "generic_error", "loads"}:
-        return "PC only", "Works in VLC but not on Samsung in the current test."
+    if (
+        pc_good
+        and samsung in {
+            "format_error",
+            "generic_error",
+            "loads",
+        }
+    ):
+        return (
+            "PC only",
+            "Works in VLC but not on Samsung in the current test.",
+        )
 
-    return "Needs review", str(item.get("reason") or "").strip()
+    return (
+        "Needs review",
+        str(item.get("reason") or "").strip(),
+    )
 
 
 def infer_protocol(url: str) -> str:
@@ -523,25 +890,69 @@ def validate_audit_items(
     current_by_tvg: dict[str, set[str]] = {}
     current_by_name: dict[str, set[str]] = {}
 
+    current_expected_by_url: dict[str, set[str]] = {}
+    current_expected_by_tvg: dict[str, set[str]] = {}
+    current_expected_by_name: dict[str, set[str]] = {}
+
     for entry in final_entries:
-        url = str(entry.get("url") or "").strip()
+        url = str(
+            entry.get("url") or ""
+        ).strip()
+
         if not url:
             continue
 
         url_key = canonical_stream_url(url)
 
-        tid = normalized_tvg_id(str(entry.get("tvg_id") or ""))
+        expected_codes = normalize_language_codes(
+            entry.get("expected_language_codes")
+            or entry.get("language_code")
+        )
+
+        if expected_codes:
+            current_expected_by_url.setdefault(
+                url_key,
+                set(),
+            ).update(expected_codes)
+
+        tid = normalized_tvg_id(
+            str(entry.get("tvg_id") or "")
+        )
+
         if tid:
-            current_by_tvg.setdefault(tid, set()).add(url_key)
+            current_by_tvg.setdefault(
+                tid,
+                set(),
+            ).add(url_key)
+
+            if expected_codes:
+                current_expected_by_tvg.setdefault(
+                    tid,
+                    set(),
+                ).update(expected_codes)
 
         for value in (
             entry.get("channel_name"),
             entry.get("display_name"),
             entry.get("tvg_name"),
         ):
-            cname = canonical_audit_name(str(value or ""))
-            if cname:
-                current_by_name.setdefault(cname, set()).add(url_key)
+            cname = canonical_audit_name(
+                str(value or "")
+            )
+
+            if not cname:
+                continue
+
+            current_by_name.setdefault(
+                cname,
+                set(),
+            ).add(url_key)
+
+            if expected_codes:
+                current_expected_by_name.setdefault(
+                    cname,
+                    set(),
+                ).update(expected_codes)
 
     seen_urls: dict[str, int] = {}
     seen_legacy_keys: dict[tuple[str, str], int] = {}
@@ -556,9 +967,25 @@ def validate_audit_items(
         if not channel:
             errors.append(f"{label}: missing channel name.")
 
-        url = str(item.get("stream_url") or "").strip()
+        url = str(
+            item.get("stream_url") or ""
+        ).strip()
+
+        url_key = (
+            canonical_stream_url(url)
+            if url
+            else ""
+        )
+
+        tid = normalized_tvg_id(
+            str(item.get("tvg_id") or "")
+        )
+
+        cname = canonical_audit_name(
+            channel
+        )
+
         if url:
-            url_key = canonical_stream_url(url)
 
             if any(ch.isspace() for ch in url):
                 errors.append(
@@ -578,6 +1005,57 @@ def validate_audit_items(
             else:
                 seen_urls[url_key] = index
 
+        for field in (
+            "expected_language_codes",
+            "observed_language_codes",
+        ):
+            if field not in item:
+                continue
+
+            raw_codes = item.get(field)
+
+            if raw_codes is None:
+                continue
+
+            if not isinstance(raw_codes, list):
+                errors.append(
+                    f"{label}: {field} must be a JSON list "
+                    f"such as [\"HU\"] or [\"HU\", \"SR\"]."
+                )
+                continue
+
+            for raw_code in raw_codes:
+                if (
+                    not isinstance(raw_code, str)
+                    or not re.fullmatch(
+                        r"[A-Za-z]{2,3}",
+                        raw_code.strip(),
+                    )
+                ):
+                    errors.append(
+                        f"{label}: invalid language code "
+                        f"{raw_code!r} in {field}. "
+                        "Use 2-3 letter codes such as "
+                        "HU, SK, CZ, SR or EN."
+                    )
+
+        raw_language_match = str(
+            item.get("language_match") or ""
+        ).strip()
+
+        if (
+            raw_language_match
+            and not normalize_language_match(
+                raw_language_match
+            )
+        ):
+            errors.append(
+                f"{label}: invalid language_match "
+                f"{raw_language_match!r}. "
+                "Allowed values: yes, no, unknown, "
+                "multilingual."
+            )
+			
         for field in ("vlc", "samsung"):
             raw_status = str(item.get(field) or "")
             if not audit_status_is_recognized(raw_status):
@@ -600,13 +1078,97 @@ def validate_audit_items(
                 f"decision {item.get('decision')!r}."
             )
 
-        vlc = normalize_test_status(str(item.get("vlc") or ""))
-        samsung = normalize_test_status(str(item.get("samsung") or ""))
+        vlc = normalize_test_status(
+            str(item.get("vlc") or "")
+        )
 
-        auto_item = dict(item)
+        samsung = normalize_test_status(
+            str(item.get("samsung") or "")
+        )
+
+        expected_for_validation = (
+            normalize_language_codes(
+                item.get("expected_language_codes")
+            )
+        )
+
+        # If the audit does not explicitly say what language was expected,
+        # derive it from the current source/playlist entry.
+        if not expected_for_validation:
+            if url_key:
+                expected_for_validation = sorted(
+                    current_expected_by_url.get(
+                        url_key,
+                        set(),
+                    )
+                )
+            elif tid:
+                expected_for_validation = sorted(
+                    current_expected_by_tvg.get(
+                        tid,
+                        set(),
+                    )
+                )
+            elif cname:
+                expected_for_validation = sorted(
+                    current_expected_by_name.get(
+                        cname,
+                        set(),
+                    )
+                )
+
+        language_probe = dict(item)
+
+        language_probe[
+            "expected_language_codes"
+        ] = expected_for_validation
+
+        (
+            resolved_expected,
+            resolved_observed,
+            resolved_match,
+        ) = resolve_language_info(
+            language_probe
+        )
+
+        # If both language lists are present, an explicitly supplied
+        # language_match must agree with them.
+        if (
+            raw_language_match
+            and resolved_expected
+            and resolved_observed
+        ):
+            explicit_match = normalize_language_match(
+                raw_language_match
+            )
+
+            derived_match = derive_language_match(
+                resolved_expected,
+                resolved_observed,
+            )
+
+            if (
+                explicit_match
+                and explicit_match != derived_match
+            ):
+                errors.append(
+                    f"{label}: language_match "
+                    f"{raw_language_match!r} contradicts "
+                    "expected/observed language codes "
+                    f"(expected={resolved_expected}, "
+                    f"observed={resolved_observed}, "
+                    f"derived={derived_match})."
+                )
+
+        auto_item = dict(language_probe)
         auto_item["decision"] = "auto"
         auto_item["exclude_from_playlist"] = False
-        automatic_decision, _ = calculate_audit_decision(auto_item)
+
+        automatic_decision, _ = (
+            calculate_audit_decision(
+                auto_item
+            )
+        )
 
         if decision_token == "verified" and automatic_decision != "Verified":
             errors.append(
@@ -627,9 +1189,6 @@ def validate_audit_items(
             )
 
         if not url:
-            tid = normalized_tvg_id(str(item.get("tvg_id") or ""))
-            cname = canonical_audit_name(channel)
-
             if tid:
                 legacy_key = ("tvg", tid)
                 matching_urls = current_by_tvg.get(tid, set())
@@ -777,8 +1336,21 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "discovery": str(entry.get("source") or "Current playlist"),
             "stream_url": url,
             "protocol": infer_protocol(url),
+
+            # Legacy fields retained for backwards compatibility.
             "language": "Unknown",
-            "language_code": str(entry.get("language_code") or "HU"),
+            "language_code": str(
+                entry.get("language_code") or "HU"
+            ),
+
+            # New country-independent language model.
+            "expected_language_codes": (
+                normalize_language_codes(
+                    entry.get("language_code") or "HU"
+                )
+            ),
+            "observed_language_codes": [],
+
             "provenance": (
                 "Our curated/test extra"
                 if entry.get("source_kind") == "extras"
@@ -808,12 +1380,43 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
                     item[key] = value
 
         flags: list[str] = []
-        for flag in list(entry.get("source_flags") or []) + list(item.get("source_flags") or []):
+
+        for flag in (
+            list(entry.get("source_flags") or [])
+            + list(item.get("source_flags") or [])
+        ):
             if flag and flag not in flags:
                 flags.append(flag)
+
         item["source_flags"] = flags
 
-        decision, auto_reason = calculate_audit_decision(item)
+        (
+            expected_codes,
+            observed_codes,
+            language_match,
+        ) = resolve_language_info(
+            item,
+            default_expected=(
+                entry.get("language_code")
+                or "HU"
+            ),
+        )
+
+        item[
+            "expected_language_codes"
+        ] = expected_codes
+
+        item[
+            "observed_language_codes"
+        ] = observed_codes
+
+        item[
+            "language_match"
+        ] = language_match
+
+        decision, auto_reason = (
+            calculate_audit_decision(item)
+        )
 
         rows.append({
             "channel": str(item.get("channel") or clean_name).strip(),
@@ -822,13 +1425,24 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "discovery": str(item.get("discovery") or entry.get("source") or "").strip(),
             "stream_url": str(item.get("stream_url") or url).strip(),
             "protocol": str(item.get("protocol") or infer_protocol(url)).strip(),
-            "language": str(item.get("language") or "Unknown").strip(),
+            # Legacy fields.
+            "language": str(
+                item.get("language") or "Unknown"
+            ).strip(),
             "language_code": str(
                 item.get("language_code")
                 or entry.get("language_code")
                 or "HU"
             ).strip().upper(),
-            "provenance": str(item.get("provenance") or "").strip(),
+
+            # New language model.
+            "expected_language_codes": expected_codes,
+            "observed_language_codes": observed_codes,
+            "language_match": language_match,
+
+            "provenance": str(
+                item.get("provenance") or ""
+            ).strip(),
             "source_flags": flags,
             "vlc": normalize_test_status(str(item.get("vlc") or "")),
             "samsung": normalize_test_status(str(item.get("samsung") or "")),
@@ -848,18 +1462,35 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             ),
         })
 
-    current_urls = {
-        canonical_stream_url(str(e.get("url") or ""))
-        for e in final_entries
-        if e.get("url")
-    }
+    current_urls: set[str] = set()
     current_by_tvg: dict[str, set[str]] = {}
     current_by_name: dict[str, set[str]] = {}
+    current_expected_by_url: dict[str, set[str]] = {}
 
     for entry in final_entries:
-        current_url = str(entry.get("url") or "").strip()
+        current_url = str(
+            entry.get("url") or ""
+        ).strip()
+
         if not current_url:
             continue
+
+        current_url_key = canonical_stream_url(
+            current_url
+        )
+
+        current_urls.add(current_url_key)
+
+        expected_codes = normalize_language_codes(
+            entry.get("language_code")
+            or "HU"
+        )
+
+        if expected_codes:
+            current_expected_by_url.setdefault(
+                current_url_key,
+                set(),
+            ).update(expected_codes)
 
         current_tvg = normalized_tvg_id(
             str(entry.get("tvg_id") or "")
@@ -869,7 +1500,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             current_by_tvg.setdefault(
                 current_tvg,
                 set(),
-            ).add(current_url)
+            ).add(current_url_key)
 
         for value in (
             entry.get("channel_name"),
@@ -884,7 +1515,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
                 current_by_name.setdefault(
                     current_name,
                     set(),
-                ).add(current_url)
+                ).add(current_url_key)
 
     # Keep manually tracked candidates/rejections that are not currently in tv.m3u.
     for raw in audit_items:
@@ -904,7 +1535,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         if manual_key in used_manual_keys:
             continue
 
-        if url and url in current_urls:
+        if url_key and url_key in current_urls:
             continue
 
         legacy_ambiguous = False
@@ -931,9 +1562,44 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             # evidence. Never apply it to a current stream.
             legacy_ambiguous = len(legacy_matching_urls) > 1
 
-        decision, auto_reason = calculate_audit_decision(item)
+        legacy_expected_codes: list[str] = []
 
-        history_notes = str(item.get("notes") or "").strip()
+        for matching_url in legacy_matching_urls:
+            for code in current_expected_by_url.get(
+                matching_url,
+                set(),
+            ):
+                if code not in legacy_expected_codes:
+                    legacy_expected_codes.append(code)
+
+        (
+            expected_codes,
+            observed_codes,
+            language_match,
+        ) = resolve_language_info(
+            item,
+            default_expected=legacy_expected_codes,
+        )
+
+        item[
+            "expected_language_codes"
+        ] = expected_codes
+
+        item[
+            "observed_language_codes"
+        ] = observed_codes
+
+        item[
+            "language_match"
+        ] = language_match
+
+        decision, auto_reason = (
+            calculate_audit_decision(item)
+        )
+
+        history_notes = str(
+            item.get("notes") or ""
+        ).strip()
 
         if legacy_ambiguous:
             ambiguity_note = (
@@ -959,9 +1625,22 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "discovery": str(item.get("discovery") or "").strip(),
             "stream_url": url,
             "protocol": str(item.get("protocol") or infer_protocol(url)).strip(),
-            "language": str(item.get("language") or "Unknown").strip(),
-            "language_code": str(item.get("language_code") or "HU").strip().upper(),
-            "provenance": str(item.get("provenance") or "Unknown").strip(),
+            # Legacy fields.
+            "language": str(
+                item.get("language") or "Unknown"
+            ).strip(),
+            "language_code": str(
+                item.get("language_code") or ""
+            ).strip().upper(),
+
+            # New language model.
+            "expected_language_codes": expected_codes,
+            "observed_language_codes": observed_codes,
+            "language_match": language_match,
+
+            "provenance": str(
+                item.get("provenance") or "Unknown"
+            ).strip(),
             "source_flags": list(item.get("source_flags") or []),
             "vlc": normalize_test_status(str(item.get("vlc") or "")),
             "samsung": normalize_test_status(str(item.get("samsung") or "")),
@@ -1225,6 +1904,39 @@ def make_dashboard(
         label, css = labels.get(value, (value or "?", "review"))
         return f'<span class="badge {css}">{esc(label)}</span>'
 
+    def language_match_badge(value: str) -> str:
+        labels = {
+            "yes": (
+                "✓ Match",
+                "verified",
+            ),
+            "multilingual": (
+                "✓ Multilingual",
+                "tv",
+            ),
+            "no": (
+                "Wrong language",
+                "rejected",
+            ),
+            "unknown": (
+                "? Unknown",
+                "review",
+            ),
+        }
+
+        label, css = labels.get(
+            value,
+            (
+                value or "? Unknown",
+                "review",
+            ),
+        )
+
+        return (
+            f'<span class="badge {css}">'
+            f'{esc(label)}</span>'
+        )
+		
     audit_table_rows = []
     for a in audit_rows:
         decision_css = {
@@ -1260,7 +1972,9 @@ def make_dashboard(
               <td>{esc(a.get("source", "") or "—")}</td>
               <td>{esc(a["discovery"])}</td>
               <td>{esc(a["protocol"] or "—")}</td>
-              <td>{esc(a["language"])}</td>
+              <td>{esc(format_language_codes(a.get("expected_language_codes")))}</td>
+              <td>{esc(format_language_codes(a.get("observed_language_codes")))}</td>
+              <td>{language_match_badge(a.get("language_match", "unknown"))}</td>
               <td>{esc(a["provenance"])}</td>
               <td>{esc(", ".join(a.get("source_flags") or []) or "—")}</td>
               <td>{test_badge(a["vlc"])}<div class="detail">{esc(a.get("vlc_note", ""))}</div></td>
@@ -1540,7 +2254,9 @@ details ul {{ max-height: 260px; overflow: auto; }}
           <th>Source</th>
           <th>Discovery</th>
           <th>Protocol</th>
-          <th>Language</th>
+          <th>Expected language</th>
+          <th>Observed language</th>
+          <th>Language match</th>
           <th>Provenance</th>
           <th>Source flag</th>
           <th>VLC</th>
@@ -1825,9 +2541,10 @@ def main(strict: bool = False) -> None:
             audit = entry.get("_audit") or {}
             decision = entry.get("_decision", "Needs review")
 
+            # Playlist language comes from the source/configuration, never
+            # from the observed language recorded during manual testing.
             lang = str(
-                audit.get("language_code")
-                or entry.get("language_code")
+                entry.get("language_code")
                 or cfg.get("default_language_code")
                 or "HU"
             ).upper()
@@ -1932,7 +2649,7 @@ def main(strict: bool = False) -> None:
     out_lines = [
         "#EXTM3U",
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v14",
+        "# Tomas IPTV smart builder v15",
         "",
     ]
     for entry in published_entries:
@@ -1983,20 +2700,68 @@ def main(strict: bool = False) -> None:
         excluded_rows,
     )
 
+    audit_csv_rows = []
+
+    for row in audit_rows:
+        csv_row = dict(row)
+
+        csv_row[
+            "expected_language_codes"
+        ] = ", ".join(
+            row.get(
+                "expected_language_codes"
+            ) or []
+        )
+
+        csv_row[
+            "observed_language_codes"
+        ] = ", ".join(
+            row.get(
+                "observed_language_codes"
+            ) or []
+        )
+
+        audit_csv_rows.append(csv_row)
+		
     write_csv(
         public_dir / "audit.csv",
         [
-            "channel", "feed_label", "feed_index", "feed_count", "tvg_id",
-            "source", "discovery", "stream_url", "protocol",
-            "language", "language_code", "provenance", "source_flags",
-            "vlc", "vlc_note", "samsung", "samsung_note", "decision",
-            "exclude_from_playlist", "in_playlist", "tested_on", "reason", "notes"
+            "channel",
+            "feed_label",
+            "feed_index",
+            "feed_count",
+            "tvg_id",
+            "source",
+            "discovery",
+            "stream_url",
+            "protocol",
+
+            "expected_language_codes",
+            "observed_language_codes",
+            "language_match",
+
+            # Legacy fields retained during migration.
+            "language",
+            "language_code",
+
+            "provenance",
+            "source_flags",
+            "vlc",
+            "vlc_note",
+            "samsung",
+            "samsung_note",
+            "decision",
+            "exclude_from_playlist",
+            "in_playlist",
+            "tested_on",
+            "reason",
+            "notes",
         ],
-        audit_rows,
+        audit_csv_rows,
     )
 
     report = {
-        "schema_version": 14,
+        "schema_version": 15,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
@@ -2019,6 +2784,26 @@ def main(strict: bool = False) -> None:
                 "ambiguous_legacy_audits": len(
                     audit_ambiguity_warnings
                 ),
+                "language_match_yes": sum(
+                    1
+                    for e in audit_rows
+                    if e.get("language_match") == "yes"
+                ),
+                "language_multilingual": sum(
+                    1
+                    for e in audit_rows
+                    if e.get("language_match") == "multilingual"
+                ),
+                "language_mismatch": sum(
+                    1
+                    for e in audit_rows
+                    if e.get("language_match") == "no"
+                ),
+                "language_unknown": sum(
+                    1
+                    for e in audit_rows
+                    if e.get("language_match") == "unknown"
+                ),				
                 "current_playlist_rows": sum(1 for e in audit_rows if e["in_playlist"]),
                 "tested_on_both": sum(
                     1 for e in audit_rows
