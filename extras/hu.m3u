@@ -562,3 +562,11 @@ https://stream.streaming4u.hu/PlayMusicTVDemo/index.m3u8
 # BUDA TV (Hegyvidék TV) — direct EuroCable HLS; current 720p feed
 #EXTINF:-1 tvg-name="BUDA TV",BUDA TV (720p)
 https://iptv02.eurocable.co.hu:15400/EC-HEGYVIDEKTV-FTA/index.fmp4.m3u8
+
+# Szarvasi Televízió — official YouTube live channel
+#EXTINF:-1 tvg-name="Szarvasi Televízió",Szarvasi Televízió [TEST]
+https://ythls-v2.onrender.com/channel/UCI25fQ-PhqM2vsdQRLcR8bw.m3u8
+
+# Pápai Médiacentrum / Pápa Városi TV — official YouTube; may not be 24/7 online
+#EXTINF:-1 tvg-name="Pápai Médiacentrum",Pápai Médiacentrum [TEST] [Not 24/7]
+https://ythls-v2.onrender.com/channel/UCX0hAeM0-IZE4O3Hk_U95cA.m3u8
