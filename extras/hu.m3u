@@ -96,3 +96,35 @@ http://rtmp1.40e.hu:8000/live/vtvszeged.m3u8
 # Szeged TV — active station; legacy-origin feed candidate 2
 #EXTINF:-1 tvg-name="Szeged TV",Szeged TV
 https://eurobioinvest.hu:444/live/vtvszeged.m3u8
+
+# Play Music TV — Hungarian internet-linear music television; recent direct stream candidate
+#EXTINF:-1 tvg-name="Play Music TV",Play Music TV
+https://streaming4u.synology.me/PlayMusicTV/index.m3u8
+
+# Play Music TV — older/demo Streaming4U alternate candidate
+#EXTINF:-1 tvg-name="Play Music TV",Play Music TV
+https://stream.streaming4u.hu/PlayMusicTVDemo/index.m3u8
+
+# Disco TV — new Hungarian music channel; standard HLS candidate
+#EXTINF:-1 tvg-name="Disco TV",Disco TV
+https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8
+
+# Disco TV — alternate fragmented-MP4 HLS candidate; useful for VLC/Samsung comparison
+#EXTINF:-1 tvg-name="Disco TV",Disco TV
+https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.fmp4.m3u8
+
+# Bunyó TV — Hungarian combat-sports channel; fragmented-MP4 HLS candidate
+#EXTINF:-1 tvg-name="Bunyó TV",Bunyó TV
+https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.fmp4.m3u8
+
+# PestiSrácok TV — Hungarian news/political channel; legacy Streaming4U origin candidate
+#EXTINF:-1 tvg-name="PestiSrácok TV",PestiSrácok TV
+https://eco001.streaming4u.hu/PestiSracokTV/index.m3u8
+
+# Total Dance TV — Hungarian music channel; public feed has historically been intermittent
+#EXTINF:-1 tvg-name="Total Dance TV",Total Dance TV
+https://iptv02.eurocable.co.hu:15400/BR-TOTALDANCEHD/index.m3u8
+
+# Marosvásárhelyi Rádió — Romania; Hungarian visual-radio/video feed
+#EXTINF:-1 tvg-name="Marosvásárhelyi Rádió",Marosvásárhelyi Rádió [Visual Radio] (720p)
+http://89.238.207.219:1935/live/radio-muresm/playlist.m3u8
