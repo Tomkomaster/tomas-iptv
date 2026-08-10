@@ -9,6 +9,7 @@ on:
       - "config.json"
       - "audit.json"
       - "extras/**"
+      - "tests/**"
       - ".github/workflows/build-and-publish.yml"
 
   workflow_dispatch:
@@ -34,6 +35,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Run tests
+        run: python3 -m unittest discover -s tests -v
+		
       - name: Build IPTV playlist
         run: python3 build.py
 
