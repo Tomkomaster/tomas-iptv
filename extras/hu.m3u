@@ -164,3 +164,67 @@ https://cloudfront44.lexanetwork.com:1344/xlive001/livestream002.sdp/playlist.m3
 # Light Channel — Hungarian-language religious TV; HLS candidate missing from current IPTV-org HU streams
 #EXTINF:-1 tvg-name="Light Channel",Light Channel [HU] (720p candidate)
 https://streamer1.streamhost.org/salive/hungarian/chunklist.m3u8
+
+# TV2040 (Budaörs) — current YouTube live exposed by OnlineStream; ythls proxy candidate
+#EXTINF:-1 tvg-name="TV2040",TV2040 [YouTube HLS] (720p)
+https://ythls.onrender.com/video/Efen5QuXv8E.m3u8
+
+# Somogy TV Képújság — 24/7 picture-news / information stream; ythls proxy candidate
+#EXTINF:-1 tvg-name="Somogy TV Képújság",Somogy TV Képújság [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/9niMp7ZAuVo.m3u8
+
+# Szombathelyi Televízió — current YouTube live candidate
+#EXTINF:-1 tvg-name="Szombathelyi Televízió",Szombathelyi Televízió [YouTube HLS]
+https://ythls.onrender.com/video/CCnBFfnH4-g.m3u8
+
+# Szombathelyi Televízió — old direct LexaNetwork endpoint; keep as legacy fallback candidate
+#EXTINF:-1 tvg-name="Szombathelyi Televízió",Szombathelyi Televízió [Legacy direct]
+https://cloudfront20.lexanetwork.com:1440/HDE018/hls/livestream.sdp.m3u8
+
+# Bátor Televízió — current YouTube live candidate
+#EXTINF:-1 tvg-name="Bátor Televízió",Bátor Televízió [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/C26SzkZu1UA.m3u8
+
+# Rádió 1 Live TV — visual-radio video feed; YouTube live candidate
+#EXTINF:-1 tvg-name="Rádió 1 Live TV",Rádió 1 Live TV [Visual Radio] [YouTube HLS]
+https://ythls.onrender.com/video/NI-l1yNJPcc.m3u8
+
+# Petőfi Rádió — visual-radio video feed; YouTube live candidate
+#EXTINF:-1 tvg-name="Petőfi Rádió Visual Radio",Petőfi Rádió [Visual Radio] [YouTube HLS] (720p)
+https://ythls.onrender.com/video/obO_OBfncJg.m3u8
+
+# Plébánia TV — Országúti Ferences Plébánia live mass; YouTube live candidate
+#EXTINF:-1 tvg-name="Plébánia TV",Plébánia TV [Religious] [YouTube HLS] (720p)
+https://ythls.onrender.com/video/ICbfPPmDkEM.m3u8
+
+# Szombathelyi Egyházmegye — religious live video; YouTube live candidate
+#EXTINF:-1 tvg-name="Szombathelyi Egyházmegye",Szombathelyi Egyházmegye [Religious] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/MS43oqUo2bw.m3u8
+
+# Láncos Templom, Szatmárnémeti (Romania) — Hungarian Reformed church live service
+#EXTINF:-1 tvg-name="Láncos Templom",Láncos Templom [RO/HU Religious] [YouTube HLS] (720p)
+https://ythls.onrender.com/video/h5D5AlsTWCY.m3u8
+
+# Nagyszőlősi Plébánia (Ukraine / Vynohradiv) — Hungarian-language cross-border religious candidate
+#EXTINF:-1 tvg-name="Nagyszőlősi Plébánia",Nagyszőlősi Plébánia [UA/HU Religious] [YouTube HLS] (720p)
+https://ythls.onrender.com/video/eKufsmaC2h8.m3u8
+
+# Kőszeg — Időkép live camera; HEVC is especially useful for Samsung/VLC compatibility testing
+#EXTINF:-1 tvg-name="Kőszeg Időkép Webcam",Kőszeg [Időkép Webcam] [HEVC 2688x1520]
+https://cam.idokep.hu:443/live/hepi/index.m3u8
+
+# Budapest XIII / Angyalföld — Időkép live city camera
+#EXTINF:-1 tvg-name="Budapest Angyalföld Időkép Webcam",Budapest - Angyalföld [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/hegesan3/index.m3u8
+
+# Balatonakarattya — Időkép live Balaton camera
+#EXTINF:-1 tvg-name="Balatonakarattya Időkép Webcam",Balatonakarattya [Időkép Webcam] (2688x1520)
+https://cam.idokep.hu:443/live/balatonakarattya/index.m3u8
+
+# Kocsér — live stork/nature camera
+#EXTINF:-1 tvg-name="Kocsér Gólyakamera",Kocsér - Gólyakamera [Nature Webcam] (1080p)
+https://cam.idokep.hu:443/live/kocser/index.m3u8
+
+# Nagy-Hideg-hegy — mountain / weather live camera
+#EXTINF:-1 tvg-name="Nagy-Hideg-hegy Időkép Webcam",Nagy-Hideg-hegy [Időkép Webcam] (2688x1520)
+https://cam.idokep.hu:443/live/nhh/index.m3u8
