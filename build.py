@@ -449,23 +449,258 @@ def playlist_status_suffix(decision: str) -> str:
         "Rejected": "X",
     }.get(decision, "?")
 
+VALID_SOURCE_KINDS = {
+    "base",
+    "alternatives",
+    "extras",
+    "source",
+}
 
 
-def source_spec(item, default_name: str, kind: str) -> dict:
-    """Accept both old plain-string config entries and v2 objects."""
+def normalize_source_kind(
+    value: str,
+    default: str = "source",
+) -> str:
+    """
+    Normalize and validate a source kind.
+
+    Supported canonical kinds:
+      base
+      alternatives
+      extras
+      source
+
+    Singular aliases are accepted for convenience:
+      alternative -> alternatives
+      extra       -> extras
+    """
+    raw = str(
+        value or default
+    ).strip().casefold()
+
+    raw = (
+        raw
+        .replace("-", "_")
+        .replace(" ", "_")
+    )
+
+    aliases = {
+        "base": "base",
+
+        "alternative": "alternatives",
+        "alternatives": "alternatives",
+
+        "extra": "extras",
+        "extras": "extras",
+
+        "source": "source",
+    }
+
+    normalized = aliases.get(raw)
+
+    if not normalized:
+        allowed = ", ".join(
+            sorted(VALID_SOURCE_KINDS)
+        )
+
+        raise RuntimeError(
+            f"Unsupported source kind {value!r}. "
+            f"Allowed kinds: {allowed}."
+        )
+
+    return normalized
+
+def source_spec(
+    item,
+    default_name: str,
+    kind: str,
+) -> dict:
+    """
+    Accept both old plain-string config entries and source objects.
+
+    Source kind is normalized here so the rest of the builder can safely
+    rely on one of:
+      base
+      alternatives
+      extras
+      source
+    """
+    default_kind = normalize_source_kind(
+        kind
+    )
+
     if isinstance(item, str):
-        key = "url" if item.startswith(("http://", "https://")) else "path"
-        return {"name": default_name, "kind": kind, key: item}
+        key = (
+            "url"
+            if item.startswith(
+                ("http://", "https://")
+            )
+            else "path"
+        )
+
+        return {
+            "name": default_name,
+            "kind": default_kind,
+            key: item,
+        }
 
     if isinstance(item, dict):
         result = dict(item)
-        result.setdefault("name", default_name)
-        result.setdefault("kind", kind)
+
+        result.setdefault(
+            "name",
+            default_name,
+        )
+
+        result["kind"] = (
+            normalize_source_kind(
+                result.get("kind"),
+                default=default_kind,
+            )
+        )
+
         return result
 
-    raise TypeError(f"Unsupported source definition: {item!r}")
+    raise TypeError(
+        f"Unsupported source definition: "
+        f"{item!r}"
+    )
 
+def summarize_language_stats(
+    entries: list[dict],
+    source_stats: list[dict],
+) -> list[dict]:
+    """
+    Summarize the final published playlist by language.
 
+    Channel counts are logical-channel counts.
+    Stream counts are actual published stream URLs.
+    """
+    language_codes: set[str] = set()
+
+    for entry in entries:
+        code = normalize_language_code(
+            str(
+                entry.get(
+                    "language_code"
+                )
+                or ""
+            )
+        )
+
+        if code:
+            language_codes.add(code)
+
+    for source in source_stats:
+        code = normalize_language_code(
+            str(
+                source.get(
+                    "language_code"
+                )
+                or ""
+            )
+        )
+
+        if code:
+            language_codes.add(code)
+
+    result: list[dict] = []
+
+    for code in sorted(language_codes):
+        language_entries = [
+            entry
+            for entry in entries
+            if normalize_language_code(
+                str(
+                    entry.get(
+                        "language_code"
+                    )
+                    or ""
+                )
+            ) == code
+        ]
+
+        language_sources = [
+            source
+            for source in source_stats
+            if normalize_language_code(
+                str(
+                    source.get(
+                        "language_code"
+                    )
+                    or ""
+                )
+            ) == code
+        ]
+
+        unique_channel_keys = {
+            entry.get("channel_key")
+            for entry in language_entries
+            if entry.get("channel_key")
+        }
+
+        base_channel_keys = {
+            entry.get("channel_key")
+            for entry in language_entries
+            if (
+                entry.get("channel_key")
+                and entry.get(
+                    "classification"
+                ) == "Base channel"
+            )
+        }
+
+        added_channel_keys = {
+            entry.get("channel_key")
+            for entry in language_entries
+            if (
+                entry.get("channel_key")
+                and entry.get(
+                    "classification"
+                ) == "Added channel"
+            )
+        }
+
+        result.append({
+            "language_code": code,
+
+            "source_count": len(
+                language_sources
+            ),
+
+            "base_source_count": sum(
+                1
+                for source in language_sources
+                if source.get("kind") == "base"
+            ),
+
+            "unique_channels": len(
+                unique_channel_keys
+            ),
+
+            "stream_urls": len(
+                language_entries
+            ),
+
+            "base_channels": len(
+                base_channel_keys
+            ),
+
+            "added_channels": len(
+                added_channel_keys
+            ),
+
+            "alternative_streams": sum(
+                1
+                for entry in language_entries
+                if entry.get(
+                    "classification"
+                ) == "Alternative stream"
+            ),
+        })
+
+    return result
+	
 def load_previous_report(url: str | None) -> dict | None:
     if not url:
         return None
@@ -1957,6 +2192,7 @@ def make_dashboard(
     final_entries: list[dict],
     unique_channels: list[dict],
     source_stats: list[dict],
+    language_stats: list[dict],
     duplicate_rows: list[dict],
     changes: dict,
     audit_rows: list[dict],
@@ -2019,14 +2255,33 @@ def make_dashboard(
         for s in source_stats
     )
 
+    language_rows = "\n".join(
+        f"""
+        <tr>
+          <td><strong>{esc(s["language_code"])}</strong></td>
+          <td>{s["source_count"]}</td>
+          <td>{s["base_source_count"]}</td>
+          <td>{s["unique_channels"]}</td>
+          <td>{s["stream_urls"]}</td>
+          <td>{s["base_channels"]}</td>
+          <td>{s["added_channels"]}</td>
+          <td>{s["alternative_streams"]}</td>
+        </tr>
+        """
+        for s in language_stats
+    )
+	
     source_rows = "\n".join(
         f"""
         <tr>
           <td>{esc(s["name"])}</td>
+          <td>{esc(s["language_code"])}</td>
+          <td>{esc(s["kind"])}</td>
           <td>{s["raw_entries"]}</td>
           <td>{s["unique_channels_in_source"]}</td>
           <td>{s["kept_stream_urls"]}</td>
-          <td>{s["new_channels_contributed"]}</td>
+          <td>{s["base_channels_contributed"]}</td>
+          <td>{s["added_channels_contributed"]}</td>
           <td>{s["alternative_streams"]}</td>
           <td>{s["duplicate_urls_ignored"]}</td>
         </tr>
@@ -2439,16 +2694,48 @@ details ul {{ max-height: 260px; overflow: auto; }}
     </table>
   </div>
 
+  <h2>Language summary</h2>
+
+  <p class="muted">
+    Counts are based on the final published playlist.
+    Base channels come from sources whose kind is "base".
+    Added channels were first discovered by non-base sources.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Language</th>
+          <th>Sources</th>
+          <th>Base sources</th>
+          <th>Unique channels</th>
+          <th>Stream URLs</th>
+          <th>Base channels</th>
+          <th>Added channels</th>
+          <th>Alternative streams</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {language_rows}
+      </tbody>
+    </table>
+  </div>
+  
   <h2>Source contribution</h2>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
           <th>Source</th>
+          <th>Language</th>
+          <th>Kind</th>
           <th>Raw entries</th>
           <th>Unique channels in source</th>
           <th>Stream URLs kept</th>
-          <th>New channels contributed</th>
+          <th>Base channels</th>
+          <th>Added channels</th>
           <th>Alternative streams</th>
           <th>Duplicate URLs ignored</th>
         </tr>
@@ -2462,8 +2749,12 @@ details ul {{ max-height: 260px; overflow: auto; }}
 
   <h2>Channel inventory</h2>
   <p class="muted">
-    “Added channel” means this source introduced a channel that had not appeared in an earlier source.
-    “Alternative stream” means the channel already existed, but this source supplied a different stream URL.
+    “Base channel” means the channel was first introduced by a source
+    whose kind is "base".
+    “Added channel” means it was first introduced by a non-base source,
+    such as alternatives or extras.
+    “Alternative stream” means the logical channel already existed and
+    another source supplied a different stream URL.
   </p>
 
   <div class="controls">
@@ -2575,11 +2866,32 @@ def main(strict: bool = False) -> None:
 
     source_items: list[dict] = []
 
-    for i, item in enumerate(cfg.get("sources", []), start=1):
-        source_items.append(source_spec(item, f"Source {i}", "base" if i == 1 else "source"))
+    # Entries under "sources" are base sources by default.
+    # Anything that is not a base source should declare its kind explicitly,
+    # for example kind="alternatives".
+    for i, item in enumerate(
+        cfg.get("sources", []),
+        start=1,
+    ):
+        source_items.append(
+            source_spec(
+                item,
+                f"Source {i}",
+                "base",
+            )
+        )
 
-    for i, item in enumerate(cfg.get("extras", []), start=1):
-        source_items.append(source_spec(item, f"Extra {i}", "extras"))
+    for i, item in enumerate(
+        cfg.get("extras", []),
+        start=1,
+    ):
+        source_items.append(
+            source_spec(
+                item,
+                f"Extra {i}",
+                "extras",
+            )
+        )
 
     if not source_items:
         raise RuntimeError("config.json contains no sources or extras.")
@@ -2591,9 +2903,31 @@ def main(strict: bool = False) -> None:
     seen_urls: dict[str, dict] = {}
     seen_channels: dict[str, dict] = {}
 
-    for source_index, spec in enumerate(source_items):
-        name = str(spec.get("name") or f"Source {source_index + 1}")
-        kind = str(spec.get("kind") or "source")
+    for source_index, spec in enumerate(
+        source_items
+    ):
+        name = str(
+            spec.get("name")
+            or f"Source {source_index + 1}"
+        )
+
+        kind = normalize_source_kind(
+            spec.get("kind"),
+            default="source",
+        )
+
+        language_code = (
+            normalize_language_code(
+                str(
+                    spec.get("language_code")
+                    or cfg.get(
+                        "default_language_code"
+                    )
+                    or "HU"
+                )
+            )
+            or "HU"
+        )
 
         if spec.get("url"):
             location = str(spec["url"])
@@ -2613,7 +2947,11 @@ def main(strict: bool = False) -> None:
         source_keys = {channel_key(e) for e in entries}
         kept = 0
         new_channels = 0
+
+        base_channels = 0
+        added_channels = 0
         alternatives = 0
+
         duplicate_urls = 0
 
         for entry in entries:
@@ -2628,18 +2966,7 @@ def main(strict: bool = False) -> None:
             entry["channel_name"] = clean_name
             entry["source"] = name
             entry["source_kind"] = kind
-
-            language_code = str(
-                spec.get("language_code")
-                or cfg.get(
-                    "default_language_code"
-                )
-                or "HU"
-            ).strip().upper()
-
-            entry[
-                "language_code"
-            ] = language_code
+            entry["language_code"] = language_code
 
             country_name = str(
                 spec.get("country_name")
@@ -2702,15 +3029,35 @@ def main(strict: bool = False) -> None:
                 continue
 
             if key not in seen_channels:
-                classification = "Base channel" if source_index == 0 else "Added channel"
                 new_channels += 1
+
+                if kind == "base":
+                    classification = (
+                        "Base channel"
+                    )
+                    base_channels += 1
+
+                else:
+                    classification = (
+                        "Added channel"
+                    )
+                    added_channels += 1
+
                 seen_channels[key] = {
                     "key": key,
                     "name": clean_name,
                     "first_source": name,
+                    "first_source_kind": kind,
+                    "language_code": (
+                        language_code
+                    ),
                 }
+
             else:
-                classification = "Alternative stream"
+                classification = (
+                    "Alternative stream"
+                )
+
                 alternatives += 1
 
             entry["classification"] = classification
@@ -2721,13 +3068,31 @@ def main(strict: bool = False) -> None:
         source_stats.append({
             "name": name,
             "kind": kind,
+            "language_code": language_code,
             "location": location,
+
             "raw_entries": len(entries),
-            "unique_channels_in_source": len(source_keys),
+            "unique_channels_in_source": (
+                len(source_keys)
+            ),
             "kept_stream_urls": kept,
-            "new_channels_contributed": new_channels,
-            "alternative_streams": alternatives,
-            "duplicate_urls_ignored": duplicate_urls,
+
+            "new_channels_contributed": (
+                new_channels
+            ),
+            "base_channels_contributed": (
+                base_channels
+            ),
+            "added_channels_contributed": (
+                added_channels
+            ),
+            "alternative_streams": (
+                alternatives
+            ),
+
+            "duplicate_urls_ignored": (
+                duplicate_urls
+            ),
         })
 
     audit_warnings, audit_ambiguity_warnings = validate_audit_items(
@@ -2910,6 +3275,13 @@ def main(strict: bool = False) -> None:
         key=lambda x: normalize_text(x["name"])
     )
 
+    language_stats = (
+        summarize_language_stats(
+            published_entries,
+            source_stats,
+        )
+    )
+	
     previous_report = load_previous_report(cfg.get("previous_report_url"))
     changes = {
         "previous_generated_at": None,
@@ -2949,7 +3321,7 @@ def main(strict: bool = False) -> None:
     out_lines = [
         "#EXTM3U",
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v16",
+        "# Tomas IPTV smart builder v17",
         "",
     ]
     for entry in published_entries:
@@ -3102,7 +3474,7 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 16,
+        "schema_version": 17,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
@@ -3117,6 +3489,7 @@ def main(strict: bool = False) -> None:
             "duplicate_urls_ignored": len(duplicate_rows),
         },
         "sources": source_stats,
+        "languages": language_stats,
         "changes": changes,
         "audit": {
             "warnings": audit_warnings,
@@ -3175,10 +3548,13 @@ def main(strict: bool = False) -> None:
             final_entries=published_entries,
             unique_channels=unique_channels,
             source_stats=source_stats,
+            language_stats=language_stats,
             duplicate_rows=duplicate_rows,
             changes=changes,
             audit_rows=audit_rows,
-            audit_ambiguity_warnings=audit_ambiguity_warnings,
+            audit_ambiguity_warnings=(
+                audit_ambiguity_warnings
+            ),
         ),
         encoding="utf-8",
     )
@@ -3201,12 +3577,29 @@ def main(strict: bool = False) -> None:
     )
     for stats in source_stats:
         print(
-            f"- {stats['name']}: "
+            f"- [{stats['language_code']}] "
+            f"{stats['name']} "
+            f"({stats['kind']}): "
             f"{stats['raw_entries']} raw, "
-            f"{stats['new_channels_contributed']} new channels, "
+            f"{stats['base_channels_contributed']} base, "
+            f"{stats['added_channels_contributed']} added, "
             f"{stats['alternative_streams']} alternatives, "
             f"{stats['duplicate_urls_ignored']} duplicate URLs ignored"
         )
+
+    if language_stats:
+        print()
+        print("Language summary:")
+
+        for stats in language_stats:
+            print(
+                f"- {stats['language_code']}: "
+                f"{stats['unique_channels']} channels, "
+                f"{stats['stream_urls']} streams, "
+                f"{stats['base_channels']} base, "
+                f"{stats['added_channels']} added, "
+                f"{stats['alternative_streams']} alternatives"
+            )
 
 
 if __name__ == "__main__":
