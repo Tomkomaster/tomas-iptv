@@ -52,3 +52,47 @@ http://s02.diazol.hu:10192/stream.m3u8
 # 1Music Hungary
 #EXTINF:-1 tvg-name="1Music Hungary",1Music Hungary
 http://1music.hu/1music.m3u8
+
+# TV13 — Budapest XIII local television; current direct HLS candidate
+#EXTINF:-1 tvg-name="TV13",TV13 (720p)
+https://tv13.medialivecdn.hu:443/tv13/3e4c201d9e403330d294e24760e49164.sdp/playlist.m3u8
+
+# Orosházi Városi Televízió — current direct HLS candidate
+#EXTINF:-1 tvg-name="Orosházi Városi Televízió",Orosházi Városi Televízió (720p)
+https://oroscafe.medialivecdn.hu:443/ovtv/3b8ef707b3e09ff9567755b813d1d896.sdp/playlist.m3u8
+
+# Orosházi Városi Televízió — alternate feed candidate
+#EXTINF:-1 tvg-name="Orosházi Városi Televízió",Orosházi Városi Televízió
+https://stream.medialive.hu:1443/ovtv/ocafelive/playlist.m3u8
+
+# Régió TV — Slovakia; Hungarian-language regional television
+#EXTINF:-1 tvg-name="Régió TV",Régió TV [Slovakia/Hungarian]
+http://tv.geniusnet.sk:8081/regiotv/pl.m3u8
+
+# RTV 2 Vajdaság — Serbia/Vojvodina; multilingual channel with Hungarian programming
+#EXTINF:-1 tvg-name="RTV 2 Vajdaság",RTV 2 Vajdaság [Multilingual] (1080p)
+http://212.200.230.50:1935/RTV/rtv2/playlist.m3u8
+
+# Rábaközi Televízió — channel is active; legacy-origin feed candidate 1
+#EXTINF:-1 tvg-name="Rábaközi Televízió",Rábaközi Televízió
+http://79.120.178.90:1935/csornatv/tvlive/playlist.m3u8
+
+# Rábaközi Televízió — legacy-origin feed candidate 2
+#EXTINF:-1 tvg-name="Rábaközi Televízió",Rábaközi Televízió
+http://79.120.178.90:8080/hls/csornatv/index.m3u8
+
+# TV10 Kőbánya — channel is active and advertises online live viewing; legacy HLS candidate
+#EXTINF:-1 tvg-name="TV10 Kőbánya",TV10 Kőbánya
+http://78.46.196.104:1935/live/tv10/playlist.m3u8
+
+# Tatabányai Televízió — active local station; legacy LexaNetwork HLS candidate
+#EXTINF:-1 tvg-name="Tatabányai Televízió",Tatabányai Televízió
+https://cloudfront61.lexanetwork.com:1440/hlsrelay007/hls/livestream.sdp.m3u8
+
+# Szeged TV — active station; legacy-origin feed candidate 1
+#EXTINF:-1 tvg-name="Szeged TV",Szeged TV
+http://rtmp1.40e.hu:8000/live/vtvszeged.m3u8
+
+# Szeged TV — active station; legacy-origin feed candidate 2
+#EXTINF:-1 tvg-name="Szeged TV",Szeged TV
+https://eurobioinvest.hu:444/live/vtvszeged.m3u8
