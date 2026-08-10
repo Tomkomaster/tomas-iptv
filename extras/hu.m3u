@@ -17,8 +17,38 @@ http://s01.diazol.hu:9150/live.m3u8
 # ============================================================
 # V17 PLAYBACK-WORKING / IDENTITY-REVIEW CANDIDATE
 # ============================================================
-
 # Lóverseny közvetítés — works on VLC + Samsung, but confirm actual content/language
 #EXTINF:-1 tvg-id="Loversenykozvetites.hu@SD" tvg-name="Lóverseny közvetítés",Lóverseny LexaNetwork candidate
 https://cloudfront41.lexanetwork.com:1344/xrelay/loverseny2.sdp/playlist.m3u8
 
+# ============================================================
+# NEW HUNGARIAN TEST CANDIDATES — NOT YET MANUALLY TESTED
+# ============================================================
+
+# Debrecen Televízió
+#EXTINF:-1 tvg-name="Debrecen Televízió",Debrecen Televízió (720p)
+https://cloudfront44.lexanetwork.com:1344/relay44_1/livestream002.sdp/playlist.m3u8
+
+# Cegléd Városi TV
+#EXTINF:-1 tvg-name="Cegléd Városi TV",Cegléd Városi TV (360p)
+https://cloudfront44.lexanetwork.com:1344/relay01/HDE031.sdp/playlist.m3u8
+
+# BTKT TV — candidate feed 1
+#EXTINF:-1 tvg-name="BTKT TV",BTKT TV
+https://btkttv.medialivecdn.hu:443/btkttv/f22bc233b2c4be8c2a7a4f71b3065c22.sdp/playlist.m3u8
+
+# BTKT TV — candidate feed 2
+#EXTINF:-1 tvg-name="BTKT TV",BTKT TV
+https://stream.medialive.hu:1443/btkt/udp.stream_360p/index.m3u8
+
+# Miskolc TV — online-platform stream candidate
+#EXTINF:-1 tvg-name="Miskolc TV",Miskolc TV [Online] (720p)
+https://video.mhzrt.hu/live/mitv/playlist.m3u8
+
+# MUSICPlus
+#EXTINF:-1 tvg-name="MUSICPlus",MUSICPlus
+http://s02.diazol.hu:10192/stream.m3u8
+
+# 1Music Hungary
+#EXTINF:-1 tvg-name="1Music Hungary",1Music Hungary
+http://1music.hu/1music.m3u8
