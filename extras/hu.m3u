@@ -149,9 +149,8 @@ https://cloudfront41.lexanetwork.com:1440/hlsrelay013/hls/livestream.sdp.m3u8
 #EXTINF:-1 tvg-name="Hatvan TV",Hatvan TV
 https://cloudfront20.lexanetwork.com:1440/hlsrelay005/hls/livestream.sdp.m3u8
 
-# Euronews Hungarian — native Euronews/Akamai HLS
-# Replaces the current ythls candidate.
-#EXTINF:-1 tvg-name="Euronews Hungarian",Euronews Hungarian (720p) [TEST]
+# Euronews Hungarian — native Euronews/Akamai HLS; no YouTube proxy
+#EXTINF:-1 tvg-name="Euronews Hungarian",Euronews Hungarian (720p)
 https://cdn-euronews.akamaized.net/live/eds/euronews-hu/25075/index.m3u8
 
 # StreamSport — legacy sports/event stream; identity/current status must be checked
@@ -535,3 +534,7 @@ https://stream.clubdance.online:10022/hls/stream.m3u8
 # Bunyó TV — direct EuroCable HLS; manually verified on VLC, Samsung test pending
 #EXTINF:-1 tvg-name="Bunyó TV",Bunyó TV
 https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8
+
+# Club Dance Online TV — Hungarian 24/7 dance music television; direct HLS test candidate
+#EXTINF:-1 tvg-name="Club Dance Online TV",Club Dance Online TV (1080p)
+https://stream.clubdance.online:10022/hls/stream.m3u8
