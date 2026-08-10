@@ -14,6 +14,17 @@
 
   "audit_path": "audit.json",
 
+  "epg": {
+    "enabled": true,
+    "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
+    "sites": [
+      "mediaklikk.hu",
+      "musor.tv",
+      "mujtvprogram.cz"
+    ],
+    "max_connections": 3
+  },
+
   "sources": [
     {
       "name": "IPTV-org Hungary",
