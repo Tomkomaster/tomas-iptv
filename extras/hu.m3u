@@ -228,3 +228,92 @@ https://cam.idokep.hu:443/live/kocser/index.m3u8
 # Nagy-Hideg-hegy — mountain / weather live camera
 #EXTINF:-1 tvg-name="Nagy-Hideg-hegy Időkép Webcam",Nagy-Hideg-hegy [Időkép Webcam] (2688x1520)
 https://cam.idokep.hu:443/live/nhh/index.m3u8
+
+# RTV 1 Vajdaság — Serbian public broadcaster first channel; multilingual/cross-border candidate.
+# Recent independent playlist data confirms the rtv1 backend path; keep separate from existing RTV 2.
+#EXTINF:-1 tvg-name="RTV 1 Vajdaság",RTV 1 Vajdaság [RS / Multilingual] (1080p candidate)
+http://212.200.230.50:1935/RTV/rtv1/playlist.m3u8
+
+# InfoCAM — Hungarian live-video/webcam service; YouTube live HLS proxy candidate
+#EXTINF:-1 tvg-name="InfoCAM",InfoCAM [Web TV / Camera] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/-DSr49JYr9M.m3u8
+
+# TaviTV — live Marcali/city video service; YouTube live HLS proxy candidate
+#EXTINF:-1 tvg-name="TaviTV",TaviTV [Web TV / City Cam] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/DpTODsPkYRE.m3u8
+
+# Magyar Nemzet — online live-video candidate. Identity/content should be checked because live events can be relayed.
+#EXTINF:-1 tvg-name="Magyar Nemzet Online",Magyar Nemzet [Online] [Identity check] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/308i_YoLMRE.m3u8
+
+# Index.hu — current live/news video candidate
+#EXTINF:-1 tvg-name="Index.hu Online",Index.hu [Online / News] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/EfWgtjjI85s.m3u8
+
+# DFilms Production — niche Hungarian production/video service
+#EXTINF:-1 tvg-name="DFilms Production",DFilms Production [Web TV] [YouTube HLS]
+https://ythls.onrender.com/video/3cWv84Ea1Bc.m3u8
+
+# Mészöly TV — niche Hungarian web-video service
+#EXTINF:-1 tvg-name="Mészöly TV",Mészöly TV [Web TV] [YouTube HLS]
+https://ythls.onrender.com/video/FS4gRDhl4kg.m3u8
+
+# Pasaréti Református Gyülekezet
+#EXTINF:-1 tvg-name="Pasaréti Református Gyülekezet",Pasaréti Református Gyülekezet [Religious] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/H_RWieQCVBU.m3u8
+
+# Kaposvári evangélikus
+#EXTINF:-1 tvg-name="Kaposvári evangélikus",Kaposvári evangélikus [Religious] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/0YTMLQeu6OQ.m3u8
+
+# Pasaréti Ferencesek
+#EXTINF:-1 tvg-name="Pasaréti Ferencesek",Pasaréti Ferencesek [Religious] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/cTcf3qfiL7o.m3u8
+
+# Budapest — Rákoscsabai Református Egyházközség
+#EXTINF:-1 tvg-name="Rákoscsabai Református Egyházközség",Budapest - Rákoscsabai Református Egyházközség [Religious] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/9opR5IxOZks.m3u8
+
+# Erdőkertesi Református Egyházközség
+#EXTINF:-1 tvg-name="Erdőkertesi Református Egyházközség",Erdőkertesi Református Egyházközség [Religious] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/DhklK1iVCn4.m3u8
+
+# Madárles — feed 1, long-eared owl nest camera (Tiszavasvári at time of discovery)
+#EXTINF:-1 tvg-name="Madárles",Madárles - Long-eared Owl Nest Cam [Nature] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/0jgC1gJjFNo.m3u8
+
+# KWN Telekom — Kerekegyháza stork camera, Kölcsey utca
+#EXTINF:-1 tvg-name="Kerekegyháza Gólyakamera Kölcsey utca",Kerekegyháza Gólyakamera - Kölcsey utca [KWN / Nature] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/2LUcH6cbDzk.m3u8
+
+# KWN Telekom — Pusztai stork camera candidate
+#EXTINF:-1 tvg-name="Pusztai Gólyakamera",Pusztai Gólyakamera [KWN / Nature] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/4rj5lG2UzqI.m3u8
+
+# HENFLIX — live chicken yard; interactive-camera service
+#EXTINF:-1 tvg-name="HENFLIX",HENFLIX - Élő tyúkudvar [Nature / Animal Cam] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/2tE6OTzSsC0.m3u8
+
+# BirdMania Madárpark — live bird park camera
+#EXTINF:-1 tvg-name="BirdMania Madárpark",BirdMania - Madárpark WebCam [Nature] [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/i7OxP1S8CDI.m3u8
+
+# Keszthely — native 4K HEVC feed; especially useful as a Samsung codec/4K test
+#EXTINF:-1 tvg-name="Keszthely Időkép Webcam",Keszthely [Időkép Webcam] [4K HEVC]
+https://cam.idokep.hu:443/live/keszthely/index.m3u8
+
+# Keszthely - K — separate native 4K H.264 camera
+#EXTINF:-1 tvg-name="Keszthely K Időkép Webcam",Keszthely - K [Időkép Webcam] [4K H.264]
+https://cam.idokep.hu:443/live/keszthely2/index.m3u8
+
+# Tárnok — native HLS stork camera
+#EXTINF:-1 tvg-name="Tárnok Gólyakamera",Tárnok - Gólya kamera [Időkép / Nature] (720p)
+https://cam.idokep.hu:443/live/tarnok2461/index.m3u8
+
+# Balatonföldvár — native 1080p HLS camera
+#EXTINF:-1 tvg-name="Balatonföldvár Időkép Webcam",Balatonföldvár [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/viharsarok/index.m3u8
+
+# Balatonalmádi — native HEVC HLS camera
+#EXTINF:-1 tvg-name="Balatonalmádi Időkép Webcam",Balatonalmádi [Időkép Webcam] [HEVC 2688x1520]
+https://cam.idokep.hu:443/live/kvaczko/index.m3u8
