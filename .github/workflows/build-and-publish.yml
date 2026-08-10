@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "build.py"
+      - "epg_prepare.py"
       - "config.json"
       - "audit.json"
       - "extras/**"
@@ -91,6 +92,7 @@ jobs:
           fi
 
           rm -rf .epg-builder
+          rm -f .epg.channels.xml
 
           git clone \
             --depth 1 \
@@ -99,11 +101,25 @@ jobs:
             .epg-builder
 
           cd .epg-builder
-
           npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "$EPG_SITES" \
+            --output .epg.channels.xml \
+            --report public/epg-coverage.json
+
+          echo
+          echo "Custom EPG channel list:"
+          cat .epg.channels.xml
+          echo
+
+          cd .epg-builder
 
           npm run grab --- \
-            --sites="$EPG_SITES" \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
             --output="$GITHUB_WORKSPACE/public/guide.xml" \
             --maxConnections="$EPG_MAX_CONNECTIONS"
 
@@ -112,7 +128,12 @@ jobs:
           python3 - <<'PY'
           import json
           import xml.etree.ElementTree as ET
+
+          from collections import Counter
           from pathlib import Path
+
+          from epg_prepare import read_playlist_tvg_ids
+
 
           cfg = json.loads(
               Path("config.json").read_text(
@@ -123,47 +144,244 @@ jobs:
           epg = cfg.get("epg") or {}
 
           if not epg.get("enabled"):
-              print("EPG disabled; validation skipped.")
+              print(
+                  "EPG disabled; "
+                  "validation skipped."
+              )
               raise SystemExit(0)
 
-          path = Path("public/guide.xml")
 
-          if not path.is_file():
+          guide_path = Path(
+              "public/guide.xml"
+          )
+
+          coverage_path = Path(
+              "public/epg-coverage.json"
+          )
+
+          playlist_path = Path(
+              "public/tv.m3u"
+          )
+
+
+          if not guide_path.is_file():
               raise SystemExit(
-                  "EPG generation failed: public/guide.xml does not exist."
+                  "EPG generation failed: "
+                  "public/guide.xml "
+                  "does not exist."
               )
 
-          if path.stat().st_size == 0:
+          if guide_path.stat().st_size == 0:
               raise SystemExit(
-                  "EPG generation failed: guide.xml is empty."
+                  "EPG generation failed: "
+                  "guide.xml is empty."
               )
 
-          tree = ET.parse(path)
+          if not coverage_path.is_file():
+              raise SystemExit(
+                  "EPG generation failed: "
+                  "public/epg-coverage.json "
+                  "does not exist."
+              )
+
+
+          tree = ET.parse(
+              guide_path
+          )
+
           root = tree.getroot()
 
           if root.tag != "tv":
               raise SystemExit(
-                  f"Invalid XMLTV root element: {root.tag!r}"
+                  "Invalid XMLTV root "
+                  f"element: {root.tag!r}"
               )
 
-          channels = root.findall("channel")
-          programmes = root.findall("programme")
+
+          channels = root.findall(
+              "channel"
+          )
+
+          programmes = root.findall(
+              "programme"
+          )
+
 
           if not channels:
               raise SystemExit(
-                  "EPG contains no XMLTV channels."
+                  "EPG contains no "
+                  "XMLTV channels."
               )
 
           if not programmes:
               raise SystemExit(
-                  "EPG contains no programmes."
+                  "EPG contains no "
+                  "programmes."
               )
 
-          print(
-              f"EPG OK: {len(channels)} channels, "
-              f"{len(programmes)} programmes, "
-              f"{path.stat().st_size:,} bytes."
+
+          channel_ids = [
+              (
+                  channel.get("id")
+                  or ""
+              ).strip()
+              for channel
+              in channels
+          ]
+
+          empty_channel_ids = [
+              channel_id
+              for channel_id
+              in channel_ids
+              if not channel_id
+          ]
+
+          if empty_channel_ids:
+              raise SystemExit(
+                  "EPG contains a "
+                  "channel without an ID."
+              )
+
+
+          counts = Counter(
+              channel_ids
           )
+
+          duplicate_ids = sorted(
+              channel_id
+              for channel_id, count
+              in counts.items()
+              if count > 1
+          )
+
+          if duplicate_ids:
+              raise SystemExit(
+                  "EPG contains duplicate "
+                  "channel IDs: "
+                  + ", ".join(
+                      duplicate_ids[:20]
+                  )
+              )
+
+
+          playlist_ids = set(
+              read_playlist_tvg_ids(
+                  playlist_path
+              )
+          )
+
+          guide_ids = set(
+              channel_ids
+          )
+
+
+          unexpected_ids = sorted(
+              guide_ids
+              - playlist_ids
+          )
+
+          if unexpected_ids:
+              raise SystemExit(
+                  "EPG contains channels "
+                  "that are not present "
+                  "in tv.m3u: "
+                  + ", ".join(
+                      unexpected_ids[:20]
+                  )
+              )
+
+
+          programme_channel_ids = {
+              (
+                  programme.get(
+                      "channel"
+                  )
+                  or ""
+              ).strip()
+              for programme
+              in programmes
+              if (
+                  programme.get(
+                      "channel"
+                  )
+                  or ""
+              ).strip()
+          }
+
+
+          orphan_programmes = sorted(
+              programme_channel_ids
+              - guide_ids
+          )
+
+          if orphan_programmes:
+              raise SystemExit(
+                  "EPG contains programmes "
+                  "for unknown channel IDs: "
+                  + ", ".join(
+                      orphan_programmes[:20]
+                  )
+              )
+
+
+          playlist_with_programmes = (
+              playlist_ids
+              & programme_channel_ids
+          )
+
+          if not playlist_with_programmes:
+              raise SystemExit(
+                  "EPG contains no "
+                  "programme data matching "
+                  "the generated playlist."
+              )
+
+
+          coverage = json.loads(
+              coverage_path.read_text(
+                  encoding="utf-8"
+              )
+          )
+
+
+          print(
+              "EPG OK: "
+              f"{len(channels)} channels, "
+              f"{len(programmes)} programmes, "
+              f"{len(playlist_with_programmes)} "
+              "playlist channels with "
+              "programme data, "
+              f"{guide_path.stat().st_size:,} "
+              "bytes."
+          )
+
+          print(
+              "EPG mapping coverage: "
+              f"{coverage.get('matched_tvg_ids', 0)}"
+              "/"
+              f"{coverage.get('playlist_tvg_ids', 0)} "
+              "("
+              f"{coverage.get('mapping_coverage_percent', 0)}%"
+              ")."
+          )
+
+          unmatched = (
+              coverage.get(
+                  "unmatched_tvg_ids"
+              )
+              or []
+          )
+
+          if unmatched:
+              print(
+                  "Playlist tvg-id values "
+                  "without EPG mapping:"
+              )
+
+              for tvg_id in unmatched:
+                  print(
+                      f"  - {tvg_id}"
+                  )
           PY
 
       - name: Configure GitHub Pages
