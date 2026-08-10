@@ -12,6 +12,7 @@ def make_entry(
     name: str = "Demo TV",
     tvg_id: str = "DemoTV.hu@SD",
     source: str = "Source A",
+    language_code: str = "HU",
 ) -> dict:
     entry = {
         "lines": [
@@ -27,7 +28,7 @@ def make_entry(
         "channel_name": name,
         "source": source,
         "source_kind": "base",
-        "language_code": "HU",
+        "language_code": language_code,
         "source_flags": [],
         "classification": "Base channel",
     }
@@ -455,6 +456,242 @@ class AuditTests(unittest.TestCase):
         })
         self.assertEqual(decision, "Rejected")
 
+    def test_hu_playlist_rejects_observed_slovak(self):
+        decision, reason = (
+            build.calculate_audit_decision({
+                "vlc": "works",
+                "samsung": "works",
+                "expected_language_codes": ["HU"],
+                "observed_language_codes": ["SK"],
+                "decision": "auto",
+            })
+        )
+
+        self.assertEqual(
+            decision,
+            "Rejected",
+        )
+
+        self.assertIn(
+            "SK",
+            reason,
+        )
+
+        self.assertIn(
+            "HU",
+            reason,
+        )
+
+    def test_cz_playlist_accepts_observed_czech(self):
+        decision, _ = (
+            build.calculate_audit_decision({
+                "vlc": "works",
+                "samsung": "works",
+                "expected_language_codes": ["CZ"],
+                "observed_language_codes": ["CZ"],
+                "decision": "auto",
+            })
+        )
+
+        self.assertEqual(
+            decision,
+            "Verified",
+        )
+
+    def test_expected_language_inside_multilingual_feed_is_accepted(self):
+        item = {
+            "vlc": "works",
+            "samsung": "works",
+            "expected_language_codes": ["HU"],
+            "observed_language_codes": [
+                "HU",
+                "SR",
+            ],
+            "decision": "auto",
+        }
+
+        (
+            expected,
+            observed,
+            language_match,
+        ) = build.resolve_language_info(item)
+
+        self.assertEqual(
+            expected,
+            ["HU"],
+        )
+
+        self.assertEqual(
+            observed,
+            ["HU", "SR"],
+        )
+
+        self.assertEqual(
+            language_match,
+            "multilingual",
+        )
+
+        decision, _ = (
+            build.calculate_audit_decision(item)
+        )
+
+        self.assertEqual(
+            decision,
+            "Verified",
+        )
+
+    def test_multilingual_feed_without_expected_language_is_rejected(self):
+        item = {
+            "vlc": "works",
+            "samsung": "works",
+            "expected_language_codes": ["HU"],
+            "observed_language_codes": [
+                "SK",
+                "CZ",
+            ],
+            "decision": "auto",
+        }
+
+        (
+            _expected,
+            _observed,
+            language_match,
+        ) = build.resolve_language_info(item)
+
+        self.assertEqual(
+            language_match,
+            "no",
+        )
+
+        decision, _ = (
+            build.calculate_audit_decision(item)
+        )
+
+        self.assertEqual(
+            decision,
+            "Rejected",
+        )
+
+    def test_legacy_slovak_language_is_rejected_for_hu_source(self):
+        url = "https://example.test/slovak.m3u8"
+
+        entries = [
+            make_entry(
+                url,
+                language_code="HU",
+            )
+        ]
+
+        audit = [{
+            "channel": "Demo TV",
+            "stream_url": url,
+            "vlc": "works",
+            "samsung": "works",
+
+            # Old audit format:
+            "language": "Slovak",
+            "language_code": "SK",
+
+            "decision": "auto",
+        }]
+
+        build.validate_audit_items(
+            audit,
+            entries,
+        )
+
+        rows = build.prepare_audit_rows(
+            audit,
+            entries,
+        )
+
+        self.assertEqual(
+            rows[0]["expected_language_codes"],
+            ["HU"],
+        )
+
+        self.assertEqual(
+            rows[0]["observed_language_codes"],
+            ["SK"],
+        )
+
+        self.assertEqual(
+            rows[0]["language_match"],
+            "no",
+        )
+
+        self.assertEqual(
+            rows[0]["decision"],
+            "Rejected",
+        )
+
+    def test_legacy_czech_language_is_valid_for_cz_source(self):
+        url = "https://example.test/czech.m3u8"
+
+        entries = [
+            make_entry(
+                url,
+                language_code="CZ",
+            )
+        ]
+
+        audit = [{
+            "channel": "Demo TV",
+            "stream_url": url,
+            "vlc": "works",
+            "samsung": "works",
+            "language": "Czech",
+            "language_code": "CZ",
+            "decision": "auto",
+        }]
+
+        build.validate_audit_items(
+            audit,
+            entries,
+        )
+
+        rows = build.prepare_audit_rows(
+            audit,
+            entries,
+        )
+
+        self.assertEqual(
+            rows[0]["expected_language_codes"],
+            ["CZ"],
+        )
+
+        self.assertEqual(
+            rows[0]["observed_language_codes"],
+            ["CZ"],
+        )
+
+        self.assertEqual(
+            rows[0]["language_match"],
+            "yes",
+        )
+
+        self.assertEqual(
+            rows[0]["decision"],
+            "Verified",
+        )
+
+    def test_explicit_language_match_no_rejects_stream(self):
+        decision, _ = (
+            build.calculate_audit_decision({
+                "vlc": "works",
+                "samsung": "works",
+                "expected_language_codes": ["HU"],
+                "observed_language_codes": ["SK"],
+                "language_match": "no",
+                "decision": "auto",
+            })
+        )
+
+        self.assertEqual(
+            decision,
+            "Rejected",
+        )
+		
     def test_not_24_7_flag_does_not_auto_reject_working_stream(self):
         flags = build.extract_source_flags("Demo TV (720p) [Not 24/7]")
         self.assertEqual(flags, ["Not 24/7"])
@@ -568,6 +805,40 @@ class AuditTests(unittest.TestCase):
                     "exclude_from_playlist": True,
                 }],
                 "exclude_from_playlist=true conflicts",
+            ),
+            (
+                [{
+                    "channel": "Bad",
+                    "stream_url": "https://example.test/a.m3u8",
+                    "expected_language_codes": "HU",
+                }],
+                "expected_language_codes must be a JSON list",
+            ),
+            (
+                [{
+                    "channel": "Bad",
+                    "stream_url": "https://example.test/a.m3u8",
+                    "observed_language_codes": ["Hungarian"],
+                }],
+                "invalid language code",
+            ),
+            (
+                [{
+                    "channel": "Bad",
+                    "stream_url": "https://example.test/a.m3u8",
+                    "language_match": "probably",
+                }],
+                "invalid language_match",
+            ),
+            (
+                [{
+                    "channel": "Bad",
+                    "stream_url": "https://example.test/a.m3u8",
+                    "expected_language_codes": ["HU"],
+                    "observed_language_codes": ["HU"],
+                    "language_match": "no",
+                }],
+                "language_match",
             ),
         ]
 
