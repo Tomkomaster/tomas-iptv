@@ -1,6 +1,13 @@
 {
   "site_title": "Tomas IPTV — Hungary",
   "default_language_code": "HU",
+
+  "country_names": {
+    "HU": "Hungary",
+    "SK": "Slovakia",
+    "CZ": "Czechia"
+  },
+
   "output": "public/tv.m3u",
   "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
   "audit_path": "audit.json",
