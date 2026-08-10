@@ -3232,12 +3232,6 @@ def main(strict: bool = False) -> None:
             ),
             normalize_text(
                 e.get(
-                    "content_group",
-                    "",
-                )
-            ),
-            normalize_text(
-                e.get(
                     "channel_name",
                     "",
                 )
