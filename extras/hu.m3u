@@ -97,23 +97,35 @@ http://rtmp1.40e.hu:8000/live/vtvszeged.m3u8
 #EXTINF:-1 tvg-name="Szeged TV",Szeged TV
 https://eurobioinvest.hu:444/live/vtvszeged.m3u8
 
-# Play Music TV — Hungarian internet-linear music television; recent direct stream candidate
+# Play Music TV — newer direct stream
 #EXTINF:-1 tvg-name="Play Music TV",Play Music TV
 https://streaming4u.synology.me/PlayMusicTV/index.m3u8
 
-# Play Music TV — older/demo Streaming4U alternate candidate
+# Play Music TV — alternate playlist endpoint
+#EXTINF:-1 tvg-name="Play Music TV",Play Music TV
+https://stream.streaming4u.hu/PlayMusicTVDemo/playlist.m3u8
+
+# Play Music TV — alternate index endpoint
 #EXTINF:-1 tvg-name="Play Music TV",Play Music TV
 https://stream.streaming4u.hu/PlayMusicTVDemo/index.m3u8
 
-# Disco TV — new Hungarian music channel; standard HLS candidate
+# Disco TV — direct EuroCable HLS; standard HLS
 #EXTINF:-1 tvg-name="Disco TV",Disco TV
 https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8
 
-# Disco TV — alternate fragmented-MP4 HLS candidate; useful for VLC/Samsung comparison
+# Disco TV — alternate standard HLS playlist
+#EXTINF:-1 tvg-name="Disco TV",Disco TV
+https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8
+
+# Disco TV — fragmented-MP4 HLS alternate
 #EXTINF:-1 tvg-name="Disco TV",Disco TV
 https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.fmp4.m3u8
 
-# Bunyó TV — Hungarian combat-sports channel; fragmented-MP4 HLS candidate
+# Bunyó TV — standard HLS; VLC verified
+#EXTINF:-1 tvg-name="Bunyó TV",Bunyó TV
+https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8
+
+# Bunyó TV — fragmented-MP4 alternate
 #EXTINF:-1 tvg-name="Bunyó TV",Bunyó TV
 https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.fmp4.m3u8
 
