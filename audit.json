@@ -3130,8 +3130,8 @@
       "decision": "needs_review",
       "exclude_from_playlist": false,
       "tested_on": "2026-08-10",
-      "reason": "Playback is good on both devices, but the exact channel/content identity should be visually confirmed before calling it a verified Hungarian feed.",
-      "notes": "Keep temporarily as [HU ?]. Confirm whether the picture/audio is actually Kincsem/Hungarian racing rather than Equidia/French content."
+      "reason": "Playback works on both devices. Visual identity now strongly matches the Hungarian bet.lovi.hu / Kincsem+ racing service, but spoken-language confirmation is still pending.",
+      "notes": "User screenshots show EQUIDIA PRO source graphics together with Hungarian bet.lovi.hu and Kincsem+ overlays. This matches the official Hungarian horse-betting service's model of using Equidia/PMU foreign-race pictures with a Hungarian-language service layer. No speech was audible during the captured pre-race/info segment, so leave as [HU ?] until Hungarian commentary is actually heard during a race."
     },
     {
       "stream_url": "https://7nyaler.streamhostingcdn.top/stream/80/index.m3u8",
