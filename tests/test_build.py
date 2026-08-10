@@ -88,6 +88,45 @@ class AuditTests(unittest.TestCase):
             "source",
         )
 
+    def test_playlist_header_includes_epg(self):
+        cfg = {
+            "epg": {
+                "enabled": True,
+                "public_url": (
+                    "https://example.test/guide.xml"
+                ),
+            }
+        }
+
+        header = build.playlist_header(cfg)
+
+        self.assertEqual(
+            header,
+            (
+                '#EXTM3U '
+                'url-tvg="https://example.test/guide.xml" '
+                'x-tvg-url="https://example.test/guide.xml"'
+            ),
+        )
+
+    def test_playlist_header_without_epg_is_plain(self):
+        self.assertEqual(
+            build.playlist_header({}),
+            "#EXTM3U",
+        )
+
+        self.assertEqual(
+            build.playlist_header({
+                "epg": {
+                    "enabled": False,
+                    "public_url": (
+                        "https://example.test/guide.xml"
+                    ),
+                }
+            }),
+            "#EXTM3U",
+        )
+		
     def test_invalid_source_kind_is_rejected(self):
         with self.assertRaisesRegex(
             RuntimeError,
