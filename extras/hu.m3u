@@ -317,3 +317,103 @@ https://cam.idokep.hu:443/live/viharsarok/index.m3u8
 # Balatonalmádi — native HEVC HLS camera
 #EXTINF:-1 tvg-name="Balatonalmádi Időkép Webcam",Balatonalmádi [Időkép Webcam] [HEVC 2688x1520]
 https://cam.idokep.hu:443/live/kvaczko/index.m3u8
+
+# Zamárdi TV — current YouTube live candidate; YouTube live IDs can rotate
+#EXTINF:-1 tvg-name="Zamárdi TV",Zamárdi TV [YouTube HLS] (720p)
+https://ythls.onrender.com/video/1QLOv4MnLCM.m3u8
+
+# Ózdi Városi Televízió — newer current HTTPS endpoint; IPTV-org currently carries an older HTTP :7980 feed
+#EXTINF:-1 tvg-name="Ózdi Városi TV",Ózdi Városi TV [HTTPS alternate] (720p)
+https://stream.nmih.hu:7982/live.m3u8
+
+# Pannon RTV — current alternate server; IPTV-org currently carries stream.nmih.hu
+#EXTINF:-1 tvg-name="Pannon RTV",Pannon RTV [stream2 alternate] (648p)
+https://stream2.nmih.hu:4102/live.m3u8
+
+# Hódmezővásárhely-Kertváros — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Hódmezővásárhely-Kertváros Időkép Webcam",Hódmezővásárhely-Kertváros É [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/marc21/index.m3u8
+
+# Nagykálló Főtér — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Nagykálló Főtér Időkép Webcam",Nagykálló - Főtér [Időkép Webcam] (720p)
+https://cam.idokep.hu:443/live/tarjanzoltan4/index.m3u8
+
+# Fertőszéplak — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Fertőszéplak Időkép Webcam",Fertőszéplak [Időkép Webcam] (2688x1520)
+https://cam.idokep.hu:443/live/fertoszeplakonk/index.m3u8
+
+# Dunaújváros Repülőtér — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Dunaújváros Repülőtér Időkép Webcam",Dunaújváros Repülőtér [Időkép Webcam] (2944x1656)
+https://cam.idokep.hu:443/live/lhdv/index.m3u8
+
+# Jászárokszállás — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Jászárokszállás Időkép Webcam",Jászárokszállás [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/fozoa/index.m3u8
+
+# Veresegyház — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Veresegyház Időkép Webcam",Veresegyház É [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/captainbc/index.m3u8
+
+# Nagytarcsa — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Nagytarcsa Időkép Webcam",Nagytarcsa [Időkép Webcam] (2688x1520)
+https://cam.idokep.hu:443/live/lacika555/index.m3u8
+
+# Zalaegerszeg Nyugat — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Zalaegerszeg Nyugat Időkép Webcam",Zalaegerszeg Nyugat [Időkép Webcam] (2688x1520)
+https://cam.idokep.hu:443/live/kychy1/index.m3u8
+
+# Dunaharaszti Központ — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Dunaharaszti Központ Időkép Webcam",Dunaharaszti Központ [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/6boby9/index.m3u8
+
+# Salgótarján Kassai sor — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Salgótarján Kassai sor Időkép Webcam",Salgótarján Kassai sor KDK [Időkép Webcam] (2880x1620)
+https://cam.idokep.hu:443/live/volgyvaros5/index.m3u8
+
+# Tokod — native direct Időkép HLS
+#EXTINF:-1 tvg-name="Tokod Időkép Webcam",Tokod [Időkép Webcam] (2560x1440)
+https://cam.idokep.hu:443/live/oporto1/index.m3u8
+
+# Madárles — additional live nest feed (#14): Great Tit nest camera, Nyíregyháza
+#EXTINF:-1 tvg-name="Madárles Great Tit Nyíregyháza",Madárles - Great Tit Nest Cam (Nyíregyháza) [YouTube HLS] (1080p)
+https://ythls.onrender.com/video/zyUVd6kRwws.m3u8
+
+# Hódmezővásárhely-Kertváros DÉL — second direction, native H.264 HLS
+#EXTINF:-1 tvg-name="Hódmezővásárhely-Kertváros Dél Időkép Webcam",Hódmezővásárhely-Kertváros DÉL [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/marc2/index.m3u8
+
+# Budapest III Békásmegyer — native high-resolution H.264 HLS
+#EXTINF:-1 tvg-name="Budapest Békásmegyer Időkép Webcam",Budapest III - Békásmegyer ÉK [Időkép Webcam] (2688x1520)
+https://cam.idokep.hu:443/live/tom/index.m3u8
+
+# Szank — unusual HEVC + Opus combination; useful later for device compatibility testing
+#EXTINF:-1 tvg-name="Szank Időkép Webcam",Szank [Időkép Webcam] [HEVC + Opus] (720p)
+https://cam.idokep.hu:443/live/dzsuki/index.m3u8
+
+# Kaposszerdahely — native direct HLS
+#EXTINF:-1 tvg-name="Kaposszerdahely Időkép Webcam",Kaposszerdahely [Időkép Webcam] (720p)
+https://cam.idokep.hu:443/live/mercedesz/index.m3u8
+
+# Mezőkövesd — native high-resolution H.264 HLS
+#EXTINF:-1 tvg-name="Mezőkövesd Időkép Webcam",Mezőkövesd [Időkép Webcam] (2688x1520)
+https://cam.idokep.hu:443/live/anticord2/index.m3u8
+
+# Budapest XI Sasad — native HEVC HLS
+#EXTINF:-1 tvg-name="Budapest Sasad Időkép Webcam",Budapest XI - Sasad [Időkép Webcam] [HEVC] (1080p)
+https://cam.idokep.hu:443/live/prosec/index.m3u8
+
+# Ács — native H.264 HLS
+#EXTINF:-1 tvg-name="Ács Időkép Webcam",Ács [Időkép Webcam] (720p)
+https://cam.idokep.hu:443/live/kardosarpad/index.m3u8
+
+# Győrújbarát — native H.264 HLS, camera facing toward Győr
+#EXTINF:-1 tvg-name="Győrújbarát Időkép Webcam",Győrújbarát - Győr felé [Időkép Webcam] (1080p)
+https://cam.idokep.hu:443/live/hg2ebh/index.m3u8
+
+# Göd — native 4K H.264 camera
+#EXTINF:-1 tvg-name="Göd Időkép Webcam",Göd [Időkép Webcam] [4K H.264]
+https://cam.idokep.hu:443/live/hight/index.m3u8
+
+# Szentes Buszpályaudvar — native H.264 HLS
+#EXTINF:-1 tvg-name="Szentes Buszpályaudvar Időkép Webcam",Szentes - Buszpályaudvar [Időkép Webcam] (2560x1440)
+https://cam.idokep.hu:443/live/dedezso/index.m3u8
