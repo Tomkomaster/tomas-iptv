@@ -1982,8 +1982,8 @@
       "samsung": "format_error",
       "vlc_note": "VLC just loads.",
       "samsung_note": "Samsung: PLAYER_ERROR_NOT_SUPPORTED_FILE / incompatible format.",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
+      "decision": "needs_review",
+      "exclude_from_playlist": false,
       "reason": "Feed 1 failed on both devices; Feed 2 works.",
       "notes": "Remove Feed 1."
     },
@@ -2852,8 +2852,8 @@
       "samsung": "format_error",
       "vlc_note": "VLC immediately skips to the next channel.",
       "samsung_note": "Samsung was unusable. User summarized this batch as 'Not Supported File'; some entries may instead have stayed loading, so the exact Samsung error was not recorded for every row.",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
+      "decision": "needs_review",
+      "exclude_from_playlist": false,
       "reason": "Primary M4 Sport feed failed repeatedly on both devices.",
       "notes": "Reject this exact URL. Do not automatically trust unrelated alternate hosts; prefer an official/public replacement."
     },
