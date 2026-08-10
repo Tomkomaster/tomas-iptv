@@ -54,7 +54,41 @@ def download_m3u(url: str) -> str:
         raise RuntimeError(f"Source did not look like an M3U playlist: {url}")
     return text
 
+def playlist_header(cfg: dict) -> str:
+    """
+    Build the #EXTM3U header.
 
+    When EPG is enabled, advertise the public XMLTV guide URL using both
+    commonly understood M3U header attribute names.
+    """
+    header = "#EXTM3U"
+
+    epg = cfg.get("epg") or {}
+
+    if not isinstance(epg, dict):
+        return header
+
+    if not bool(epg.get("enabled")):
+        return header
+
+    public_url = str(
+        epg.get("public_url") or ""
+    ).strip()
+
+    if not public_url:
+        return header
+
+    safe_url = public_url.replace(
+        '"',
+        "%22",
+    )
+
+    return (
+        f'{header} '
+        f'url-tvg="{safe_url}" '
+        f'x-tvg-url="{safe_url}"'
+    )
+	
 def read_local(path: str) -> str:
     p = ROOT / path
     if not p.is_file():
@@ -2199,6 +2233,22 @@ def make_dashboard(
     audit_ambiguity_warnings: list[str],
 ) -> str:
     title = str(cfg.get("site_title") or "Tomas IPTV")
+    epg_cfg = cfg.get("epg") or {}
+
+    epg_link_html = ""
+
+    if (
+        isinstance(epg_cfg, dict)
+        and epg_cfg.get("enabled")
+        and str(
+            epg_cfg.get("public_url") or ""
+        ).strip()
+    ):
+        epg_link_html = (
+            '<a href="guide.xml">'
+            'EPG programme guide (guide.xml)'
+            '</a>'
+        )	
     total_streams = len(final_entries)
     total_channels = len(unique_channels)
     total_duplicates = len(duplicate_rows)
@@ -2599,6 +2649,7 @@ details ul {{ max-height: 260px; overflow: auto; }}
 
   <div class="links">
     <a href="tv.m3u">TV playlist (tv.m3u)</a>
+    {epg_link_html}
     <a href="channels.csv">Channel inventory (CSV)</a>
     <a href="duplicates.csv">Ignored duplicate URLs (CSV)</a>
     <a href="excluded.csv">Excluded from playlist (CSV)</a>
@@ -3313,9 +3364,9 @@ def main(strict: bool = False) -> None:
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
     out_lines = [
-        "#EXTM3U",
+        playlist_header(cfg),
         f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v17",
+        "# Tomas IPTV smart builder v18",
         "",
     ]
     for entry in published_entries:
@@ -3468,7 +3519,7 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 17,
+        "schema_version": 18,
         "generated_at": generated,
         "summary": {
             "unique_channels": len(unique_channels),
@@ -3484,6 +3535,27 @@ def main(strict: bool = False) -> None:
         },
         "sources": source_stats,
         "languages": language_stats,
+
+        "epg": {
+            "enabled": bool(
+                (cfg.get("epg") or {}).get(
+                    "enabled"
+                )
+            ),
+            "public_url": str(
+                (cfg.get("epg") or {}).get(
+                    "public_url"
+                )
+                or ""
+            ).strip(),
+            "sites": list(
+                (cfg.get("epg") or {}).get(
+                    "sites"
+                )
+                or []
+            ),
+        },
+
         "changes": changes,
         "audit": {
             "warnings": audit_warnings,
