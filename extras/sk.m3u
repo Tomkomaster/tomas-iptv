@@ -58,3 +58,15 @@ http://s1.media-planet.sk:80/live/pezinok/BratuMarian.m3u8
 # Ľubovnianska televízia — Stará Ľubovňa local television; experimental Neting variant-specific HLS candidate
 #EXTINF:-1 tvg-name="Ľubovnianska televízia",Ľubovnianska televízia
 https://stream1.neting.sk/lms/ltv/chunklist_w827147849.m3u8
+
+# TV DOKTOR — Slovak health/information television; direct broadcaster HLS
+#EXTINF:-1 tvg-name="TV DOKTOR",TV DOKTOR
+https://live.tvdoktor.sk/high/index.m3u8
+
+# TV7 Prešov — Prešov regional television; direct Panaccess HLS candidate
+#EXTINF:-1 tvg-name="TV7 Prešov",TV7 Prešov
+https://cdnsk003.panaccess.com/local/TV7/playlist.m3u8
+
+# TV Reduta — Spišská Nová Ves local television; direct Panaccess HLS candidate
+#EXTINF:-1 tvg-name="TV Reduta",TV Reduta
+https://cdnsk003.panaccess.com/local/TV_SNV_REDUTA/index.m3u8
