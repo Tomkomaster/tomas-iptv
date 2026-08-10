@@ -553,3 +553,12 @@ https://ythls-v2.onrender.com/channel/UCX0hAeM0-IZE4O3Hk_U95cA.m3u8
 #EXTINF:-1 tvg-name="Williams TV",Williams TV [ALT]
 https://wtv.medialivecdn.hu:443/williams/9cc445f3fe303261970006b8e5b4949f.sdp/playlist.m3u8
 
+# Parlament TV — native EuroCable HLS
+# Active linear channel confirmed in 2026; stream needs playback verification
+#EXTINF:-1 tvg-name="Parlament TV",Parlament TV [TEST]
+https://iptv01.eurocable.co.hu/EC-PARLAMENTTVHD/index.m3u8
+
+# HTB TV — Hajdúhadház / Téglás / Bocskaikert
+# Native EuroCable HLS; active channel confirmed in 2026
+#EXTINF:-1 tvg-name="HTB TV",HTB TV [TEST]
+https://iptv01.eurocable.co.hu/EC-HTBTVHD/index.m3u8
