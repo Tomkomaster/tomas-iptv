@@ -19,8 +19,8 @@ https://live.cdn.joj.sk/live/andromeda/joj-1080.m3u8
 #EXTINF:-1 tvg-id="JOJPlus.sk" tvg-name="JOJ Plus",JOJ Plus
 https://live.cdn.joj.sk/live/andromeda/plus-1080.m3u8
 
-# JOJ WAU — direct JOJ CDN candidate
-#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ WAU",JOJ WAU
+# JOJ KRIMI — formerly WAU; direct JOJ CDN feed
+#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ KRIMI",JOJ KRIMI
 https://live.cdn.joj.sk/live/andromeda/wau-1080.m3u8
 
 # JOJ 24 — direct JOJ CDN candidate
@@ -114,3 +114,7 @@ http://46.36.41.106:8888/rebit/184.m3u8
 # ČSRTV — Česko-Slovenská regionálna televízia; active in 2026 with official live service; experimental Rebit HLS candidate
 #EXTINF:-1 tvg-id="CSRTV.sk" tvg-name="ČSRTV",ČSRTV
 http://46.36.41.106:8888/rebit/187.m3u8
+
+# JOJ Šport — direct JOJ broadcaster CDN, 1080p
+#EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport
+https://live.cdn.joj.sk/live/andromeda/joj_sport-1080.m3u8
