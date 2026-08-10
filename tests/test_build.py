@@ -37,6 +37,66 @@ def make_entry(
 
 
 class AuditTests(unittest.TestCase):
+
+    def test_source_kind_normalization(self):
+        self.assertEqual(
+            build.normalize_source_kind(
+                "base"
+            ),
+            "base",
+        )
+
+        self.assertEqual(
+            build.normalize_source_kind(
+                "Base"
+            ),
+            "base",
+        )
+
+        self.assertEqual(
+            build.normalize_source_kind(
+                "alternative"
+            ),
+            "alternatives",
+        )
+
+        self.assertEqual(
+            build.normalize_source_kind(
+                "alternatives"
+            ),
+            "alternatives",
+        )
+
+        self.assertEqual(
+            build.normalize_source_kind(
+                "extra"
+            ),
+            "extras",
+        )
+
+        self.assertEqual(
+            build.normalize_source_kind(
+                "extras"
+            ),
+            "extras",
+        )
+
+        self.assertEqual(
+            build.normalize_source_kind(
+                "source"
+            ),
+            "source",
+        )
+
+    def test_invalid_source_kind_is_rejected(self):
+        with self.assertRaisesRegex(
+            RuntimeError,
+            "Unsupported source kind",
+        ):
+            build.normalize_source_kind(
+                "banana"
+            )
+			
     def test_country_name_for_language(self):
         cfg = {
             "country_names": {
@@ -1320,6 +1380,299 @@ class AuditTests(unittest.TestCase):
             self.assertEqual(
                 duplicates[0]["stream_url"],
                 duplicate_url,
+            )
+
+    def test_multiple_base_sources_are_all_base_channels(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            (
+                root / "audit.json"
+            ).write_text(
+                '{"channels": []}\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "hu.m3u"
+            ).write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 '
+                'tvg-id="DemoHU.hu",'
+                'Hungarian Base TV\n'
+                'https://example.test/hu.m3u8\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "sk.m3u"
+            ).write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 '
+                'tvg-id="DemoSK.sk",'
+                'Slovak Base TV\n'
+                'https://example.test/sk.m3u8\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "hu-alt.m3u"
+            ).write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 '
+                'tvg-id="DemoExtra.hu",'
+                'Hungarian Added TV\n'
+                'https://example.test/hu-extra.m3u8\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "config.json"
+            ).write_text(
+                json.dumps({
+                    "site_title": "Test",
+                    "default_language_code": "HU",
+
+                    "country_names": {
+                        "HU": "Hungary",
+                        "SK": "Slovakia",
+                        "CZ": "Czechia",
+                    },
+
+                    "output": "public/tv.m3u",
+                    "audit_path": "audit.json",
+
+                    "sources": [
+                        {
+                            "name": "Hungary",
+                            "kind": "base",
+                            "language_code": "HU",
+                            "path": "hu.m3u",
+                        },
+                        {
+                            "name": "Slovakia",
+                            "kind": "base",
+                            "language_code": "SK",
+                            "path": "sk.m3u",
+                        },
+                        {
+                            "name": "Hungarian alternatives",
+                            "kind": "alternatives",
+                            "language_code": "HU",
+                            "path": "hu-alt.m3u",
+                        },
+                    ],
+
+                    "extras": [],
+                }),
+                encoding="utf-8",
+            )
+
+            old_root = build.ROOT
+
+            try:
+                build.ROOT = root
+                build.main()
+            finally:
+                build.ROOT = old_root
+
+            with (
+                root
+                / "public"
+                / "channels.csv"
+            ).open(
+                encoding="utf-8-sig",
+                newline="",
+            ) as f:
+                rows = list(
+                    csv.DictReader(f)
+                )
+
+            classifications = {
+                row["channel_name"]:
+                row["classification"]
+                for row in rows
+            }
+
+            self.assertEqual(
+                classifications[
+                    "Hungarian Base TV"
+                ],
+                "Base channel",
+            )
+
+            # THIS is the regression we care about:
+            # second base source must still be Base.
+            self.assertEqual(
+                classifications[
+                    "Slovak Base TV"
+                ],
+                "Base channel",
+            )
+
+            self.assertEqual(
+                classifications[
+                    "Hungarian Added TV"
+                ],
+                "Added channel",
+            )
+
+            report = json.loads(
+                (
+                    root
+                    / "public"
+                    / "report.json"
+                ).read_text(
+                    encoding="utf-8"
+                )
+            )
+
+            language_stats = {
+                row["language_code"]: row
+                for row in report["languages"]
+            }
+
+            self.assertEqual(
+                language_stats["HU"][
+                    "unique_channels"
+                ],
+                2,
+            )
+
+            self.assertEqual(
+                language_stats["HU"][
+                    "base_channels"
+                ],
+                1,
+            )
+
+            self.assertEqual(
+                language_stats["HU"][
+                    "added_channels"
+                ],
+                1,
+            )
+
+            self.assertEqual(
+                language_stats["SK"][
+                    "unique_channels"
+                ],
+                1,
+            )
+
+            self.assertEqual(
+                language_stats["SK"][
+                    "base_channels"
+                ],
+                1,
+            )
+
+            sources = {
+                row["name"]: row
+                for row in report["sources"]
+            }
+
+            self.assertEqual(
+                sources["Hungary"]["kind"],
+                "base",
+            )
+
+            self.assertEqual(
+                sources["Slovakia"]["kind"],
+                "base",
+            )
+
+            self.assertEqual(
+                sources[
+                    "Hungarian alternatives"
+                ]["kind"],
+                "alternatives",
+            )
+
+    def test_multiple_sources_without_kind_default_to_base(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            (
+                root / "audit.json"
+            ).write_text(
+                '{"channels": []}\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "hu.m3u"
+            ).write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 '
+                'tvg-id="TestHU.hu",HU TV\n'
+                'https://example.test/hu.m3u8\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "sk.m3u"
+            ).write_text(
+                '#EXTM3U\n'
+                '#EXTINF:-1 '
+                'tvg-id="TestSK.sk",SK TV\n'
+                'https://example.test/sk.m3u8\n',
+                encoding="utf-8",
+            )
+
+            (
+                root / "config.json"
+            ).write_text(
+                json.dumps({
+                    "site_title": "Test",
+                    "default_language_code": "HU",
+                    "output": "public/tv.m3u",
+                    "audit_path": "audit.json",
+
+                    "sources": [
+                        {
+                            "name": "Hungary",
+                            "language_code": "HU",
+                            "path": "hu.m3u",
+                        },
+                        {
+                            "name": "Slovakia",
+                            "language_code": "SK",
+                            "path": "sk.m3u",
+                        },
+                    ],
+
+                    "extras": [],
+                }),
+                encoding="utf-8",
+            )
+
+            old_root = build.ROOT
+
+            try:
+                build.ROOT = root
+                build.main()
+            finally:
+                build.ROOT = old_root
+
+            with (
+                root
+                / "public"
+                / "channels.csv"
+            ).open(
+                encoding="utf-8-sig",
+                newline="",
+            ) as f:
+                rows = list(
+                    csv.DictReader(f)
+                )
+
+            self.assertEqual(
+                {
+                    row["classification"]
+                    for row in rows
+                },
+                {"Base channel"},
             )
 			
 if __name__ == "__main__":
