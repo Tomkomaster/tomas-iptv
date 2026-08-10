@@ -129,10 +129,6 @@ https://iptv02.eurocable.co.hu:15400/BR-TOTALDANCEHD/index.m3u8
 #EXTINF:-1 tvg-name="Marosvásárhelyi Rádió",Marosvásárhelyi Rádió [Visual Radio] (720p)
 http://89.238.207.219:1935/live/radio-muresm/playlist.m3u8
 
-# City TV (Belváros-Lipótváros) — currently reported online; direct HLS
-#EXTINF:-1 tvg-name="City TV",City TV (Belváros-Lipótváros) (576p)
-https://citytv.hu:443/playlist.m3u8
-
 # Bicskei Városi Televízió — currently reported online; direct HLS
 #EXTINF:-1 tvg-name="Bicskei Városi Televízió",Bicskei Városi Televízió
 https://cloudfront44.lexanetwork.com:1344/relay02/broadcast003.sdp/playlist.m3u8
