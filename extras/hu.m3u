@@ -128,3 +128,39 @@ https://iptv02.eurocable.co.hu:15400/BR-TOTALDANCEHD/index.m3u8
 # Marosvásárhelyi Rádió — Romania; Hungarian visual-radio/video feed
 #EXTINF:-1 tvg-name="Marosvásárhelyi Rádió",Marosvásárhelyi Rádió [Visual Radio] (720p)
 http://89.238.207.219:1935/live/radio-muresm/playlist.m3u8
+
+# City TV (Belváros-Lipótváros) — currently reported online; direct HLS
+#EXTINF:-1 tvg-name="City TV",City TV (Belváros-Lipótváros) (576p)
+https://citytv.hu:443/playlist.m3u8
+
+# Bicskei Városi Televízió — currently reported online; direct HLS
+#EXTINF:-1 tvg-name="Bicskei Városi Televízió",Bicskei Városi Televízió
+https://cloudfront44.lexanetwork.com:1344/relay02/broadcast003.sdp/playlist.m3u8
+
+# Főnix TV — current Streaming4U reference; legacy direct-origin candidate
+#EXTINF:-1 tvg-name="Főnix TV",Főnix TV
+https://eco001.streaming4u.hu/FonixTV/index.m3u8
+
+# Főnix TV — alternate fMP4 HLS candidate
+#EXTINF:-1 tvg-name="Főnix TV",Főnix TV
+https://stream.streaming4u.hu/FonixTV/index.fmp4.m3u8
+
+# Győr+ TV — active station; legacy LexaNetwork direct candidate
+#EXTINF:-1 tvg-name="Győr+ TV",Győr+ TV
+https://cloudfront41.lexanetwork.com:1440/hlsrelay013/hls/livestream.sdp.m3u8
+
+# Hatvan TV — current registered station; legacy LexaNetwork direct candidate
+#EXTINF:-1 tvg-name="Hatvan TV",Hatvan TV
+https://cloudfront20.lexanetwork.com:1440/hlsrelay005/hls/livestream.sdp.m3u8
+
+# Euronews Hungarian — Hungarian-language news; YouTube-HLS proxy candidate
+#EXTINF:-1 tvg-name="Euronews Hungarian",Euronews Hungarian [YouTube HLS]
+https://ythls.onrender.com/channel/UC4Ct8gIf9f0n4mdyGsFiZRA.m3u8
+
+# StreamSport — legacy sports/event stream; identity/current status must be checked
+#EXTINF:-1 tvg-name="StreamSport",StreamSport [Identity check]
+https://cloudfront44.lexanetwork.com:1344/xlive001/livestream002.sdp/playlist.m3u8
+
+# Light Channel — Hungarian-language religious TV; HLS candidate missing from current IPTV-org HU streams
+#EXTINF:-1 tvg-name="Light Channel",Light Channel [HU] (720p candidate)
+https://streamer1.streamhost.org/salive/hungarian/chunklist.m3u8
