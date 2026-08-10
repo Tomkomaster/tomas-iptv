@@ -570,3 +570,7 @@ https://ythls-v2.onrender.com/channel/UCI25fQ-PhqM2vsdQRLcR8bw.m3u8
 # Pápai Médiacentrum / Pápa Városi TV — official YouTube; may not be 24/7 online
 #EXTINF:-1 tvg-name="Pápai Médiacentrum",Pápai Médiacentrum [TEST] [Not 24/7]
 https://ythls-v2.onrender.com/channel/UCX0hAeM0-IZE4O3Hk_U95cA.m3u8
+
+# Williams TV - newer direct HLS alternative
+#EXTINF:-1 tvg-name="Williams TV",Williams TV [ALT]
+https://wtv.medialivecdn.hu:443/williams/9cc445f3fe303261970006b8e5b4949f.sdp/playlist.m3u8
