@@ -481,11 +481,9 @@ https://ythls-v2.onrender.com/channel/UCpSM-EJekfzVqnmBKWiWlGA.m3u8
 #EXTINF:-1 tvg-name="Pécs TV",Pécs TV [TEST] [Official YouTube Live]
 https://ythls-v2.onrender.com/channel/UCfXaXk8PylCl7qMRwB-LLqA.m3u8
 
-# M4 Sport — official M4 Sport YouTube channel.
-# IMPORTANT: this resolves an active YouTube live broadcast/event.
-# It is NOT guaranteed to be the 24/7 linear M4 Sport television feed.
-#EXTINF:-1 tvg-id="M4Sport.hu@SD" tvg-name="M4 Sport",M4 Sport [TEST] [Official YouTube Live]
-https://ythls-v2.onrender.com/channel/UC3PLCyEg6eElkWF-aLDL5Rw.m3u8
+# M4 Sport — native ConnectMedia HLS candidate
+#EXTINF:-1 tvg-id="M4Sport.hu@SD" tvg-name="M4 Sport",M4 Sport [TEST]
+https://c401-node62-cdn.connectmedia.hu/110110/5dd8dc6d853c9b7f94db85646ed44326/641177e3/index.m3u8
 
 # Lengyeltóti Városi TV — current YouTube live exposed by OnlineStream
 # WARNING: YouTube live video ID may rotate
