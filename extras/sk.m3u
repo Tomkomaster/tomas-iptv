@@ -94,3 +94,19 @@ http://213.81.153.221:8080/galanta
 # Mestská televízia Trnava (MTT) — Trnava local television; experimental legacy stream candidate
 #EXTINF:-1 tvg-name="Mestská televízia Trnava",Mestská televízia Trnava
 http://213.81.153.221:8080/trnava
+
+# Devínskonovoveská televízia — Bratislava-Devínska Nová Ves; active in 2026; experimental Rebit HLS candidate
+#EXTINF:-1 tvg-name="Devínskonovoveská televízia",Devínskonovoveská televízia
+http://46.36.41.106:8888/rebit/175.m3u8
+
+# Televízia ZEMPLÍN — regional television for Zemplín; official live service exists; experimental Rebit HLS candidate
+#EXTINF:-1 tvg-name="Televízia ZEMPLÍN",Televízia ZEMPLÍN
+http://46.36.41.106:8888/rebit/178.m3u8
+
+# Televízia Turiec — Martin regional television; active in 2026; experimental Rebit HLS candidate
+#EXTINF:-1 tvg-name="Televízia Turiec",Televízia Turiec
+http://46.36.41.106:8888/rebit/183.m3u8
+
+# RTV Prievidza — Prievidza regional television; active in 2026; experimental Rebit HLS candidate
+#EXTINF:-1 tvg-name="RTV Prievidza",RTV Prievidza
+http://46.36.41.106:8888/rebit/184.m3u8
