@@ -41,6 +41,131 @@ jobs:
       - name: Build IPTV playlist
         run: python3 build.py
 
+      - name: Set up Node.js for EPG
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build XMLTV EPG
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          EPG_ENABLED="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print("true" if (cfg.get("epg") or {}).get("enabled") else "false")
+          '
+          )"
+
+          if [ "$EPG_ENABLED" != "true" ]; then
+            echo "EPG disabled in config.json; skipping."
+            exit 0
+          fi
+
+          EPG_SITES="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          sites = (cfg.get("epg") or {}).get("sites") or []
+          print(",".join(str(site).strip() for site in sites if str(site).strip()))
+          '
+          )"
+
+          EPG_MAX_CONNECTIONS="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print(int((cfg.get("epg") or {}).get("max_connections") or 3))
+          '
+          )"
+
+          if [ -z "$EPG_SITES" ]; then
+            echo "EPG is enabled but epg.sites is empty."
+            exit 1
+          fi
+
+          rm -rf .epg-builder
+
+          git clone \
+            --depth 1 \
+            --branch master \
+            https://github.com/iptv-org/epg.git \
+            .epg-builder
+
+          cd .epg-builder
+
+          npm ci
+
+          npm run grab --- \
+            --sites="$EPG_SITES" \
+            --output="$GITHUB_WORKSPACE/public/guide.xml" \
+            --maxConnections="$EPG_MAX_CONNECTIONS"
+
+      - name: Validate XMLTV EPG
+        run: |
+          python3 - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          cfg = json.loads(
+              Path("config.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+
+          epg = cfg.get("epg") or {}
+
+          if not epg.get("enabled"):
+              print("EPG disabled; validation skipped.")
+              raise SystemExit(0)
+
+          path = Path("public/guide.xml")
+
+          if not path.is_file():
+              raise SystemExit(
+                  "EPG generation failed: public/guide.xml does not exist."
+              )
+
+          if path.stat().st_size == 0:
+              raise SystemExit(
+                  "EPG generation failed: guide.xml is empty."
+              )
+
+          tree = ET.parse(path)
+          root = tree.getroot()
+
+          if root.tag != "tv":
+              raise SystemExit(
+                  f"Invalid XMLTV root element: {root.tag!r}"
+              )
+
+          channels = root.findall("channel")
+          programmes = root.findall("programme")
+
+          if not channels:
+              raise SystemExit(
+                  "EPG contains no XMLTV channels."
+              )
+
+          if not programmes:
+              raise SystemExit(
+                  "EPG contains no programmes."
+              )
+
+          print(
+              f"EPG OK: {len(channels)} channels, "
+              f"{len(programmes)} programmes, "
+              f"{path.stat().st_size:,} bytes."
+          )
+          PY
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
 
