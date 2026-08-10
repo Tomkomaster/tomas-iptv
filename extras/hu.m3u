@@ -531,3 +531,7 @@ https://ythls-v2.onrender.com/channel/UCvUmjmd689vg_wxLFweyWhA.m3u8
 # Club Dance Online TV — native direct HLS, no YouTube resolver
 #EXTINF:-1 tvg-name="Club Dance Online TV",Club Dance Online TV (1080p) [TEST]
 https://stream.clubdance.online:10022/hls/stream.m3u8
+
+# Bunyó TV — direct EuroCable HLS; manually verified on VLC, Samsung test pending
+#EXTINF:-1 tvg-name="Bunyó TV",Bunyó TV
+https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8
