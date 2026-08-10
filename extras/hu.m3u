@@ -558,3 +558,7 @@ https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8
 # Play Music TV — direct Streaming4U HLS; Samsung/VLC test candidate
 #EXTINF:-1 tvg-name="Play Music TV",Play Music TV
 https://stream.streaming4u.hu/PlayMusicTVDemo/index.m3u8
+
+# BUDA TV (Hegyvidék TV) — direct EuroCable HLS; current 720p feed
+#EXTINF:-1 tvg-name="BUDA TV",BUDA TV (720p)
+https://iptv02.eurocable.co.hu:15400/EC-HEGYVIDEKTV-FTA/index.fmp4.m3u8
