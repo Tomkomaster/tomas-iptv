@@ -26,3 +26,23 @@ https://live.cdn.joj.sk/live/andromeda/wau-1080.m3u8
 # JOJ 24 — direct JOJ CDN candidate
 #EXTINF:-1 tvg-id="JOJ24.sk" tvg-name="JOJ 24",JOJ 24
 https://live.cdn.joj.sk/live/andromeda/joj_news-1080.m3u8
+
+# TV Nitrička — Nitra local television; direct Antik HLS candidate
+#EXTINF:-1 tvg-id="TVNitricka.sk" tvg-name="TV Nitrička",TV Nitrička
+https://dash4.antik.sk/live/test_nitricka/playlist.m3u8
+
+# TV Mistral — Michalovce local television; direct Antik HLS candidate
+#EXTINF:-1 tvg-id="TVMistral.sk" tvg-name="TV Mistral",TV Mistral
+https://dash3.antik.sk/live/test_mistral_atktv/playlist.m3u8
+
+# TV Vita — Slovak culture / regional channel; direct Antik HLS candidate
+#EXTINF:-1 tvg-id="TVVita.sk" tvg-name="TV Vita",TV Vita
+https://dash3.antik.sk/live/test_vita/playlist.m3u8
+
+# Západoslovenská TV (ZSTV) — regional television; direct Antik HLS candidate
+#EXTINF:-1 tvg-id="ZapadoslovenskaTV.sk" tvg-name="Západoslovenská TV",Západoslovenská TV
+https://dash2.antik.sk/live/test_zapadoslovenska/playlist.m3u8
+
+# TV9 — Slovak regional/news channel; experimental direct Antik HLS candidate
+#EXTINF:-1 tvg-name="TV9",TV9
+https://dash4.antik.sk/live/test_tv9/playlist.m3u8
