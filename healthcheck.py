@@ -5,6 +5,7 @@ import argparse
 import json
 import re
 import socket
+import ssl
 import time
 import urllib.error
 import urllib.request
@@ -27,6 +28,7 @@ SUCCESS_STATUSES = {
     "Online",
     "Redirected",
     "Slow startup",
+    "TLS certificate warning",
 }
 FAILURE_STATUSES = {
     "HTTP error",
@@ -161,6 +163,60 @@ def timeout_like(exc: BaseException) -> bool:
     return False
 
 
+def certificate_verification_error_like(exc: BaseException) -> bool:
+    """Return True only for TLS certificate-validation failures.
+
+    urllib normally wraps SSL exceptions in URLError. Walk that wrapper and
+    chained exceptions so certificate failures can be distinguished from
+    other TLS/network errors without broadly disabling verification.
+    """
+    current: BaseException | None = exc
+    seen: set[int] = set()
+
+    while current is not None and id(current) not in seen:
+        seen.add(id(current))
+
+        if isinstance(current, (ssl.SSLCertVerificationError, ssl.CertificateError)):
+            return True
+
+        if isinstance(current, ssl.SSLError):
+            text = str(current).casefold()
+            if (
+                "certificate_verify_failed" in text
+                or "certificate verify failed" in text
+            ):
+                return True
+
+        if isinstance(current, urllib.error.URLError):
+            reason = current.reason
+            if isinstance(reason, BaseException):
+                current = reason
+                continue
+
+        current = current.__cause__ or current.__context__
+
+    return False
+
+
+def unverified_tls_context() -> ssl.SSLContext:
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+    return context
+
+
+def probe_failure_for_exception(url: str, exc: BaseException) -> ProbeFailure:
+    if isinstance(exc, urllib.error.HTTPError):
+        return ProbeFailure(
+            "HTTP error",
+            f"HTTP {exc.code} for {url}",
+            http_status=int(exc.code),
+        )
+    if timeout_like(exc):
+        return ProbeFailure("Timeout", f"Timed out requesting {url}")
+    return ProbeFailure("HTTP error", f"Request failed for {url}: {exc}")
+
+
 def request_bytes(
     url: str,
     *,
@@ -177,11 +233,14 @@ def request_bytes(
     if range_request:
         headers["Range"] = f"bytes=0-{max(max_bytes - 1, 0)}"
 
-    request = urllib.request.Request(url, headers=headers, method="GET")
-    started = time.monotonic()
+    def fetch_once(context: ssl.SSLContext | None = None) -> dict:
+        request = urllib.request.Request(url, headers=headers, method="GET")
+        started = time.monotonic()
+        kwargs = {"timeout": timeout}
+        if context is not None:
+            kwargs["context"] = context
 
-    try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        with urllib.request.urlopen(request, **kwargs) as response:
             data = response.read(max_bytes)
             elapsed = time.monotonic() - started
             return {
@@ -190,17 +249,32 @@ def request_bytes(
                 "status": int(getattr(response, "status", 200) or 200),
                 "content_type": str(response.headers.get("Content-Type") or ""),
                 "elapsed": elapsed,
+                "request_count": 1,
+                "tls_certificate_warning": False,
+                "tls_certificate_detail": "",
             }
-    except urllib.error.HTTPError as exc:
-        raise ProbeFailure(
-            "HTTP error",
-            f"HTTP {exc.code} for {url}",
-            http_status=int(exc.code),
-        ) from exc
+
+    try:
+        return fetch_once()
     except Exception as exc:
-        if timeout_like(exc):
-            raise ProbeFailure("Timeout", f"Timed out requesting {url}") from exc
-        raise ProbeFailure("HTTP error", f"Request failed for {url}: {exc}") from exc
+        if certificate_verification_error_like(exc):
+            tls_detail = f"TLS certificate verification failed for {url}: {exc}"
+            try:
+                retried = fetch_once(unverified_tls_context())
+            except Exception as retry_exc:
+                failure = probe_failure_for_exception(url, retry_exc)
+                failure.detail = (
+                    f"{failure.detail} Advisory retry without TLS certificate "
+                    f"verification also failed after: {exc}"
+                )
+                raise failure from retry_exc
+
+            retried["request_count"] = 2
+            retried["tls_certificate_warning"] = True
+            retried["tls_certificate_detail"] = tls_detail
+            return retried
+
+        raise probe_failure_for_exception(url, exc) from exc
 
 
 def decode_manifest(data: bytes) -> str:
@@ -261,8 +335,10 @@ def probe_hls(
     timeout: float,
     max_segment_tries: int,
 ) -> dict:
-    request_count = 1
+    request_count = int(first_response.get("request_count") or 1)
     redirected = first_response["final_url"] != url
+    tls_certificate_warning = bool(first_response.get("tls_certificate_warning"))
+    tls_certificate_detail = str(first_response.get("tls_certificate_detail") or "")
     manifest_url = first_response["final_url"]
     manifest_text = decode_manifest(first_response["data"])
 
@@ -293,7 +369,13 @@ def probe_hls(
                     timeout=timeout,
                     max_bytes=512 * 1024,
                 )
-                request_count += 1
+                request_count += int(response.get("request_count") or 1)
+                if response.get("tls_certificate_warning"):
+                    tls_certificate_warning = True
+                    tls_certificate_detail = (
+                        tls_certificate_detail
+                        or str(response.get("tls_certificate_detail") or "")
+                    )
                 candidate = decode_manifest(response["data"])
                 if candidate.lstrip().startswith("#EXTM3U"):
                     redirected = redirected or response["final_url"] != variant_url
@@ -339,7 +421,13 @@ def probe_hls(
                 max_bytes=64 * 1024,
                 range_request=True,
             )
-            request_count += 1
+            request_count += int(response.get("request_count") or 1)
+            if response.get("tls_certificate_warning"):
+                tls_certificate_warning = True
+                tls_certificate_detail = (
+                    tls_certificate_detail
+                    or str(response.get("tls_certificate_detail") or "")
+                )
             redirected = redirected or response["final_url"] != segment_url
             if response["data"] and not is_html_payload(response["data"]):
                 return {
@@ -350,6 +438,8 @@ def probe_hls(
                     "detail": "HLS manifest and media segment loaded successfully.",
                     "final_url": first_response["final_url"],
                     "http_status": first_response["status"],
+                    "tls_certificate_warning": tls_certificate_warning,
+                    "tls_certificate_detail": tls_certificate_detail,
                 }
             failures.append(f"{segment_url}: empty/HTML payload")
         except ProbeFailure as exc:
@@ -396,15 +486,27 @@ def probe_stream(
             result = {
                 "playable": True,
                 "redirected": first["final_url"] != url,
-                "request_count": 1,
+                "request_count": int(first.get("request_count") or 1),
                 "probe_type": "Direct",
                 "detail": "Direct stream returned bytes successfully.",
                 "final_url": first["final_url"],
                 "http_status": first["status"],
+                "tls_certificate_warning": bool(first.get("tls_certificate_warning")),
+                "tls_certificate_detail": str(first.get("tls_certificate_detail") or ""),
             }
 
         startup_seconds = round(time.monotonic() - started, 3)
-        if startup_seconds >= slow_start_seconds:
+        if result.get("tls_certificate_warning"):
+            status = "TLS certificate warning"
+            tls_detail = str(result.get("tls_certificate_detail") or "").strip()
+            playable_detail = str(result.get("detail") or "").strip()
+            result["detail"] = (
+                "Playable after an advisory retry without TLS certificate "
+                "verification. "
+                + playable_detail
+                + (f" Original TLS error: {tls_detail}" if tls_detail else "")
+            ).strip()
+        elif startup_seconds >= slow_start_seconds:
             status = "Slow startup"
         elif result["redirected"]:
             status = "Redirected"
@@ -429,6 +531,8 @@ def probe_stream(
             "detail": exc.detail,
             "final_url": url,
             "http_status": exc.http_status,
+            "tls_certificate_warning": False,
+            "tls_certificate_detail": "",
         }
 
 
@@ -511,6 +615,8 @@ def apply_history(
         "http_status": probe.get("http_status"),
         "request_count": int(probe.get("request_count") or 0),
         "detail": probe.get("detail", ""),
+        "tls_certificate_warning": bool(probe.get("tls_certificate_warning")),
+        "tls_certificate_detail": str(probe.get("tls_certificate_detail") or ""),
         "checked_at": checked_at,
         "last_success_at": (
             checked_at if success else (previous or {}).get("last_success_at")
@@ -567,6 +673,8 @@ def build_report(
                     "http_status": None,
                     "request_count": 0,
                     "detail": f"Unexpected checker error: {exc}",
+                    "tls_certificate_warning": False,
+                    "tls_certificate_detail": "",
                 }
 
             prior = prior_index.get(
@@ -594,6 +702,11 @@ def build_report(
             "failure_2": "warning",
             "failure_3_plus": "needs manual retest",
             "automatic_rejection": False,
+            "tls_certificate_retry": (
+                "Certificate-verification failures may be retried without certificate "
+                "verification only to classify advisory playability; a successful retry "
+                "is reported as TLS certificate warning and is never manual verification."
+            ),
         },
         "settings": {
             "workers": max(1, workers),
