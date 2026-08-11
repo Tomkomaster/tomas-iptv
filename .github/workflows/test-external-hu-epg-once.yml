@@ -22,8 +22,25 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl -fLsS 'https://www.free-epg.de/api/epg/hu.xml.gz' -o /tmp/hu.xml.gz
-          gzip -dc /tmp/hu.xml.gz > /tmp/hu.xml
+          curl -fLsS 'https://www.free-epg.de/api/epg/hu.xml.gz' -o /tmp/hu.download
+
+          python3 - <<'PY'
+          import gzip
+          from pathlib import Path
+
+          source = Path('/tmp/hu.download').read_bytes()
+          print('download bytes:', len(source))
+          print('magic:', source[:16])
+          if source.startswith(b'\x1f\x8b'):
+              data = gzip.decompress(source)
+              print('transport: gzip')
+          else:
+              data = source
+              print('transport: plain')
+          Path('/tmp/hu.xml').write_bytes(data)
+          print('xml bytes:', len(data))
+          print('xml prefix:', data[:120])
+          PY
 
           python3 - <<'PY'
           import re
@@ -66,8 +83,6 @@ jobs:
               if m:
                   dates[m.group(1)] += 1
 
-          print('download bytes gz:', Path('/tmp/hu.xml.gz').stat().st_size)
-          print('xml bytes:', Path('/tmp/hu.xml').stat().st_size)
           print('feed channels:', len(channel_ids))
           print('feed programmes:', len(programme_ids))
           print('playlist ids:', len(playlist))
