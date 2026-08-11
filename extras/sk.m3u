@@ -193,8 +193,9 @@ https://dash3.antik.sk/live/test_skvele_tv_fhd/playlist.m3u8
 #EXTINF:-1 tvg-name="TV Piánko",TV Piánko
 http://budapest-cache-1.antik.sk/live/test_pianko/playlist.m3u8
 
-# BTV HD ALT — IDENTIFY THIS CHANNEL
-#EXTINF:-1 tvg-name="BTV HD ALT - IDENTIFY",BTV HD ALT
+# Bardejovská TV — Kabelko HTTPS alternative
+# Identity of former "BTV HD ALT" resolved
+#EXTINF:-1 tvg-id="BTV.sk" tvg-name="Bardejovská TV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Bardejovská TV - KABELKO TEST
 https://fs3.kabelko.sk/9011/index.m3u8?token=btv
 
 # JOJ Šport 2 — Antik direct candidate
@@ -349,3 +350,30 @@ https://dash2.antik.sk/live/test_360_tunebox_medium_atk/playlist.m3u8
 # Test before keeping
 #EXTINF:-1 tvg-id="TVSeverka.sk" tvg-name="TV Severka" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Severka - PANACCESS TEST
 https://cdnsk003.panaccess.com/local/Severka/index.m3u8
+
+# Televízia Slovensko
+# Current Antik/WebTV identity of the former zstv slot
+#EXTINF:-1 tvg-name="Televízia Slovensko" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Televízia Slovensko
+https://dash2.antik.sk/live/test_zapadoslovenska/playlist.m3u8
+
+# Godzone TV — old Rebit tv_vita slot
+# LOW CONFIDENCE / IDENTIFY
+#EXTINF:-1 tvg-name="Godzone TV - REBIT IDENTIFY" tvg-country="SK" tvg-language="Slovak" group-title="Religious",Godzone TV - REBIT IDENTIFY
+http://46.36.41.106:8888/rebit/177.m3u8
+
+# TV Kežmarok — current Antik/WebTV feed
+# Old internal slot name is tv_severka
+#EXTINF:-1 tvg-name="TV Kežmarok" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Kežmarok - ANTIK TEST
+https://dash2.antik.sk/live/test_severka/playlist.m3u8
+
+# TV REGION — eastern Slovakia
+# NEW CHANNEL / LEGACY DIRECT HLS
+# Old public source; test before keeping
+#EXTINF:-1 tvg-name="TV REGION" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV REGION - LEGACY TEST
+http://88.212.10.27:81/streams/region.m3u8
+
+# JOJ +1
+# NEW CHANNEL — current service, legacy public Antik endpoint
+# LOW CONFIDENCE until manually tested
+#EXTINF:-1 tvg-name="JOJ +1" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",JOJ +1 - LEGACY ANTIK TEST
+http://88.202.231.174:80/live/joj_plus1_medium_atk/playlist.m3u8
