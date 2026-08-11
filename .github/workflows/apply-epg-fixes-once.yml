@@ -21,6 +21,24 @@ jobs:
       - name: Apply audited aliases and canonical IDs
         run: |
           set -euo pipefail
+          # The temporary helper embeds a generated test file. Fix the two
+          # nested triple-quote delimiters before executing the helper.
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('patch_epg_aliases_once.py')
+          text = p.read_text(encoding='utf-8')
+          text = text.replace(
+              "                '''<tv>\n",
+              '                """<tv>\n',
+              1,
+          )
+          text = text.replace(
+              "                </tv>''',\n",
+              '                </tv>""",\n',
+              1,
+          )
+          p.write_text(text, encoding='utf-8')
+          PY
           python3 patch_epg_aliases_once.py
           git diff --check
 
