@@ -49,6 +49,16 @@
 
   "audit_path": "audit.json",
 
+  "health": {
+    "enabled": true,
+    "output": "public/health.json",
+    "previous_url": "https://tomkomaster.github.io/tomas-iptv/health.json",
+    "workers": 8,
+    "timeout_seconds": 8,
+    "slow_start_seconds": 6,
+    "max_segment_tries": 2
+  },
+
   "epg": {
     "enabled": true,
     "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
