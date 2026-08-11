@@ -4394,7 +4394,7 @@
       "language": "Hungarian",
       "provenance": "Curated extras/hu.m3u candidate (manual playback review)",
       "discovery": "extras/hu.m3u manual candidate test",
-      "channel": "Pannon RTV [stream2 alternate] (648p)",
+      "channel": "TV Panon",
       "stream_url": "https://stream2.nmih.hu:4102/live.m3u8",
       "vlc": "works",
       "samsung": "works",
@@ -4405,8 +4405,9 @@
       "protocol": "HLS",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-10 manual test."
+      "notes": "Passed both manual playback tests. — Identity corrected from Pannon RTV alternate to current IPTV-org TV Panon for this exact stream URL.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-10 manual test.",
+      "tvg_id": "TVPanon.rs"
     },
     {
       "language": "Unknown",

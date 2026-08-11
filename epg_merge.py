@@ -35,6 +35,7 @@ HD_SUFFIX_RE = re.compile(
 )
 
 METHOD_RANK = {
+    "external_explicit_alias": 4,
     "external_exact_id": 3,
     "external_quality_id": 2,
     "external_unique_name": 1,
@@ -190,6 +191,7 @@ def is_fresh_programme(
 def build_external_mapping(
     playlist_rows: list[tuple[str, str]],
     external_root: ET.Element,
+    explicit_aliases: dict[str, str] | None = None,
 ) -> tuple[
     dict[str, dict[str, str]],
     list[dict[str, object]],
@@ -226,6 +228,36 @@ def build_external_mapping(
         str,
         list[dict[str, str]],
     ] = defaultdict(list)
+
+    playlist_id_set = {
+        tvg_id
+        for tvg_id, _
+        in playlist_rows
+    }
+    external_id_set = {
+        (channel.get("id") or "").strip()
+        for channel
+        in external_root.findall("channel")
+        if (channel.get("id") or "").strip()
+    }
+
+    # Explicit aliases are hand-audited identities. They intentionally outrank
+    # all generated matching methods. Missing historical aliases are ignored
+    # safely when either side is not present in the current inputs.
+    for target, external_id in (explicit_aliases or {}).items():
+        target = str(target or "").strip()
+        external_id = str(external_id or "").strip()
+        if (
+            not target
+            or not external_id
+            or target not in playlist_id_set
+            or external_id not in external_id_set
+        ):
+            continue
+        proposals[target].append({
+            "external_id": external_id,
+            "method": "external_explicit_alias",
+        })
 
     for channel in external_root.findall(
         "channel"
@@ -438,6 +470,7 @@ def merge_guides(
     preferred_iptv_provider: str = "mediaklikk.hu",
     reference_date: date | None = None,
     future_days: int = 7,
+    external_aliases: dict[str, str] | None = None,
 ) -> dict:
     if reference_date is None:
         reference_date = datetime.now(
@@ -546,6 +579,7 @@ def merge_guides(
             ) = build_external_mapping(
                 playlist_rows,
                 external_root,
+                explicit_aliases=external_aliases,
             )
             external_channels = channel_index(
                 external_root
@@ -983,6 +1017,9 @@ def merge_guides(
                     in external_mapping.values()
                 }
             ),
+            "explicit_aliases_configured": len(
+                external_aliases or {}
+            ),
             "ambiguous": (
                 external_ambiguous
             ),
@@ -1050,6 +1087,56 @@ def merge_guides(
     return report
 
 
+def load_external_aliases(
+    path: Path | None,
+    external_provider: str,
+) -> dict[str, str]:
+    if path is None or not path.is_file():
+        return {}
+
+    data = json.loads(
+        path.read_text(encoding="utf-8")
+    )
+    if not isinstance(data, dict):
+        raise RuntimeError(
+            "EPG alias file must contain a JSON object."
+        )
+
+    provider = str(
+        data.get("provider") or ""
+    ).strip()
+    if (
+        provider
+        and provider != external_provider
+    ):
+        raise RuntimeError(
+            "EPG alias provider mismatch: "
+            f"{provider!r} != {external_provider!r}"
+        )
+
+    raw_aliases = data.get("aliases") or {}
+    if not isinstance(raw_aliases, dict):
+        raise RuntimeError(
+            "EPG alias file 'aliases' must be a JSON object."
+        )
+
+    aliases: dict[str, str] = {}
+    for raw_target, raw_external in raw_aliases.items():
+        target = str(raw_target or "").strip()
+        external_id = str(raw_external or "").strip()
+        if not target or not external_id:
+            raise RuntimeError(
+                "EPG aliases may not contain blank IDs."
+            )
+        if target in aliases:
+            raise RuntimeError(
+                f"Duplicate EPG alias target: {target}"
+            )
+        aliases[target] = external_id
+
+    return aliases
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
@@ -1082,6 +1169,15 @@ def main() -> None:
         default="epgshare01.online",
     )
     parser.add_argument(
+        "--aliases",
+        type=Path,
+        default=Path("epg_aliases.json"),
+        help=(
+            "Optional explicit external-ID alias file. "
+            "Defaults to epg_aliases.json when present."
+        ),
+    )
+    parser.add_argument(
         "--preferred-iptv-provider",
         default="mediaklikk.hu",
     )
@@ -1106,6 +1202,11 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    external_aliases = load_external_aliases(
+        args.aliases,
+        args.external_provider,
+    )
+
     merge_guides(
         playlist_path=args.playlist,
         iptv_guide_path=args.iptv_guide,
@@ -1118,6 +1219,7 @@ def main() -> None:
             args.future_days,
             0,
         ),
+        external_aliases=external_aliases,
         output_path=args.output,
         report_path=args.report,
     )

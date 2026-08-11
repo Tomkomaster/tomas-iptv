@@ -3,11 +3,11 @@
 # Status prefixes and Feed labels are applied automatically from audit.json.
 
 # Nyíregyházi Televízió — manually verified on VLC + Samsung
-#EXTINF:-1 tvg-name="Nyíregyházi Televízió",Nyíregyházi Televízió (1080p)
+#EXTINF:-1 tvg-id="NYTV.hu" tvg-name="Nyíregyházi Televízió",Nyíregyházi Televízió (1080p)
 https://nytvlive.hu:443/nytv/playlist.m3u8
 
 # Halom TV — manually verified on VLC + Samsung
-#EXTINF:-1 tvg-name="Halom TV",Halom TV (540p)
+#EXTINF:-1 tvg-id="HalomTV.hu" tvg-name="Halom TV",Halom TV (540p)
 http://212.92.13.108:8080/live/livestream1.m3u8
 
 # Classics TV — manually verified on VLC + Samsung
@@ -26,11 +26,11 @@ https://cloudfront41.lexanetwork.com:1344/xrelay/loverseny2.sdp/playlist.m3u8
 # ============================================================
 
 # Debrecen Televízió
-#EXTINF:-1 tvg-name="Debrecen Televízió",Debrecen Televízió (720p)
+#EXTINF:-1 tvg-id="DTV.hu" tvg-name="DTV",DTV / Debrecen Televízió (720p)
 https://cloudfront44.lexanetwork.com:1344/relay44_1/livestream002.sdp/playlist.m3u8
 
 # Cegléd Városi TV
-#EXTINF:-1 tvg-name="Cegléd Városi TV",Cegléd Városi TV (360p)
+#EXTINF:-1 tvg-id="CeglediVarosiTelevizio.hu" tvg-name="Cegléd Városi TV",Cegléd Városi TV (360p)
 https://cloudfront44.lexanetwork.com:1344/relay01/HDE031.sdp/playlist.m3u8
 
 # BTKT TV — candidate feed 1
@@ -54,7 +54,7 @@ http://s02.diazol.hu:10192/stream.m3u8
 http://1music.hu/1music.m3u8
 
 # TV13 — Budapest XIII local television; current direct HLS candidate
-#EXTINF:-1 tvg-name="TV13",TV13 (720p)
+#EXTINF:-1 tvg-id="TV13.hu" tvg-name="TV13",TV13 (720p)
 https://tv13.medialivecdn.hu:443/tv13/3e4c201d9e403330d294e24760e49164.sdp/playlist.m3u8
 
 # Orosházi Városi Televízió — current direct HLS candidate
@@ -331,11 +331,11 @@ https://cam.idokep.hu:443/live/kvaczko/index.m3u8
 https://ythls.onrender.com/video/1QLOv4MnLCM.m3u8
 
 # Ózdi Városi Televízió — newer current HTTPS endpoint; IPTV-org currently carries an older HTTP :7980 feed
-#EXTINF:-1 tvg-name="Ózdi Városi TV",Ózdi Városi TV [HTTPS alternate] (720p)
+#EXTINF:-1 tvg-id="OzdiVarosiTV.hu" tvg-name="Ózdi Városi TV",Ózdi Városi TV [HTTPS alternate] (720p)
 https://stream.nmih.hu:7982/live.m3u8
 
 # Pannon RTV — current alternate server; IPTV-org currently carries stream.nmih.hu
-#EXTINF:-1 tvg-name="Pannon RTV",Pannon RTV [stream2 alternate] (648p)
+#EXTINF:-1 tvg-id="TVPanon.rs" tvg-name="TV Panon",TV Panon (648p)
 https://stream2.nmih.hu:4102/live.m3u8
 
 # Hódmezővásárhely-Kertváros — native direct Időkép HLS
