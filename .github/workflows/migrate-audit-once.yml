@@ -6,6 +6,7 @@ on:
       - agent/audit-epg-health
     paths:
       - "migrate_audit.py"
+      - "migrate_builder_warnings.py"
       - ".github/workflows/migrate-audit-once.yml"
 
 permissions:
@@ -23,13 +24,30 @@ jobs:
         run: python3 -m unittest discover -s tests -v
 
       - name: Build current playlist inventory
-        run: python3 build.py
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 build.py 2>&1 | tee .audit-build.log
 
       - name: Migrate safe legacy audit rows
         run: python3 migrate_audit.py --write
 
+      - name: Migrate builder-confirmed legacy rows
+        run: |
+          python3 migrate_builder_warnings.py \
+            --build-log .audit-build.log \
+            --write
+
       - name: Validate migrated audit strictly
-        run: python3 build.py --strict
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 build.py --strict 2>&1 | tee .strict-build.log
+
+          if grep -q "legacy channel-level audit still matches one current feed" .strict-build.log; then
+            echo "Legacy one-feed audit warnings remain after migration."
+            exit 1
+          fi
 
       - name: Commit migrated audit
         shell: bash
@@ -47,5 +65,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add audit.json
-          git commit -m "Migrate legacy audit rows to exact streams"
+          git commit -m "Finish legacy audit stream migration"
           git push
