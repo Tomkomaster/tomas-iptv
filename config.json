@@ -6,12 +6,15 @@
     "SK": "Slovakia",
     "CZ": "Czechia"
   },
+  
   "output": "public/tv.m3u",
   "test_output": "public/test.m3u",
-  "country_outputs": {
-    "HU": "public/hu.m3u",
-    "SK": "public/sk.m3u"
-  },
+  
+"country_outputs": {
+  "HU": "public/hu.m3u",
+  "SK": "public/sk.m3u",
+  "CZ": "public/cz.m3u"
+},
   "stable_playlist": {
     "allowed_decisions": [
       "Verified",
@@ -90,6 +93,18 @@
       "language_code": "SK",
       "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sk.m3u"
     },
+	{
+  "name": "IPTV-org Czechia",
+  "kind": "base",
+  "language_code": "CZ",
+  "url": "https://iptv-org.github.io/iptv/countries/cz.m3u"
+},
+{
+  "name": "IPTV-org Czechia raw alternatives",
+  "kind": "alternatives",
+  "language_code": "CZ",
+  "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cz.m3u"
+},
     {
       "name": "IPTV-org Hungarian language",
       "kind": "alternatives",
@@ -102,25 +117,49 @@
       "language_code": "SK",
       "url": "https://iptv-org.github.io/iptv/languages/slk.m3u"
     },
+	{
+  "name": "IPTV-org Czech language",
+  "kind": "alternatives",
+  "language_code": "CZ",
+  "url": "https://iptv-org.github.io/iptv/languages/ces.m3u"
+},
     {
       "name": "IPTV-org Slovakia country",
       "kind": "alternatives",
       "language_code": "SK",
       "url": "https://iptv-org.github.io/iptv/countries/sk.m3u"
+    },
+	    {
+      "name": "IPTV-org Hungary country",
+      "kind": "alternatives",
+      "language_code": "HU",
+      "url": "https://iptv-org.github.io/iptv/countries/hu.m3u"
+    },
+	    {
+      "name": "IPTV-org Czech country",
+      "kind": "alternatives",
+      "language_code": "CZ",
+      "url": "https://iptv-org.github.io/iptv/countries/cz.m3u"
     }
   ],
-  "extras": [
-    {
-      "name": "Our Hungarian test/verified extras",
-      "kind": "extras",
-      "language_code": "HU",
-      "path": "extras/hu.m3u"
-    },
-    {
-      "name": "Our Slovak test/verified extras",
-      "kind": "extras",
-      "language_code": "SK",
-      "path": "extras/sk.m3u"
-    }
-  ]
+"extras": [
+  {
+    "name": "Our Hungarian test/verified extras",
+    "kind": "extras",
+    "language_code": "HU",
+    "path": "extras/hu.m3u"
+  },
+  {
+    "name": "Our Slovak test/verified extras",
+    "kind": "extras",
+    "language_code": "SK",
+    "path": "extras/sk.m3u"
+  },
+  {
+    "name": "Our Czech test/verified extras",
+    "kind": "extras",
+    "language_code": "CZ",
+    "path": "extras/cz.m3u"
+  }
+]
 }
