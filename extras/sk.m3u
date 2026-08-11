@@ -194,15 +194,15 @@ https://dash3.antik.sk/live/test_skvele_tv_fhd/playlist.m3u8
 http://budapest-cache-1.antik.sk/live/test_pianko/playlist.m3u8
 
 # BTV HD ALT — IDENTIFY THIS CHANNEL
-#EXTINF:-1 tvg-name="BTV HD ALT - IDENTIFY",BTV HD ALT - IDENTIFY
+#EXTINF:-1 tvg-name="BTV HD ALT - IDENTIFY",BTV HD ALT
 https://fs3.kabelko.sk/9011/index.m3u8?token=btv
 
 # JOJ Šport 2 — Antik direct candidate
-#EXTINF:-1 tvg-name="JOJ Šport 2" group-title="Slovakia Test",JOJ Šport 2 - ANTIK TEST
+#EXTINF:-1 tvg-name="JOJ Šport 2 ANTIK TEST" group-title="Slovakia Test",JOJ Šport 2
 http://88.212.15.47/live/joj_sport_2_avc/index.m3u8
 
 # JOJ Šport 2 — REBIT direct candidate, Jan 2026
-#EXTINF:-1 tvg-name="JOJ Šport 2" group-title="Slovakia Test",JOJ Šport 2 - REBIT TEST
+#EXTINF:-1 tvg-name="JOJ Šport 2 REBIT TEST" group-title="Slovakia Test",JOJ Šport 2
 http://46.36.41.106:8888/rebit/80.m3u8
 
 # Prima SK — REBIT candidate
@@ -263,7 +263,7 @@ https://dash3.antik.sk/live/tv_reduta/playlist.m3u8
 
 # Mestská TV Košice — Antik HTTPS alternative
 # Current extras has streaming.sk / TV Nasa candidate
-#EXTINF:-1 tvg-name="Mestská TV Košice" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská TV Košice - ANTIK TEST
+#EXTINF:-1 tvg-name="Mestská TV Košice ANTIK TEST" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská TV Košice
 https://dash2.antik.sk/live/test_mtv_kosice/playlist.m3u8
 
 # TV Zemplín — Antik HTTPS alternative
@@ -296,22 +296,22 @@ https://app.viloud.tv/hls/channel/04e456809c83928443e59f0a2fce8610.m3u8
 
 # JOJ Šport 2 — DIRECT JOJ CDN
 # Better candidate than Antik/Rebit if it works
-#EXTINF:-1 tvg-id="JOJSport2.sk" tvg-name="JOJ Šport 2" tvg-country="SK" tvg-language="Slovak" group-title="Sports",JOJ Šport 2 - JOJ CDN TEST
+#EXTINF:-1 tvg-id="JOJSport2.sk" tvg-name="JOJ Šport 2 JOJ CDN TEST" tvg-country="SK" tvg-language="Slovak" group-title="Sports",JOJ Šport 2
 https://live.cdn.joj.sk/live/andromeda/joj_sport2-1080.m3u8
 
 # Jojko — direct JOJ broadcaster CDN, 1080p
 # Alternative to current Antik feed
-#EXTINF:-1 tvg-id="Jojko.sk" tvg-name="Jojko" tvg-country="SK" tvg-language="Slovak" group-title="Kids",Jojko - JOJ CDN TEST
+#EXTINF:-1 tvg-id="Jojko.sk" tvg-name="Jojko JOJ CDN TEST" tvg-country="SK" tvg-language="Slovak" group-title="Kids",Jojko
 https://live.cdn.joj.sk/live/andromeda/jojko-1080.m3u8
 
 # JOJ Cinema — direct JOJ CDN
 # Alternative to current Rebit feed
-#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema" tvg-country="SK" group-title="Movies",JOJ Cinema - JOJ CDN TEST
+#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema JOJ CDN TEST" tvg-country="SK" group-title="Movies",JOJ Cinema
 https://live.cdn.joj.sk/live/andromeda/cinema-1080.m3u8
 
 # TV NRSR — JOJ CDN alternative
 # Existing channel, NEW feed candidate
-#EXTINF:-1 tvg-id="TVNRSR.sk" tvg-name="TV NRSR" tvg-country="SK" tvg-language="Slovak" group-title="News",TV NRSR - JOJ CDN TEST
+#EXTINF:-1 tvg-id="TVNRSR.sk" tvg-name="TV NRSR JOJ CDN TEST" tvg-country="SK" tvg-language="Slovak" group-title="News",TV NRSR
 https://live.cdn.joj.sk/live/andromeda/nrsr/live.m3u8
 
 # TV Bratislava — Panaccess HTTPS
