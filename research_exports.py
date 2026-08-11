@@ -3,9 +3,18 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+
+from research_priority import (
+    PRIORITY_ORDER,
+    compile_research_priority_policy,
+    priority_rank,
+    resolve_research_priority,
+)
 
 
 TESTED_STATUSES = {
@@ -164,6 +173,15 @@ def derive_channel_status(rows: list[dict[str, str]]) -> str:
     return "NOT RESEARCHED"
 
 
+def work_type_for_status(status: str) -> str:
+    return {
+        "PARTIAL": "Finish compatibility",
+        "CANDIDATES TO TEST": "Test candidates",
+        "NOT RESEARCHED": "Find first candidate",
+        "NO WORKING FEED": "Hunt new source",
+    }.get(status, "Review")
+
+
 def latest_test_date(rows: list[dict[str, str]]) -> str:
     values = sorted(
         {
@@ -281,13 +299,20 @@ def make_research_rows(
 
 def make_missing_rows(
     grouped: dict[str, list[dict[str, str]]],
+    *,
+    priority_policy: dict | None = None,
 ) -> list[dict[str, object]]:
     output: list[dict[str, object]] = []
+    compiled_priority = compile_research_priority_policy(priority_policy)
 
     for rows in grouped.values():
         status = derive_channel_status(rows)
         if status == "WORKING":
             continue
+
+        country = row_country(rows[0]) if rows else "UNKNOWN"
+        channel = display_channel(rows)
+        tvg_id = display_tvg_id(rows)
 
         current = [row for row in rows if is_current(row)]
         tested = [
@@ -330,29 +355,37 @@ def make_missing_rows(
         else:
             next_action = "Hunt for a new source/feed."
 
-        output.append(
-            {
-                "country": row_country(rows[0]) if rows else "UNKNOWN",
-                "channel": display_channel(rows),
-                "status": status,
-                "tvg_id": display_tvg_id(rows),
-                "known_feeds": len(rows),
-                "current_candidates": len(current),
-                "tested_feeds": len(tested),
-                "fully_tested_feeds": len(fully_tested),
-                "followup_candidates": len(followup),
-                "rejected_feeds": len(rejected),
-                "unique_sources": len(sources),
-                "sources": " | ".join(sources),
-                "last_tested": latest_test_date(rows),
-                "next_action": next_action,
-            }
-        )
+        missing_row = {
+            "country": country,
+            "channel": channel,
+            "status": status,
+            "tvg_id": tvg_id,
+            "known_feeds": len(rows),
+            "current_candidates": len(current),
+            "tested_feeds": len(tested),
+            "fully_tested_feeds": len(fully_tested),
+            "followup_candidates": len(followup),
+            "rejected_feeds": len(rejected),
+            "unique_sources": len(sources),
+            "sources": " | ".join(sources),
+            "last_tested": latest_test_date(rows),
+            "next_action": next_action,
+            "work_type": work_type_for_status(status),
+        }
+        priority = resolve_research_priority(missing_row, compiled_priority)
+        missing_row.update({
+            "priority": priority["priority"],
+            "priority_label": priority["label"],
+            "priority_reason": priority["reason"],
+            "priority_match": priority["matched_by"],
+        })
+        output.append(missing_row)
 
     output.sort(
         key=lambda row: (
-            str(row["country"]),
+            priority_rank(row.get("priority")),
             STATUS_ORDER.get(str(row["status"]), 99),
+            str(row["country"]),
             normalize_name(row["channel"]),
         )
     )
@@ -459,7 +492,7 @@ def inject_dashboard_links(index_path: Path) -> None:
             marker,
             '    <a href="research.csv">Research ledger (CSV)</a>',
             '    <a href="research.md">Research ledger (Markdown)</a>',
-            '    <a href="missing.csv">Channels needing attention (CSV)</a>',
+            '    <a href="missing.csv">Prioritized research work queue (CSV)</a>',
         ]
     )
 
@@ -471,12 +504,26 @@ def inject_dashboard_links(index_path: Path) -> None:
     index_path.write_text(text.replace(marker, replacement, 1), encoding="utf-8")
 
 
-def generate_exports(public_dir: Path, generated_at: str | None = None) -> dict[str, int]:
+def load_priority_policy(path: Path | None) -> dict:
+    if path is None or not path.is_file():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def generate_exports(
+    public_dir: Path,
+    generated_at: str | None = None,
+    *,
+    priority_policy: dict | None = None,
+) -> dict[str, object]:
     public_dir = Path(public_dir)
     audit_rows = load_audit_rows(public_dir / "audit.csv")
     grouped = group_channels(audit_rows)
     research_rows = make_research_rows(grouped)
-    missing_rows = make_missing_rows(grouped)
+    missing_rows = make_missing_rows(
+        grouped,
+        priority_policy=priority_policy,
+    )
 
     generated_at = generated_at or datetime.now(timezone.utc).strftime(
         "%Y-%m-%d %H:%M:%S UTC"
@@ -516,7 +563,12 @@ def generate_exports(public_dir: Path, generated_at: str | None = None) -> dict[
         [
             "country",
             "channel",
+            "priority",
+            "work_type",
             "status",
+            "priority_label",
+            "priority_reason",
+            "priority_match",
             "tvg_id",
             "known_feeds",
             "current_candidates",
@@ -539,10 +591,15 @@ def generate_exports(public_dir: Path, generated_at: str | None = None) -> dict[
 
     inject_dashboard_links(public_dir / "index.html")
 
+    priority_counts = Counter(str(row.get("priority") or "") for row in missing_rows)
     return {
         "channels": len(grouped),
         "research_rows": len(research_rows),
         "missing_channels": len(missing_rows),
+        "priority_counts": {
+            priority: priority_counts.get(priority, 0)
+            for priority in PRIORITY_ORDER
+        },
     }
 
 
@@ -555,14 +612,28 @@ def main() -> None:
         default="public",
         help="Generated public directory (default: public)",
     )
+    parser.add_argument(
+        "--priority-policy",
+        type=Path,
+        default=Path("research_priority.json"),
+        help="Research priority policy JSON (default: research_priority.json)",
+    )
     args = parser.parse_args()
 
-    stats = generate_exports(Path(args.public_dir))
+    stats = generate_exports(
+        Path(args.public_dir),
+        priority_policy=load_priority_policy(args.priority_policy),
+    )
     print(
         "Research exports complete: "
         f"{stats['channels']} channels, "
         f"{stats['research_rows']} feed/history rows, "
         f"{stats['missing_channels']} channels needing attention."
+    )
+    priorities = stats["priority_counts"]
+    print(
+        "Research priorities: "
+        + ", ".join(f"{priority} {priorities[priority]}" for priority in PRIORITY_ORDER)
     )
 
 

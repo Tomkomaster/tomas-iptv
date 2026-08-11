@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "default_priority": "P3",
+  "priority_labels": {
+    "P1": "Major national channels",
+    "P2": "Major thematic / sports / movie channels",
+    "P3": "Regional / local channels",
+    "P4": "Web / niche / low-value channels",
+    "P5": "Probably not worth pursuing"
+  },
+  "entries": [
+    {
+      "country": "HU",
+      "channel": "Hir TV",
+      "priority": "P1",
+      "reason": "Major national news channel."
+    },
+    {
+      "country": "SK",
+      "channel": "TA3",
+      "priority": "P1",
+      "reason": "Major national news channel."
+    },
+    {
+      "country": "SK",
+      "channel": "TV JOJ",
+      "priority": "P1",
+      "reason": "Major national general-entertainment channel."
+    },
+    {
+      "country": "SK",
+      "channel": "Prima SK",
+      "priority": "P1",
+      "reason": "Major mainstream general-entertainment channel for Slovakia."
+    },
+    {
+      "country": "SK",
+      "channel": "Retro Music Television",
+      "priority": "P2",
+      "reason": "Established thematic music channel; keep above generic music/web services."
+    },
+    {
+      "country": "SK",
+      "channel": "Film+",
+      "priority": "P2",
+      "reason": "Major movie/entertainment channel."
+    },
+    {
+      "country": "HU",
+      "channel": "Országgyűlés (Törvényalkotási bizottság)",
+      "priority": "P4",
+      "reason": "Parliamentary/event feed."
+    },
+    {
+      "country": "HU",
+      "channel": "Parlament TV [TEST]",
+      "priority": "P4",
+      "reason": "Parliamentary/event feed."
+    },
+    {
+      "country": "SK",
+      "channel": "TV NRSR",
+      "priority": "P4",
+      "reason": "Parliamentary/event feed."
+    },
+    {
+      "country": "HU",
+      "channel": "PestiSrácok TV",
+      "priority": "P4",
+      "reason": "Online/niche news channel."
+    },
+    {
+      "country": "HU",
+      "channel": "Neshama TV",
+      "priority": "P4",
+      "reason": "Niche/religious channel."
+    },
+    {
+      "country": "HU",
+      "channel": "Light Channel [HU] (720p candidate)",
+      "priority": "P4",
+      "reason": "Niche channel."
+    },
+    {
+      "country": "SK",
+      "channel": "Godzone TV",
+      "priority": "P4",
+      "reason": "Niche/religious channel."
+    },
+    {
+      "country": "HU",
+      "channel": "EBS",
+      "priority": "P4",
+      "reason": "Foreign/niche channel in the Hungarian-language research set."
+    },
+    {
+      "country": "HU",
+      "channel": "EBS Plus",
+      "priority": "P4",
+      "reason": "Foreign/niche channel in the Hungarian-language research set."
+    },
+    {
+      "country": "HU",
+      "channel": "RTG int.",
+      "priority": "P4",
+      "reason": "Foreign/niche channel in the Hungarian-language research set."
+    }
+  ],
+  "rules": [
+    {
+      "priority": "P5",
+      "contains_any": [
+        "Időkép Webcam",
+        "Webcam",
+        "Gólyakamera",
+        "Gólya kamera",
+        "Nest Cam",
+        "Animal Cam",
+        "City Cam",
+        "Identity check"
+      ],
+      "reason": "Camera/webcam or identity-check entry; usually not worth spending channel-hunting time on."
+    },
+    {
+      "priority": "P4",
+      "contains_any": [
+        "Religious",
+        "Visual Radio",
+        "Web TV",
+        "Online",
+        "Music",
+        "Muzika",
+        "Dance",
+        "Tanečné súťaže"
+      ],
+      "reason": "Web-only, religious, music/radio, event, or similarly niche service."
+    },
+    {
+      "priority": "P2",
+      "contains_any": [
+        "M4 Sport",
+        "BabyFirst",
+        "Love Nature",
+        "AXN Spin",
+        "AXN White",
+        "Disney Channel Feed 1",
+        "Euronews Hungarian",
+        "Nicktoons",
+        "The Fishing & Hunting Channel",
+        "STVR :O",
+        "AMC Europe Czech Republic",
+        "Barrandov Krimi",
+        "Canal+ Action Europe Czechia",
+        "Fashion TV Czech & Slovak",
+        "FILMBOX+ Comedy Czechia",
+        "FILMBOX+ Emotion Czechia",
+        "FILMBOX+ Hits Czechia",
+        "FILMBOX+ Love & Crime",
+        "FILMBOX+ One Czechia",
+        "JimJam Europe",
+        "JOJ 24",
+        "JOJ Cinema",
+        "JOJ Family",
+        "JOJ KRIMI",
+        "JOJ Plus",
+        "JOJ Šport",
+        "Jojko",
+        "Kino Barrandov",
+        "Minimax",
+        "Spektrum",
+        "Spektrum Home",
+        "Sport1",
+        "Sport2",
+        "Viasat Explore",
+        "Viasat History",
+        "Viasat Nature"
+      ],
+      "reason": "Major thematic, sports, movie, kids, news, or entertainment channel."
+    }
+  ]
+}
