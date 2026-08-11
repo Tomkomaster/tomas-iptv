@@ -13,7 +13,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/16tv.sdp/playlist.m3u8",
+      "tvg_id": "16tvBudapest.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "AMC Europe Hungary",
@@ -28,7 +31,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/amc_hun/index.m3u8",
+      "tvg_id": "AMCEurope.uk@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "Apostol TV",
@@ -43,7 +49,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://live.apostoltv.hu/live/playlist.m3u8",
+      "tvg_id": "ApostolTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "AXN CEE",
@@ -58,7 +67,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/axn_hun/index.m3u8",
+      "tvg_id": "AXNCEE.es@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "AXN White",
@@ -73,7 +85,10 @@
       "tested_on": "2026-08-09",
       "language_code": "DE",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8",
+      "tvg_id": "AXNWhite.us@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Bajai TV",
@@ -88,7 +103,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay01/livestream002.sdp/playlist.m3u8",
+      "tvg_id": "BajaiTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Balaton TV (432p)",
@@ -103,7 +121,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://stream.iptvservice.eu/hls/balatontv.m3u8",
+      "tvg_id": "BalatonTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Budapest Európa Televízió",
@@ -141,36 +162,6 @@
       "discovery": "Current IPTV-org Hungary playlist/manual test"
     },
     {
-      "channel": "Csurgo TV",
-      "vlc": "works",
-      "samsung": "works",
-      "vlc_note": "ok",
-      "samsung_note": "ok",
-      "language": "Hungarian",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "Passed both manual playback tests.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
-      "channel": "Daru TV",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
       "channel": "Dikh TV",
       "vlc": "works",
       "samsung": "works",
@@ -183,7 +174,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/dikh/index.m3u8",
+      "tvg_id": "DikhTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "DTV",
@@ -216,7 +210,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/duna_hun/index.m3u8",
+      "tvg_id": "Duna.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Euronews Hungarian",
@@ -247,7 +244,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://dash2.antik.sk/live/ewtn_bonum/index.m3u8",
+      "tvg_id": "EWTNBonumTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Fehérvár TV",
@@ -281,7 +281,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_fem3_atktv/playlist.m3u8",
+      "tvg_id": "FEM3.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Film+",
@@ -312,7 +315,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/film_cafe/index.m3u8",
+      "tvg_id": "FilmCafe.hu@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "Film4",
@@ -327,7 +333,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/film4_hun/index.m3u8",
+      "tvg_id": "Film4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ Comedy Magyar & Romania",
@@ -342,7 +351,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_family_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "FILMBOXPlusComedy.pl@MagyarRomania",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ Emotion Hungary",
@@ -357,7 +369,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_extra_hd_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "FILMBOXPlusEmotion.pl@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ Hits Hungary",
@@ -372,7 +387,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/fb_premium_hungary/index.m3u8",
+      "tvg_id": "FILMBOXPlusHits.pl@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ One Magyar",
@@ -387,7 +405,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_plus_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "FILMBOXPlusOne.pl@Magyar",
+      "protocol": "HLS"
     },
     {
       "channel": "Fix TV",
@@ -421,22 +442,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
-      "channel": "Gran TV",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://budapest-cache-1.antik.sk/live/test_galaxy_4_atk_1200/playlist.m3u8",
+      "tvg_id": "Galaxy4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "H!T Music Channel",
@@ -489,7 +498,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/history_hun/index.m3u8",
+      "tvg_id": "History.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Hévízi TV",
@@ -504,7 +516,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay03/livestream003.sdp/playlist.m3u8",
+      "tvg_id": "HeviziTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Izaura TV",
@@ -519,7 +534,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/izaura/index.m3u8",
+      "tvg_id": "IzauraTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Jocky TV",
@@ -534,22 +552,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
-      "channel": "Jászsági Térségi TV (440p)",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/jocky/index.m3u8",
+      "tvg_id": "JockyTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Kanizsa TV (400p)",
@@ -564,7 +570,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/kanizsavtv.sdp/playlist.m3u8",
+      "tvg_id": "KanizsaTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Karcag TV",
@@ -579,7 +588,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay03/livestream003.sdp/playlist.m3u8",
+      "tvg_id": "KarcagTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Kiskőrös TV",
@@ -613,22 +625,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
-      "channel": "Komáromi Televízió (400p)",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/kolyokklub_atk/index.m3u8",
+      "tvg_id": "Kolyokklub.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Liceum TV",
@@ -643,7 +643,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://193.225.32.62:8890/live.m3u8",
+      "tvg_id": "LiceumTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Life TV",
@@ -658,7 +661,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/lifetv/index.m3u8",
+      "tvg_id": "LifeTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "M1 HD",
@@ -673,7 +679,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_m_1_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "M1.hu@HD",
+      "protocol": "HLS"
     },
     {
       "channel": "M2",
@@ -688,7 +697,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/m2_hun/index.m3u8",
+      "tvg_id": "M2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "M5",
@@ -703,7 +715,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_m_5_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "M5.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Magyar Mozi TV",
@@ -718,7 +733,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/mozi/index.m3u8",
+      "tvg_id": "MagyarMoziTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Minimax",
@@ -749,7 +767,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/mozi_plusz/index.m3u8",
+      "tvg_id": "MoziPlus.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Moziklub",
@@ -764,7 +785,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/moziklub_atk/index.m3u8",
+      "tvg_id": "Moziklub.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Moziverzum",
@@ -779,7 +803,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/moziverzum/index.m3u8",
+      "tvg_id": "Moziverzum.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Muzsika TV",
@@ -794,7 +821,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_muzsika_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "MuzsikaTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Móra-Net TV",
@@ -809,7 +839,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://stream.moranettv.hu/live/index.m3u8",
+      "tvg_id": "MoraNetTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "National Geographic",
@@ -824,7 +857,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/ngc_hun/index.m3u8",
+      "tvg_id": "NationalGeographic.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "National Geographic Wild",
@@ -839,7 +875,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/ngw_hun/index.m3u8",
+      "tvg_id": "NationalGeographicWild.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Nick Jr.",
@@ -854,7 +893,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/nick_junior_hun/index.m3u8",
+      "tvg_id": "NickJr.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Nickelodeon",
@@ -869,7 +911,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_nickelodeon_hu_1200_atk/playlist.m3u8",
+      "tvg_id": "Nickelodeon.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Nicktoons",
@@ -902,7 +947,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast002.sdp/playlist.m3u8",
+      "tvg_id": "OroszlanyiVarosiTelevizio.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Ozone TV",
@@ -917,7 +965,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/ozone/index.m3u8",
+      "tvg_id": "OzoneTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Prime",
@@ -932,7 +983,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/prime/index.m3u8",
+      "tvg_id": "Prime.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL",
@@ -947,7 +1001,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_rtl_klub_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTL.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Gold",
@@ -962,7 +1019,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://budapest-cache-1.antik.sk/live/test_film_plus_2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTLGold.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Harom",
@@ -977,7 +1037,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_rtl_plus_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTLHarom.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Ketto",
@@ -992,7 +1055,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_rtl2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTLKetto.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Otthon",
@@ -1007,7 +1073,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/rtl_otthon_atk/index.m3u8",
+      "tvg_id": "RTLOtthon.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Régió TV (406p)",
@@ -1022,7 +1091,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://tv.geniusnet.sk:8081/regiotv/pl.m3u8",
+      "tvg_id": "RegioTV.sk@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "SIXO TV",
@@ -1037,7 +1109,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/HDE038.sdp/playlist.m3u8",
+      "tvg_id": "SIXOTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Slager TV",
@@ -1052,22 +1127,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
-      "channel": "Soltvadkerti Televízió",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_slager_tv_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "SlagerTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Sorozat+",
@@ -1082,7 +1145,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_sorozat_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "SorozatPlus.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Sorozatklub",
@@ -1097,7 +1163,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/sorozatklub_atk/index.m3u8",
+      "tvg_id": "Sorozatklub.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Spektrum",
@@ -1144,7 +1213,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/spiler1/index.m3u8",
+      "tvg_id": "Spiler1.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Spiler 2",
@@ -1159,7 +1231,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/spiler2/index.m3u8",
+      "tvg_id": "Spiler2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Sport 1",
@@ -1174,7 +1249,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/sport1_hun/index.m3u8",
+      "tvg_id": "Sport1.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Sport 2",
@@ -1189,7 +1267,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/sport2_hun/index.m3u8",
+      "tvg_id": "Sport2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Story4",
@@ -1204,7 +1285,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_story_4_atk_1200/playlist.m3u8",
+      "tvg_id": "Story4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Super TV2",
@@ -1219,7 +1303,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_super_tv2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "SuperTV2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Szolnok TV",
@@ -1234,7 +1321,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/livestream004.sdp/playlist.m3u8",
+      "tvg_id": "SzolnokTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TelePaks (396p)",
@@ -1249,7 +1339,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay02/livestream004.sdp/playlist.m3u8",
+      "tvg_id": "TelePaks.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "The Fishing & Hunting Channel",
@@ -1264,7 +1357,10 @@
       "tested_on": "2026-08-09",
       "language_code": "CZ",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_fishing_hunting/playlist.m3u8",
+      "tvg_id": "TheFishingHuntingChannel.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV Eger",
@@ -1279,7 +1375,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://stream.tveger.hu:8010/live.m3u8",
+      "tvg_id": "TVEger.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV Keszthely",
@@ -1294,7 +1393,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/keszthelyivtv.sdp/playlist.m3u8",
+      "tvg_id": "TVKeszthely.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2",
@@ -1309,7 +1411,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_tv_2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "TV2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2 Comedy",
@@ -1324,7 +1429,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/tv2_comedy/index.m3u8",
+      "tvg_id": "TV2Comedy.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2 Kids",
@@ -1339,7 +1447,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/tv2_kids/index.m3u8",
+      "tvg_id": "TV2Kids.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2 Sef",
@@ -1354,7 +1465,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_lichi_tv_atk_tv/playlist.m3u8",
+      "tvg_id": "TV2Sef.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV4",
@@ -1369,7 +1483,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_tv_4_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "TV4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV7 Bekescsaba",
@@ -1384,7 +1501,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://stream.y5.hu/stream/stream_bekescsaba/stream.m3u8",
+      "tvg_id": "7TV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat 3",
@@ -1399,7 +1519,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat3/index.m3u8",
+      "tvg_id": "Viasat3.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat 6",
@@ -1414,7 +1537,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat6/index.m3u8",
+      "tvg_id": "Viasat6.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat Film",
@@ -1429,7 +1555,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat_film/index.m3u8",
+      "tvg_id": "ViasatFilm.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat2",
@@ -1444,7 +1573,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat2/index.m3u8",
+      "tvg_id": "Viasat2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Zalaegerszegi TV",
@@ -1459,7 +1591,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/zegtv.sdp/playlist.m3u8",
+      "tvg_id": "ZalaegerszegiTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Zenebutik",
@@ -1474,7 +1609,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/zenebutik/index.m3u8",
+      "tvg_id": "Zenebutik.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Ózdi Városi TV",
@@ -1512,7 +1650,7 @@
         "Not 24/7"
       ]
     },
-     {
+    {
       "channel": "Total Dance TV",
       "discovery": "Official Total Dance TV live page",
       "stream_url": "https://iptv02.eurocable.co.hu:15400/BR-TOTALDANCEHD/index.m3u8",
@@ -1584,8 +1722,8 @@
     {
       "channel": "BabyFirst",
       "discovery": "IPTV-org Hungarian-language list (source later removed)",
-      "stream_url": "",
-      "protocol": "",
+      "stream_url": "https://cdn.fast.jwp.services/v1/channel/1_jB6940Ei_TvhvIHDL/manifest.m3u8",
+      "protocol": "HLS",
       "language": "English",
       "provenance": "Unknown",
       "vlc": "not_tested",
@@ -1597,13 +1735,14 @@
       "exclude_from_playlist": true,
       "notes": "Observed language: English.",
       "tested_on": "",
-      "language_code": "EN"
+      "language_code": "EN",
+      "tvg_id": "BabyFirst.us@US"
     },
     {
       "channel": "Love Nature",
       "discovery": "IPTV-org Hungarian-language list (source later removed)",
-      "stream_url": "",
-      "protocol": "",
+      "stream_url": "https://aegis-cloudfront-1.tubi.video/6d6d0f24-8445-4b4c-bdf6-44f9e38beaa4/playlist.m3u8",
+      "protocol": "HLS",
       "language": "English",
       "provenance": "Unknown",
       "vlc": "not_tested",
@@ -1615,7 +1754,8 @@
       "exclude_from_playlist": true,
       "notes": "Observed language: English.",
       "tested_on": "",
-      "language_code": "EN"
+      "language_code": "EN",
+      "tvg_id": "LoveNature.ca@SD"
     },
     {
       "channel": "Miskolc TV",
@@ -4513,7 +4653,7 @@
       "notes": "Passed both manual playback tests.",
       "reason": "Working on both VLC and Samsung in the 2026-08-10 manual test."
     },
-	{
+    {
   "language": "Unknown",
   "provenance": "Curated extras/hu.m3u YouTube HLS candidate (manual playback review)",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4531,7 +4671,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube HLS candidate. Do not replace it with another rotating YouTube video ID; only reconsider the channel if a stable direct non-YouTube stream is found."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Curated extras/hu.m3u candidate (manual playback review)",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4549,7 +4689,7 @@
   "notes": "Reject this exact stream URL from the shared playlist. The broadcaster/channel itself can remain a research target for a replacement feed.",
   "reason": "This exact feed failed the manual VLC + Samsung test."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Official YouTube channel via ythls-v2 resolver",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4567,7 +4707,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test unless a stable direct non-YouTube HLS stream is found for the broadcaster."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Official YouTube channel via ythls-v2 resolver",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4585,7 +4725,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test unless a stable direct non-YouTube HLS stream is found for the broadcaster."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Legacy Flynet candidate (manual playback review)",
   "discovery": "Legacy Flynet stream candidate; manually retested",
@@ -4603,7 +4743,7 @@
   "notes": "Reject this legacy Flynet URL from the shared playlist. Keep KisDuna TV itself as a research target for a current replacement stream.",
   "reason": "The legacy Flynet feed failed the manual VLC + Samsung test."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Official YouTube channel via ythls-v2 resolver",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4621,7 +4761,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test unless a stable direct non-YouTube HLS stream is found for the broadcaster."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "ConnectMedia tokenless candidate based on the current official player origin",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4639,7 +4779,7 @@
   "notes": "Reject this exact tokenless ConnectMedia URL from the shared playlist. The official player uses the same ConnectMedia origin with an IP token, so the token appears to be required.",
   "reason": "The tokenless ConnectMedia candidate failed on both tested devices."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "EuroCable HLS candidate for active Parlament TV",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4657,7 +4797,7 @@
   "notes": "Reject this exact EuroCable stream from the shared playlist. Keep Parlament TV itself as a research target if a different stable direct stream becomes available.",
   "reason": "This exact feed failed the manual VLC + Samsung test."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Legacy public CloudFront HLS candidate",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4675,7 +4815,7 @@
   "notes": "Reject this legacy CloudFront URL. PAX TV remains active, but its current official online service requires login/subscription. Only reconsider it if a stable public direct stream is found.",
   "reason": "The legacy public HLS candidate failed on both tested devices."
 },
-{
+    {
   "channel": "PilisTV",
   "stream_url": "https://stream.streaming4u.hu/PilisTV/index.m3u8",
   "tvg_id": "PilisTV.hu@SD",
@@ -4694,7 +4834,7 @@
   "notes": "This feed is known to be geo-blocked and has now failed repeated manual tests from the intended playlist location. Exclude this exact URL from the shared playlist.",
   "reason": "Geo-blocked/unusable from the intended location and repeatedly failed on both tested devices."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Curated extras/hu.m3u candidate (manual playback review)",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4712,7 +4852,7 @@
   "notes": "Reject this alternate Play Music TV endpoint. It has failed again and there is no reason to keep this exact alternate in the shared playlist.",
   "reason": "Repeated failure on both tested devices."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Official YouTube channel via ythls-v2 resolver",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4730,7 +4870,7 @@
   "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test YouTube-based replacements; only reconsider Pápai Médiacentrum if a stable direct non-YouTube stream is found.",
   "reason": "YouTube-based streams are not suitable for this IPTV playlist."
 },
-{
+    {
   "language": "Unknown",
   "provenance": "Official YouTube channel via ythls-v2 resolver",
   "discovery": "extras/hu.m3u manual candidate test",
@@ -4748,7 +4888,7 @@
   "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test YouTube-based replacements; only reconsider Pécs TV if a stable direct non-YouTube stream is found.",
   "reason": "YouTube-based streams are not suitable for this IPTV playlist."
 },
-{
+    {
   "channel": "JimJam Europe",
   "stream_url": "http://212.5.144.156:8080/jimjam/index.m3u8",
   "tvg_id": "JimJamEurope.uk@SD",
@@ -4767,7 +4907,7 @@
   "reason": "This exact feed failed the manual VLC + Samsung test.",
   "notes": "Reject this exact JimJam Europe stream from the shared playlist."
 },
-{
+    {
   "channel": "JOJ +1 - LEGACY ANTIK TEST",
   "stream_url": "http://88.202.231.174:80/live/joj_plus1_medium_atk/playlist.m3u8",
   "protocol": "HLS",
@@ -4785,7 +4925,7 @@
   "reason": "The legacy Antik feed failed on both tested devices.",
   "notes": "Reject this exact legacy JOJ +1 URL. Keep JOJ +1 itself as a research target for a current replacement stream."
 },
-{
+    {
   "channel": "JOJ 24",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/joj_news-1080.m3u8",
   "tvg_id": "JOJ24.sk",
@@ -4804,7 +4944,7 @@
   "reason": "This exact JOJ CDN feed failed on both tested devices.",
   "notes": "Reject this exact JOJ 24 URL from the shared playlist. Search for a different usable feed if JOJ 24 is to be added later."
 },
-{
+    {
   "channel": "JOJ Cinema",
   "stream_url": "http://46.36.41.106:8888/rebit/8.m3u8",
   "protocol": "HLS",
@@ -4822,7 +4962,7 @@
   "reason": "JOJ Cinema Feed 1 failed on both tested devices.",
   "notes": "Reject this exact REBIT JOJ Cinema feed."
 },
-{
+    {
   "channel": "JOJ Cinema",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/cinema-1080.m3u8",
   "tvg_id": "JOJCinema.sk",
@@ -4841,7 +4981,7 @@
   "reason": "JOJ Cinema Feed 2 failed on both tested devices.",
   "notes": "Reject this exact JOJ CDN JOJ Cinema feed."
 },
-{
+    {
   "channel": "JOJ Family",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/family-1080.m3u8",
   "tvg_id": "JOJFamily.sk",
@@ -4860,7 +5000,7 @@
   "reason": "This exact JOJ CDN feed failed on both tested devices.",
   "notes": "Reject this exact JOJ Family URL from the shared playlist."
 },
-{
+    {
   "channel": "JOJ KRIMI",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/wau-1080.m3u8",
   "tvg_id": "JOJWAU.sk",
@@ -4879,7 +5019,7 @@
   "reason": "This exact JOJ CDN feed failed on both tested devices.",
   "notes": "Reject this exact JOJ KRIMI URL from the shared playlist."
 },
-{
+    {
   "channel": "JOJ Plus",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/plus-1080.m3u8",
   "tvg_id": "JOJPlus.sk",
@@ -4898,7 +5038,7 @@
   "reason": "This exact JOJ CDN feed failed on both tested devices.",
   "notes": "Reject this exact JOJ Plus URL from the shared playlist."
 },
-{
+    {
   "channel": "Sopron TV",
   "stream_url": "https://redirect.onlinestream.live/sopronmedia.m3u8",
   "protocol": "HLS",
@@ -4916,7 +5056,7 @@
   "reason": "The Sopron TV redirect candidate failed on both tested devices.",
   "notes": "Reject this exact redirect URL. Keep Sopron TV itself as a research target for a stable direct stream."
 },
-{
+    {
   "channel": "Szarvasi Televízió [TEST]",
   "stream_url": "https://ythls-v2.onrender.com/channel/UCI25fQ-PhqM2vsdQRLcR8bw.m3u8",
   "protocol": "HLS",
@@ -4934,7 +5074,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test YouTube-based replacements; only reconsider Szarvasi Televízió if a stable direct non-YouTube stream is found."
 },
-{
+    {
   "stream_url": "https://www.tiszatv.hu/onlinetv/tiszatv_1.m3u8",
   "channel": "Tisza TV",
   "tvg_id": "TiszaTV.hu@SD",
@@ -4953,7 +5093,7 @@
   "reason": "Latest manual test failed, but IPTV-org marks this exact feed Not 24/7, so failure outside its broadcast window is inconclusive.",
   "notes": "Do not permanently reject this feed until it has been tested during a confirmed Tisza TV broadcast."
 },
-{
+    {
   "channel": "Tolnatáj TV [ConnectMedia tokenless test]",
   "stream_url": "https://c801-node63-cdn.connectmedia.hu/4019/99dc038ad8fe08c17cdc89a85cb1242d/6a7a282c/index.m3u8",
   "protocol": "HLS",
@@ -4971,7 +5111,7 @@
   "reason": "The tokenless ConnectMedia candidate failed on both tested devices.",
   "notes": "Reject this exact tokenless URL. The official player uses the ConnectMedia origin with an IP token, indicating that the token is required."
 },
-{
+    {
   "stream_url": "https://stream.streaming4u.hu/TVBudakalasz/tracks-v1a1/mono.m3u8",
   "channel": "TV Budakalasz",
   "tvg_id": "TVBudakalasz.hu@SD",
@@ -4990,7 +5130,7 @@
   "reason": "Latest manual test failed, but IPTV-org marks this exact feed Not 24/7, so failure outside its broadcast window is inconclusive.",
   "notes": "Do not permanently reject this feed until it has been tested during a confirmed TV Budakalasz broadcast."
 },
-{
+    {
   "channel": "Veszprém TV [TEST] [Official YouTube Live]",
   "stream_url": "https://ythls-v2.onrender.com/channel/UCpSM-EJekfzVqnmBKWiWlGA.m3u8",
   "protocol": "HLS",
@@ -5008,7 +5148,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube/ythls resolver candidate. Only reconsider Veszprém TV if a stable direct non-YouTube stream is found."
 },
-{
+    {
   "channel": "Williams TV [ALT]",
   "stream_url": "https://wtv.medialivecdn.hu:443/williams/9cc445f3fe303261970006b8e5b4949f.sdp/playlist.m3u8",
   "protocol": "HLS",
@@ -5026,7 +5166,7 @@
   "reason": "This alternate Williams TV feed failed on both tested devices.",
   "notes": "Reject this exact MediaLive alternate. Williams TV can remain a research target for another replacement feed."
 },
-{
+    {
   "channel": "Újbuda TV [TEST] [Official YouTube Live]",
   "stream_url": "https://ythls-v2.onrender.com/channel/UCAyt_SMtWG8_u6JLbIPf8Yg.m3u8",
   "protocol": "HLS",
@@ -5044,7 +5184,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube/ythls resolver candidate. Only reconsider Újbuda TV if a stable direct non-YouTube stream is found."
 },
-{
+    {
   "channel": "Újpest TV [TEST] [Official YouTube Live]",
   "stream_url": "https://ythls-v2.onrender.com/channel/UCfVihSHB50EU6PnTPn0jnyw.m3u8",
   "protocol": "HLS",
@@ -5062,7 +5202,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this YouTube/ythls resolver candidate. Only reconsider Újpest TV if a stable direct non-YouTube stream is found."
 },
-{
+    {
   "channel": "Film+",
   "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
   "tvg_id": "FilmPlus.cz@SD",
@@ -5083,7 +5223,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working stream. Exclude from the Slovak playlist because the observed language is Czech. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "FILMBOX+ Comedy Czechia",
   "stream_url": "http://88.212.15.19/live/test_filmbox_family_atk_1200/playlist.m3u8",
   "tvg_id": "FILMBOXPlusComedy.pl@Czechia",
@@ -5104,7 +5244,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "FILMBOX+ Emotion Czechia",
   "stream_url": "http://88.212.15.19/live/test_film_boxextra_hd_hevc/playlist.m3u8",
   "tvg_id": "FILMBOXPlusEmotion.pl@Czechia",
@@ -5125,7 +5265,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "FILMBOX+ Hits Czechia",
   "stream_url": "http://88.212.15.19/live/test_film_boxpremium_hd_hevc/playlist.m3u8",
   "tvg_id": "FILMBOXPlusHits.pl@Czechia",
@@ -5146,7 +5286,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "FILMBOX+ Love & Crime",
   "stream_url": "http://88.212.15.19/live/test_filmbox_plus_atk_1200/playlist.m3u8",
   "tvg_id": "FILMBOXPlusLoveCrime.pl@Czechia",
@@ -5167,7 +5307,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "FILMBOX+ One Czechia",
   "stream_url": "http://88.212.15.19/live/test_filmbox/playlist.m3u8",
   "tvg_id": "FILMBOXPlusOne.pl@Czechia",
@@ -5188,7 +5328,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Doma",
   "stream_url": "http://88.212.15.19/live/test_doma_hd_hevc/playlist.m3u8",
   "protocol": "HLS",
@@ -5208,7 +5348,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "ducktv",
   "stream_url": "https://jmp2.uk/stvp-ESBC4700001GR",
   "tvg_id": "ducktv.sk@SD",
@@ -5229,7 +5369,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "ducktv Feed 1. Verified alternative stream for the same ducktv station."
 },
-{
+    {
   "channel": "ducktv",
   "stream_url": "https://mmm-dk.otteravision.com/DexaYJdJXkLqFxTK_DuckTVHDSAMS/DuckTVHDSAMS.stream/playlist.m3u8",
   "tvg_id": "ducktv.sk@SD",
@@ -5250,7 +5390,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "ducktv Feed 2. Verified alternative stream for the same ducktv station."
 },
-{
+    {
   "channel": "ducktv",
   "stream_url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=13168",
   "tvg_id": "ducktv.sk@SD",
@@ -5271,7 +5411,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "ducktv Feed 3. Verified alternative stream for the same ducktv station."
 },
-{
+    {
   "channel": "ducktv HD",
   "stream_url": "https://dash3.antik.sk/live/duck_tv/index.m3u8",
   "tvg_id": "ducktv.sk@HD",
@@ -5292,7 +5432,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "ducktv PLUS",
   "stream_url": "https://dash3.antik.sk/live/test_duck_plus/playlist.m3u8",
   "tvg_id": "ducktvPLUS.sk@SD",
@@ -5313,7 +5453,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Dvojka",
   "stream_url": "http://88.212.15.19/live/test_dvojka_25p/playlist.m3u8",
   "tvg_id": "Dvojka.sk@SD",
@@ -5334,7 +5474,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "LALA TV",
   "stream_url": "http://88.212.15.19/live/test_lala_25p/playlist.m3u8",
   "protocol": "HLS",
@@ -5354,7 +5494,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "LifeTv",
   "stream_url": "https://lifetv.mpks.sk/s.m3u8",
   "tvg_id": "LifeTv.sk@SD",
@@ -5375,7 +5515,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Maná Cirkev Online",
   "stream_url": "https://w2.manasat.com/cirkev-online/smil:cirkev-online.smil/playlist.m3u8",
   "protocol": "HLS",
@@ -5395,7 +5535,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Markíza",
   "stream_url": "http://88.212.15.19/live/test_markiza_25p/playlist.m3u8",
   "tvg_id": "Markiza.sk",
@@ -5416,7 +5556,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Markíza Klasik",
   "stream_url": "https://cdnsk003.panaccess.com/local/Markiza_Klasik/index.m3u8",
   "protocol": "HLS",
@@ -5436,7 +5576,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Markíza Krimi",
   "stream_url": "https://cdnsk003.panaccess.com/local/Markiza_krimi/index.m3u8",
   "protocol": "HLS",
@@ -5456,7 +5596,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Markíza Krimi Feed 1. Verified alternative stream for the same station."
 },
-{
+    {
   "channel": "Markíza Krimi",
   "stream_url": "http://88.212.15.19/live/test_markiza_krimi_hevc/playlist.m3u8",
   "protocol": "HLS",
@@ -5476,7 +5616,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Markíza Krimi Feed 2. Verified alternative stream for the same station."
 },
-{
+    {
   "channel": "Markíza TN Live",
   "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=Mark%C3%ADza+TN+Live",
   "language": "Slovak",
@@ -5495,7 +5635,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Mestská Televízia Partizánske",
   "stream_url": "https://dash2.antik.sk/live/test_partizanske/playlist.m3u8",
   "protocol": "HLS",
@@ -5515,7 +5655,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV Severka",
   "stream_url": "http://88.212.7.11/live/test_severka_web_player/playlist.m3u8",
   "tvg_id": "TVSeverka.sk@SD",
@@ -5536,7 +5676,7 @@
   "reason": "The latest manual test failed, but IPTV-org marks this feed Not 24/7, so the result may have been outside its broadcast window.",
   "notes": "Re-test during a confirmed TV Severka broadcast before permanently rejecting this exact feed."
 },
-{
+    {
   "channel": "TV Severka",
   "stream_url": "https://cdnsk003.panaccess.com/local/Severka/index.m3u8",
   "tvg_id": "TVSeverka.sk",
@@ -5557,7 +5697,7 @@
   "reason": "This Panaccess alternative failed, but TV Severka itself is known to be Not 24/7, so an off-air test remains possible.",
   "notes": "The source candidate was already low-confidence due to reported HLS playlist errors. Re-test during a confirmed TV Severka broadcast; reject if it still fails then."
 },
-{
+    {
   "channel": "TV Skalica",
   "stream_url": "http://95.105.193.219:88/hls/tvs.m3u8",
   "tvg_id": "TVSkalica.sk@SD",
@@ -5578,7 +5718,7 @@
   "reason": "This exact feed failed the manual VLC + Samsung test.",
   "notes": "Reject this exact URL from the shared playlist. TV Skalica itself can remain a research target for a replacement feed."
 },
-{
+    {
   "channel": "TV Stará Turá",
   "stream_url": "http://95.105.193.219:88/hls/tvst.m3u8",
   "tvg_id": "TVStaraTura.sk@SD",
@@ -5599,7 +5739,7 @@
   "reason": "This exact feed failed the manual VLC + Samsung test.",
   "notes": "Reject this exact URL from the shared playlist. Keep TV Stará Turá as a research target for another usable stream."
 },
-{
+    {
   "channel": "TV Vega",
   "stream_url": "http://88.212.7.11/live/test_tv_vega_web_player/playlist.m3u8",
   "tvg_id": "TVVega.sk@SD",
@@ -5620,7 +5760,7 @@
   "reason": "The latest manual test failed, but IPTV-org marks this exact feed Not 24/7, so failure outside its broadcast window is inconclusive.",
   "notes": "Re-test during a confirmed TV Vega broadcast before permanently rejecting this feed."
 },
-{
+    {
   "channel": "TV Vita",
   "stream_url": "https://dash3.antik.sk/live/test_vita/playlist.m3u8",
   "tvg_id": "TVVita.sk",
@@ -5641,7 +5781,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV7 Prešov",
   "stream_url": "https://cdnsk003.panaccess.com/local/TV7/playlist.m3u8",
   "protocol": "HLS",
@@ -5661,7 +5801,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV9",
   "stream_url": "https://dash4.antik.sk/live/test_tv9/playlist.m3u8",
   "protocol": "HLS",
@@ -5681,7 +5821,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TVT",
   "stream_url": "https://5ca49f2417d90.streamlock.net/live/turzovka/playlist.m3u8",
   "tvg_id": "TVT.sk@SD",
@@ -5702,7 +5842,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV Panorama",
   "stream_url": "https://public.live.rebit.tv/live/20750f0b-e12d-4915-a4c3-47c5db9ccbf6/main.m3u8",
   "tvg_id": "TVPanorama.sk@SD",
@@ -5723,7 +5863,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV Pezinok",
   "stream_url": "http://s1.media-planet.sk:80/live/pezinok/BratuMarian.m3u8",
   "protocol": "HLS",
@@ -5743,7 +5883,7 @@
   "reason": "The legacy TV Pezinok feed failed on both tested devices.",
   "notes": "Reject this exact legacy Media-Planet URL. Keep TV Pezinok as a research target for a current replacement feed."
 },
-{
+    {
   "channel": "TV Piánko",
   "stream_url": "http://budapest-cache-1.antik.sk/live/test_pianko/playlist.m3u8",
   "protocol": "HLS",
@@ -5763,7 +5903,7 @@
   "reason": "This exact TV Piánko feed failed on both tested devices.",
   "notes": "Reject this exact Antik URL from the shared playlist. Keep the station as a research target for another usable feed."
 },
-{
+    {
   "channel": "TV Poprad",
   "stream_url": "http://213.81.153.221:8080/poprad",
   "tvg_id": "TVPoprad.sk@SD",
@@ -5784,7 +5924,7 @@
   "reason": "The latest manual test failed, but IPTV-org marks this exact TV Poprad feed Not 24/7, so failure outside its broadcast window is inconclusive.",
   "notes": "Re-test during a confirmed TV Poprad broadcast before permanently rejecting this exact feed."
 },
-{
+    {
   "channel": "TV Povazie",
   "stream_url": "https://dash3.antik.sk/live/test_povazie/playlist.m3u8",
   "tvg_id": "TVPovazie.sk@SD",
@@ -5805,7 +5945,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV Reduta",
   "stream_url": "https://cdnsk003.panaccess.com/local/TV_SNV_REDUTA/index.m3u8",
   "protocol": "HLS",
@@ -5825,7 +5965,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "TV Reduta Panaccess feed. Verified alternative stream for the same station."
 },
-{
+    {
   "channel": "TV Reduta",
   "stream_url": "https://dash3.antik.sk/live/tv_reduta/playlist.m3u8",
   "protocol": "HLS",
@@ -5845,7 +5985,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "TV Reduta Antik feed. Verified alternative stream for the same station."
 },
-{
+    {
   "channel": "TV Reduta",
   "stream_url": "https://5ca49f2417d90.streamlock.net/live/reduta/playlist.m3u8",
   "protocol": "HLS",
@@ -5865,7 +6005,7 @@
   "reason": "The Streamlock TV Reduta alternative failed on both tested devices.",
   "notes": "Reject only this exact Streamlock URL. Two other TV Reduta feeds are verified working."
 },
-{
+    {
   "channel": "TV REGION",
   "stream_url": "http://88.212.10.27:81/streams/region.m3u8",
   "protocol": "HLS",
@@ -5885,7 +6025,7 @@
   "reason": "The legacy TV REGION feed failed on both tested devices.",
   "notes": "Reject this exact legacy URL. Keep TV REGION itself as a research target for a current replacement feed."
 },
-{
+    {
   "channel": "TV Ružinov",
   "stream_url": "http://lb.streaming.sk/tvruzinov/stream/playlist.m3u8",
   "tvg_id": "TVRuzinov.sk@SD",
@@ -5907,7 +6047,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices during an active broadcast. IPTV-org marks this station Not 24/7."
 },
-{
+    {
   "channel": "TV Sen",
   "stream_url": "http://95.105.193.219:88/hls/tvsen.m3u8",
   "tvg_id": "TVSen.sk@SD",
@@ -5928,7 +6068,7 @@
   "reason": "This exact TV Sen feed failed on both tested devices.",
   "notes": "Reject this exact URL. The Panaccess TV Sen alternative works on both VLC and Samsung."
 },
-{
+    {
   "channel": "TV Sen",
   "stream_url": "https://cdnsk003.panaccess.com/local/TV_SEN_DC/index.m3u8",
   "tvg_id": "TVSen.sk",
@@ -5949,7 +6089,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working TV Sen replacement feed. Prefer this feed over the failed original URL."
 },
-{
+    {
   "channel": "VIO TV",
   "stream_url": "http://slovanet-livestream.ceelabs.com:1935/live/VioTV.stream_transcoded/playlist.m3u8",
   "tvg_id": "VIOTV.sk@SD",
@@ -5970,7 +6110,7 @@
   "reason": "This exact VIO TV feed failed on both tested devices.",
   "notes": "Reject this exact URL from the shared playlist. Keep VIO TV as a research target for a replacement stream."
 },
-{
+    {
   "channel": "Volant TV",
   "stream_url": "http://46.36.41.106:8888/rebit/94.m3u8",
   "protocol": "HLS",
@@ -5990,7 +6130,7 @@
   "reason": "The Volant TV REBIT candidate failed on both tested devices.",
   "notes": "Reject this exact URL. Keep Volant TV itself as a research target for another direct stream."
 },
-{
+    {
   "channel": "Zapadoslovenska TV",
   "stream_url": "https://dash2.antik.sk/live/test_zapadoslovenska/playlist.m3u8",
   "tvg_id": "ZapadoslovenskaTV.sk@SD",
@@ -6011,7 +6151,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working Západoslovenská TV feed. Prefer this Antik feed over the failed broadcaster-domain alternative."
 },
-{
+    {
   "channel": "Západoslovenská TV",
   "stream_url": "https://live.zstv.sk/memfs/5b0f9dd2-8f77-4fe5-9527-bc11bb8b18e5.m3u8",
   "tvg_id": "ZapadoslovenskaTV.sk",
@@ -6032,7 +6172,7 @@
   "reason": "The direct ZSTV candidate failed on both tested devices.",
   "notes": "Reject only this exact broadcaster-domain URL. The Antik Západoslovenská TV feed is verified working."
 },
-{
+    {
   "channel": "Óčko",
   "stream_url": "https://ocko-live-dash.ssl.cdn.cra.cz/cra_live2/ocko.stream.1.smil/playlist.m3u8",
   "tvg_id": "Ocko.cz@SD",
@@ -6053,7 +6193,7 @@
   "reason": "Passed manual VLC and Samsung playback tests and was accepted for the Slovak playlist.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "ČSRTV",
   "stream_url": "http://46.36.41.106:8888/rebit/187.m3u8",
   "tvg_id": "CSRTV.sk",
@@ -6074,7 +6214,7 @@
   "reason": "The ČSRTV REBIT candidate failed on both tested devices.",
   "notes": "Reject this exact URL. Keep ČSRTV as a research target for a current replacement stream."
 },
-{
+    {
   "channel": "Ľubovnianska televízia",
   "stream_url": "https://stream1.neting.sk/lms/ltv/chunklist_w827147849.m3u8",
   "protocol": "HLS",
@@ -6094,7 +6234,7 @@
   "reason": "The Ľubovnianska televízia Neting candidate failed on both tested devices.",
   "notes": "Reject this exact URL. Keep the station itself as a research target for a current replacement stream."
 },
-{
+    {
   "channel": "TV JOJ",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/joj-1080.m3u8",
   "tvg_id": "TVJOJ.sk",
@@ -6115,7 +6255,7 @@
   "reason": "This exact JOJ CDN feed failed on both tested devices.",
   "notes": "Reject this exact TV JOJ URL. Keep TV JOJ itself as a research target for a different usable stream."
 },
-{
+    {
   "channel": "TV Kežmarok",
   "stream_url": "https://dash2.antik.sk/live/test_severka/playlist.m3u8",
   "protocol": "HLS",
@@ -6135,7 +6275,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working TV Kežmarok feed on both tested devices."
 },
-{
+    {
   "channel": "TV Košice",
   "stream_url": "http://lb.streaming.sk/tvnasa/stream/playlist.m3u8",
   "protocol": "HLS",
@@ -6155,7 +6295,7 @@
   "reason": "This exact TV Košice feed failed on both tested devices.",
   "notes": "Reject this exact Streaming.sk URL. Keep TV Košice as a research target for a replacement feed."
 },
-{
+    {
   "channel": "TV Liptov",
   "stream_url": "http://95.105.255.137:1935/tvturiec/tvliptov.stream/playlist.m3u8",
   "tvg_id": "TVLiptov.sk@SD",
@@ -6176,7 +6316,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV LocAll",
   "stream_url": "http://tv.geniusnet.sk:8081/localltv/pl.m3u8",
   "tvg_id": "TVLocAll.sk@SD",
@@ -6197,7 +6337,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "TV LocAll 406p feed verified working on both tested devices."
 },
-{
+    {
   "channel": "TV Lux",
   "stream_url": "https://stream.tvlux.sk/lux/ngrp:lux.stream_all/playlist.m3u8",
   "tvg_id": "TVLux.sk@SD",
@@ -6219,7 +6359,7 @@
   "reason": "This manual test failed, but this exact TV Lux feed is marked Not 24/7, so an off-air test is inconclusive.",
   "notes": "TV Lux Feed 1. Re-test during a confirmed TV Lux broadcast before permanently rejecting this exact URL. Feed 2 is already verified working."
 },
-{
+    {
   "channel": "TV Lux",
   "stream_url": "https://stream.tvlux.sk/luxtv/luxtv-livestream/chunklist_w617812057.m3u8",
   "tvg_id": "TVLux.sk@SD",
@@ -6241,7 +6381,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "TV Lux Feed 2. Verified working from the intended test location on both PC/VLC and Samsung despite the upstream Geo-blocked flag. Prefer this feed over Feed 1."
 },
-{
+    {
   "channel": "TV Mistral",
   "stream_url": "https://dash3.antik.sk/live/test_mistral_atktv/playlist.m3u8",
   "tvg_id": "TVMistral.sk@SD",
@@ -6262,7 +6402,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV Myjava",
   "stream_url": "http://95.105.193.219:88/hls/tvm.m3u8",
   "tvg_id": "TVMyjava.sk@SD",
@@ -6283,7 +6423,7 @@
   "reason": "This exact TV Myjava feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep TV Myjava itself as a research target for a replacement feed."
 },
-{
+    {
   "channel": "TV Nitricka",
   "stream_url": "https://dash4.antik.sk/live/test_nitricka/playlist.m3u8",
   "tvg_id": "TVNitricka.sk@SD",
@@ -6304,7 +6444,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV Bratislava",
   "stream_url": "http://88.212.15.9:5000/live/tvbratislava/playlist.m3u8",
   "tvg_id": "TVBratislava.sk",
@@ -6325,7 +6465,7 @@
   "reason": "This legacy TV Bratislava feed failed while two alternative TV Bratislava feeds worked during the same test.",
   "notes": "Reject only this exact legacy URL. The Antik and Panaccess TV Bratislava alternatives are verified working."
 },
-{
+    {
   "channel": "TV Bratislava",
   "stream_url": "https://dash2.antik.sk/live/test_batv/playlist.m3u8",
   "tvg_id": "TVBratislava.sk",
@@ -6346,7 +6486,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified TV Bratislava Antik alternative."
 },
-{
+    {
   "channel": "TV Bratislava",
   "stream_url": "https://cdnsk003.panaccess.com/local/Bratislava/index.m3u8",
   "tvg_id": "TVBratislava.sk",
@@ -6367,7 +6507,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified TV Bratislava Panaccess alternative."
 },
-{
+    {
   "channel": "TV Brezová",
   "stream_url": "http://95.105.193.219:88/hls/tvb.m3u8",
   "tvg_id": "TVBrezova.sk@SD",
@@ -6388,7 +6528,7 @@
   "reason": "This exact TV Brezová feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep TV Brezová itself as a research target for another usable stream."
 },
-{
+    {
   "channel": "TV Central",
   "stream_url": "https://arenasportslovakia.ddns.net/hls/cetv2.m3u8",
   "tvg_id": "TVCentral.sk@SD",
@@ -6409,7 +6549,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "TV DK",
   "stream_url": "http://80.94.54.11:1935/live/dolnykubin1/playlist.m3u8",
   "tvg_id": "TVDK.sk@SD",
@@ -6431,7 +6571,7 @@
   "reason": "Feed 1 failed while TV DK Feed 2 successfully played during the same test, confirming the station was broadcasting.",
   "notes": "Although IPTV-org marks TV DK Not 24/7, the simultaneously working Feed 2 makes this Feed 1 failure conclusive. Reject only this exact URL."
 },
-{
+    {
   "channel": "TV DK",
   "stream_url": "https://5ca49f2417d90.streamlock.net/live/dolnykubin1/playlist.m3u8",
   "tvg_id": "TVDK.sk@SD",
@@ -6453,7 +6593,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "TV DK Feed 2. Verified working during an active broadcast. Prefer this feed over failed Feed 1."
 },
-{
+    {
   "channel": "TV DOKTOR",
   "stream_url": "https://live.tvdoktor.sk/high/index.m3u8",
   "protocol": "HLS",
@@ -6473,7 +6613,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified direct broadcaster feed working on both tested devices."
 },
-{
+    {
   "channel": "TV Hronka",
   "stream_url": "https://public.live.rebit.tv/live/a2ae9668-d37e-442d-ae98-070cb5d607a7/main.m3u8",
   "protocol": "HLS",
@@ -6493,7 +6633,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Tanečné súťaže HD",
   "stream_url": "http://88.212.7.10/live/tanecnesutaze/index.m3u8",
   "protocol": "HLS",
@@ -6514,7 +6654,7 @@
   "reason": "This stream is event-based and may not broadcast continuously, so the failed test is inconclusive.",
   "notes": "Re-test during a confirmed live dance competition before deciding whether this exact feed is unusable."
 },
-{
+    {
   "channel": "Televízia Močenok",
   "stream_url": "https://5ca49f2417d90.streamlock.net/mocenok/livestream/playlist.m3u8",
   "tvg_id": "TeleviziaMocenok.sk@SD",
@@ -6535,7 +6675,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Televízia OSEM",
   "stream_url": "http://109.74.145.11:1935/tv8/ngrp:tv8.stream_all/playlist.m3u8",
   "tvg_id": "TV8.sk@SD",
@@ -6556,7 +6696,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Televízia OSEM Feed 1, 576p. Verified alternative stream for the same station."
 },
-{
+    {
   "channel": "Televízia OSEM",
   "stream_url": "http://109.74.145.11:1935/tv8/mp4:tv8.stream_360p/playlist.m3u8",
   "tvg_id": "TV8.sk@SD",
@@ -6577,7 +6717,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Televízia OSEM Feed 2, 360p. Verified alternative stream for the same station."
 },
-{
+    {
   "channel": "Televízia Turiec",
   "stream_url": "http://46.36.41.106:8888/rebit/183.m3u8",
   "protocol": "HLS",
@@ -6597,7 +6737,7 @@
   "reason": "This REBIT feed failed while the Panaccess Televízia Turiec feed worked during the same test.",
   "notes": "Reject only this exact REBIT URL. The Panaccess replacement is verified working."
 },
-{
+    {
   "channel": "Televízia Turiec",
   "stream_url": "https://cdnsk003.panaccess.com/local/Turiec/index.m3u8",
   "protocol": "HLS",
@@ -6617,7 +6757,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified Televízia Turiec replacement feed. Prefer this Panaccess stream over the failed REBIT feed."
 },
-{
+    {
   "channel": "Televízia ZEMPLÍN",
   "stream_url": "http://46.36.41.106:8888/rebit/178.m3u8",
   "protocol": "HLS",
@@ -6637,7 +6777,7 @@
   "reason": "This REBIT feed failed while the Antik Televízia ZEMPLÍN feed worked during the same test.",
   "notes": "Reject only this exact REBIT URL. The Antik replacement is verified working."
 },
-{
+    {
   "channel": "Televízia ZEMPLÍN",
   "stream_url": "https://dash2.antik.sk/live/test_zemplin/playlist.m3u8",
   "protocol": "HLS",
@@ -6657,7 +6797,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified Televízia ZEMPLÍN replacement feed. Prefer this Antik stream over the failed REBIT feed."
 },
-{
+    {
   "channel": "Turbo TV",
   "stream_url": "https://dash3.antik.sk/live/turbo_tv_avc_25p/playlist.m3u8",
   "tvg_id": "TurboTV.sk@SD",
@@ -6678,7 +6818,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Slager Muzika",
   "stream_url": "https://stream-23.mazana.tv/slagrmuzika.m3u8s",
   "tvg_id": "SlagerMuzika.cz@SD",
@@ -6699,7 +6839,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Spektrum",
   "stream_url": "http://88.212.15.19/live/test_spektrum/playlist.m3u8",
   "tvg_id": "Spektrum.cz@SD",
@@ -6720,7 +6860,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Spektrum feed. Exclude only this exact URL from the Slovak playlist. The separate Hungarian Spektrum feed remains valid."
 },
-{
+    {
   "channel": "Spektrum Home",
   "stream_url": "http://88.212.15.19/live/test_home_hevc/playlist.m3u8",
   "tvg_id": "SpektrumHome.cz@SD",
@@ -6741,7 +6881,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Spektrum Home feed. Exclude only this exact URL from the Slovak playlist. The separate Hungarian Spektrum Home feed remains valid."
 },
-{
+    {
   "channel": "Sport1",
   "stream_url": "http://88.212.15.19/live/test_sport1_25p/playlist.m3u8",
   "tvg_id": "Sport1.cz@SD",
@@ -6762,7 +6902,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Sport2",
   "stream_url": "http://88.212.15.19/live/test_sport_2/playlist.m3u8",
   "tvg_id": "Sport2.cz@SD",
@@ -6783,7 +6923,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Viasat Explore",
   "stream_url": "http://88.212.15.29/live/test_viasat_explore_atk_tv/playlist.m3u8",
   "tvg_id": "ViasatExplore.cz@SD",
@@ -6804,7 +6944,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Viasat History",
   "stream_url": "http://88.212.15.29/live/test_viasat_history_atk_tv/playlist.m3u8",
   "tvg_id": "ViasatHistory.cz@SD",
@@ -6825,7 +6965,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Viasat Nature",
   "stream_url": "http://88.212.15.29/live/test_viasat_nature_atk_tv/playlist.m3u8",
   "tvg_id": "ViasatNature.cz@SD",
@@ -6846,7 +6986,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "RiK TV",
   "stream_url": "https://dash2.antik.sk/live/rik_atk/index.m3u8",
   "protocol": "HLS",
@@ -6866,7 +7006,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "RTV Krea",
   "stream_url": "http://213.81.153.221:8080/galanta",
   "protocol": "HTTP",
@@ -6886,7 +7026,7 @@
   "reason": "This exact RTV Krea legacy feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep RTV Krea itself as a research target for a current replacement stream."
 },
-{
+    {
   "channel": "RTV Prievidza",
   "stream_url": "http://46.36.41.106:8888/rebit/184.m3u8",
   "protocol": "HLS",
@@ -6906,7 +7046,7 @@
   "reason": "This exact RTV Prievidza REBIT feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep RTV Prievidza itself as a research target for another usable stream."
 },
-{
+    {
   "channel": "RVTV",
   "stream_url": "https://dash2.antik.sk/live/test_roznava/playlist.m3u8",
   "protocol": "HLS",
@@ -6926,7 +7066,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified Rožňavská televízia feed working on both tested devices."
 },
-{
+    {
   "channel": "Senzi",
   "stream_url": "http://lb.streaming.sk/senzi/stream/playlist.m3u8",
   "tvg_id": "Senzi.sk@SD",
@@ -6947,7 +7087,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Skvelé TV",
   "stream_url": "https://dash3.antik.sk/live/test_skvele_tv_fhd/playlist.m3u8",
   "protocol": "HLS",
@@ -6967,7 +7107,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Slager Original",
   "stream_url": "https://stream-13.mazana.tv/slagroriginal.m3u8s",
   "tvg_id": "SlagerOriginal.cz@SD",
@@ -6988,7 +7128,7 @@
   "reason": "Passed manual VLC and Samsung playback tests and was manually accepted for the expected Slovak language.",
   "notes": "Verified working on both tested devices. The upstream tvg-id is Czech-labelled, but the manual language test takes precedence for this playlist."
 },
-{
+    {
   "channel": "STVR Live",
   "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=STVR+Live",
   "protocol": "HTTPS",
@@ -7008,7 +7148,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Moldava TV",
   "stream_url": "https://dash2.antik.sk/live/test_moldava/playlist.m3u8",
   "protocol": "HLS",
@@ -7028,7 +7168,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "MTR",
   "stream_url": "https://cdnsk003.panaccess.com/local/Ruzomberok/index.m3u8",
   "tvg_id": "MTR.sk@SD",
@@ -7049,7 +7189,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "PARK TV",
   "stream_url": "https://dash2.antik.sk/live/test_park_tv/playlist.m3u8",
   "protocol": "HLS",
@@ -7069,7 +7209,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "PREMIUM HD",
   "stream_url": "http://46.36.41.106:8888/rebit/102.m3u8",
   "protocol": "HLS",
@@ -7089,7 +7229,7 @@
   "reason": "This exact PREMIUM HD REBIT feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep PREMIUM HD itself as a research target for another usable stream."
 },
-{
+    {
   "channel": "Prima Cool SK",
   "stream_url": "http://88.212.15.19/live/prima_cool_avc_25p/playlist.m3u8",
   "tvg_id": "PrimaCoolSK.sk@SD",
@@ -7110,7 +7250,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Prima Krimi SK",
   "stream_url": "http://88.212.15.19/live/prima_krimi_avc_25p/playlist.m3u8",
   "tvg_id": "PrimaKrimiSK.sk@HD",
@@ -7131,7 +7271,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Prima love SK",
   "stream_url": "http://88.212.15.19/live/prima_love_avc_25p/playlist.m3u8",
   "tvg_id": "PrimaLoveSK.sk",
@@ -7152,7 +7292,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Prima SK",
   "stream_url": "http://46.36.41.106:8888/rebit/23.m3u8",
   "protocol": "HLS",
@@ -7172,7 +7312,7 @@
   "reason": "This exact Prima SK REBIT feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep Prima SK itself as a research target for another usable stream."
 },
-{
+    {
   "channel": "Raj TV",
   "stream_url": "https://ottst05.flexitv.sk/2827-tv-pc.m3u8",
   "tvg_id": "TVRaj.sk@SD",
@@ -7194,7 +7334,7 @@
   "reason": "The manual test failed, but IPTV-org marks this exact Raj TV stream Not 24/7, so an off-air test is inconclusive.",
   "notes": "Re-test during a confirmed Raj TV broadcast before permanently rejecting this exact feed."
 },
-{
+    {
   "channel": "Jojko",
   "stream_url": "http://88.212.15.19/live/test_jojko_25p/playlist.m3u8",
   "protocol": "HLS",
@@ -7214,7 +7354,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Jojko Feed 1. Verified working on both tested devices. Prefer this feed over the failed JOJ CDN alternative."
 },
-{
+    {
   "channel": "Jojko",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/jojko-1080.m3u8",
   "tvg_id": "Jojko.sk",
@@ -7235,7 +7375,7 @@
   "reason": "The JOJ CDN Jojko alternative failed while Jojko Feed 1 worked during the same test.",
   "notes": "Reject only this exact JOJ CDN URL. The other Jojko feed is verified working."
 },
-{
+    {
   "channel": "Kanal1",
   "stream_url": "https://dash.antik.sk/live/test_upnetwork/playlist.m3u8",
   "protocol": "HLS",
@@ -7255,7 +7395,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "KTV Kežmarská televízia",
   "stream_url": "http://213.81.153.221:8080/kezmarok",
   "protocol": "HTTP",
@@ -7275,7 +7415,7 @@
   "reason": "This exact KTV Kežmarská televízia legacy feed failed on both tested devices.",
   "notes": "Reject this exact legacy URL. Keep KTV Kežmarská televízia as a research target for another usable stream."
 },
-{
+    {
   "channel": "Mestská televízia Trnava",
   "stream_url": "http://213.81.153.221:8080/trnava",
   "protocol": "HTTP",
@@ -7295,7 +7435,7 @@
   "reason": "This legacy Trnava feed failed while the Antik replacement worked during the same test.",
   "notes": "Reject only this exact legacy URL. The Antik Mestská televízia Trnava feed is verified working."
 },
-{
+    {
   "channel": "Mestská televízia Trnava",
   "stream_url": "https://dash3.antik.sk/live/test_trnava/playlist.m3u8",
   "protocol": "HLS",
@@ -7315,7 +7455,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified replacement for the failed legacy Mestská televízia Trnava feed. Prefer this Antik stream."
 },
-{
+    {
   "channel": "Mestská TV Košice",
   "stream_url": "https://dash2.antik.sk/live/test_mtv_kosice/playlist.m3u8",
   "protocol": "HLS",
@@ -7335,7 +7475,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working Antik feed. This is a usable replacement candidate for the previously failed streaming.sk TV Košice feed."
 },
-{
+    {
   "channel": "Miestna TV Trebišov",
   "stream_url": "https://dash3.antik.sk/live/test_trebisov/playlist.m3u8",
   "protocol": "HLS",
@@ -7355,7 +7495,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Dajto",
   "stream_url": "http://88.212.15.19/live/test_dajto_25p/playlist.m3u8",
   "protocol": "HLS",
@@ -7375,7 +7515,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Devínskonovoveská televízia",
   "stream_url": "http://46.36.41.106:8888/rebit/175.m3u8",
   "protocol": "HLS",
@@ -7395,7 +7535,7 @@
   "reason": "This exact Devínskonovoveská televízia REBIT feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep the broadcaster as a research target for another usable stream."
 },
-{
+    {
   "channel": "Fashion TV Czech & Slovak",
   "stream_url": "https://lb.streaming.sk/fashiontv/stream/playlist.m3u8",
   "protocol": "HLS",
@@ -7415,7 +7555,7 @@
   "reason": "This exact Fashion TV Czech & Slovak feed failed on both tested devices.",
   "notes": "Reject this exact Streaming.sk URL. Keep the channel as a research target for another usable feed."
 },
-{
+    {
   "channel": "Flow TV",
   "stream_url": "https://app.viloud.tv/hls/channel/04e456809c83928443e59f0a2fce8610.m3u8",
   "tvg_id": "FlowTV.sk",
@@ -7436,7 +7576,7 @@
   "reason": "The experimental Flow TV Viloud feed failed on both tested devices.",
   "notes": "Reject this exact URL. The candidate was already experimental and its current channel identity/activity was not guaranteed."
 },
-{
+    {
   "channel": "Folklorika TV",
   "stream_url": "http://88.212.15.19/live/test_folklorika_atktv/playlist.m3u8",
   "protocol": "HLS",
@@ -7456,7 +7596,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Godzone TV",
   "stream_url": "http://46.36.41.106:8888/rebit/177.m3u8",
   "protocol": "HLS",
@@ -7476,7 +7616,7 @@
   "reason": "The low-confidence REBIT candidate failed on both tested devices and could not be used to confirm Godzone TV identity.",
   "notes": "Reject this exact REBIT/177 URL. Do not treat the failure as evidence that Godzone TV itself is unavailable; search for a different current direct stream."
 },
-{
+    {
   "channel": "GTTV",
   "stream_url": "https://stream.ostv.sk/GTTV/index.m3u8",
   "protocol": "HLS",
@@ -7496,7 +7636,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "HAHA TV",
   "stream_url": "https://dash3.antik.sk/live/test_haha_tv/playlist.m3u8",
   "tvg_id": "HAHATV.sk@SD",
@@ -7517,7 +7657,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "HNTV",
   "stream_url": "https://dash3.antik.sk/live/test_hntv/playlist.m3u8",
   "protocol": "HLS",
@@ -7537,7 +7677,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified Humenská televízia feed working on both tested devices."
 },
-{
+    {
   "channel": "Jednotka",
   "stream_url": "http://88.212.15.19/live/test_jednotka_25p/playlist.m3u8",
   "tvg_id": "Jednotka.sk@SD",
@@ -7558,7 +7698,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "JOJ Svet",
   "stream_url": "http://88.212.15.19/live/test_joj_svet/playlist.m3u8",
   "protocol": "HLS",
@@ -7578,7 +7718,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "360 TuneBox",
   "stream_url": "https://dash2.antik.sk/live/test_360_tunebox_medium_atk/playlist.m3u8",
   "protocol": "HLS",
@@ -7598,7 +7738,7 @@
   "reason": "Passed manual VLC and Samsung playback tests and was accepted for the expected Slovak playlist.",
   "notes": "Verified working on both tested devices. The channel is not Slovak-origin but is carried for the Slovak market."
 },
-{
+    {
   "channel": "Antik Info TV",
   "stream_url": "https://dash4.antik.sk/live/test_infokanal_tizen/playlist.m3u8",
   "tvg_id": "AntikInfoTV.sk@HD",
@@ -7619,7 +7759,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Arena Sport 1",
   "stream_url": "http://88.212.15.19/live/test_arenasport/playlist.m3u8",
   "tvg_id": "ArenaSport1.sk@SD",
@@ -7640,7 +7780,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "Arena Sport 2",
   "stream_url": "http://88.212.15.19/live/test_arenasport_dva/playlist.m3u8",
   "tvg_id": "ArenaSport2.sk@SD",
@@ -7661,7 +7801,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified working on both tested devices."
 },
-{
+    {
   "channel": "ATV Žiar",
   "stream_url": "https://dash3.antik.sk/live/test_atv_ziar/playlist.m3u8",
   "protocol": "HLS",
@@ -7681,7 +7821,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified ATV Žiar nad Hronom feed working on both tested devices."
 },
-{
+    {
   "channel": "Bardejovská TV",
   "stream_url": "http://s1.media-planet.sk:80/live/bardejov1/playlist.m3u8",
   "tvg_id": "BTV.sk",
@@ -7702,7 +7842,7 @@
   "reason": "The legacy Media-Planet Bardejovská TV feed failed while the Kabelko replacement worked during the same test.",
   "notes": "Reject only this exact legacy URL. The Kabelko Bardejovská TV feed is verified working."
 },
-{
+    {
   "channel": "Bardejovská TV",
   "stream_url": "https://fs3.kabelko.sk/9011/index.m3u8?token=btv",
   "tvg_id": "BTV.sk",
@@ -7723,7 +7863,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
   "notes": "Verified replacement for the failed legacy Bardejovská TV feed. Prefer this Kabelko HTTPS stream."
 },
-{
+    {
   "channel": "Nicktoons",
   "stream_url": "http://88.212.15.19/live/test_nicktoons/playlist.m3u8",
   "tvg_id": "Nicktoons.cz@SD",
@@ -7744,7 +7884,7 @@
   "reason": "Expected Hungarian, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Nicktoons feed. Exclude from the Hungarian playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "AMC Europe Czech Republic",
   "stream_url": "http://88.212.15.19/live/test_amc_25p/playlist.m3u8",
   "tvg_id": "AMCEurope.uk@CzechRepublic",
@@ -7765,7 +7905,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech AMC Europe feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Barrandov Krimi",
   "stream_url": "https://dash4.antik.sk/live/test_barrandov_plus_atk_1200/playlist.m3u8",
   "tvg_id": "BarrandovKrimi.cz@SD",
@@ -7786,7 +7926,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Barrandov Krimi feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Canal+ Action Europe Czechia",
   "stream_url": "http://46.149.191.219:9106/play/a01g",
   "tvg_id": "CanalPlusActionEurope.nl@Czechia",
@@ -7807,7 +7947,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Canal+ Action Europe feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Kino Barrandov",
   "stream_url": "http://88.212.15.19/live/test_kino_barrandov_sd_hevc50/playlist.m3u8",
   "tvg_id": "KinoBarrandov.cz@SD",
@@ -7828,7 +7968,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Kino Barrandov feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Minimax",
   "stream_url": "http://88.212.15.19/live/test_minimax/playlist.m3u8",
   "tvg_id": "MinimaxCEE.cz@SD",
@@ -7849,7 +7989,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Minimax feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Retro Music Television",
   "stream_url": "https://stream.mediawork.cz/retrotv/retrotvHQ1/playlist.m3u8",
   "tvg_id": "RetroMusicTV.cz@SD",
@@ -7870,7 +8010,7 @@
   "reason": "Expected Slovak, but the stream was manually verified as Czech on both tested devices.",
   "notes": "Technically working Czech Retro Music Television feed. Exclude from the Slovak playlist. Potentially useful for future Czechia support."
 },
-{
+    {
   "channel": "Ajka TV",
   "stream_url": "https://ythls-v2.onrender.com/channel/UCufNLOni_xbT2lFNo7fuY8Q.m3u8",
   "protocol": "HLS",
@@ -7890,7 +8030,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this ythls-v2 YouTube resolver candidate. Do not re-test unless a stable direct non-YouTube stream is found for Ajka TV."
 },
-{
+    {
   "channel": "BUDA TV",
   "stream_url": "https://iptv02.eurocable.co.hu:15400/EC-HEGYVIDEKTV-FTA/index.fmp4.m3u8",
   "protocol": "HLS",
@@ -7910,7 +8050,7 @@
   "reason": "This exact BUDA TV feed failed on both tested devices.",
   "notes": "Reject this exact fMP4 HLS URL. Keep BUDA TV itself as a research target for a standard HLS replacement."
 },
-{
+    {
   "channel": "Bunyó TV",
   "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8",
   "protocol": "HLS",
@@ -7930,7 +8070,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Hungarian language.",
   "notes": "Verified Bunyó TV standard HLS feed. Prefer this feed over the fMP4 Feed 2 because this one works on both target devices."
 },
-{
+    {
   "channel": "Bunyó TV",
   "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.fmp4.m3u8",
   "protocol": "HLS",
@@ -7950,7 +8090,7 @@
   "reason": "The stream works correctly in VLC but Samsung does not support this feed.",
   "notes": "PC-only Bunyó TV fMP4 alternative. Keep for testing/history but prefer Feed 1, which is verified on both VLC and Samsung."
 },
-{
+    {
   "channel": "Classics TV",
   "stream_url": "https://s01.diazol.hu:9152/live.m3u8",
   "protocol": "HLS",
@@ -7970,7 +8110,7 @@
   "reason": "The HTTPS alternate works correctly in VLC but fails on Samsung.",
   "notes": "PC-only Classics TV alternative. Keep the existing HTTP :9150 feed as the preferred verified stream because it works on both VLC and Samsung."
 },
-{
+    {
   "channel": "Club Dance Online TV",
   "stream_url": "https://stream.clubdance.online:10022/hls/stream.m3u8",
   "protocol": "HLS",
@@ -7990,7 +8130,7 @@
   "reason": "This exact Club Dance Online TV direct HLS feed failed on both tested devices.",
   "notes": "Reject this exact URL. Keep Club Dance Online TV itself as a research target for a replacement stream."
 },
-{
+    {
   "channel": "Füred TV",
   "stream_url": "https://ythls-v2.onrender.com/channel/UC1V3CsdsELl3uZtqmNzMvnA.m3u8",
   "protocol": "HLS",
@@ -8010,7 +8150,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this ythls-v2 resolver candidate. Do not re-test unless a stable direct non-YouTube stream is found for Füred TV."
 },
-{
+    {
   "channel": "Gyula Televízió",
   "stream_url": "https://ythls-v2.onrender.com/channel/UCvUmjmd689vg_wxLFweyWhA.m3u8",
   "protocol": "HLS",
@@ -8030,7 +8170,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this ythls-v2 resolver candidate. Do not re-test unless a stable direct non-YouTube stream is found for Gyula Televízió."
 },
-{
+    {
   "channel": "Gyöngyösi TV",
   "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay02/livestream005.sdp/playlist.m3u8",
   "tvg_id": "GyongyosiTV.hu@SD",
@@ -8051,7 +8191,7 @@
   "reason": "Feed 1 failed while Gyöngyösi TV Feed 2 successfully played during the same test.",
   "notes": "Reject this exact Feed 1 URL. Feed 2 is verified working and should be preferred."
 },
-{
+    {
   "channel": "Gyöngyösi TV",
   "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay44_1/HDE043.sdp/playlist.m3u8",
   "tvg_id": "GyongyosiTV.hu@SD",
@@ -8072,7 +8212,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Hungarian language.",
   "notes": "Verified Gyöngyösi TV Feed 2. Prefer this feed over failed Feed 1."
 },
-{
+    {
   "channel": "Lóverseny közvetítés",
   "stream_url": "https://cloudfront41.lexanetwork.com:1344/xrelay/loverseny2.sdp/playlist.m3u8",
   "tvg_id": "Loversenykozvetites.hu@SD",
@@ -8093,7 +8233,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Hungarian content/language.",
   "notes": "Manual retest resolves the previous identity/language review. Feed 2 is verified working; keep it instead of the failed legacy Feed 1."
 },
-{
+    {
   "channel": "M4 Sport",
   "stream_url": "http://88.212.15.19/live/m4_hun/index.m3u8",
   "tvg_id": "M4Sport.hu@SD",
@@ -8114,7 +8254,7 @@
   "reason": "Repeated manual testing confirms that this exact M4 Sport feed fails on both tested devices.",
   "notes": "Change the previous needs_review result to rejected. Reject this exact URL only; continue searching for a usable M4 Sport feed."
 },
-{
+    {
   "channel": "M4 Sport",
   "stream_url": "https://7nyaler.streamhostingcdn.top/stream/80/index.m3u8",
   "tvg_id": "M4Sport.hu@SD",
@@ -8135,7 +8275,7 @@
   "reason": "The stream works correctly in VLC but Samsung does not support this feed.",
   "notes": "PC-only M4 Sport alternative. The host is a third-party source rather than a broadcaster-owned endpoint, so do not treat it as the preferred stable family feed."
 },
-{
+    {
   "channel": "M4 Sport",
   "stream_url": "https://c401-node62-cdn.connectmedia.hu/110110/5dd8dc6d853c9b7f94db85646ed44326/641177e3/index.m3u8",
   "tvg_id": "M4Sport.hu@SD",
@@ -8156,7 +8296,7 @@
   "reason": "This exact M4 Sport ConnectMedia candidate failed on both tested devices.",
   "notes": "Keep rejected. Do not re-test this exact URL unless there is evidence that the endpoint has changed."
 },
-{
+    {
   "channel": "Mosonmagyaróvári Városi TV",
   "stream_url": "https://ythls-v2.onrender.com/channel/UC3_3zyiwtCvKZRyE9AYBcCQ.m3u8",
   "protocol": "HLS",
@@ -8176,7 +8316,7 @@
   "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
   "notes": "Reject this ythls-v2 resolver candidate. Do not re-test unless a stable direct non-YouTube stream is found for Mosonmagyaróvári Városi TV."
 },
-{
+    {
   "channel": "Csurgó TV",
   "stream_url": "https://cstv.medialivecdn.hu/csurgotv/27725804dc13aa23b3970414524d2dbf.sdp/playlist.m3u8",
   "tvg_id": "CsurgoTV.hu@SD",
@@ -8197,7 +8337,7 @@
   "reason": "The retest passed on both VLC and Samsung with the expected Hungarian language.",
   "notes": "Previous failure was not persistent. Feed 1 is now verified working. The stream may be intermittent, although IPTV-org does not currently mark Csurgó TV Not 24/7."
 },
-{
+    {
   "channel": "Csurgó TV",
   "stream_url": "http://79.120.178.90:1935/csurgotv/csurgolive/playlist.m3u8",
   "tvg_id": "CsurgoTV.hu@SD",
@@ -8218,7 +8358,7 @@
   "reason": "Feed 2 failed while Csurgó TV Feed 1 successfully played during the same test, confirming that the station was broadcasting.",
   "notes": "Repeated failure. Reject only this exact URL and prefer verified Feed 1."
 },
-{
+    {
   "channel": "Csurgó TV",
   "stream_url": "https://5cd03f21c7193.streamlock.net/csurgotv/csurgolive/playlist.m3u8",
   "tvg_id": "CsurgoTV.hu@SD",
@@ -8239,7 +8379,7 @@
   "reason": "Feed 3 failed while Csurgó TV Feed 1 successfully played during the same test, confirming that the station was broadcasting.",
   "notes": "Repeated failure. Reject only this exact URL and prefer verified Feed 1."
 },
-{
+    {
   "channel": "Disco TV",
   "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8",
   "protocol": "HLS",
@@ -8259,7 +8399,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Hungarian language.",
   "notes": "The previous black-screen result was temporary. Feed 1 is now verified working."
 },
-{
+    {
   "channel": "Disco TV",
   "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8",
   "protocol": "HLS",
@@ -8279,7 +8419,7 @@
   "reason": "Passed manual VLC and Samsung playback tests with the expected Hungarian language.",
   "notes": "Verified alternative Disco TV stream. Feed 1 and Feed 2 both work on both target devices."
 },
-{
+    {
   "channel": "Disco TV",
   "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.fmp4.m3u8",
   "protocol": "HLS",
@@ -8299,7 +8439,7 @@
   "reason": "The stream works correctly in VLC but Samsung does not support this fMP4 feed.",
   "notes": "PC-only Disco TV alternative. Prefer Feed 1 or Feed 2 because both are verified on VLC and Samsung."
 },
-{
+    {
   "channel": "EBS",
   "stream_url": "https://streams.prd.commavservices.eu/live/ebs/index.m3u8",
   "tvg_id": "EbS.be@SD",
@@ -8320,7 +8460,7 @@
   "reason": "VLC playback now works, but Samsung does not support the stream and the absence of speech means the expected Hungarian language could not be verified.",
   "notes": "Do not retain the previous assumption that the observed language is English based on this test. Re-test during an active spoken broadcast. The feed may be event/intermittent in practice, but IPTV-org does not currently flag it Not 24/7."
 },
-{
+    {
   "channel": "EBS Plus",
   "stream_url": "https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8",
   "tvg_id": "EbSPlus.be@SD",
@@ -8341,7 +8481,7 @@
   "reason": "VLC playback now works, but Samsung does not support the stream and the absence of speech means the expected Hungarian language could not be verified.",
   "notes": "Do not retain the previous assumption that the observed language is English based on this test. Re-test during an active spoken broadcast. The feed may be event/intermittent in practice, but IPTV-org does not currently flag it Not 24/7."
 },
-{
+    {
   "channel": "Országgyűlés (Törvényalkotási bizottság)",
   "stream_url": "http://tab.parlament.hu:1935/edgelive/smil:mkogytab.smil/playlist.m3u8",
   "tvg_id": "OrszaggyulesOGYTAB.hu@SD",
@@ -8363,7 +8503,7 @@
   "reason": "The stream is explicitly Not 24/7, so another loads/loads result outside an active committee broadcast is inconclusive.",
   "notes": "Repeated off-air-style result. Re-test only during a confirmed live Törvényalkotási bizottság session."
 },
-{
+    {
   "channel": "Országgyűlés (Törvényalkotási bizottság)",
   "stream_url": "https://tab.parlament.hu:446/edgelive/smil:mkogytab.smil/playlist.m3u8",
   "tvg_id": "OrszaggyulesOGYTAB.hu@SD",
@@ -8385,7 +8525,7 @@
   "reason": "The stream is explicitly Not 24/7, so another loads/loads result outside an active committee broadcast is inconclusive.",
   "notes": "Repeated off-air-style result. Re-test only during a confirmed live Törvényalkotási bizottság session."
 },
-{
+    {
   "channel": "RTG int.",
   "stream_url": "http://213.91.179.28:8000/play/a0bw",
   "tvg_id": "RTGint.ru@SD",
@@ -8406,7 +8546,7 @@
   "reason": "Expected Hungarian, but the active stream was manually verified as Russian on both tested devices.",
   "notes": "Replace the older Russian-language observation with this newer Russian-language retest. The feed may be intermittent in practice, but when active it still does not satisfy the Hungarian-language requirement."
 },
-{
+    {
   "channel": "RTV 1 Vajdaság",
   "stream_url": "http://212.200.230.50:1935/RTV/rtv1/playlist.m3u8",
   "protocol": "HLS",
@@ -8426,7 +8566,7 @@
   "reason": "The stream works technically on both devices, but the observed spoken language was Romanian rather than the expected Hungarian.",
   "notes": "Reject this exact feed from the Hungarian-language playlist. This does not mean the broadcaster is unavailable; it means this service is not suitable as a general Hungarian-language channel based on the manual test."
 },
-{
+    {
   "channel": "RTV 2 Vajdaság",
   "stream_url": "http://212.200.230.50:1935/RTV/rtv2/playlist.m3u8",
   "protocol": "HLS",
@@ -8446,7 +8586,7 @@
   "reason": "The HLS transport works, but repeated tests over several days showed only an online-retransmission restriction slate instead of actual television programming.",
   "notes": "Reject this exact public Internet feed. This is not a codec or device failure; the broadcaster is intentionally withholding the programme from this stream. Reconsider only if the endpoint later begins carrying normal programming."
 },
-{
+    {
   "channel": "TVR Cluj",
   "stream_url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8",
   "tvg_id": "TVRCluj.ro@SD",
@@ -8467,7 +8607,7 @@
   "reason": "The regional channel carries Hungarian programming, but the manual tests so far encountered Romanian spoken programming rather than a confirmed Hungarian-language programme.",
   "notes": "Keep as a scheduled Hungarian-programming candidate. Re-test during a known Hungarian programme block such as Erdélyi Figyelő before deciding whether it is useful for the Hungarian playlist."
 },
-{
+    {
   "channel": "TVR Timișoara",
   "stream_url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8",
   "tvg_id": "TVRTimisoara.ro@SD",
@@ -8488,7 +8628,7 @@
   "reason": "The regional channel has dedicated Hungarian programming, but the manual tests so far encountered Romanian spoken programming.",
   "notes": "Keep as a scheduled Hungarian-programming candidate. Re-test specifically during its Hungarian-language minority programme before verifying it for HU."
 },
-{
+    {
   "channel": "TVR Târgu Mureș",
   "stream_url": "https://tvr-tgmures.lg.mncdn.com/tvrtgmures/smil:tvrtgmures.smil/playlist.m3u8",
   "tvg_id": "TVRTarguMures.ro@SD",
@@ -8509,7 +8649,7 @@
   "reason": "The regional channel carries substantial Hungarian programming, but the manual tests so far encountered Romanian spoken programming rather than a confirmed Hungarian-language programme.",
   "notes": "Keep as a scheduled Hungarian-programming candidate. Re-test during a known Hungarian-language broadcast block before verifying it for the HU playlist."
 },
-{
+    {
   "channel": ":24",
   "stream_url": "http://88.212.15.27/live/test_trojka_25p/playlist.m3u8",
   "tvg_id": "24.sk@SD",
@@ -8530,7 +8670,7 @@
   "reason": "Samsung playback works correctly with the expected Slovak language, although VLC does not complete playback.",
   "notes": "TV-verified feed. Suitable for Samsung/family TV use, but not verified for VLC."
 },
-{
+    {
   "channel": "JOJ Šport",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/joj_sport-1080.m3u8",
   "tvg_id": "JOJSport.sk",
@@ -8551,7 +8691,7 @@
   "reason": "This exact JOJ Šport CDN feed failed on both tested devices.",
   "notes": "Reject this exact URL. Continue looking for another usable JOJ Šport stream."
 },
-{
+    {
   "channel": "JOJ Šport 2",
   "stream_url": "http://88.212.15.47/live/joj_sport_2_avc/index.m3u8",
   "tvg_id": "JOJSport2.sk",
@@ -8572,7 +8712,7 @@
   "reason": "Samsung playback works correctly with the expected Slovak language, although VLC does not complete playback.",
   "notes": "TV-verified JOJ Šport 2 Feed 1. Prefer this feed over Feed 2 and Feed 3 because those failed on both devices."
 },
-{
+    {
   "channel": "JOJ Šport 2",
   "stream_url": "http://46.36.41.106:8888/rebit/80.m3u8",
   "tvg_id": "JOJSport2.sk",
@@ -8593,7 +8733,7 @@
   "reason": "Feed 2 failed while JOJ Šport 2 Feed 1 worked on Samsung during the same test.",
   "notes": "Reject this exact REBIT feed. Prefer Feed 1."
 },
-{
+    {
   "channel": "JOJ Šport 2",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/joj_sport2-1080.m3u8",
   "tvg_id": "JOJSport2.sk",
@@ -8614,7 +8754,7 @@
   "reason": "Feed 3 failed while JOJ Šport 2 Feed 1 worked on Samsung during the same test.",
   "notes": "Reject this exact JOJ CDN feed. Prefer Feed 1."
 },
-{
+    {
   "channel": "STVR :O",
   "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=STVR+%3AO",
   "protocol": "HTTPS",
@@ -8634,7 +8774,7 @@
   "reason": "The relay technically opens but returns a geographic-restriction slate instead of the television programme.",
   "notes": "Reject this exact relay URL. The STVR :O channel itself may be usable through another direct stream."
 },
-{
+    {
   "channel": "TA3",
   "stream_url": "https://n13.stv.livebox.sk/ta3/685d9a141bd846e8facf83bc378da26b/1.smil/chunklist_b2691072.m3u8",
   "tvg_id": "TA3.sk",
@@ -8655,7 +8795,7 @@
   "reason": "The URL contains an invalid or expired access token and no longer delivers the TA3 programme.",
   "notes": "Reject this exact tokenized URL. Search for a fresh or non-tokenized TA3 stream."
 },
-{
+    {
   "channel": "TV NRSR",
   "stream_url": "https://n11.stv.livebox.sk/stv-tv/stv4.stream/playlist.m3u8",
   "tvg_id": "TVNRSR.sk@SD",
@@ -8677,7 +8817,7 @@
   "reason": "TV NRSR is explicitly Not 24/7, so an inactivity/interruption slate outside an active parliamentary broadcast is inconclusive.",
   "notes": "Do not reject this exact feed yet. Re-test during a confirmed live National Council broadcast."
 },
-{
+    {
   "channel": "TV NRSR",
   "stream_url": "https://live.cdn.joj.sk/live/andromeda/nrsr/live.m3u8",
   "tvg_id": "TVNRSR.sk",
@@ -8698,7 +8838,7 @@
   "reason": "The alternate feed failed, but TV NRSR is a non-24/7 parliamentary channel and the primary feed was showing an inactivity slate during the same test.",
   "notes": "Failure is inconclusive because there was no confirmed live parliamentary broadcast. Re-test this feed during an active TV NRSR session before rejecting it."
 },
-{
+    {
   "channel": "TV Romana",
   "stream_url": "http://88.212.7.11/live/test_tv_romana_web_player/playlist.m3u8",
   "tvg_id": "TVRomana.sk@SD",
@@ -8719,7 +8859,7 @@
   "reason": "Samsung playback works correctly with the expected Slovak language, although VLC does not complete playback.",
   "notes": "TV-verified feed. Suitable for Samsung/family TV use."
 },
-{
+    {
   "channel": ":Šport",
   "stream_url": "http://88.212.15.27/live/test_rtvs_sport_hevc/playlist.m3u8",
   "tvg_id": "Sport.sk@SD",
