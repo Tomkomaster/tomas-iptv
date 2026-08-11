@@ -1,28 +1,22 @@
 {
   "site_title": "Tomas IPTV",
-
   "default_language_code": "HU",
-
   "country_names": {
     "HU": "Hungary",
     "SK": "Slovakia",
     "CZ": "Czechia"
   },
-
   "output": "public/tv.m3u",
   "test_output": "public/test.m3u",
-
   "country_outputs": {
     "HU": "public/hu.m3u",
     "SK": "public/sk.m3u"
   },
-
   "stable_playlist": {
     "allowed_decisions": [
       "Verified",
       "TV verified"
     ],
-
     "blocked_hosts": [
       "youtube.com",
       "youtube-nocookie.com",
@@ -30,7 +24,6 @@
       "googlevideo.com",
       "ythls.onrender.com"
     ],
-
     "blocked_name_terms": [
       "webcam",
       "web cam",
@@ -39,16 +32,12 @@
       "időkép",
       "idokep"
     ],
-
     "blocked_source_flags": [
       "Offline"
     ]
   },
-
   "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
-
   "audit_path": "audit.json",
-
   "health": {
     "enabled": true,
     "output": "public/health.json",
@@ -58,12 +47,10 @@
     "slow_start_seconds": 6,
     "max_segment_tries": 2
   },
-
   "attention": {
     "manual_stale_days": 30,
     "manual_very_stale_days": 90
   },
-
   "epg": {
     "enabled": true,
     "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
@@ -78,7 +65,6 @@
     },
     "max_connections": 3
   },
-
   "sources": [
     {
       "name": "IPTV-org Hungary",
@@ -92,7 +78,6 @@
       "language_code": "HU",
       "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hu.m3u"
     },
-
     {
       "name": "IPTV-org Slovakia",
       "kind": "base",
@@ -104,9 +89,26 @@
       "kind": "alternatives",
       "language_code": "SK",
       "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sk.m3u"
+    },
+    {
+      "name": "IPTV-org Hungarian language",
+      "kind": "alternatives",
+      "language_code": "HU",
+      "url": "https://iptv-org.github.io/iptv/languages/hun.m3u"
+    },
+    {
+      "name": "IPTV-org Slovak language",
+      "kind": "alternatives",
+      "language_code": "SK",
+      "url": "https://iptv-org.github.io/iptv/languages/slk.m3u"
+    },
+    {
+      "name": "IPTV-org Slovakia country",
+      "kind": "alternatives",
+      "language_code": "SK",
+      "url": "https://iptv-org.github.io/iptv/countries/sk.m3u"
     }
   ],
-
   "extras": [
     {
       "name": "Our Hungarian test/verified extras",
