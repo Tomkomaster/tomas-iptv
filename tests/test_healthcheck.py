@@ -170,6 +170,42 @@ class HealthcheckTests(unittest.TestCase):
         self.assertEqual(recovered["consecutive_failures"], 0)
         self.assertFalse(recovered["manual_retest_recommended"])
 
+    def test_same_day_failure_does_not_advance_nightly_streak(self):
+        entry = self.entry("/missing.m3u8")
+        failed_probe = {
+            "status": "HTTP error",
+            "success": False,
+            "startup_seconds": 0.1,
+            "probe_type": "HLS",
+            "redirected": False,
+            "final_url": entry["stream_url"],
+            "http_status": 404,
+            "request_count": 0,
+            "detail": "HTTP 404",
+        }
+        previous = {
+            "consecutive_failures": 2,
+            "checked_at": "2026-08-11 04:23:00 UTC",
+        }
+
+        same_day = apply_history(
+            entry,
+            failed_probe,
+            previous,
+            "2026-08-11 20:00:00 UTC",
+        )
+        self.assertEqual(same_day["consecutive_failures"], 2)
+        self.assertFalse(same_day["manual_retest_recommended"])
+
+        next_day = apply_history(
+            entry,
+            failed_probe,
+            same_day,
+            "2026-08-12 04:23:00 UTC",
+        )
+        self.assertEqual(next_day["consecutive_failures"], 3)
+        self.assertTrue(next_day["manual_retest_recommended"])
+
     def test_playlist_manual_status_and_report_summary(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             playlist = Path(temp_dir) / "tv.m3u"

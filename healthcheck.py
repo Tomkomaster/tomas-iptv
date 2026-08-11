@@ -469,7 +469,21 @@ def apply_history(
 ) -> dict:
     prior_failures = int((previous or {}).get("consecutive_failures") or 0)
     success = bool(probe.get("success"))
-    consecutive_failures = 0 if success else prior_failures + 1
+    previous_checked_at = str((previous or {}).get("checked_at") or "")
+    same_check_day = (
+        len(previous_checked_at) >= 10
+        and len(checked_at) >= 10
+        and previous_checked_at[:10] == checked_at[:10]
+    )
+
+    if success:
+        consecutive_failures = 0
+    elif same_check_day:
+        # A normal build can run several times after code changes. Do not
+        # turn several same-day builds into several "nightly" failures.
+        consecutive_failures = max(prior_failures, 1)
+    else:
+        consecutive_failures = prior_failures + 1
 
     if success:
         attention = "healthy" if probe.get("status") == "Online" else "warning"
