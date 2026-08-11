@@ -59,6 +59,11 @@
     "max_segment_tries": 2
   },
 
+  "attention": {
+    "manual_stale_days": 30,
+    "manual_very_stale_days": 90
+  },
+
   "epg": {
     "enabled": true,
     "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
