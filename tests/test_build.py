@@ -414,7 +414,6 @@ class AuditTests(unittest.TestCase):
             if not row["in_playlist"]
         ]
 
-        # Both current feeds must be treated as completely untested.
         self.assertEqual(
             len(current_rows),
             2,
@@ -444,7 +443,6 @@ class AuditTests(unittest.TestCase):
             ],
         )
 
-        # The old Verified result must still exist as history.
         self.assertEqual(
             len(historical_rows),
             1,
@@ -471,8 +469,6 @@ class AuditTests(unittest.TestCase):
             legacy["notes"],
         )
 
-        # Since neither current feed is Verified yet, both remain visible
-        # until we test them individually.
         selected, _ = (
             build.select_playlist_candidates(
                 entries,
@@ -1081,7 +1077,6 @@ class AuditTests(unittest.TestCase):
             "vlc": "works",
             "samsung": "works",
 
-            # Old audit format:
             "language": "Slovak",
             "language_code": "SK",
 
@@ -1431,22 +1426,22 @@ class AuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-(
-    root / "audit.json"
-).write_text(
-    json.dumps({
-        "channels": [
-            {
-                "channel": "Demo News",
-                "stream_url": url,
-                "vlc": "works",
-                "samsung": "works",
-                "decision": "auto",
-            }
-        ]
-    }),
-    encoding="utf-8",
-)
+            (
+                root / "audit.json"
+            ).write_text(
+                json.dumps({
+                    "channels": [
+                        {
+                            "channel": "Demo News",
+                            "stream_url": url,
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                        }
+                    ]
+                }),
+                encoding="utf-8",
+            )
 
             (
                 root / "source.m3u"
@@ -1517,11 +1512,10 @@ class AuditTests(unittest.TestCase):
                 playlist,
             )
 
-            # Verification status remains available in the channel name.
-self.assertIn(
-    "[HU OK] Demo News",
-    playlist,
-)
+            self.assertIn(
+                "[HU OK] Demo News",
+                playlist,
+            )
 
             with (
                 root
@@ -1562,10 +1556,10 @@ self.assertIn(
                 "Hungary | News",
             )
 
-self.assertEqual(
-    row["test_status"],
-    "Verified",
-)
+            self.assertEqual(
+                row["test_status"],
+                "Verified",
+            )
 
     def test_build_uses_general_when_group_is_missing(self):
         url = "https://example.test/general.m3u8"
@@ -1573,22 +1567,22 @@ self.assertEqual(
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-(
-    root / "audit.json"
-).write_text(
-    json.dumps({
-        "channels": [
-            {
-                "channel": "Demo TV",
-                "stream_url": url,
-                "vlc": "works",
-                "samsung": "works",
-                "decision": "auto",
-            }
-        ]
-    }),
-    encoding="utf-8",
-)
+            (
+                root / "audit.json"
+            ).write_text(
+                json.dumps({
+                    "channels": [
+                        {
+                            "channel": "Demo TV",
+                            "stream_url": url,
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                        }
+                    ]
+                }),
+                encoding="utf-8",
+            )
 
             (
                 root / "source.m3u"
@@ -1709,10 +1703,7 @@ self.assertEqual(
                 root / "public" / "test.m3u"
             ).read_text(encoding="utf-8")
 
-            # The first/original source URL is preserved.
             self.assertEqual(playlist.count(base_url), 1)
-
-            # The canonically equivalent :443 version is not published.
             self.assertNotIn(duplicate_url, playlist)
 
             with (
@@ -1733,36 +1724,36 @@ self.assertEqual(
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-(
-    root / "audit.json"
-).write_text(
-    json.dumps({
-        "channels": [
-            {
-                "channel": "Hungarian Base TV",
-                "stream_url": "https://example.test/hu.m3u8",
-                "vlc": "works",
-                "samsung": "works",
-                "decision": "auto",
-            },
-            {
-                "channel": "Slovak Base TV",
-                "stream_url": "https://example.test/sk.m3u8",
-                "vlc": "works",
-                "samsung": "works",
-                "decision": "auto",
-            },
-            {
-                "channel": "Hungarian Added TV",
-                "stream_url": "https://example.test/hu-extra.m3u8",
-                "vlc": "works",
-                "samsung": "works",
-                "decision": "auto",
-            },
-        ]
-    }),
-    encoding="utf-8",
-)
+            (
+                root / "audit.json"
+            ).write_text(
+                json.dumps({
+                    "channels": [
+                        {
+                            "channel": "Hungarian Base TV",
+                            "stream_url": "https://example.test/hu.m3u8",
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                        },
+                        {
+                            "channel": "Slovak Base TV",
+                            "stream_url": "https://example.test/sk.m3u8",
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                        },
+                        {
+                            "channel": "Hungarian Added TV",
+                            "stream_url": "https://example.test/hu-extra.m3u8",
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                        },
+                    ]
+                }),
+                encoding="utf-8",
+            )
 
             (
                 root / "hu.m3u"
@@ -1872,8 +1863,6 @@ self.assertEqual(
                 "Base channel",
             )
 
-            # THIS is the regression we care about:
-            # second base source must still be Base.
             self.assertEqual(
                 classifications[
                     "Slovak Base TV"
@@ -1964,29 +1953,29 @@ self.assertEqual(
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-(
-    root / "audit.json"
-).write_text(
-    json.dumps({
-        "channels": [
-            {
-                "channel": "HU TV",
-                "stream_url": "https://example.test/hu.m3u8",
-                "vlc": "works",
-                "samsung": "works",
-                "decision": "auto",
-            },
-            {
-                "channel": "SK TV",
-                "stream_url": "https://example.test/sk.m3u8",
-                "vlc": "works",
-                "samsung": "works",
-                "decision": "auto",
-            },
-        ]
-    }),
-    encoding="utf-8",
-)
+            (
+                root / "audit.json"
+            ).write_text(
+                json.dumps({
+                    "channels": [
+                        {
+                            "channel": "HU TV",
+                            "stream_url": "https://example.test/hu.m3u8",
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                        },
+                        {
+                            "channel": "SK TV",
+                            "stream_url": "https://example.test/sk.m3u8",
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                        },
+                    ]
+                }),
+                encoding="utf-8",
+            )
 
             (
                 root / "hu.m3u"
