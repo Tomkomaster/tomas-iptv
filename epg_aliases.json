@@ -1,0 +1,15 @@
+{
+  "provider": "epgshare01.online",
+  "description": "Explicit audited aliases from exact playlist tvg-id values to EPGshare XMLTV channel IDs. Runtime fuzzy matching is intentionally not used.",
+  "aliases": {
+    "AMCEurope.uk@Hungary": "AMC.hu",
+    "AXNCEE.es@Hungary": "AXN.hu",
+    "FilmCafe.hu@Hungary": "Film.Café.hu",
+    "History.hu@SD": "History.Channel.hu",
+    "Kolyokklub.hu@SD": "Kölyökklub.hu",
+    "Spiler1.hu@SD": "Spíler1.TV.hu",
+    "Spiler2.hu@SD": "Spíler2.TV.hu",
+    "Viasat2.hu@SD": "Viasat.2.hu",
+    "ZalaegerszegiTV.hu@SD": "Zeg.TV.hu"
+  }
+}
