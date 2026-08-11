@@ -10,6 +10,41 @@
   },
 
   "output": "public/tv.m3u",
+  "test_output": "public/test.m3u",
+
+  "country_outputs": {
+    "HU": "public/hu.m3u",
+    "SK": "public/sk.m3u"
+  },
+
+  "stable_playlist": {
+    "allowed_decisions": [
+      "Verified",
+      "TV verified"
+    ],
+
+    "blocked_hosts": [
+      "youtube.com",
+      "youtube-nocookie.com",
+      "youtu.be",
+      "googlevideo.com",
+      "ythls.onrender.com"
+    ],
+
+    "blocked_name_terms": [
+      "webcam",
+      "web cam",
+      "camera",
+      "kamera",
+      "időkép",
+      "idokep"
+    ],
+
+    "blocked_source_flags": [
+      "Offline"
+    ]
+  },
+
   "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
 
   "audit_path": "audit.json",
