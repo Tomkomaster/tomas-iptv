@@ -1,0 +1,67 @@
+name: One-time validate EPG health
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/validate-epg-health-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Strict build
+        run: python3 build.py --strict
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build and analyze EPG
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf .epg-builder
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "mediaklikk.hu,musor.tv,mujtvprogram.cz" \
+            --output .epg.channels.xml \
+            --report public/epg-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/public/guide.xml" \
+            --maxConnections=3 \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+          echo "--- EPG health JSON ---"
+          cat public/epg-health.json
