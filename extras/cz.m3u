@@ -1,1 +1,13 @@
 #EXTM3U
+
+#EXTINF:-1 tvg-id="PrahaTV.cz" tvg-name="Praha TV" group-title="Regional",Praha TV
+https://stream.polar.cz/prahatv/prahatvlive-1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="SlagrPremium.cz" tvg-name="Šlágr Premium" group-title="Music",Šlágr Premium
+https://stream-15.mazana.tv/slagrpremium.m3u
+
+#EXTINF:-1 tvg-id="PrimaKrimi.cz" tvg-name="Prima Krimi" group-title="Entertainment",Prima Krimi
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_krimi/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaMax.cz" tvg-name="Prima MAX" group-title="Entertainment",Prima MAX
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_max/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
