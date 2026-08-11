@@ -1,4 +1,4 @@
-name: One-time validate Makó local EPG
+name: One-time validate Makó local EPG v2
 
 on:
   push:
