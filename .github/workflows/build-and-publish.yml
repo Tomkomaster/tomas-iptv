@@ -7,6 +7,7 @@ on:
     paths:
       - "attention.py"
       - "build.py"
+      - "research_exports.py"
       - "epg_prepare.py"
       - "epg_merge.py"
       - "epg_aliases.json"
@@ -48,6 +49,9 @@ jobs:
 
       - name: Build IPTV playlist
         run: python3 build.py
+
+      - name: Generate research exports
+        run: python3 research_exports.py
 
       - name: Check stable stream health
         shell: bash
