@@ -162,36 +162,6 @@
       "discovery": "Current IPTV-org Hungary playlist/manual test"
     },
     {
-      "channel": "Csurgo TV",
-      "vlc": "works",
-      "samsung": "works",
-      "vlc_note": "ok",
-      "samsung_note": "ok",
-      "language": "Hungarian",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "Passed both manual playback tests.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
-      "channel": "Daru TV",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
       "channel": "Dikh TV",
       "vlc": "works",
       "samsung": "works",
@@ -478,21 +448,6 @@
       "protocol": "HLS"
     },
     {
-      "channel": "Gran TV",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
       "channel": "H!T Music Channel",
       "vlc": "loads",
       "samsung": "format_error",
@@ -603,21 +558,6 @@
       "protocol": "HLS"
     },
     {
-      "channel": "Jászsági Térségi TV (440p)",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
-    },
-    {
       "channel": "Kanizsa TV (400p)",
       "vlc": "works",
       "samsung": "works",
@@ -689,21 +629,6 @@
       "stream_url": "http://88.212.15.19/live/kolyokklub_atk/index.m3u8",
       "tvg_id": "Kolyokklub.hu@SD",
       "protocol": "HLS"
-    },
-    {
-      "channel": "Komáromi Televízió (400p)",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
     },
     {
       "channel": "Liceum TV",
@@ -1243,21 +1168,6 @@
       "stream_url": "http://88.212.15.19/live/test_slager_tv_hungary_1200_atk/playlist.m3u8",
       "tvg_id": "SlagerTV.hu@SD",
       "protocol": "HLS"
-    },
-    {
-      "channel": "Soltvadkerti Televízió",
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "This channel cannot be loaded due to an incompatible format. Multimedia file type not supported, Code: PLAYER_ERROR_NOT_SUPPORTED_FILE",
-      "language": "Unknown",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "notes": "VLC stayed loading. Samsung reported unsupported file/format.",
-      "tested_on": "2026-08-09",
-      "language_code": "HU",
-      "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
     },
     {
       "channel": "Sorozat+",
