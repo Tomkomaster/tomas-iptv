@@ -1,0 +1,47 @@
+name: One-time inspect tvmusor.hu API
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/inspect-tvmusor-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Inspect live TV2 response
+        shell: bash
+        run: |
+          set -euo pipefail
+          TODAY="$(TZ=Europe/Budapest date +%F)"
+          curl -fsS \
+            'https://tvmusor.borsonline.hu/a/get-events/' \
+            -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \
+            --data-urlencode "data={\"blocks\":[\"3|$TODAY\"]}" \
+            -o /tmp/tvmusor.json
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('/tmp/tvmusor.json').read_text(encoding='utf-8'))
+          print('top keys:', list(data) if isinstance(data, dict) else type(data).__name__)
+          inner = data.get('data') if isinstance(data, dict) else None
+          print('data keys:', list(inner) if isinstance(inner, dict) else type(inner).__name__)
+          blocks = inner.get('loadedBlocks') if isinstance(inner, dict) else None
+          print('loadedBlocks type:', type(blocks).__name__)
+          if isinstance(blocks, dict):
+              print('block keys:', list(blocks)[:20])
+              for key, value in list(blocks.items())[:3]:
+                  print('block', key, 'type', type(value).__name__, 'len', len(value) if hasattr(value, '__len__') else '?')
+                  if isinstance(value, list) and value:
+                      print('first item keys:', list(value[0]) if isinstance(value[0], dict) else type(value[0]).__name__)
+                      print('first item:', value[0])
+          print('response chars:', len(Path('/tmp/tvmusor.json').read_text(encoding='utf-8')))
+          PY
