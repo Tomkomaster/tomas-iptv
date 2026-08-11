@@ -1,0 +1,39 @@
+name: Apply targeted fixes
+
+on:
+  push:
+    branches:
+      - agent/fix-language-scoping-audit-bool
+    paths:
+      - tools/apply_targeted_fixes.py
+      - .github/workflows/apply-targeted-fixes.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/fix-language-scoping-audit-bool
+
+      - name: Apply targeted patch
+        run: python3 tools/apply_targeted_fixes.py
+
+      - name: Validate syntax and tests
+        run: |
+          python3 -m py_compile build.py
+          python3 -m unittest discover -s tests -v
+
+      - name: Commit patched build.py
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build.py
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix language-scoped channel identity and audit booleans"
+          git push
