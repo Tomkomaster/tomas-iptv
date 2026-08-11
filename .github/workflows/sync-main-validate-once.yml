@@ -1,0 +1,131 @@
+name: One-time sync current main and validate EPG
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/sync-main-validate-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sync-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Merge current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge --no-edit origin/main
+          git status --short
+
+      - name: Run tests and strict live build
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+
+      - name: Check live stable streams
+        run: python3 healthcheck.py --no-previous
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build live EPG and attention queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .epg-builder
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "mediaklikk.hu,horizon.tv" \
+            --output .epg.channels.xml \
+            --report .epg-iptv-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections=3 \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
+            https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz \
+            -o .epg-external.download
+
+          python3 epg_merge.py \
+            --playlist public/tv.m3u \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external .epg-external.download \
+            --external-provider epgshare01.online \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days 7 \
+            --output public/guide.xml \
+            --report public/epg-coverage.json
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+          python3 attention.py
+
+      - name: Report final metrics
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('public/report.json').read_text(encoding='utf-8'))
+          coverage = json.loads(Path('public/epg-coverage.json').read_text(encoding='utf-8'))
+          health = json.loads(Path('public/epg-health.json').read_text(encoding='utf-8'))
+          attention = json.loads(Path('public/attention.json').read_text(encoding='utf-8'))
+          stream_health = json.loads(Path('public/health.json').read_text(encoding='utf-8'))
+
+          print('=== FINAL MAIN-SYNCED METRICS ===')
+          print(json.dumps({
+              'stable_streams': report.get('playlists', {}).get('stable', {}).get('stream_urls'),
+              'playlist_tvg_ids': coverage.get('playlist_tvg_ids'),
+              'mapped_tvg_ids': coverage.get('matched_tvg_ids'),
+              'mapping_percent': coverage.get('mapping_coverage_percent'),
+              'channels_with_programmes': health.get('channels_with_programmes'),
+              'programme_percent': health.get('actual_programme_coverage_percent'),
+              'programmes': health.get('programme_entries'),
+              'mapped_empty': health.get('mapped_without_programmes_count'),
+              'attention': attention.get('summary'),
+              'stream_health': stream_health.get('summary'),
+          }, indent=2, ensure_ascii=False))
+          print('=== REMAINING NO TVG-ID ===')
+          for item in attention.get('items') or []:
+              for signal in item.get('signals') or []:
+                  if signal.get('category') == 'epg_missing_id':
+                      print(item.get('channel'), '|', item.get('stream_url'))
+          print('=== REMAINING UNMAPPED IDS ===')
+          for tvg_id in coverage.get('unmatched_tvg_ids') or []:
+              print(tvg_id)
+          PY
+
+      - name: Push synced branch
+        run: git push origin HEAD:agent/audit-epg-health
