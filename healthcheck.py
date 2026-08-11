@@ -250,7 +250,7 @@ def manifest_uris(text: str) -> tuple[list[str], list[str]]:
 
 
 def is_html_payload(data: bytes) -> bool:
-    prefix = data[:256].lstrip().casefold()
+    prefix = data[:256].lstrip().lower()
     return prefix.startswith(b"<!doctype html") or prefix.startswith(b"<html")
 
 
