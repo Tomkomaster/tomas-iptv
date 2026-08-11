@@ -169,3 +169,6 @@ https://sktv.mxnticek.eu/new/stream.php?ch=STVR+Live
 
 #EXTINF:-1 tvg-name="Markíza TN Live" group-title="Slovakia",Markíza TN Live
 https://sktv.mxnticek.eu/new/stream.php?ch=Mark%C3%ADza+TN+Live
+
+#EXTINF:-1 tvg-name="TV Košice" group-title="Slovakia",TV Košice
+http://lb.streaming.sk/tvnasa/stream/playlist.m3u8
