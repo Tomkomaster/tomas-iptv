@@ -1,4 +1,4 @@
-name: One-time probe local EPG sources
+name: One-time validate local EPG overlay
 
 on:
   push:
@@ -11,56 +11,97 @@ permissions:
   contents: read
 
 jobs:
-  probe:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Probe candidate schedule pages
+
+      - name: Run tests and strict build
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build base merged EPG
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .epg-builder
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "mediaklikk.hu,horizon.tv" \
+            --output .epg.channels.xml \
+            --report .epg-iptv-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections=3 \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
+            https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz \
+            -o .epg-external.download
+
+          python3 epg_merge.py \
+            --playlist public/tv.m3u \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external .epg-external.download \
+            --external-provider epgshare01.online \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days 7 \
+            --output public/guide.xml \
+            --report public/epg-coverage.json
+
+      - name: Apply live local EPG overlay
+        run: |
+          python3 local_epg.py --reference-date 2026-08-11
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+          python3 attention.py
+
+      - name: Inspect coverage improvement
         run: |
           python3 - <<'PY'
-          from urllib.request import Request, urlopen
-          from urllib.error import HTTPError, URLError
-          import re, html
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
 
-          urls = {
-            'nytv': 'https://nyiregyhazitv.hu/tv-musor',
-            'cegled': 'https://ctv.hu/heti-tv-musor/',
-            'baja': 'https://www.bajahangja.hu/bajai-tv/adasrend',
-            'halom-today': 'https://www.halomtv.hu/tvmusor/2026-08-11',
-            'kanizsa-home': 'https://kanizsamediahaz.hu/kanizsatv',
-            'eger': 'https://www.tveger.hu/tv-musor/',
-            'keszthely': 'https://tvkeszthely.hu/musor',
-            'pannon-tue': 'https://pannonrtv.com/musor/pannon-tv-kedd',
-            'ozd': 'https://www.ovtv.eu/index.php/tv-musor',
-            'vasarhely': 'https://www.hodpress.hu/vtv-musor/',
-            'ewtn': 'https://www.tvmustra.hu/tvmusor/EWTN/2026-08-11',
-            'filmbox-comedy': 'https://www.tvmustra.hu/tvmusor/FILMBOX_PLUSZ_COMEDY/2026-08-11',
-            'filmbox-emotion': 'https://www.tvmustra.hu/tvmusor/FILMBOX_PLUSZ_EMOTION/2026-08-11',
-            'filmbox-hits': 'https://www.tvmustra.hu/tvmusor/FILMBOX_PLUSZ_HITS/2026-08-11',
-            'filmbox-one': 'https://www.tvmustra.hu/tvmusor/FILMBOX_PLUSZ_ONE/2026-08-11',
-          }
+          coverage = json.loads(Path('public/epg-coverage.json').read_text(encoding='utf-8'))
+          health = json.loads(Path('public/epg-health.json').read_text(encoding='utf-8'))
+          local = json.loads(Path('public/local-epg.json').read_text(encoding='utf-8'))
+          attention = json.loads(Path('public/attention.json').read_text(encoding='utf-8'))
+          guide = ET.parse('public/guide.xml').getroot()
 
-          for name, url in urls.items():
-              print('\n===', name, url, '===')
-              try:
-                  req = Request(url, headers={'User-Agent': 'Mozilla/5.0 Tomas-IPTV-EPG/1.0'})
-                  with urlopen(req, timeout=15) as response:
-                      raw = response.read(400000)
-                      charset = response.headers.get_content_charset() or 'utf-8'
-                      text = raw.decode(charset, errors='replace')
-                      print('status', response.status, 'final', response.geturl(), 'bytes', len(raw))
-                      plain = re.sub(r'(?is)<script.*?</script>|<style.*?</style>', ' ', text)
-                      plain = re.sub(r'(?i)<br\s*/?>|</(?:p|div|tr|li|h[1-6]|table|section|article|a|span)>', '\n', plain)
-                      plain = re.sub(r'(?s)<[^>]+>', ' ', plain)
-                      plain = html.unescape(plain)
-                      lines = [' '.join(x.split()) for x in plain.splitlines()]
-                      lines = [x for x in lines if x]
-                      dateish = [x for x in lines if re.search(r'2026|auguszt|08\.11|2026\.08|2026-08', x, re.I)]
-                      time_indexes = [i for i,x in enumerate(lines) if re.fullmatch(r'\d{1,2}:\d{2}(?::\d{2})?', x) or re.match(r'^\d{1,2}:\d{2}(?::\d{2})?\s+\S', x)]
-                      print('date-ish:', dateish[:15])
-                      print('time-count', len(time_indexes))
-                      for i in time_indexes[:25]:
-                          print('TIMECTX', i, lines[i:i+4])
-              except (HTTPError, URLError, TimeoutError, OSError) as exc:
-                  print('ERROR', type(exc).__name__, exc)
+          print('LOCAL', json.dumps(local['summary'], ensure_ascii=False, indent=2))
+          for item in local['sources']:
+              print(item['tvg_id'], item['status'], item.get('programmes', 0), item.get('error', ''))
+          print('COVERAGE', coverage['matched_tvg_ids'], '/', coverage['playlist_tvg_ids'], coverage['mapping_coverage_percent'])
+          print('PROGRAMMES', health['channels_with_programmes'], '/', health['playlist_tvg_ids'], health['actual_programme_coverage_percent'])
+          print('ENTRIES', health['programme_entries'])
+          print('ATTENTION', json.dumps(attention['summary'], ensure_ascii=False))
+          print('XML', len(guide.findall('channel')), 'channels', len(guide.findall('programme')), 'programmes')
+          print('UNMATCHED', json.dumps(coverage['unmatched_tvg_ids'], ensure_ascii=False))
+
+          if local['summary']['filled_channels'] < 10:
+              raise SystemExit('Expected at least 10 local EPG channels to be filled.')
+          if health['channels_with_programmes'] < 72:
+              raise SystemExit('Expected actual EPG coverage to reach at least 72 channels.')
           PY
