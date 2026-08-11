@@ -1,4 +1,4 @@
-name: One-time fix and validate local EPG overlay
+name: One-time validate local EPG patch
 
 on:
   push:
@@ -16,239 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Patch retries, dated sections and Szolnok
+      - name: Apply local EPG patch
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          p = Path('local_epg.py')
-          text = p.read_text(encoding='utf-8')
-          text = text.replace(
-              'from pathlib import Path\nfrom urllib.error import HTTPError, URLError\n',
-              'from pathlib import Path\nfrom time import sleep\nfrom urllib.error import HTTPError, URLError\n',
-              1,
-          )
-          text = text.replace(
-              '    value = re.sub(r"\\s+", " ", value).strip(" .\\t\\r\\n")\n',
-              '    value = re.sub(r"\\s+", " ", value).strip(" .-\\t\\r\\n")\n',
-              1,
-          )
-          old_fetch = '''def fetch_lines(url: str, timeout: float = 15.0) -> list[str]:
-    request = Request(
-        url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "text/html,application/xhtml+xml",
-            "Cache-Control": "no-cache",
-        },
-    )
-    with urlopen(request, timeout=timeout) as response:
-        raw = response.read(750_000)
-        charset = response.headers.get_content_charset() or "utf-8"
-    return html_lines(raw.decode(charset, errors="replace"))
-'''
-          new_fetch = '''def fetch_lines(url: str, timeout: float = 15.0) -> list[str]:
-    request = Request(
-        url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "text/html,application/xhtml+xml",
-            "Cache-Control": "no-cache",
-        },
-    )
-    last_error = None
-    for attempt in range(2):
-        try:
-            with urlopen(request, timeout=timeout) as response:
-                raw = response.read(750_000)
-                charset = response.headers.get_content_charset() or "utf-8"
-            return html_lines(raw.decode(charset, errors="replace"))
-        except (URLError, TimeoutError, OSError) as exc:
-            last_error = exc
-            if attempt == 0:
-                sleep(0.75)
-                continue
-            raise
-    raise RuntimeError(f"unreachable fetch failure: {last_error}")
-'''
-          if old_fetch not in text:
-              raise SystemExit('fetch_lines block not found')
-          text = text.replace(old_fetch, new_fetch, 1)
-
-          marker = '''def slice_section(lines: list[str], start_predicate, end_predicate) -> list[str]:
-    start = find_index(lines, start_predicate)
-    if start is None:
-        return []
-    end = find_index(lines, end_predicate, start + 1)
-    return lines[start + 1 : end if end is not None else len(lines)]
-'''
-          replacement = marker + '''
-
-def best_section(lines: list[str], start_predicate, end_predicate) -> list[str]:
-    starts = [index for index, value in enumerate(lines) if start_predicate(value)]
-    best: list[str] = []
-    best_score = -1
-    for start in starts:
-        end = find_index(lines, end_predicate, start + 1)
-        section = lines[start + 1 : end if end is not None else len(lines)]
-        score = sum(1 for value in section if time_parts(value) is not None)
-        if score > best_score:
-            best = section
-            best_score = score
-    return best
-'''
-          if marker not in text:
-              raise SystemExit('slice_section block not found')
-          text = text.replace(marker, replacement, 1)
-
-          old_eger = '''def parse_eger(lines: list[str], reference_date: date) -> list[Programme]:
-    variants = hu_long_date_variants(reference_date)
-    section = slice_section(
-        lines,
-        lambda value: folded(value) in variants,
-        looks_like_hu_dated_heading,
-    )
-    return parse_entries(section, reference_date, max_entries=50)
-'''
-          new_eger = '''def parse_eger(lines: list[str], reference_date: date) -> list[Programme]:
-    variants = hu_long_date_variants(reference_date)
-    section = best_section(
-        lines,
-        lambda value: folded(value) in variants,
-        looks_like_hu_dated_heading,
-    )
-    return parse_entries(section, reference_date, max_entries=50)
-'''
-          if old_eger not in text:
-              raise SystemExit('parse_eger block not found')
-          text = text.replace(old_eger, new_eger, 1)
-
-          old_ozd = '''def parse_ozd(lines: list[str], reference_date: date) -> list[Programme]:
-    needle = folded(reference_date.strftime("%Y. %m. %d."))
-    start = find_index(lines, lambda value: folded(value) == needle)
-    if start is None:
-        return []
-    end = find_index(
-        lines,
-        lambda value: bool(NUMERIC_DATE_RE.match(value.replace(" ", ""))),
-        start + 1,
-    )
-    section = lines[start + 1 : end if end is not None else start + 80]
-    return parse_entries(section, reference_date, max_entries=30)
-'''
-          new_ozd = '''def parse_ozd(lines: list[str], reference_date: date) -> list[Programme]:
-    needle = folded(reference_date.strftime("%Y. %m. %d."))
-    section = best_section(
-        lines,
-        lambda value: folded(value) == needle,
-        lambda value: bool(NUMERIC_DATE_RE.match(value.replace(" ", ""))),
-    )
-    return parse_entries(section, reference_date, max_entries=30)
-
-
-def parse_szolnok(lines: list[str], reference_date: date) -> list[Programme]:
-    needle = folded(reference_date.strftime("%Y.%m.%d"))
-    section = best_section(
-        lines,
-        lambda value: folded(value).rstrip(".") == needle,
-        lambda value: bool(re.fullmatch(r"20\\d{2}[.\\-]\\d{1,2}[.\\-]\\d{1,2}\\.?", value.replace(" ", ""))),
-    )
-    return parse_entries(section, reference_date, max_entries=70)
-'''
-          if old_ozd not in text:
-              raise SystemExit('parse_ozd block not found')
-          text = text.replace(old_ozd, new_ozd, 1)
-
-          text = text.replace(
-              '    "ozd": parse_ozd,\n    "vasarhely": parse_vasarhely,\n',
-              '    "ozd": parse_ozd,\n    "szolnok": parse_szolnok,\n    "vasarhely": parse_vasarhely,\n',
-              1,
-          )
-          source_anchor = '''        Source(
-            "TVKeszthely.hu@SD",
-            "Keszthely TV",
-            "tvkeszthely.hu",
-            "keszthely",
-            "https://tvkeszthely.hu/musor",
-            8,
-        ),
-'''
-          source_insert = source_anchor + '''        Source(
-            "SzolnokTV.hu@SD",
-            "Szolnok TV",
-            "szolnoktv.hu",
-            "szolnok",
-            "https://www.szolnoktv.hu/musorujsag",
-            8,
-        ),
-'''
-          if source_anchor not in text:
-              raise SystemExit('Keszthely source anchor not found')
-          text = text.replace(source_anchor, source_insert, 1)
-          p.write_text(text, encoding='utf-8')
-
-          t = Path('tests/test_local_epg.py')
-          tests = t.read_text(encoding='utf-8')
-          tests = tests.replace(
-              '    parse_cegled,\n    parse_entries,\n    parse_tvmustra,\n',
-              '    parse_cegled,\n    parse_eger,\n    parse_entries,\n    parse_ozd,\n    parse_szolnok,\n    parse_tvmustra,\n',
-              1,
-          )
-          insert = '''
-    def test_dated_parsers_choose_schedule_block_not_navigation_tab(self):
-        eger = parse_eger(
-            [
-                "Kedd: 2026. augusztus 11.",
-                "Szerda: 2026. augusztus 12.",
-                "Kedd: 2026. augusztus 11.",
-                "8:00 Tv Eger szignál",
-                "8:01 HírAdás Plusz",
-                "18:00 Híradó",
-                "Szerda: 2026. augusztus 12.",
-            ],
-            date(2026, 8, 11),
-        )
-        self.assertEqual(len(eger), 3)
-
-        ozd = parse_ozd(
-            [
-                "2026. 08. 11.",
-                "2026. 08. 12.",
-                "2026. 08. 11.",
-                "18:25 A szomszéd vár ism.",
-                "19:00 Ózdi Krónika",
-                "19:30 Forgószínpad",
-                "2026. 08. 12.",
-            ],
-            date(2026, 8, 11),
-        )
-        self.assertEqual(len(ozd), 3)
-
-    def test_szolnok_date_section_parses_dash_titles(self):
-        programmes = parse_szolnok(
-            [
-                "2026.08.10",
-                "18:00 - Old",
-                "2026.08.11",
-                "05:50 - Napi üzenet",
-                "06:00 - Hírek+",
-                "19:00 - Aktuális",
-                "2026.08.12",
-                "05:50 - Tomorrow",
-            ],
-            date(2026, 8, 11),
-        )
-        self.assertEqual(
-            [item.title for item in programmes],
-            ["Napi üzenet", "Hírek+", "Aktuális"],
-        )
-'''
-          marker2 = '\n\nif __name__ == "__main__":\n'
-          if marker2 not in tests:
-              raise SystemExit('test insertion marker not found')
-          tests = tests.replace(marker2, insert + marker2, 1)
-          t.write_text(tests, encoding='utf-8')
-          PY
+          python3 patch_local_epg_once.py
           git diff --check
 
       - name: Run tests and strict build
@@ -262,7 +32,7 @@ def parse_szolnok(lines: list[str], reference_date: date) -> list[Programme]:
           node-version: "24"
           package-manager-cache: false
 
-      - name: Build base merged EPG
+      - name: Build base EPG
         shell: bash
         run: |
           set -euo pipefail
@@ -278,34 +48,31 @@ def parse_szolnok(lines: list[str], reference_date: date) -> list[Programme]:
           curl --fail --location --silent --show-error --retry 3 --retry-delay 2 https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz -o .epg-external.download
           python3 epg_merge.py --playlist public/tv.m3u --iptv-guide .epg-iptv.xml --iptv-coverage .epg-iptv-coverage.json --external .epg-external.download --external-provider epgshare01.online --preferred-iptv-provider mediaklikk.hu --future-days 7 --output public/guide.xml --report public/epg-coverage.json
 
-      - name: Apply live local EPG overlay
+      - name: Apply local EPG and inspect
         run: |
           python3 local_epg.py --reference-date 2026-08-11
           python3 epg_health.py --coverage public/epg-coverage.json --guide public/guide.xml --grab-log .epg-grab.log --output public/epg-health.json
           python3 attention.py
-
-      - name: Inspect and require improvement
-        run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
-          local = json.loads(Path('public/local-epg.json').read_text(encoding='utf-8'))
-          coverage = json.loads(Path('public/epg-coverage.json').read_text(encoding='utf-8'))
-          health = json.loads(Path('public/epg-health.json').read_text(encoding='utf-8'))
-          attention = json.loads(Path('public/attention.json').read_text(encoding='utf-8'))
-          print('LOCAL', json.dumps(local['summary'], ensure_ascii=False))
-          for item in local['sources']:
-              print(item['tvg_id'], item['status'], item.get('programmes', 0), item.get('error', ''))
-          print('COVERAGE', coverage['matched_tvg_ids'], '/', coverage['playlist_tvg_ids'], coverage['mapping_coverage_percent'])
-          print('PROGRAMMES', health['channels_with_programmes'], '/', health['playlist_tvg_ids'], health['actual_programme_coverage_percent'])
-          print('ATTENTION', json.dumps(attention['summary'], ensure_ascii=False))
-          if local['summary']['filled_channels'] < 14:
-              raise SystemExit('Expected at least 14 local EPG channels to be filled.')
-          if health['channels_with_programmes'] < 76:
-              raise SystemExit('Expected programme coverage to reach at least 76 channels.')
+          local = json.loads(Path("public/local-epg.json").read_text(encoding="utf-8"))
+          coverage = json.loads(Path("public/epg-coverage.json").read_text(encoding="utf-8"))
+          health = json.loads(Path("public/epg-health.json").read_text(encoding="utf-8"))
+          attention = json.loads(Path("public/attention.json").read_text(encoding="utf-8"))
+          print("LOCAL", json.dumps(local["summary"], ensure_ascii=False))
+          for item in local["sources"]:
+              print(item["tvg_id"], item["status"], item.get("programmes", 0), item.get("error", ""))
+          print("COVERAGE", coverage["matched_tvg_ids"], coverage["playlist_tvg_ids"], coverage["mapping_coverage_percent"])
+          print("PROGRAMMES", health["channels_with_programmes"], health["playlist_tvg_ids"], health["actual_programme_coverage_percent"])
+          print("ATTENTION", json.dumps(attention["summary"], ensure_ascii=False))
+          if local["summary"]["filled_channels"] < 14:
+              raise SystemExit("Expected at least 14 local channels filled")
+          if health["channels_with_programmes"] < 76:
+              raise SystemExit("Expected at least 76 channels with programmes")
           PY
 
-      - name: Commit permanent parser fixes
+      - name: Commit permanent files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
