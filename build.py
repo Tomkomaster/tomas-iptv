@@ -2783,6 +2783,32 @@ def prepare_published_entries(
             group
         )
 
+        # Pick one clean, canonical channel name for all feeds.
+        canonical_name = ""
+
+        for candidate in group:
+            candidate_name = str(
+                candidate.get("tvg_name")
+                or candidate.get("channel_name")
+                or candidate.get("display_name")
+                or ""
+            ).strip()
+
+            candidate_name = strip_custom_prefix(
+                candidate_name
+            )
+
+            candidate_name = strip_display_annotations(
+                candidate_name
+            )
+
+            if candidate_name:
+                canonical_name = candidate_name
+                break
+
+        if not canonical_name:
+            canonical_name = "Unnamed channel"
+			
         for (
             visible_index,
             entry,
@@ -2811,29 +2837,32 @@ def prepare_published_entries(
                 )
             )
 
-            original_display = (
-                strip_custom_prefix(
-                    entry.get(
-                        "display_name",
-                        "",
+            if visible_count > 1:
+                # Multiple URLs for the same channel:
+                # Channel Name
+                # Channel Name Feed 2
+                # Channel Name Feed 3
+                original_display = canonical_name
+
+                if visible_index > 1:
+                    original_display += (
+                        f" Feed {visible_index}"
+                    )
+            else:
+                # Single-feed channels keep their original
+                # quality/status annotations.
+                original_display = (
+                    strip_custom_prefix(
+                        entry.get(
+                            "display_name",
+                            "",
+                        )
                     )
                 )
-            )
-
-            feed_suffix = (
-                (
-                    f" [Feed "
-                    f"{visible_index}/"
-                    f"{visible_count}]"
-                )
-                if visible_count > 1
-                else ""
-            )
 
             published_name = (
                 f"[{lang} {suffix}] "
                 f"{original_display}"
-                f"{feed_suffix}"
             )
 
             country_name = str(
