@@ -11,3 +11,33 @@ https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_krimi/playlist/cze/live_hd.
 
 #EXTINF:-1 tvg-id="PrimaMax.cz" tvg-name="Prima MAX" group-title="Entertainment",Prima MAX
 https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_max/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="JojFamily.sk" tvg-name="JOJ Family" group-title="Entertainment",JOJ Family
+https://live.cdn.joj.sk/live/hls/family-540.m3u8
+
+#EXTINF:-1 tvg-id="Prima.cz" tvg-name="Prima" group-title="Entertainment",Prima
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_family/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="CNNPrimaNews.cz" tvg-name="CNN Prima News" group-title="News",CNN Prima News
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_cnn/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaZoom.cz" tvg-name="Prima Zoom" group-title="Documentary",Prima Zoom
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_zoom/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaLove.cz" tvg-name="Prima Love" group-title="Entertainment",Prima Love
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_love/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaStar.cz" tvg-name="Prima STAR" group-title="Entertainment",Prima STAR
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_star/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaKrimi.cz" tvg-name="Prima Krimi" group-title="Entertainment",Prima Krimi
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_krimi/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaMax.cz" tvg-name="Prima MAX" group-title="Movies",Prima MAX
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_max/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaCool.cz" tvg-name="Prima Cool" group-title="Entertainment",Prima Cool
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_cool/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+#EXTINF:-1 tvg-id="PrimaShow.cz" tvg-name="Prima Show" group-title="Entertainment",Prima Show
+https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_show/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
