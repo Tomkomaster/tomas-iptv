@@ -18,11 +18,11 @@ jobs:
         uses: actions/checkout@v7
       - name: Build playlist
         run: python3 build.py --strict
-      - name: Test FreeEPG Hungary
+      - name: Test GlobeTV Hungary
         shell: bash
         run: |
           set -euo pipefail
-          curl -fLsS 'https://www.free-epg.de/api/epg/hu.xml.gz' -o /tmp/hu.download
+          curl -fLsS 'https://raw.githubusercontent.com/globetvapp/epg/main/Hungary/hungary1.xml.gz' -o /tmp/hu.download
 
           python3 - <<'PY'
           import gzip
@@ -56,8 +56,9 @@ jobs:
 
           root = ET.parse('/tmp/hu.xml').getroot()
           channel_ids = [(c.get('id') or '').strip() for c in root.findall('channel')]
-          programme_ids = [(p.get('channel') or '').strip() for p in root.findall('programme')]
-          starts = [(p.get('start') or '').strip() for p in root.findall('programme')]
+          programmes = root.findall('programme')
+          programme_ids = [(p.get('channel') or '').strip() for p in programmes]
+          starts = [(p.get('start') or '').strip() for p in programmes]
 
           matched = set()
           for cid in channel_ids:
@@ -69,13 +70,21 @@ jobs:
                       matched.add(p_base[q])
 
           populated = set()
-          for cid in programme_ids:
+          current_populated = set()
+          today = datetime.now(timezone.utc).strftime('%Y%m%d')
+          for p in programmes:
+              cid = (p.get('channel') or '').strip()
+              target = None
               if cid.casefold() in p_exact:
-                  populated.add(p_exact[cid.casefold()])
+                  target = p_exact[cid.casefold()]
               else:
                   q = quality_base_id(cid)
-                  if q in p_base:
-                      populated.add(p_base[q])
+                  target = p_base.get(q)
+              if target:
+                  populated.add(target)
+                  start = (p.get('start') or '').strip()
+                  if start.startswith(today):
+                      current_populated.add(target)
 
           dates = Counter()
           for s in starts:
@@ -83,12 +92,22 @@ jobs:
               if m:
                   dates[m.group(1)] += 1
 
+          display_names = {}
+          for c in root.findall('channel'):
+              cid = (c.get('id') or '').strip()
+              names = [(d.text or '').strip() for d in c.findall('display-name') if (d.text or '').strip()]
+              display_names[cid] = names
+
           print('feed channels:', len(channel_ids))
           print('feed programmes:', len(programme_ids))
           print('playlist ids:', len(playlist))
           print('exact/quality matched channels:', len(matched))
-          print('matched with programmes:', len(populated))
-          print('matched IDs:', ', '.join(sorted(populated)))
+          print('matched with any programmes:', len(populated))
+          print('matched with TODAY programmes:', len(current_populated))
+          print('today matched IDs:', ', '.join(sorted(current_populated)))
           print('programme date counts:', dict(sorted(dates.items())))
-          print('current UTC date:', datetime.now(timezone.utc).strftime('%Y%m%d'))
+          print('current UTC date:', today)
+          print('sample channels:')
+          for cid in channel_ids[:30]:
+              print(' ', cid, '|', ' / '.join(display_names.get(cid, [])))
           PY
