@@ -1,0 +1,50 @@
+name: One-time validate health dashboard
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/validate-health-dashboard-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build dashboard
+        run: python3 build.py --strict
+
+      - name: Validate rendered dashboard JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          html = Path('public/index.html').read_text(encoding='utf-8')
+          start = html.index('<script>') + len('<script>')
+          end = html.index('</script>', start)
+          Path('/tmp/dashboard.js').write_text(html[start:end], encoding='utf-8')
+          PY
+          node --check /tmp/dashboard.js
+
+      - name: Smoke-test health JSON generation
+        run: |
+          python3 healthcheck.py --no-previous --limit 5
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('public/health.json').read_text(encoding='utf-8'))
+          assert data['advisory_only'] is True
+          assert data['policy']['automatic_rejection'] is False
+          assert data['summary']['total'] == 5
+          assert len(data['streams']) == 5
+          print(json.dumps(data['summary'], indent=2, ensure_ascii=False))
+          PY
