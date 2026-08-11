@@ -3574,8 +3574,9 @@ details ul {{ max-height: 260px; overflow: auto; }}
     Advisory network checks for the stable family playlist. For HLS streams the checker
     loads the manifest, resolves a media playlist, and requests bytes from a real media
     segment. This never changes manual VLC + Samsung verification, audit.json, or stable
-    playlist membership automatically. Three consecutive automated failures only recommend
-    a manual retest.
+    playlist membership automatically. Three consecutive automated failures on normal 24/7
+    streams only recommend a manual retest. Explicit event-based streams may be reported as
+    informationally inactive outside broadcast hours without building a failure streak.
   </p>
 
   <div id="healthSummary" class="audit-summary">
@@ -3587,7 +3588,8 @@ details ul {{ max-height: 260px; overflow: auto; }}
     <select id="healthStatusFilter">
       <option value="">All automated statuses</option>
       <option value="playable">Playable</option>
-      <option value="failed">Failed</option>
+      <option value="failed">Actionable failures</option>
+      <option value="Event inactive">Event inactive</option>
       <option value="needs_manual_retest">Needs manual retest</option>
       <option value="Online">Online</option>
       <option value="Redirected">Redirected</option>
@@ -3970,7 +3972,7 @@ function applyHealthFilters() {{
     const matchesText = !q || row.innerText.toLowerCase().includes(q);
     const matchesStatus = !status
       || (status === 'playable' && row.dataset.healthSuccess === 'yes')
-      || (status === 'failed' && row.dataset.healthSuccess === 'no')
+      || (status === 'failed' && row.dataset.healthActionable === 'yes')
       || (status === 'needs_manual_retest' && row.dataset.healthAttention === 'needs_manual_retest')
       || row.dataset.healthStatus === status;
     const show = matchesText && matchesStatus;
@@ -3991,7 +3993,8 @@ function renderHealth(data) {{
     <div class="card"><div class="value">${{statusCounts['Online'] ?? 0}}</div><div class="label">Online</div></div>
     <div class="card"><div class="value">${{statusCounts['Redirected'] ?? 0}}</div><div class="label">Redirected</div></div>
     <div class="card"><div class="value">${{statusCounts['Slow startup'] ?? 0}}</div><div class="label">Slow startup</div></div>
-    <div class="card"><div class="value">${{summary.failed ?? 0}}</div><div class="label">Failed this check</div></div>
+    <div class="card"><div class="value">${{summary.failed ?? 0}}</div><div class="label">Actionable failures</div></div>
+    <div class="card"><div class="value">${{summary.informational_unavailable ?? 0}}</div><div class="label">Event-based inactive</div></div>
     <div class="card"><div class="value">${{summary.needs_manual_retest ?? 0}}</div><div class="label">Needs manual retest</div></div>
     <div class="card"><div class="value">${{healthEsc(data.generated_at || '—')}}</div><div class="label">Last automated check</div></div>
   `;
@@ -4002,12 +4005,14 @@ function renderHealth(data) {{
       : (item.manual_status === 'Samsung' ? 'tv' : 'base');
     const autoClass = item.manual_retest_recommended
       ? 'rejected'
-      : (item.status === 'Online'
-          ? 'verified'
-          : (item.status === 'Redirected' ? 'tv' : 'review'));
-    const failureSuffix = item.success
-      ? ''
-      : ` ×${{item.consecutive_failures || 1}}`;
+      : (item.attention === 'informational'
+          ? 'base'
+          : (item.status === 'Online'
+              ? 'verified'
+              : (item.status === 'Redirected' ? 'tv' : 'review')));
+    const failureSuffix = item.actionable_failure
+      ? ` ×${{item.consecutive_failures || 1}}`
+      : '';
     const startup = Number.isFinite(Number(item.startup_seconds))
       ? `${{Number(item.startup_seconds).toFixed(2)}} s`
       : '—';
@@ -4016,7 +4021,7 @@ function renderHealth(data) {{
       : (item.detail || '—');
 
     return `
-      <tr data-health-status="${{healthEsc(item.status)}}" data-health-success="${{item.success ? 'yes' : 'no'}}" data-health-attention="${{healthEsc(item.attention)}}">
+      <tr data-health-status="${{healthEsc(item.status)}}" data-health-success="${{item.success ? 'yes' : 'no'}}" data-health-actionable="${{item.actionable_failure ? 'yes' : 'no'}}" data-health-attention="${{healthEsc(item.attention)}}">
         <td class="channel">${{healthEsc(item.channel)}}</td>
         <td><span class="badge ${{manualClass}}">${{healthEsc(item.manual_status || 'Unknown')}}</span></td>
         <td><span class="badge ${{autoClass}}">${{healthEsc(item.status)}}${{failureSuffix}}</span></td>
