@@ -562,3 +562,20 @@ https://iptv01.eurocable.co.hu/EC-PARLAMENTTVHD/index.m3u8
 # Native EuroCable HLS; active channel confirmed in 2026
 #EXTINF:-1 tvg-name="HTB TV",HTB TV [TEST]
 https://iptv01.eurocable.co.hu/EC-HTBTVHD/index.m3u8
+
+# TVR Târgu Mureș / Marosvásárhely
+# Romanian public regional TV; substantial Hungarian-language programming
+# Official/native TVR HLS
+#EXTINF:-1 tvg-id="TVRTarguMures.ro@SD" tvg-name="TVR Târgu Mureș",TVR Târgu Mureș [RO/HU]
+https://tvr-tgmures.lg.mncdn.com/tvrtgmures/smil:tvrtgmures.smil/playlist.m3u8
+
+# TVR Cluj / Kolozsvár
+# Romanian public regional TV; regular Hungarian-language programming
+# including Erdélyi Figyelő
+#EXTINF:-1 tvg-id="TVRCluj.ro@SD" tvg-name="TVR Cluj",TVR Cluj [RO/HU]
+https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8
+
+# TVR Timișoara / Temesvár
+# Romanian public regional TV; dedicated Hungarian-language programme
+#EXTINF:-1 tvg-id="TVRTimisoara.ro@SD" tvg-name="TVR Timișoara",TVR Timișoara [RO/HU]
+https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8
