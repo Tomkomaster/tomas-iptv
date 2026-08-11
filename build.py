@@ -169,6 +169,18 @@ def normalize_text(value: str) -> str:
 
 def normalized_tvg_id(tvg_id: str) -> str:
     value = (tvg_id or "").strip()
+
+    # IPTV-org identity exception:
+    # ducktv HD is a separate station from regular ducktv,
+    # despite its tvg-id being expressed as ducktv.sk@HD.
+    identity_overrides = {
+        "ducktv.sk@hd": "ducktvhd.sk",
+    }
+
+    override = identity_overrides.get(value.casefold())
+    if override:
+        return override
+
     value = TVG_VARIANT_SUFFIX_RE.sub("", value)
     return value.casefold()
 
