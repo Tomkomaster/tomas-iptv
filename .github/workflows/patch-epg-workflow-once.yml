@@ -1,0 +1,63 @@
+name: One-time patch EPG publish workflow
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/patch-epg-workflow-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Patch publish workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/build-and-publish.yml')
+          text = path.read_text(encoding='utf-8')
+
+          trigger_anchor = '''      - "epg_prepare.py"\n      - "config.json"'''
+          trigger_replacement = '''      - "epg_prepare.py"\n      - "epg_health.py"\n      - "migrate_audit.py"\n      - "config.json"'''
+          if trigger_anchor not in text:
+              raise SystemExit('Could not find workflow path trigger anchor.')
+          text = text.replace(trigger_anchor, trigger_replacement, 1)
+
+          grab_anchor = '''          npm run grab --- \\\n            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \\\n            --output="$GITHUB_WORKSPACE/public/guide.xml" \\\n            --maxConnections="$EPG_MAX_CONNECTIONS"'''
+          grab_replacement = '''          rm -f "$GITHUB_WORKSPACE/.epg-grab.log"\n\n          npm run grab --- \\\n            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \\\n            --output="$GITHUB_WORKSPACE/public/guide.xml" \\\n            --maxConnections="$EPG_MAX_CONNECTIONS" \\\n            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"'''
+          if grab_anchor not in text:
+              raise SystemExit('Could not find EPG grab command anchor.')
+          text = text.replace(grab_anchor, grab_replacement, 1)
+
+          pages_anchor = '''      - name: Configure GitHub Pages\n        uses: actions/configure-pages@v6'''
+          health_step = '''      - name: Analyze actual EPG health\n        shell: bash\n        run: |\n          set -euo pipefail\n\n          EPG_ENABLED="$(\n            python3 -c '\n          import json\n          from pathlib import Path\n          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))\n          print("true" if (cfg.get("epg") or {}).get("enabled") else "false")\n          '\n          )"\n\n          if [ "$EPG_ENABLED" != "true" ]; then\n            echo "EPG disabled; health analysis skipped."\n            exit 0\n          fi\n\n          python3 epg_health.py \\\n            --coverage public/epg-coverage.json \\\n            --guide public/guide.xml \\\n            --grab-log .epg-grab.log \\\n            --output public/epg-health.json\n\n'''
+          if pages_anchor not in text:
+              raise SystemExit('Could not find Configure GitHub Pages anchor.')
+          text = text.replace(pages_anchor, health_step + pages_anchor, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          git diff --check
+          git diff -- .github/workflows/build-and-publish.yml
+
+      - name: Commit workflow change
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/build-and-publish.yml
+          git commit -m "Measure actual EPG programme health"
+          git push
