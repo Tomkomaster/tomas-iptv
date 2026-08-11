@@ -1,0 +1,222 @@
+name: One-time discover EPG fixes
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/discover-epg-fixes-once.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build current stable playlist
+        run: python3 build.py --strict
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build current merged EPG
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .epg-builder
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "mediaklikk.hu,horizon.tv" \
+            --output .epg.channels.xml \
+            --report .epg-iptv-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections=3 \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          curl --fail --location --silent --show-error --retry 3 \
+            https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz \
+            -o .epg-external.download
+
+          python3 epg_merge.py \
+            --playlist public/tv.m3u \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external .epg-external.download \
+            --external-provider epgshare01.online \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days 7 \
+            --output public/guide.xml \
+            --report public/epg-coverage.json
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+      - name: Compare unresolved channels with current IPTV-org APIs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          import unicodedata
+          import urllib.request
+          from collections import Counter, defaultdict
+          from pathlib import Path
+
+          from healthcheck import canonical_stream_url, read_playlist
+
+
+          def load_json(url):
+              req = urllib.request.Request(url, headers={"User-Agent": "Tomas-IPTV-EPG-Audit/1.0"})
+              with urllib.request.urlopen(req, timeout=60) as response:
+                  return json.loads(response.read().decode("utf-8"))
+
+
+          def norm(value):
+              text = unicodedata.normalize("NFKD", str(value or ""))
+              text = "".join(ch for ch in text if not unicodedata.combining(ch))
+              text = text.casefold()
+              return "".join(ch for ch in text if ch.isalnum())
+
+
+          def split_tvg_id(value):
+              value = str(value or "").strip()
+              if "@" in value:
+                  base, feed = value.split("@", 1)
+                  return base, feed
+              return value, ""
+
+
+          channels = load_json("https://iptv-org.github.io/api/channels.json")
+          streams = load_json("https://iptv-org.github.io/api/streams.json")
+          guides = load_json("https://iptv-org.github.io/api/guides.json")
+
+          playlist = read_playlist(Path("public/tv.m3u"))
+          coverage = json.loads(Path("public/epg-coverage.json").read_text(encoding="utf-8"))
+          unmatched_ids = list(coverage.get("unmatched_tvg_ids") or [])
+
+          channels_by_norm = defaultdict(list)
+          for ch in channels:
+              for label in [ch.get("name"), *(ch.get("alt_names") or [])]:
+                  key = norm(label)
+                  if key:
+                      channels_by_norm[key].append(ch)
+
+          streams_by_url = defaultdict(list)
+          for stream in streams:
+              url = str(stream.get("url") or "").strip()
+              if url:
+                  streams_by_url[canonical_stream_url(url)].append(stream)
+
+          guides_by_channel = defaultdict(list)
+          guides_by_name = defaultdict(list)
+          for guide in guides:
+              channel = str(guide.get("channel") or "").strip()
+              if channel:
+                  guides_by_channel[channel].append(guide)
+              key = norm(guide.get("site_name"))
+              if key:
+                  guides_by_name[key].append(guide)
+
+          print("\n=== STABLE STREAMS WITHOUT TVG-ID ===")
+          missing_id_entries = [entry for entry in playlist if not str(entry.get("tvg_id") or "").strip()]
+          print("count=", len(missing_id_entries))
+
+          for entry in missing_id_entries:
+              name = str(entry.get("channel") or entry.get("playlist_name") or "").strip()
+              url = str(entry.get("stream_url") or "").strip()
+              print("\nNO_ID", name)
+              print("URL", url)
+
+              url_matches = streams_by_url.get(canonical_stream_url(url), [])
+              if url_matches:
+                  print("EXACT_URL_MATCHES")
+                  for match in url_matches:
+                      print(json.dumps({
+                          "channel": match.get("channel"),
+                          "feed": match.get("feed"),
+                          "title": match.get("title"),
+                          "quality": match.get("quality"),
+                      }, ensure_ascii=False))
+              else:
+                  print("EXACT_URL_MATCHES none")
+
+              name_matches = channels_by_norm.get(norm(name), [])
+              print("EXACT_NAME_MATCHES", len(name_matches))
+              for match in name_matches:
+                  print(json.dumps({
+                      "id": match.get("id"),
+                      "name": match.get("name"),
+                      "alt_names": match.get("alt_names"),
+                      "country": match.get("country"),
+                      "closed": match.get("closed"),
+                  }, ensure_ascii=False))
+
+              guide_name_matches = guides_by_name.get(norm(name), [])
+              if guide_name_matches:
+                  print("EXACT_GUIDE_NAME_MATCHES")
+                  for match in guide_name_matches[:20]:
+                      print(json.dumps({
+                          "channel": match.get("channel"),
+                          "feed": match.get("feed"),
+                          "site": match.get("site"),
+                          "site_id": match.get("site_id"),
+                          "site_name": match.get("site_name"),
+                          "lang": match.get("lang"),
+                      }, ensure_ascii=False))
+
+          print("\n=== CURRENTLY UNMAPPED TVG-IDS ===")
+          print("count=", len(unmatched_ids))
+          provider_overlap = Counter()
+          provider_channels = defaultdict(list)
+
+          for tvg_id in unmatched_ids:
+              base, feed = split_tvg_id(tvg_id)
+              candidates = guides_by_channel.get(base, [])
+              print("\nUNMAPPED", tvg_id, "guide_candidates=", len(candidates))
+              if not candidates:
+                  continue
+
+              by_site = defaultdict(list)
+              for candidate in candidates:
+                  by_site[str(candidate.get("site") or "")].append(candidate)
+
+              for site, site_candidates in sorted(by_site.items()):
+                  provider_overlap[site] += 1
+                  provider_channels[site].append(tvg_id)
+                  feed_values = sorted({str(item.get("feed") or "") for item in site_candidates})
+                  names = sorted({str(item.get("site_name") or "") for item in site_candidates})
+                  print("SITE", site, "feeds=", feed_values, "names=", names[:5])
+
+          print("\n=== PROVIDERS COVERING CURRENTLY UNMAPPED IDS ===")
+          for site, count in provider_overlap.most_common():
+              print(site, count, "|", ", ".join(provider_channels[site]))
+
+          print("\n=== UNMAPPED IDS WITH NO IPTV-ORG GUIDE CANDIDATE ===")
+          for tvg_id in unmatched_ids:
+              base, _ = split_tvg_id(tvg_id)
+              if not guides_by_channel.get(base):
+                  print(tvg_id)
+          PY
