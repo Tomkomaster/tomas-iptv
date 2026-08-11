@@ -1,0 +1,182 @@
+name: One-time inspect EPGshare unresolved channels
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/inspect-epgshare-unmatched-once.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build stable playlist
+        run: python3 build.py --strict
+
+      - name: Inspect current EPGshare feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 3 \
+            https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz \
+            -o /tmp/hu.xml.gz
+
+          python3 - <<'PY'
+          import difflib
+          import gzip
+          import json
+          import re
+          import unicodedata
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          from collections import Counter, defaultdict
+          from datetime import date, timedelta
+          from pathlib import Path
+
+          ATTR_RE = re.compile(r'([A-Za-z0-9_-]+)="([^"]*)"')
+          QUALITY_RE = re.compile(r'@(SD|HD|FHD|UHD|4K|\d{3,4}P)$', re.I)
+
+          UNRESOLVED = {
+              '16tvBudapest.hu@SD','AMCEurope.uk@Hungary','AXNCEE.es@Hungary','BajaiTV.hu@SD',
+              'CityTV.hu@SD','DTV.hu@SD','ESTV.hu@SD','EWTNBonumTV.hu@SD','FilmCafe.hu@Hungary',
+              'FILMBOXPlusComedy.pl@MagyarRomania','FILMBOXPlusEmotion.pl@Hungary',
+              'FILMBOXPlusHits.pl@Hungary','FILMBOXPlusOne.pl@Magyar','History.hu@SD','HeviziTV.hu@SD',
+              'KanizsaTV.hu@SD','KarcagTV.hu@SD','KecskemetiTV.hu@SD','Kolyokklub.hu@SD',
+              'LiceumTV.hu@SD','MakoiVarosiTelevizio.hu@SD','MoraNetTV.hu@SD',
+              'OroszlanyiVarosiTelevizio.hu@SD','OrszaggyulesOGYplenaris.hu@SD','PannonTV.rs@SD',
+              'RegioTV.sk@SD','SIXOTV.hu@SD','Spiler1.hu@SD','Spiler2.hu@SD','SzolnokTV.hu@SD',
+              'TVEger.hu@SD','TVKeszthely.hu@SD','7TV.hu@SD','Viasat2.hu@SD',
+              'VasarhelyiTelevizio.hu@SD','ZalaegerszegiTV.hu@SD','OzdiVarosiTV.hu@SD'
+          }
+
+          def norm(value):
+              text = unicodedata.normalize('NFKD', str(value or ''))
+              text = ''.join(ch for ch in text if not unicodedata.combining(ch))
+              text = text.casefold()
+              text = re.sub(r'\[[^\]]+\]|\([^\)]+\)', ' ', text)
+              return ''.join(ch for ch in text if ch.isalnum())
+
+          def words(value):
+              text = unicodedata.normalize('NFKD', str(value or ''))
+              text = ''.join(ch for ch in text if not unicodedata.combining(ch)).casefold()
+              return set(re.findall(r'[a-z0-9]+', text))
+
+          def score(a, b):
+              na, nb = norm(a), norm(b)
+              if not na or not nb:
+                  return 0.0
+              seq = difflib.SequenceMatcher(None, na, nb).ratio()
+              wa, wb = words(a), words(b)
+              jac = len(wa & wb) / len(wa | wb) if wa and wb else 0.0
+              return max(seq, jac)
+
+          def load_json(url):
+              req = urllib.request.Request(url, headers={'User-Agent':'Tomas-IPTV-EPG-Audit/1.0'})
+              with urllib.request.urlopen(req, timeout=60) as response:
+                  return json.loads(response.read().decode('utf-8'))
+
+          channels_api = load_json('https://iptv-org.github.io/api/channels.json')
+          db_by_id = {str(ch.get('id') or ''): ch for ch in channels_api}
+
+          playlist = {}
+          pending = None
+          for raw in Path('public/tv.m3u').read_text(encoding='utf-8-sig').splitlines():
+              line = raw.strip()
+              if line.startswith('#EXTINF:'):
+                  attrs = {k.casefold(): v.strip() for k, v in ATTR_RE.findall(line)}
+                  display = line.split(',',1)[1].strip() if ',' in line else ''
+                  pending = {'tvg_id': attrs.get('tvg-id',''), 'tvg_name': attrs.get('tvg-name',''), 'display': display}
+              elif pending and line and not line.startswith('#'):
+                  pending['url'] = line
+                  playlist[pending['tvg_id']] = pending
+                  pending = None
+
+          with gzip.open('/tmp/hu.xml.gz','rb') as fh:
+              root = ET.fromstring(fh.read())
+
+          ext_channels = []
+          for node in root.findall('channel'):
+              ext_id = str(node.get('id') or '').strip()
+              names = [' '.join((d.text or '').split()) for d in node.findall('display-name') if (d.text or '').strip()]
+              ext_channels.append((ext_id, names))
+
+          today = date.today()
+          end = today + timedelta(days=7)
+          fresh_counts = Counter()
+          for prog in root.findall('programme'):
+              channel = str(prog.get('channel') or '').strip()
+              start = str(prog.get('start') or '')[:8]
+              if len(start) == 8 and start.isdigit():
+                  try:
+                      day = date(int(start[:4]), int(start[4:6]), int(start[6:8]))
+                  except ValueError:
+                      continue
+                  if today <= day <= end:
+                      fresh_counts[channel] += 1
+
+          print('EPGSHARE channels=', len(ext_channels), 'fresh channels=', sum(1 for x in fresh_counts.values() if x))
+
+          for tvg_id in sorted(UNRESOLVED):
+              item = playlist.get(tvg_id) or {}
+              base = QUALITY_RE.sub('', tvg_id.split('@',1)[0] if '@' in tvg_id else tvg_id)
+              db = db_by_id.get(base) or {}
+              aliases = [
+                  item.get('tvg_name',''), item.get('display',''),
+                  db.get('name',''), *(db.get('alt_names') or [])
+              ]
+              aliases = [a for a in aliases if str(a).strip()]
+
+              ranked = []
+              for ext_id, ext_names in ext_channels:
+                  labels = [ext_id, *ext_names]
+                  best = 0.0
+                  pair = ('','')
+                  for alias in aliases:
+                      for label in labels:
+                          s = score(alias, label)
+                          if s > best:
+                              best = s
+                              pair = (alias, label)
+                  if best >= 0.45:
+                      ranked.append((best, ext_id, ext_names, pair, fresh_counts.get(ext_id,0)))
+
+              ranked.sort(reverse=True, key=lambda x: (x[0], x[4]))
+              print('\nUNRESOLVED', tvg_id)
+              print('PLAYLIST', json.dumps(item, ensure_ascii=False))
+              print('DB', json.dumps({k:db.get(k) for k in ('id','name','alt_names','country','website')}, ensure_ascii=False))
+              for best, ext_id, ext_names, pair, fresh in ranked[:8]:
+                  print('CANDIDATE', f'{best:.3f}', 'fresh=',fresh, 'id=',ext_id, 'names=',ext_names, 'matched=',pair)
+
+          print('\n=== NO-ID STABLE ENTRIES AGAINST DATABASE + EPGSHARE ===')
+          for item in playlist.values():
+              if item.get('tvg_id'):
+                  continue
+              name = item.get('tvg_name') or item.get('display') or ''
+              db_ranked=[]
+              for ch in channels_api:
+                  labels=[ch.get('name',''),*(ch.get('alt_names') or [])]
+                  best=max((score(name,label) for label in labels if label), default=0.0)
+                  if best>=0.55:
+                      db_ranked.append((best,ch))
+              db_ranked.sort(reverse=True,key=lambda x:x[0])
+              ext_ranked=[]
+              for ext_id, ext_names in ext_channels:
+                  labels=[ext_id,*ext_names]
+                  best=max((score(name,label) for label in labels if label), default=0.0)
+                  if best>=0.55:
+                      ext_ranked.append((best,ext_id,ext_names,fresh_counts.get(ext_id,0)))
+              ext_ranked.sort(reverse=True,key=lambda x:(x[0],x[3]))
+              print('\nNO_ID', name, '|', item.get('url'))
+              for best,ch in db_ranked[:5]:
+                  print('DB_CANDIDATE',f'{best:.3f}',json.dumps({k:ch.get(k) for k in ('id','name','alt_names','country','website')},ensure_ascii=False))
+              for best,ext_id,names,fresh in ext_ranked[:5]:
+                  print('EPG_CANDIDATE',f'{best:.3f}','fresh=',fresh,'id=',ext_id,'names=',names)
+          PY
