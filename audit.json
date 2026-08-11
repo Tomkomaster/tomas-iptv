@@ -5209,12 +5209,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -5234,12 +5230,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia variant; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -5259,12 +5251,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia variant; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -5284,12 +5272,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia variant; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -5309,12 +5293,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia variant; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -5334,12 +5314,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia variant; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -5358,12 +5334,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5383,12 +5355,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovak stream; ducktv Feed 1",
       "tested_on": "2026-08-11",
@@ -5408,12 +5376,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovak stream; ducktv Feed 2",
       "tested_on": "2026-08-11",
@@ -5433,12 +5397,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovak stream; ducktv Feed 3",
       "tested_on": "2026-08-11",
@@ -5458,12 +5418,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovak stream; ducktv HD",
       "tested_on": "2026-08-11",
@@ -5483,12 +5439,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovak stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -5508,12 +5460,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovak stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -5532,12 +5480,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5557,12 +5501,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -5581,12 +5521,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Slovak Christian television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5606,12 +5542,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5630,12 +5562,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Panaccess candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5654,12 +5582,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Panaccess candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Markíza Krimi Feed 1",
       "tested_on": "2026-08-11",
@@ -5678,12 +5602,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Markíza Krimi Feed 2",
       "tested_on": "2026-08-11",
@@ -5701,12 +5621,8 @@
       "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=Mark%C3%ADza+TN+Live",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Slovak stream candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5725,12 +5641,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik regional television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5750,9 +5662,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
@@ -5773,9 +5683,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u Panaccess alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Severka PANACCESS TEST",
@@ -5796,9 +5704,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
@@ -5819,9 +5725,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
@@ -5842,9 +5746,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
@@ -5865,12 +5767,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5889,12 +5787,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Panaccess candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5913,12 +5807,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -5938,12 +5828,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -5963,12 +5849,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -5987,9 +5869,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy Media-Planet candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -6009,9 +5889,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -6032,9 +5910,7 @@
       "protocol": "HTTP",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
@@ -6055,12 +5931,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -6079,12 +5951,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Panaccess candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Reduta Feed 1",
       "tested_on": "2026-08-11",
@@ -6103,12 +5971,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Reduta ANTIK TEST",
       "tested_on": "2026-08-11",
@@ -6127,9 +5991,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u Streamlock alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Reduta STREAMLOCK TEST",
@@ -6149,9 +6011,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy direct HLS candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV REGION LEGACY TEST",
@@ -6172,12 +6032,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -6200,9 +6056,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test; TV Sen Feed 1",
@@ -6223,12 +6077,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Panaccess alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Sen PANACCESS TEST",
       "tested_on": "2026-08-11",
@@ -6248,9 +6098,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
@@ -6270,9 +6118,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -6293,12 +6139,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Západoslovenská TV Feed 1",
       "tested_on": "2026-08-11",
@@ -6318,9 +6160,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u broadcaster-domain alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Západoslovenská TV ZSTV DIRECT TEST",
@@ -6341,12 +6181,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovak-language candidate; manually tested",
       "discovery": "Current generated Slovak playlist; manual playback test",
       "tested_on": "2026-08-11",
@@ -6366,9 +6202,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -6388,9 +6222,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u Neting candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -6411,9 +6243,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Direct JOJ broadcaster CDN candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -6433,12 +6263,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik/WebTV candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Kežmarok ANTIK TEST",
       "tested_on": "2026-08-11",
@@ -6457,9 +6283,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u Streaming.sk candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -6480,12 +6304,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovak-language stream; manually tested",
       "discovery": "Current generated Slovak playlist; manual playback test",
       "tested_on": "2026-08-11",
@@ -6505,12 +6325,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovak-language stream; manually tested",
       "discovery": "Current generated Slovak playlist; manual playback test",
       "tested_on": "2026-08-11",
@@ -6530,9 +6346,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "source_flags": [
         "Not 24/7"
@@ -6556,12 +6370,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "source_flags": [
         "Geo-blocked"
       ],
@@ -6584,12 +6394,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -6609,9 +6415,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovak-language stream; manually tested",
       "discovery": "Current generated Slovak playlist; manual playback test",
@@ -6632,12 +6436,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -6657,9 +6457,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Bratislava legacy feed",
@@ -6680,12 +6478,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Bratislava ANTIK TEST",
       "tested_on": "2026-08-11",
@@ -6705,12 +6499,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Panaccess alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV Bratislava PANACCESS TEST",
       "tested_on": "2026-08-11",
@@ -6730,9 +6520,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
@@ -6753,12 +6541,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -6778,9 +6562,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "source_flags": [
         "Not 24/7"
@@ -6804,12 +6586,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "source_flags": [
         "Not 24/7"
       ],
@@ -6831,12 +6609,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u direct broadcaster stream; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -6855,12 +6629,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u current broadcaster-linked stream; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -6879,9 +6649,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "source_flags": [
         "Event-based",
@@ -6906,12 +6674,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -6931,12 +6695,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; Televízia OSEM Feed 1",
       "tested_on": "2026-08-11",
@@ -6956,12 +6716,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; Televízia OSEM Feed 2",
       "tested_on": "2026-08-11",
@@ -6980,9 +6736,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Televízia Turiec legacy feed",
@@ -7002,12 +6756,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Panaccess alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Televízia Turiec PANACCESS TEST",
       "tested_on": "2026-08-11",
@@ -7026,9 +6776,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Televízia ZEMPLÍN legacy feed",
@@ -7048,12 +6796,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Televízia ZEMPLÍN ANTIK TEST",
       "tested_on": "2026-08-11",
@@ -7073,12 +6817,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -7098,12 +6838,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7123,12 +6859,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7148,12 +6880,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7173,12 +6901,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7198,12 +6922,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7223,12 +6943,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7248,12 +6964,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7273,12 +6985,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually verified as Czech-language",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -7297,12 +7005,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7321,9 +7025,7 @@
       "protocol": "HTTP",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7343,9 +7045,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7365,12 +7065,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik regional television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7390,12 +7086,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovak-language stream; manually tested",
       "discovery": "Current IPTV-org Slovak stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -7414,12 +7106,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7439,12 +7127,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org candidate; manually language-verified for the Slovak playlist",
       "discovery": "Current generated Slovak test playlist; manual VLC + Samsung playback test",
       "tested_on": "2026-08-11",
@@ -7463,12 +7147,8 @@
       "protocol": "HTTPS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Slovak relay candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7487,12 +7167,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik regional television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7512,12 +7188,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia Panaccess stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -7536,12 +7208,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7560,9 +7228,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7583,12 +7249,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -7608,12 +7270,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -7633,12 +7291,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u direct Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7657,9 +7311,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7680,9 +7332,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "source_flags": [
         "Not 24/7"
@@ -7705,12 +7355,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Jojko Feed 1",
       "tested_on": "2026-08-11",
@@ -7730,9 +7376,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u direct JOJ broadcaster CDN alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Jojko Feed 2",
@@ -7752,12 +7396,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7776,9 +7416,7 @@
       "protocol": "HTTP",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7798,9 +7436,7 @@
       "protocol": "HTTP",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Mestská televízia Trnava legacy feed",
@@ -7820,12 +7456,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Mestská televízia Trnava ANTIK TEST",
       "tested_on": "2026-08-11",
@@ -7844,12 +7476,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik regional television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7868,12 +7496,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik regional television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7892,12 +7516,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -7916,9 +7536,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u experimental REBIT candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7938,9 +7556,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u Streaming.sk candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7961,9 +7577,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u experimental Viloud HLS candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -7983,12 +7597,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -8007,9 +7617,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u low-confidence REBIT identity candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Godzone TV REBIT IDENTIFY",
@@ -8029,12 +7637,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u direct Slovak motorsport television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -8054,12 +7658,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -8078,12 +7678,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik regional television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -8103,12 +7699,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -8127,12 +7719,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -8151,12 +7739,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -8176,12 +7760,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -8201,12 +7781,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -8226,12 +7802,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test",
       "tested_on": "2026-08-11",
@@ -8250,12 +7822,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik regional television candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
       "tested_on": "2026-08-11",
@@ -8275,9 +7843,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u legacy Media-Planet candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Bardejovská TV legacy feed",
@@ -8298,12 +7864,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Kabelko HTTPS alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; Bardejovská TV KABELKO TEST",
       "tested_on": "2026-08-11",
@@ -8323,12 +7885,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czech-language candidate; manually tested",
       "discovery": "Hungarian playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -8348,12 +7906,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org AMC Europe Czech Republic variant; manually tested",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -8373,12 +7927,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually tested",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -8398,12 +7948,8 @@
       "protocol": "HTTP",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Canal+ Action Europe Czechia variant; manually tested",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -8423,12 +7969,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually tested",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -8448,12 +7990,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually tested",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -8473,12 +8011,8 @@
       "protocol": "HLS",
       "language": "Czech",
       "language_code": "CZ",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "CZ"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["CZ"],
       "provenance": "IPTV-org Czechia stream; manually tested",
       "discovery": "Slovak playlist candidate; manual VLC + Samsung language verification",
       "tested_on": "2026-08-11",
@@ -8497,9 +8031,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Curated extras/hu.m3u official Ajka TV YouTube live resolver; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Ajka TV Official YouTube Live",
@@ -8519,9 +8051,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Curated extras/hu.m3u EuroCable fMP4 HLS candidate; manually tested",
       "discovery": "extras/hu.m3u manual playback test",
@@ -8541,12 +8071,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "Curated extras/hu.m3u EuroCable standard HLS candidate; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Bunyó TV Feed 1",
       "tested_on": "2026-08-11",
@@ -8565,12 +8091,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "Curated extras/hu.m3u EuroCable fragmented-MP4 HLS alternative; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Bunyó TV Feed 2",
       "tested_on": "2026-08-11",
@@ -8589,12 +8111,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "Curated extras/hu.m3u Diazol HTTPS alternative; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Classics TV HTTPS alternate",
       "tested_on": "2026-08-11",
@@ -8613,9 +8131,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Curated extras/hu.m3u direct native HLS candidate; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Club Dance Online TV 1080p TEST",
@@ -8635,9 +8151,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Curated extras/hu.m3u official Füred TV YouTube resolver; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Füred TV Official YouTube",
@@ -8657,9 +8171,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Curated extras/hu.m3u official Gyula Televízió YouTube resolver; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Gyula Televízió Official YouTube",
@@ -8680,9 +8192,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "IPTV-org Hungary primary Gyöngyösi TV feed; manually retested",
       "discovery": "Current IPTV-org Hungary stream; Gyöngyösi TV Feed 1",
@@ -8703,12 +8213,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "IPTV-org Hungary raw alternative; manually retested",
       "discovery": "Current IPTV-org Hungary alternative; Gyöngyösi TV Feed 2",
       "tested_on": "2026-08-11",
@@ -8728,12 +8234,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "LexaNetwork Lóverseny közvetítés alternative; manually retested",
       "discovery": "extras/hu.m3u manual playback test; Lóverseny közvetítés Feed 2",
       "tested_on": "2026-08-11",
@@ -8753,9 +8255,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "IPTV-org primary M4 Sport URL; manually retested",
       "discovery": "Current IPTV-org Hungary stream; M4 Sport Feed 1",
@@ -8776,12 +8276,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "IPTV-org raw third-party M4 Sport alternative; manually tested",
       "discovery": "IPTV-org raw alternative; M4 Sport Feed 2",
       "tested_on": "2026-08-11",
@@ -8801,9 +8297,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "ConnectMedia CDN M4 Sport candidate from extras/hu.m3u; manually retested",
       "discovery": "extras/hu.m3u targeted replacement candidate; M4 Sport Feed 3",
@@ -8823,9 +8317,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Curated extras/hu.m3u official Mosonmagyaróvári Városi TV YouTube resolver; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Official YouTube candidate",
@@ -8846,12 +8338,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "Current IPTV-org Hungary direct Csurgó TV feed; manually retested",
       "discovery": "Current IPTV-org Hungary stream; Csurgó TV Feed 1",
       "tested_on": "2026-08-11",
@@ -8871,9 +8359,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Current IPTV-org Hungary alternative; manually retested",
       "discovery": "Current IPTV-org Hungary alternative; Csurgó TV Feed 2",
@@ -8894,9 +8380,7 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Current IPTV-org Hungary alternative; manually retested",
       "discovery": "Current IPTV-org Hungary alternative; Csurgó TV Feed 3",
@@ -8916,12 +8400,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "Curated extras/hu.m3u EuroCable standard HLS candidate; manually retested",
       "discovery": "extras/hu.m3u manual playback test; Disco TV Feed 1",
       "tested_on": "2026-08-11",
@@ -8940,12 +8420,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "Curated extras/hu.m3u EuroCable standard HLS alternative; manually tested",
       "discovery": "extras/hu.m3u manual playback test; Disco TV Feed 2",
       "tested_on": "2026-08-11",
@@ -8964,12 +8440,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "provenance": "Curated extras/hu.m3u EuroCable fragmented-MP4 HLS alternative; manually retested",
       "discovery": "extras/hu.m3u manual playback test; Disco TV Feed 3",
       "tested_on": "2026-08-11",
@@ -8989,9 +8461,7 @@
       "protocol": "HLS",
       "language": "Unknown",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "IPTV-org EBS institutional feed; manually retested",
       "discovery": "Hungarian-language candidate; manual VLC + Samsung retest",
@@ -9012,9 +8482,7 @@
       "protocol": "HLS",
       "language": "Unknown",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "IPTV-org EBS Plus institutional feed; manually retested",
       "discovery": "Hungarian-language candidate; manual VLC + Samsung retest",
@@ -9035,12 +8503,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "source_flags": [
         "Not 24/7"
       ],
@@ -9063,12 +8527,8 @@
       "protocol": "HLS",
       "language": "Hungarian",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["HU"],
       "source_flags": [
         "Not 24/7"
       ],
@@ -9091,12 +8551,8 @@
       "protocol": "HTTP",
       "language": "Russian",
       "language_code": "RO",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "RU"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["RU"],
       "provenance": "IPTV-org Hungarian-language candidate; manually retested",
       "discovery": "Current Hungarian testing playlist; manual VLC + Samsung language retest",
       "tested_on": "2026-08-11",
@@ -9115,12 +8571,8 @@
       "protocol": "HLS",
       "language": "Romanian",
       "language_code": "RO",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "RO"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["RO"],
       "provenance": "Curated extras/hu.m3u Serbian/Vojvodina cross-border candidate; manually retested",
       "discovery": "extras/hu.m3u manual language verification; RTV 1 Vajdaság",
       "tested_on": "2026-08-11",
@@ -9139,9 +8591,7 @@
       "protocol": "HLS",
       "language": "Unknown",
       "language_code": "HU",
-      "expected_language_codes": [
-        "HU"
-      ],
+      "expected_language_codes": ["HU"],
       "observed_language_codes": [],
       "provenance": "Curated extras/hu.m3u multilingual Vojvodina candidate; manually retested over multiple days",
       "discovery": "extras/hu.m3u manual playback review; RTV 2 Vajdaság",
@@ -9162,12 +8612,8 @@
       "protocol": "HLS",
       "language": "Romanian / Hungarian regional",
       "language_code": "RO",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "RO"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["RO"],
       "provenance": "Curated extras/hu.m3u official/native TVR regional HLS; manually tested",
       "discovery": "Hungarian-programming regional candidate; manual VLC + Samsung language review",
       "tested_on": "2026-08-11",
@@ -9187,12 +8633,8 @@
       "protocol": "HLS",
       "language": "Romanian / Hungarian regional",
       "language_code": "RO",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "RO"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["RO"],
       "provenance": "Curated extras/hu.m3u official/native TVR regional HLS; manually tested",
       "discovery": "Hungarian-programming regional candidate; manual VLC + Samsung language review",
       "tested_on": "2026-08-11",
@@ -9212,12 +8654,8 @@
       "protocol": "HLS",
       "language": "Romanian / Hungarian regional",
       "language_code": "RO",
-      "expected_language_codes": [
-        "HU"
-      ],
-      "observed_language_codes": [
-        "RO"
-      ],
+      "expected_language_codes": ["HU"],
+      "observed_language_codes": ["RO"],
       "provenance": "Curated extras/hu.m3u official/native TVR regional HLS; manually tested",
       "discovery": "Hungarian-programming regional candidate; manual VLC + Samsung language review",
       "tested_on": "2026-08-11",
@@ -9237,12 +8675,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Current IPTV-org Slovakia stream; manually tested",
       "discovery": "IPTV-org Slovakia manual VLC + Samsung test",
       "tested_on": "2026-08-11",
@@ -9262,9 +8696,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u direct JOJ broadcaster CDN candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -9285,12 +8717,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Curated extras/sk.m3u Antik JOJ Šport 2 candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; JOJ Šport 2 Feed 1",
       "tested_on": "2026-08-11",
@@ -9310,9 +8738,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u REBIT JOJ Šport 2 candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test; JOJ Šport 2 Feed 2",
@@ -9333,9 +8759,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u direct JOJ broadcaster CDN alternative; manually tested",
       "discovery": "extras/sk.m3u manual playback test; JOJ Šport 2 Feed 3",
@@ -9355,9 +8779,7 @@
       "protocol": "HTTPS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u relay candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -9378,9 +8800,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u Livebox TA3 candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test",
@@ -9401,9 +8821,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "source_flags": [
         "Not 24/7"
@@ -9427,9 +8845,7 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
       "observed_language_codes": [],
       "provenance": "Curated extras/sk.m3u JOJ CDN alternative for TV NRSR; manually tested",
       "discovery": "extras/sk.m3u manual playback test; TV NRSR Feed 2",
@@ -9450,12 +8866,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Current IPTV-org Slovakia stream; manually tested",
       "discovery": "IPTV-org Slovakia manual VLC + Samsung test",
       "tested_on": "2026-08-11",
@@ -9475,12 +8887,8 @@
       "protocol": "HLS",
       "language": "Slovak",
       "language_code": "SK",
-      "expected_language_codes": [
-        "SK"
-      ],
-      "observed_language_codes": [
-        "SK"
-      ],
+      "expected_language_codes": ["SK"],
+      "observed_language_codes": ["SK"],
       "provenance": "Current IPTV-org Slovakia stream; manually tested",
       "discovery": "IPTV-org Slovakia manual VLC + Samsung test",
       "tested_on": "2026-08-11",
