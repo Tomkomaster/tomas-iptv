@@ -4963,8 +4963,8 @@
   "protocol": "HLS",
   "decision": "rejected",
   "exclude_from_playlist": true,
-  "notes": "Reject this exact YouTube video-ID stream from the shared playlist. The YouTube live video ID may have rotated, so keep Lengyeltóti Városi TV as a replacement-stream research target.",
-  "reason": "This exact YouTube HLS video-ID feed failed on both tested devices."
+  "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
+  "notes": "Reject this YouTube HLS candidate. Do not replace it with another rotating YouTube video ID; only reconsider the channel if a stable direct non-YouTube stream is found."
 },
 {
   "language": "Unknown",
@@ -4997,10 +4997,10 @@
   "tested_on": "2026-08-11",
   "language_code": "HU",
   "protocol": "HLS",
-  "decision": "needs_review",
+  "decision": "rejected",
   "exclude_from_playlist": true,
-  "notes": "Official YouTube channel resolver did not provide a playable live stream during this test. Keep excluded from the shared playlist unless it is confirmed working while Kalocsa TV is actively broadcasting live on YouTube.",
-  "reason": "The channel-based YouTube resolver failed on both devices, but the broadcaster may simply not have had an active YouTube live stream."
+  "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
+  "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test unless a stable direct non-YouTube HLS stream is found for the broadcaster."
 },
 {
   "language": "Unknown",
@@ -5015,10 +5015,10 @@
   "tested_on": "2026-08-11",
   "language_code": "HU",
   "protocol": "HLS",
-  "decision": "needs_review",
+  "decision": "rejected",
   "exclude_from_playlist": true,
-  "notes": "Official YouTube channel resolver did not provide a playable live stream during this test. Kecel uses live broadcasts, so re-test during a confirmed active YouTube live broadcast.",
-  "reason": "The channel-based YouTube resolver failed on both devices, but there may not have been an active live broadcast at the time."
+  "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
+  "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test unless a stable direct non-YouTube HLS stream is found for the broadcaster."
 },
 {
   "language": "Unknown",
@@ -5051,10 +5051,10 @@
   "tested_on": "2026-08-11",
   "language_code": "HU",
   "protocol": "HLS",
-  "decision": "needs_review",
+  "decision": "rejected",
   "exclude_from_playlist": true,
-  "notes": "Official YouTube channel resolver did not provide a playable live stream during this test. Keep excluded unless it can be verified while KolorTV has an active YouTube live broadcast.",
-  "reason": "The channel-based YouTube resolver failed on both devices, but the broadcaster may simply not have had an active live stream."
+  "reason": "YouTube-based streams are not suitable for this IPTV playlist.",
+  "notes": "Reject this YouTube/ythls resolver candidate. Do not re-test unless a stable direct non-YouTube HLS stream is found for the broadcaster."
 }
   ]
 }
