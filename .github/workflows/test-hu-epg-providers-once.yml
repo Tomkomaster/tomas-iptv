@@ -12,15 +12,6 @@ permissions:
 
 jobs:
   test-provider:
-    strategy:
-      fail-fast: false
-      matrix:
-        provider:
-          - tvmusor.hu
-          - horizon.tv
-          - m.tv.sms.cz
-          - mujtvprogram.cz
-          - programetv.ro
     runs-on: ubuntu-latest
 
     steps:
@@ -42,17 +33,15 @@ jobs:
           cd .epg-builder
           npm ci
 
-      - name: Test provider
+      - name: Test tvprofil.com
         shell: bash
-        env:
-          PROVIDER: ${{ matrix.provider }}
         run: |
           set -euo pipefail
 
           python3 epg_prepare.py \
             --playlist public/tv.m3u \
             --epg-root .epg-builder \
-            --sites "mediaklikk.hu,$PROVIDER" \
+            --sites "mediaklikk.hu,tvprofil.com" \
             --output .epg.channels.xml \
             --report public/epg-coverage.json
 
@@ -70,5 +59,5 @@ jobs:
             --grab-log .epg-grab.log \
             --output public/epg-health.json
 
-          echo "=== RESULT $PROVIDER ==="
+          echo "=== RESULT tvprofil.com ==="
           cat public/epg-health.json
