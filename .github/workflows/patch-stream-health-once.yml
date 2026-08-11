@@ -17,13 +17,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Patch dashboard and production workflow
+      - name: Patch health checker and integration
         shell: bash
         run: |
           set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('healthcheck.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'prefix = data[:256].lstrip().casefold()'
+          new = 'prefix = data[:256].lstrip().lower()'
+          if old not in text:
+              raise SystemExit('healthcheck bytes fix target not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
           python3 patch_stream_health_integration.py
           git diff --check
-          git diff -- build.py .github/workflows/build-and-publish.yml
+          git diff -- healthcheck.py build.py .github/workflows/build-and-publish.yml
 
       - name: Run tests and strict build
         shell: bash
@@ -49,11 +61,17 @@ jobs:
           summary = data['summary']
           print('=== AUTOMATED STREAM HEALTH ===')
           print(json.dumps(summary, indent=2, ensure_ascii=False))
-          print('Needs manual retest:', [
-              item['channel']
-              for item in data['streams']
-              if item.get('manual_retest_recommended')
-          ])
+          print('Failed channels:')
+          for item in data['streams']:
+              if not item.get('success'):
+                  print(
+                      ' -',
+                      item.get('channel'),
+                      '|',
+                      item.get('status'),
+                      '|',
+                      item.get('detail'),
+                  )
 
           if summary['total'] != 104:
               raise SystemExit(
@@ -67,6 +85,6 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add build.py .github/workflows/build-and-publish.yml
+          git add healthcheck.py build.py .github/workflows/build-and-publish.yml
           git commit -m "Integrate automated stream health dashboard"
           git push
