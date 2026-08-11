@@ -250,3 +250,28 @@ https://dash3.antik.sk/live/test_atv_ziar/playlist.m3u8
 # Current Antik regional channel
 #EXTINF:-1 tvg-name="Mestská Televízia Partizánske" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská Televízia Partizánske
 https://dash2.antik.sk/live/test_partizanske/playlist.m3u8
+
+# TV Bratislava — Antik HTTPS alternative
+# Current extras uses old 88.212.15.9 HTTP candidate
+#EXTINF:-1 tvg-id="TVBratislava.sk" tvg-name="TV Bratislava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Bratislava - ANTIK TEST
+https://dash2.antik.sk/live/test_batv/playlist.m3u8
+
+# TV Reduta — Antik HTTPS alternative
+# Current extras uses Panaccess candidate
+#EXTINF:-1 tvg-name="TV Reduta" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Reduta - ANTIK TEST
+https://dash3.antik.sk/live/tv_reduta/playlist.m3u8
+
+# Mestská TV Košice — Antik HTTPS alternative
+# Current extras has streaming.sk / TV Nasa candidate
+#EXTINF:-1 tvg-name="Mestská TV Košice" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská TV Košice - ANTIK TEST
+https://dash2.antik.sk/live/test_mtv_kosice/playlist.m3u8
+
+# TV Zemplín — Antik HTTPS alternative
+# Current extras uses old Rebit HTTP candidate
+#EXTINF:-1 tvg-name="Televízia ZEMPLÍN" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Televízia ZEMPLÍN - ANTIK TEST
+https://dash2.antik.sk/live/test_zemplin/playlist.m3u8
+
+# Mestská televízia Trnava — Antik HTTPS alternative
+# Current extras uses old 213.81.x.x candidate
+#EXTINF:-1 tvg-name="Mestská televízia Trnava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská televízia Trnava - ANTIK TEST
+https://dash3.antik.sk/live/test_trnava/playlist.m3u8
