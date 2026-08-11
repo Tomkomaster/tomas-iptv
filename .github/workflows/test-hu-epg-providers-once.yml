@@ -19,17 +19,6 @@ jobs:
           - tvmusor.hu
           - horizon.tv
           - m.tv.sms.cz
-          - mujtvmusor.cz
-          - mujtprogram.cz
-          - mujtprogram.cz
-          - mujtprogram.sk
-          - mujtprogram.hu
-          - mujtprogramtv.cz
-          - mujtprogramtv.hu
-          - mujtprogramtv.sk
-          - mujtprogramtv.com
-          - mujtprogramtv.eu
-          - mujtprogramtv.net
           - mujtvprogram.cz
           - programetv.ro
     runs-on: ubuntu-latest
@@ -59,11 +48,6 @@ jobs:
           PROVIDER: ${{ matrix.provider }}
         run: |
           set -euo pipefail
-
-          if [ ! -d ".epg-builder/sites/$PROVIDER" ]; then
-            echo "Provider $PROVIDER does not exist; skipping."
-            exit 0
-          fi
 
           python3 epg_prepare.py \
             --playlist public/tv.m3u \
