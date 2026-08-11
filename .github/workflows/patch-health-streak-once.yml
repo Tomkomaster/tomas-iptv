@@ -1,0 +1,61 @@
+name: One-time validate health streaks
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/patch-health-streak-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Patch failure streak cadence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          health = Path('healthcheck.py')
+          text = health.read_text(encoding='utf-8')
+          old = '''    prior_failures = int((previous or {}).get("consecutive_failures") or 0)\n    success = bool(probe.get("success"))\n    consecutive_failures = 0 if success else prior_failures + 1\n'''
+          new = '''    prior_failures = int((previous or {}).get("consecutive_failures") or 0)\n    success = bool(probe.get("success"))\n    previous_checked_at = str((previous or {}).get("checked_at") or "")\n    same_check_day = (\n        len(previous_checked_at) >= 10\n        and len(checked_at) >= 10\n        and previous_checked_at[:10] == checked_at[:10]\n    )\n\n    if success:\n        consecutive_failures = 0\n    elif same_check_day:\n        # A normal build can run several times after code changes. Do not\n        # turn several same-day builds into several "nightly" failures.\n        consecutive_failures = max(prior_failures, 1)\n    else:\n        consecutive_failures = prior_failures + 1\n'''
+          if old not in text:
+              raise SystemExit('health streak target not found')
+          health.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          tests = Path('tests/test_healthcheck.py')
+          text = tests.read_text(encoding='utf-8')
+          anchor = '''    def test_playlist_manual_status_and_report_summary(self):\n'''
+          addition = '''    def test_same_day_failure_does_not_advance_nightly_streak(self):\n        entry = self.entry("/missing.m3u8")\n        failed_probe = {\n            "status": "HTTP error",\n            "success": False,\n            "startup_seconds": 0.1,\n            "probe_type": "HLS",\n            "redirected": False,\n            "final_url": entry["stream_url"],\n            "http_status": 404,\n            "request_count": 0,\n            "detail": "HTTP 404",\n        }\n        previous = {\n            "consecutive_failures": 2,\n            "checked_at": "2026-08-11 04:23:00 UTC",\n        }\n\n        same_day = apply_history(\n            entry,\n            failed_probe,\n            previous,\n            "2026-08-11 20:00:00 UTC",\n        )\n        self.assertEqual(same_day["consecutive_failures"], 2)\n        self.assertFalse(same_day["manual_retest_recommended"])\n\n        next_day = apply_history(\n            entry,\n            failed_probe,\n            same_day,\n            "2026-08-12 04:23:00 UTC",\n        )\n        self.assertEqual(next_day["consecutive_failures"], 3)\n        self.assertTrue(next_day["manual_retest_recommended"])\n\n'''
+          if anchor not in text:
+              raise SystemExit('test insertion anchor not found')
+          tests.write_text(text.replace(anchor, addition + anchor, 1), encoding='utf-8')
+          PY
+
+          git diff --check
+
+      - name: Run full tests and strict build
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+
+      - name: Commit daily streak behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add healthcheck.py tests/test_healthcheck.py
+          git commit -m "Count stream failures once per day"
+          git push
