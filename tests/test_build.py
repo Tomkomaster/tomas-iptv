@@ -653,6 +653,293 @@ class AuditTests(unittest.TestCase):
         selected, _ = build.select_playlist_candidates(entries, rows)
         self.assertEqual([e["url"] for e in selected], [clean_url])
 
+    def test_stable_playlist_keeps_only_tv_safe_statuses(
+        self,
+    ):
+        ok_url = (
+            "https://example.test/ok.m3u8"
+        )
+
+        tv_url = (
+            "https://example.test/tv.m3u8"
+        )
+
+        pc_url = (
+            "https://example.test/pc.m3u8"
+        )
+
+        review_url = (
+            "https://example.test/review.m3u8"
+        )
+
+        rejected_url = (
+            "https://example.test/rejected.m3u8"
+        )
+
+        entries = [
+            make_entry(
+                ok_url,
+                name="OK TV",
+                tvg_id="OKTV.hu",
+            ),
+            make_entry(
+                tv_url,
+                name="TV Only",
+                tvg_id="TVOnly.hu",
+            ),
+            make_entry(
+                pc_url,
+                name="PC Only",
+                tvg_id="PCOnly.hu",
+            ),
+            make_entry(
+                review_url,
+                name="Review TV",
+                tvg_id="ReviewTV.hu",
+            ),
+            make_entry(
+                rejected_url,
+                name="Rejected TV",
+                tvg_id="RejectedTV.hu",
+            ),
+        ]
+
+        rows = [
+            {
+                "stream_url": ok_url,
+                "decision": "Verified",
+                "exclude_from_playlist": False,
+                "vlc": "works",
+                "samsung": "works",
+            },
+            {
+                "stream_url": tv_url,
+                "decision": "TV verified",
+                "exclude_from_playlist": False,
+                "vlc": "mrl_error",
+                "samsung": "works",
+            },
+            {
+                "stream_url": pc_url,
+                "decision": "PC only",
+                "exclude_from_playlist": False,
+                "vlc": "works",
+                "samsung": "format_error",
+            },
+            {
+                "stream_url": review_url,
+                "decision": "Needs review",
+                "exclude_from_playlist": False,
+                "vlc": "not_tested",
+                "samsung": "not_tested",
+            },
+            {
+                "stream_url": rejected_url,
+                "decision": "Rejected",
+                "exclude_from_playlist": False,
+                "vlc": "mrl_error",
+                "samsung": "format_error",
+            },
+        ]
+
+        selected, excluded = (
+            build.select_stable_playlist_candidates(
+                entries,
+                rows,
+                {},
+            )
+        )
+
+        self.assertEqual(
+            {
+                entry["url"]
+                for entry
+                in selected
+            },
+            {
+                ok_url,
+                tv_url,
+            },
+        )
+
+        excluded_urls = {
+            row["stream_url"]
+            for row
+            in excluded
+        }
+
+        self.assertIn(
+            pc_url,
+            excluded_urls,
+        )
+
+        self.assertIn(
+            review_url,
+            excluded_urls,
+        )
+
+        self.assertIn(
+            rejected_url,
+            excluded_urls,
+        )
+
+
+    def test_test_playlist_keeps_rejected_and_manual_excludes(
+        self,
+    ):
+        rejected_url = (
+            "https://example.test/rejected.m3u8"
+        )
+
+        excluded_url = (
+            "https://example.test/manual-exclude.m3u8"
+        )
+
+        entries = [
+            make_entry(
+                rejected_url,
+                name="Rejected TV",
+                tvg_id="RejectedTV.hu",
+            ),
+            make_entry(
+                excluded_url,
+                name="Manual Exclude",
+                tvg_id="ManualExclude.hu",
+            ),
+        ]
+
+        rows = [
+            {
+                "stream_url": rejected_url,
+                "decision": "Rejected",
+                "exclude_from_playlist": False,
+            },
+            {
+                "stream_url": excluded_url,
+                "decision": "Needs review",
+                "exclude_from_playlist": True,
+            },
+        ]
+
+        candidates = (
+            build.make_test_playlist_candidates(
+                entries,
+                rows,
+            )
+        )
+
+        self.assertEqual(
+            {
+                entry["url"]
+                for entry
+                in candidates
+            },
+            {
+                rejected_url,
+                excluded_url,
+            },
+        )
+
+
+    def test_stable_playlist_blocks_youtube_resolver_even_if_verified(
+        self,
+    ):
+        url = (
+            "https://ythls.onrender.com/"
+            "channel/demo.m3u8"
+        )
+
+        entries = [
+            make_entry(
+                url,
+                name="YouTube TV",
+                tvg_id="YouTubeTV.hu",
+            )
+        ]
+
+        rows = [
+            {
+                "stream_url": url,
+                "decision": "Verified",
+                "exclude_from_playlist": False,
+                "vlc": "works",
+                "samsung": "works",
+            }
+        ]
+
+        selected, excluded = (
+            build.select_stable_playlist_candidates(
+                entries,
+                rows,
+                {},
+            )
+        )
+
+        self.assertEqual(
+            selected,
+            [],
+        )
+
+        self.assertEqual(
+            len(excluded),
+            1,
+        )
+
+        self.assertIn(
+            "Test-only stream host",
+            excluded[0]["reason"],
+        )
+
+
+    def test_stable_playlist_blocks_webcam_even_if_verified(
+        self,
+    ):
+        url = (
+            "https://example.test/"
+            "camera.m3u8"
+        )
+
+        entries = [
+            make_entry(
+                url,
+                name="City Webcam",
+                tvg_id="CityWebcam.hu",
+            )
+        ]
+
+        rows = [
+            {
+                "stream_url": url,
+                "decision": "Verified",
+                "exclude_from_playlist": False,
+                "vlc": "works",
+                "samsung": "works",
+            }
+        ]
+
+        selected, excluded = (
+            build.select_stable_playlist_candidates(
+                entries,
+                rows,
+                {},
+            )
+        )
+
+        self.assertEqual(
+            selected,
+            [],
+        )
+
+        self.assertEqual(
+            len(excluded),
+            1,
+        )
+
+        self.assertIn(
+            "Test-only channel type",
+            excluded[0]["reason"],
+        )
+		
     def test_wrong_language_is_rejected(self):
         decision, _ = build.calculate_audit_decision({
             "vlc": "wrong_language",
