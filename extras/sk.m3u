@@ -196,3 +196,28 @@ http://budapest-cache-1.antik.sk/live/test_pianko/playlist.m3u8
 # BTV HD ALT — IDENTIFY THIS CHANNEL
 #EXTINF:-1 tvg-name="BTV HD ALT - IDENTIFY",BTV HD ALT - IDENTIFY
 https://fs3.kabelko.sk/9011/index.m3u8?token=btv
+
+# JOJ Šport 2 — Antik direct candidate
+#EXTINF:-1 tvg-name="JOJ Šport 2" group-title="Slovakia Test",JOJ Šport 2 - ANTIK TEST
+http://88.212.15.47/live/joj_sport_2_avc/index.m3u8
+
+# JOJ Šport 2 — REBIT direct candidate, Jan 2026
+#EXTINF:-1 tvg-name="JOJ Šport 2" group-title="Slovakia Test",JOJ Šport 2 - REBIT TEST
+http://46.36.41.106:8888/rebit/80.m3u8
+
+# Prima SK — REBIT candidate
+#EXTINF:-1 tvg-name="Prima SK" group-title="Slovakia Test",Prima SK
+http://46.36.41.106:8888/rebit/23.m3u8
+
+# PREMIUM HD — REBIT candidate
+#EXTINF:-1 tvg-name="PREMIUM" group-title="Slovakia Test",PREMIUM HD
+http://46.36.41.106:8888/rebit/102.m3u8
+
+# Volant TV — automotive television; REBIT candidate
+#EXTINF:-1 tvg-name="Volant TV" group-title="Slovakia Test",Volant TV
+http://46.36.41.106:8888/rebit/94.m3u8
+
+# JOJ Cinema — JOJ Group; Czech/Slovak market
+#EXTINF:-1 tvg-name="JOJ Cinema" group-title="Slovakia Test",JOJ Cinema
+http://46.36.41.106:8888/rebit/8.m3u8
+
