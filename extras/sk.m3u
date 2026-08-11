@@ -221,3 +221,32 @@ http://46.36.41.106:8888/rebit/94.m3u8
 #EXTINF:-1 tvg-name="JOJ Cinema" group-title="Slovakia Test",JOJ Cinema
 http://46.36.41.106:8888/rebit/8.m3u8
 
+# RVTV — Rožňavská televízia
+# Current regional channel; Antik HLS candidate
+#EXTINF:-1 tvg-name="RVTV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",RVTV
+https://dash2.antik.sk/live/test_roznava/playlist.m3u8
+
+# Miestna TV Trebišov
+# Current Antik regional channel
+#EXTINF:-1 tvg-name="Miestna TV Trebišov" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Miestna TV Trebišov
+https://dash3.antik.sk/live/test_trebisov/playlist.m3u8
+
+# HNTV — Humenská televízia
+# Current Antik regional channel
+#EXTINF:-1 tvg-name="HNTV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",HNTV
+https://dash3.antik.sk/live/test_hntv/playlist.m3u8
+
+# Moldava TV — Moldava nad Bodvou
+# Current regional channel; Antik HLS candidate
+#EXTINF:-1 tvg-name="Moldava TV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Moldava TV
+https://dash2.antik.sk/live/test_moldava/playlist.m3u8
+
+# ATV Žiar — Žiar nad Hronom
+# Current regional channel; Antik HLS candidate
+#EXTINF:-1 tvg-name="ATV Žiar" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",ATV Žiar
+https://dash3.antik.sk/live/test_atv_ziar/playlist.m3u8
+
+# Mestská Televízia Partizánske
+# Current Antik regional channel
+#EXTINF:-1 tvg-name="Mestská Televízia Partizánske" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská Televízia Partizánske
+https://dash2.antik.sk/live/test_partizanske/playlist.m3u8
