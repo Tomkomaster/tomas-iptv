@@ -1,4 +1,4 @@
-name: One-time probe second EPG batch
+name: One-time inspect Makó EPG structure
 
 on:
   push:
@@ -15,38 +15,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Probe candidate pages
+      - name: Inspect Makó weekly schedule
         run: |
           python3 - <<'PY'
           from urllib.request import Request, urlopen
-          from urllib.error import HTTPError, URLError
           import html, re
 
-          urls = {
-            'debrecen-musortv': 'https://musor.tv/napi/tvmusor/DEBRECEN_TV/2026.08.11',
-            'kecskemet-hirfriss': 'https://tv-musor.hirfriss.hu/mai-tv-musorujsag/70-Kecskemet_TV-heti.html',
-            'mako-own': 'https://makotv.hu/heti-musor/',
-            '16tv-own': 'https://www.16tv.hu/musor.html',
-          }
-          for name, url in urls.items():
-              print('\n===', name, url, '===')
-              try:
-                  req = Request(url, headers={'User-Agent':'Mozilla/5.0 Tomas-IPTV-EPG/1.0'})
-                  with urlopen(req, timeout=20) as r:
-                      raw = r.read(600000)
-                      charset = r.headers.get_content_charset() or 'utf-8'
-                      text = raw.decode(charset, errors='replace')
-                      print('status', r.status, 'final', r.geturl(), 'bytes', len(raw))
-                  plain = re.sub(r'(?is)<script.*?</script>|<style.*?</style>', ' ', text)
-                  plain = re.sub(r'(?i)<br\s*/?>|</(?:p|div|tr|td|li|h[1-6]|a|span|section|article)>', '\n', plain)
-                  plain = re.sub(r'(?s)<[^>]+>', ' ', plain)
-                  lines = [' '.join(html.unescape(x).split()) for x in plain.splitlines()]
-                  lines = [x for x in lines if x]
-                  timed = [x for x in lines if re.match(r'^\d{1,2}[:.]\d{2}\b', x)]
-                  dateish = [x for x in lines if re.search(r'2026|08[.\-/]11|augusztus|aug\.', x, re.I)]
-                  print('time-count', len(timed))
-                  print('date-ish', dateish[:25])
-                  print('timed', timed[:50])
-              except (HTTPError, URLError, TimeoutError, OSError) as exc:
-                  print('ERROR', type(exc).__name__, exc)
+          url = 'https://makotv.hu/heti-musor/'
+          req = Request(url, headers={'User-Agent':'Mozilla/5.0 Tomas-IPTV-EPG/1.0'})
+          with urlopen(req, timeout=20) as r:
+              raw = r.read(600000)
+              charset = r.headers.get_content_charset() or 'utf-8'
+              text = raw.decode(charset, errors='replace')
+          plain = re.sub(r'(?is)<script.*?</script>|<style.*?</style>', ' ', text)
+          plain = re.sub(r'(?i)<br\s*/?>|</(?:p|div|tr|td|th|li|h[1-6]|a|span|section|article|button)>', '\n', plain)
+          plain = re.sub(r'(?s)<[^>]+>', ' ', plain)
+          lines = [' '.join(html.unescape(x).split()) for x in plain.splitlines()]
+          lines = [x for x in lines if x]
+          for i, line in enumerate(lines):
+              if re.search(r'08\.1[0-7]|augusztus 1[0-7]|^\d{1,2}[.:]\d{2}\b', line, re.I):
+                  lo = max(0, i - 2)
+                  hi = min(len(lines), i + 3)
+                  print('CTX', i, lines[lo:hi])
           PY
