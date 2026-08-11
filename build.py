@@ -2219,6 +2219,748 @@ def select_playlist_candidates(
             selected_candidates.extend(group)
 
     return selected_candidates, excluded_rows
+
+def audit_rows_by_stream_url(
+    audit_rows: list[dict],
+) -> dict[str, dict]:
+    """
+    Build an exact/canonical stream-URL lookup for prepared audit rows.
+    """
+    result: dict[str, dict] = {}
+
+    for row in audit_rows:
+        url = str(
+            row.get("stream_url") or ""
+        ).strip()
+
+        if not url:
+            continue
+
+        key = canonical_stream_url(url)
+
+        if key in result:
+            raise RuntimeError(
+                f"Duplicate prepared audit URL: {url}"
+            )
+
+        result[key] = row
+
+    return result
+
+
+def make_test_playlist_candidates(
+    final_entries: list[dict],
+    audit_rows: list[dict],
+) -> list[dict]:
+    """
+    Keep every current unique stream candidate in the testing playlist.
+
+    Unlike the stable family playlist, test.m3u intentionally keeps:
+      - Verified
+      - TV verified
+      - PC only
+      - Needs review
+      - Rejected
+      - exclude_from_playlist feeds
+      - alternative feeds
+
+    Exact duplicate URLs have already been removed earlier in the build.
+    """
+    audit_by_url = audit_rows_by_stream_url(
+        audit_rows
+    )
+
+    candidates: list[dict] = []
+
+    for source_order, entry in enumerate(
+        final_entries
+    ):
+        url = str(
+            entry.get("url") or ""
+        ).strip()
+
+        audit = audit_by_url.get(
+            canonical_stream_url(url)
+        )
+
+        decision = (
+            audit.get(
+                "decision",
+                "Needs review",
+            )
+            if audit
+            else "Needs review"
+        )
+
+        candidate = dict(entry)
+
+        candidate["_audit"] = (
+            audit or {}
+        )
+
+        candidate["_decision"] = (
+            decision
+        )
+
+        candidate["_source_order"] = (
+            source_order
+        )
+
+        candidates.append(
+            candidate
+        )
+
+    return candidates
+
+
+def stable_block_reason(
+    entry: dict,
+    cfg: dict,
+) -> str:
+    """
+    Return a reason when a stream is never suitable for the stable
+    family playlist even if somebody accidentally marks it Verified.
+
+    The stream still remains available in test.m3u.
+    """
+    stable_cfg = (
+        cfg.get("stable_playlist")
+        or {}
+    )
+
+    blocked_hosts = [
+        str(value).strip().casefold()
+        for value in (
+            stable_cfg.get(
+                "blocked_hosts"
+            )
+            or [
+                "youtube.com",
+                "youtube-nocookie.com",
+                "youtu.be",
+                "googlevideo.com",
+                "ythls.onrender.com",
+            ]
+        )
+        if str(value).strip()
+    ]
+
+    url = str(
+        entry.get("url") or ""
+    ).strip()
+
+    hostname = (
+        urlparse(url).hostname
+        or ""
+    ).casefold()
+
+    for blocked_host in blocked_hosts:
+        if (
+            hostname == blocked_host
+            or hostname.endswith(
+                "." + blocked_host
+            )
+        ):
+            return (
+                "Test-only stream host: "
+                f"{hostname}"
+            )
+
+    blocked_flags = {
+        str(value).strip().casefold()
+        for value in (
+            stable_cfg.get(
+                "blocked_source_flags"
+            )
+            or ["Offline"]
+        )
+        if str(value).strip()
+    }
+
+    entry_flags = {
+        str(value).strip().casefold()
+        for value in (
+            entry.get(
+                "source_flags"
+            )
+            or []
+        )
+        if str(value).strip()
+    }
+
+    matching_flags = (
+        blocked_flags
+        & entry_flags
+    )
+
+    if matching_flags:
+        return (
+            "Blocked source flag: "
+            + ", ".join(
+                sorted(
+                    matching_flags
+                )
+            )
+        )
+
+    blocked_terms = [
+        str(value).strip().casefold()
+        for value in (
+            stable_cfg.get(
+                "blocked_name_terms"
+            )
+            or [
+                "webcam",
+                "web cam",
+                "camera",
+                "kamera",
+                "időkép",
+                "idokep",
+            ]
+        )
+        if str(value).strip()
+    ]
+
+    searchable_text = " ".join(
+        str(
+            entry.get(field)
+            or ""
+        )
+        for field in (
+            "channel_name",
+            "display_name",
+            "tvg_name",
+            "group_title",
+            "source_group_title",
+            "source",
+        )
+    ).casefold()
+
+    for term in blocked_terms:
+        if re.search(
+            rf"(?<!\w){re.escape(term)}(?!\w)",
+            searchable_text,
+            flags=re.IGNORECASE,
+        ):
+            return (
+                "Test-only channel type: "
+                f"{term}"
+            )
+
+    return ""
+
+
+def select_stable_playlist_candidates(
+    final_entries: list[dict],
+    audit_rows: list[dict],
+    cfg: dict,
+) -> tuple[
+    list[dict],
+    list[dict],
+]:
+    """
+    Select the family-safe playlist.
+
+    Only explicitly TV-safe decisions are accepted:
+      - Verified
+      - TV verified
+
+    PC-only, Needs-review, Rejected, explicitly excluded, YouTube,
+    webcam/camera and Offline feeds remain outside tv.m3u.
+
+    Only one best stable feed is published for each logical channel.
+    """
+    stable_cfg = (
+        cfg.get("stable_playlist")
+        or {}
+    )
+
+    allowed_decisions = {
+        str(value).strip()
+        for value in (
+            stable_cfg.get(
+                "allowed_decisions"
+            )
+            or [
+                "Verified",
+                "TV verified",
+            ]
+        )
+        if str(value).strip()
+    }
+
+    all_candidates = (
+        make_test_playlist_candidates(
+            final_entries,
+            audit_rows,
+        )
+    )
+
+    stable_groups: dict[
+        str,
+        list[dict],
+    ] = {}
+
+    excluded_rows: list[dict] = []
+
+    def add_excluded(
+        entry: dict,
+        reason: str,
+    ) -> None:
+        excluded_rows.append({
+            "channel_name": entry.get(
+                "channel_name",
+                "",
+            ),
+            "tvg_id": entry.get(
+                "tvg_id",
+                "",
+            ),
+            "source": entry.get(
+                "source",
+                "",
+            ),
+            "stream_url": entry.get(
+                "url",
+                "",
+            ),
+            "reason": reason,
+        })
+
+    for entry in all_candidates:
+        audit = (
+            entry.get("_audit")
+            or {}
+        )
+
+        decision = entry.get(
+            "_decision",
+            "Needs review",
+        )
+
+        if bool(
+            audit.get(
+                "exclude_from_playlist"
+            )
+        ):
+            add_excluded(
+                entry,
+                (
+                    audit.get("reason")
+                    or audit.get("notes")
+                    or (
+                        "Explicitly excluded "
+                        "from stable family playlist."
+                    )
+                ),
+            )
+            continue
+
+        if decision == "Rejected":
+            add_excluded(
+                entry,
+                (
+                    audit.get("reason")
+                    or audit.get("notes")
+                    or (
+                        "Rejected by manual "
+                        "playback/language audit."
+                    )
+                ),
+            )
+            continue
+
+        if (
+            decision
+            not in allowed_decisions
+        ):
+            add_excluded(
+                entry,
+                (
+                    "Not stable yet: "
+                    f"{decision}"
+                ),
+            )
+            continue
+
+        block_reason = (
+            stable_block_reason(
+                entry,
+                cfg,
+            )
+        )
+
+        if block_reason:
+            add_excluded(
+                entry,
+                block_reason,
+            )
+            continue
+
+        stable_groups.setdefault(
+            entry["channel_key"],
+            [],
+        ).append(
+            entry
+        )
+
+    def stable_feed_rank(
+        entry: dict,
+    ) -> tuple:
+        audit = (
+            entry.get("_audit")
+            or {}
+        )
+
+        decision = entry.get(
+            "_decision",
+            "Needs review",
+        )
+
+        decision_rank = {
+            "TV verified": 1,
+            "Verified": 2,
+        }.get(
+            decision,
+            0,
+        )
+
+        vlc = normalize_test_status(
+            str(
+                audit.get("vlc")
+                or ""
+            )
+        )
+
+        samsung = (
+            normalize_test_status(
+                str(
+                    audit.get(
+                        "samsung"
+                    )
+                    or ""
+                )
+            )
+        )
+
+        vlc_rank = {
+            "works": 3,
+            "works_with_warning": 2,
+        }.get(
+            vlc,
+            0,
+        )
+
+        samsung_rank = (
+            1
+            if samsung == "works"
+            else 0
+        )
+
+        source_rank = -int(
+            entry.get(
+                "_source_order"
+            )
+            or 0
+        )
+
+        return (
+            decision_rank,
+            vlc_rank,
+            samsung_rank,
+            source_rank,
+        )
+
+    selected: list[dict] = []
+
+    for group in stable_groups.values():
+        winner = max(
+            group,
+            key=stable_feed_rank,
+        )
+
+        selected.append(
+            winner
+        )
+
+        for entry in group:
+            if entry is winner:
+                continue
+
+            add_excluded(
+                entry,
+                (
+                    "Another stable feed for "
+                    "this logical channel was "
+                    "ranked higher."
+                ),
+            )
+
+    return (
+        selected,
+        excluded_rows,
+    )
+
+
+def prepare_published_entries(
+    candidates: list[dict],
+    cfg: dict,
+) -> list[dict]:
+    """
+    Convert candidate entries into final playlist entries with:
+      - [HU OK] / [SK TV] / [HU ?] prefixes
+      - feed numbering
+      - country/category group-title
+    """
+    visible_groups: dict[
+        str,
+        list[dict],
+    ] = {}
+
+    for entry in candidates:
+        visible_groups.setdefault(
+            entry["channel_key"],
+            [],
+        ).append(
+            entry
+        )
+
+    published_entries: list[dict] = []
+
+    for (
+        channel_key_value,
+        group,
+    ) in visible_groups.items():
+        group.sort(
+            key=lambda e: int(
+                e.get(
+                    "_source_order"
+                )
+                or 0
+            )
+        )
+
+        visible_count = len(
+            group
+        )
+
+        for (
+            visible_index,
+            entry,
+        ) in enumerate(
+            group,
+            start=1,
+        ):
+            decision = entry.get(
+                "_decision",
+                "Needs review",
+            )
+
+            lang = str(
+                entry.get(
+                    "language_code"
+                )
+                or cfg.get(
+                    "default_language_code"
+                )
+                or "HU"
+            ).upper()
+
+            suffix = (
+                playlist_status_suffix(
+                    decision
+                )
+            )
+
+            original_display = (
+                strip_custom_prefix(
+                    entry.get(
+                        "display_name",
+                        "",
+                    )
+                )
+            )
+
+            feed_suffix = (
+                (
+                    f" [Feed "
+                    f"{visible_index}/"
+                    f"{visible_count}]"
+                )
+                if visible_count > 1
+                else ""
+            )
+
+            published_name = (
+                f"[{lang} {suffix}] "
+                f"{original_display}"
+                f"{feed_suffix}"
+            )
+
+            country_name = str(
+                entry.get(
+                    "country_name"
+                )
+                or country_name_for_language(
+                    cfg,
+                    lang,
+                )
+            ).strip()
+
+            content_group = (
+                normalize_content_group(
+                    entry.get(
+                        "content_group"
+                    )
+                    or entry.get(
+                        "source_group_title"
+                    )
+                    or entry.get(
+                        "group_title"
+                    )
+                    or "",
+                    country_name=(
+                        country_name
+                    ),
+                    language_code=lang,
+                    default_group=(
+                        "General"
+                    ),
+                )
+            )
+
+            group_title = (
+                f"{country_name} | "
+                f"{content_group}"
+            )
+
+            published = dict(
+                entry
+            )
+
+            published[
+                "published_name"
+            ] = published_name
+
+            published[
+                "test_status"
+            ] = decision
+
+            published[
+                "group_title"
+            ] = group_title
+
+            published[
+                "country_name"
+            ] = country_name
+
+            published[
+                "content_group"
+            ] = content_group
+
+            published[
+                "source_group_title"
+            ] = str(
+                entry.get(
+                    "source_group_title"
+                )
+                or ""
+            ).strip()
+
+            published[
+                "visible_feed_index"
+            ] = visible_index
+
+            published[
+                "visible_feed_count"
+            ] = visible_count
+
+            published["lines"] = (
+                rewrite_entry_lines(
+                    entry["lines"],
+                    published_name,
+                    group_title,
+                )
+            )
+
+            published_entries.append(
+                published
+            )
+
+    published_entries.sort(
+        key=lambda e: (
+            normalize_text(
+                e.get(
+                    "country_name",
+                    "",
+                )
+            ),
+            normalize_text(
+                e.get(
+                    "channel_name",
+                    "",
+                )
+            ),
+            normalize_text(
+                e.get(
+                    "published_name",
+                    "",
+                )
+            ),
+        )
+    )
+
+    return published_entries
+
+
+def write_m3u_playlist(
+    path: Path,
+    cfg: dict,
+    entries: list[dict],
+    generated: str,
+    playlist_label: str,
+) -> None:
+    """
+    Write one generated M3U playlist.
+    """
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    out_lines = [
+        playlist_header(cfg),
+        (
+            "# Generated automatically: "
+            f"{generated}"
+        ),
+        (
+            "# Tomas IPTV "
+            "smart builder v19"
+        ),
+        (
+            "# Playlist: "
+            f"{playlist_label}"
+        ),
+        "",
+    ]
+
+    for entry in entries:
+        out_lines.extend(
+            entry["lines"]
+        )
+
+        out_lines.append(
+            ""
+        )
+
+    path.write_text(
+        "\n".join(
+            out_lines
+        ).rstrip()
+        + "\n",
+        encoding="utf-8",
+    )
 	
 def make_dashboard(
     cfg: dict,
@@ -2425,10 +3167,26 @@ def make_dashboard(
             "Rejected": "rejected",
         }.get(a["decision"], "review")
 
-        in_playlist = (
+        in_test_playlist = (
             '<span class="badge verified">Yes</span>'
-            if a["in_playlist"]
-            else '<span class="badge base">No</span>'
+            if a.get(
+                "in_playlist"
+            )
+            else (
+                '<span class="badge base">'
+                'No</span>'
+            )
+        )
+
+        in_stable_playlist = (
+            '<span class="badge verified">Yes</span>'
+            if a.get(
+                "in_stable_playlist"
+            )
+            else (
+                '<span class="badge base">'
+                'No</span>'
+            )
         )
 
         reason_notes = " — ".join(
@@ -2458,7 +3216,8 @@ def make_dashboard(
               <td>{test_badge(a["vlc"])}<div class="detail">{esc(a.get("vlc_note", ""))}</div></td>
               <td>{test_badge(a["samsung"])}<div class="detail">{esc(a.get("samsung_note", ""))}</div></td>
               <td><span class="badge {decision_css}">{esc(a["decision"])}</span></td>
-              <td>{in_playlist}</td>
+              <td>{in_test_playlist}</td>
+              <td>{in_stable_playlist}</td>
               <td>{esc(reason_notes or "—")}</td>
               <td class="url">{stream_link}</td>
             </tr>
@@ -2653,7 +3412,10 @@ details ul {{ max-height: 260px; overflow: auto; }}
   <p class="muted">Generated automatically: {esc(generated)}</p>
 
   <div class="links">
-    <a href="tv.m3u">TV playlist (tv.m3u)</a>
+    <a href="tv.m3u">Stable family playlist (tv.m3u)</a>
+    <a href="test.m3u">Testing playlist (test.m3u)</a>
+    <a href="hu.m3u">Stable Hungary (hu.m3u)</a>
+    <a href="sk.m3u">Stable Slovakia (sk.m3u)</a>
     {epg_link_html}
     <a href="channels.csv">Channel inventory (CSV)</a>
     <a href="duplicates.csv">Ignored duplicate URLs (CSV)</a>
@@ -2741,7 +3503,8 @@ details ul {{ max-height: 260px; overflow: auto; }}
           <th>VLC</th>
           <th>Samsung</th>
           <th>Decision</th>
-          <th>In playlist</th>
+          <th>In test playlist</th>
+          <th>In stable family playlist</th>
           <th>Reason / notes</th>
           <th>URL</th>
         </tr>
@@ -3164,147 +3927,102 @@ def main(strict: bool = False) -> None:
         )
 
     audit_rows = prepare_audit_rows(audit_items, final_entries)
-    selected_candidates, excluded_rows = select_playlist_candidates(
-        final_entries,
-        audit_rows,
-    )
-
-    # Re-number only the feeds that are actually visible in the playlist.
-    visible_groups: dict[str, list[dict]] = {}
-    for entry in selected_candidates:
-        visible_groups.setdefault(entry["channel_key"], []).append(entry)
-
-    published_entries: list[dict] = []
-
-    for channel_key_value, group in visible_groups.items():
-        group.sort(key=lambda e: int(e.get("_source_order") or 0))
-        visible_count = len(group)
-
-        for visible_index, entry in enumerate(group, start=1):
-            audit = entry.get("_audit") or {}
-            decision = entry.get("_decision", "Needs review")
-
-            # Playlist language comes from the source/configuration, never
-            # from the observed language recorded during manual testing.
-            lang = str(
-                entry.get("language_code")
-                or cfg.get("default_language_code")
-                or "HU"
-            ).upper()
-
-            suffix = playlist_status_suffix(
-                decision
-            )
-
-            original_display = (
-                strip_custom_prefix(
-                    entry.get(
-                        "display_name",
-                        "",
-                    )
-                )
-            )
-
-            # If only one feed survives, don't clutter the channel name with
-            # Feed 1/2-style labels. Multiple unresolved feeds remain numbered.
-            feed_suffix = (
-                f" [Feed {visible_index}/{visible_count}]"
-                if visible_count > 1
-                else ""
-            )
-
-            published_name = (
-                f"[{lang} {suffix}] "
-                f"{original_display}"
-                f"{feed_suffix}"
-            )
-
-            country_name = str(
-                entry.get("country_name")
-                or country_name_for_language(
-                    cfg,
-                    lang,
-                )
-            ).strip()
-
-            content_group = (
-                normalize_content_group(
-                    entry.get("content_group")
-                    or entry.get(
-                        "source_group_title"
-                    )
-                    or entry.get(
-                        "group_title"
-                    )
-                    or "",
-                    country_name=country_name,
-                    language_code=lang,
-                    default_group="General",
-                )
-            )
-
-            # group-title is now for user-facing content organization.
-            # Verification status stays in the channel prefix, audit data,
-            # dashboard and CSV instead.
-            group_title = (
-                f"{country_name} | "
-                f"{content_group}"
-            )
-
-            published = dict(entry)
-            published["published_name"] = published_name
-            published["test_status"] = decision
-            published["group_title"] = group_title
-            published[
-                "country_name"
-            ] = country_name
-
-            published[
-                "content_group"
-            ] = content_group
-
-            published[
-                "source_group_title"
-            ] = str(
-                entry.get(
-                    "source_group_title"
-                )
-                or ""
-            ).strip()			
-            published["visible_feed_index"] = visible_index
-            published["visible_feed_count"] = visible_count
-            published["lines"] = rewrite_entry_lines(
-                entry["lines"], published_name, group_title
-            )
-            published_entries.append(published)
-
-    published_entries.sort(
-        key=lambda e: (
-            normalize_text(
-                e.get(
-                    "country_name",
-                    "",
-                )
-            ),
-            normalize_text(
-                e.get(
-                    "channel_name",
-                    "",
-                )
-            ),
-            normalize_text(
-                e.get(
-                    "published_name",
-                    "",
-                )
-            ),
+    test_candidates = (
+        make_test_playlist_candidates(
+            final_entries,
+            audit_rows,
         )
     )
 
-    published_urls = {e.get("url") for e in published_entries}
+    (
+        stable_candidates,
+        excluded_rows,
+    ) = (
+        select_stable_playlist_candidates(
+            final_entries,
+            audit_rows,
+            cfg,
+        )
+    )
+
+    test_entries = (
+        prepare_published_entries(
+            test_candidates,
+            cfg,
+        )
+    )
+
+    # Keep the old variable name for the rest of the reporting/dashboard
+    # code. From now on, published_entries means the stable family playlist.
+    published_entries = (
+        prepare_published_entries(
+            stable_candidates,
+            cfg,
+        )
+    )
+
+    stable_urls = {
+        canonical_stream_url(
+            str(
+                entry.get("url")
+                or ""
+            )
+        )
+        for entry in published_entries
+        if entry.get("url")
+    }
+
+    test_urls = {
+        canonical_stream_url(
+            str(
+                entry.get("url")
+                or ""
+            )
+        )
+        for entry in test_entries
+        if entry.get("url")
+    }
+
     for row in audit_rows:
-        if row.get("stream_url"):
-            row["in_playlist"] = row["stream_url"] in published_urls
+        row_url = str(
+            row.get(
+                "stream_url"
+            )
+            or ""
+        ).strip()
+
+        if not row_url:
+            row[
+                "in_playlist"
+            ] = False
+
+            row[
+                "in_stable_playlist"
+            ] = False
+
+            continue
+
+        row_url_key = (
+            canonical_stream_url(
+                row_url
+            )
+        )
+
+        # "in_playlist" now means the stream is a current candidate
+        # and is therefore present in test.m3u.
+        row[
+            "in_playlist"
+        ] = (
+            row_url_key
+            in test_urls
+        )
+
+        row[
+            "in_stable_playlist"
+        ] = (
+            row_url_key
+            in stable_urls
+        )
 
     by_channel: dict[str, dict] = {}
     for entry in published_entries:
@@ -3362,22 +4080,137 @@ def main(strict: bool = False) -> None:
             "removed_channels": [previous_by_key[k] for k in removed_keys],
         }
 
-    out_path = ROOT / cfg.get("output", "public/tv.m3u")
-    public_dir = out_path.parent
-    public_dir.mkdir(parents=True, exist_ok=True)
+    out_path = ROOT / cfg.get(
+        "output",
+        "public/tv.m3u",
+    )
 
-    generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    public_dir = (
+        out_path.parent
+    )
 
-    out_lines = [
-        playlist_header(cfg),
-        f"# Generated automatically: {generated}",
-        "# Tomas IPTV smart builder v18",
-        "",
-    ]
-    for entry in published_entries:
-        out_lines.extend(entry["lines"])
-        out_lines.append("")
-    out_path.write_text("\n".join(out_lines).rstrip() + "\n", encoding="utf-8")
+    public_dir.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    generated = datetime.now(
+        timezone.utc
+    ).strftime(
+        "%Y-%m-%d %H:%M:%S UTC"
+    )
+
+    # Main stable family playlist.
+    write_m3u_playlist(
+        out_path,
+        cfg,
+        published_entries,
+        generated,
+        "Stable family playlist",
+    )
+
+    # Full testing/research playlist.
+    test_out_path = (
+        ROOT
+        / str(
+            cfg.get(
+                "test_output"
+            )
+            or "public/test.m3u"
+        )
+    )
+
+    write_m3u_playlist(
+        test_out_path,
+        cfg,
+        test_entries,
+        generated,
+        "Testing and research playlist",
+    )
+
+    # Stable per-country playlists.
+    country_outputs = (
+        cfg.get(
+            "country_outputs"
+        )
+        or {
+            "HU": "public/hu.m3u",
+            "SK": "public/sk.m3u",
+        }
+    )
+
+    if not isinstance(
+        country_outputs,
+        dict,
+    ):
+        raise RuntimeError(
+            "country_outputs must be "
+            "a JSON object."
+        )
+
+    country_playlist_counts: dict[
+        str,
+        int,
+    ] = {}
+
+    for (
+        raw_language_code,
+        relative_path,
+    ) in country_outputs.items():
+        language_code = (
+            normalize_language_code(
+                str(
+                    raw_language_code
+                )
+            )
+            or str(
+                raw_language_code
+            ).strip().upper()
+        )
+
+        country_entries = [
+            entry
+            for entry
+            in published_entries
+            if str(
+                entry.get(
+                    "language_code"
+                )
+                or ""
+            ).upper()
+            == language_code
+        ]
+
+        country_path = (
+            ROOT
+            / str(
+                relative_path
+            )
+        )
+
+        country_name = (
+            country_name_for_language(
+                cfg,
+                language_code,
+            )
+        )
+
+        write_m3u_playlist(
+            country_path,
+            cfg,
+            country_entries,
+            generated,
+            (
+                f"Stable {country_name} "
+                "playlist"
+            ),
+        )
+
+        country_playlist_counts[
+            language_code
+        ] = len(
+            country_entries
+        )
 
     inventory_rows = [
         {
@@ -3516,6 +4349,7 @@ def main(strict: bool = False) -> None:
             "decision",
             "exclude_from_playlist",
             "in_playlist",
+            "in_stable_playlist",
             "tested_on",
             "reason",
             "notes",
@@ -3524,12 +4358,39 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 18,
+        "schema_version": 19,
         "generated_at": generated,
+        "playlists": {
+            "stable": {
+                "path": str(
+                    cfg.get(
+                        "output"
+                    )
+                    or "public/tv.m3u"
+                ),
+                "stream_urls": len(
+                    published_entries
+                ),
+            },
+            "test": {
+                "path": str(
+                    cfg.get(
+                        "test_output"
+                    )
+                    or "public/test.m3u"
+                ),
+                "stream_urls": len(
+                    test_entries
+                ),
+            },
+            "country_stream_urls": (
+                country_playlist_counts
+            ),
+        },		
         "summary": {
             "unique_channels": len(unique_channels),
             "unique_stream_urls": len(published_entries),
-            "excluded_by_manual_audit": len(excluded_rows),
+            "excluded_from_stable_playlist": len(excluded_rows),
             "added_channels_beyond_base": sum(
                 1 for e in published_entries if e["classification"] == "Added channel"
             ),
@@ -3634,10 +4495,41 @@ def main(strict: bool = False) -> None:
 
     print()
     print("Build complete.")
-    print(f"Unique channels:        {len(unique_channels)}")
-    print(f"Unique stream URLs:     {len(published_entries)}")
-    print(f"Excluded by audit:      {len(excluded_rows)}")
-    print(f"Duplicate URLs ignored: {len(duplicate_rows)}")
+    print(
+        f"Stable unique channels: {len(unique_channels)}"
+    )
+
+    print(
+        "Stable stream URLs:     "
+        f"{len(published_entries)}"
+    )
+
+    print(
+        "Testing stream URLs:    "
+        f"{len(test_entries)}"
+    )
+
+    print(
+        "Excluded from stable:   "
+        f"{len(excluded_rows)}"
+    )
+
+    print(
+        "Duplicate URLs ignored: "
+        f"{len(duplicate_rows)}"
+    )
+
+    for (
+        language_code,
+        stream_count,
+    ) in sorted(
+        country_playlist_counts.items()
+    ):
+        print(
+            f"Stable {language_code}:"
+            f"{' ' * max(1, 15 - len(language_code))}"
+            f"{stream_count} streams"
+        )
     print(
         "Manual audit:          "
         f"{sum(1 for e in audit_rows if e['decision'] == 'Verified')} verified, "
