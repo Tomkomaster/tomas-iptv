@@ -163,7 +163,7 @@ class ResearchPriorityTests(unittest.TestCase):
                 writer.writerows(rows)
 
             (public_dir / "index.html").write_text(
-                '<a href="audit.csv">Manual verification (CSV)</a>\n',
+                '    <a href="audit.csv">Manual verification (CSV)</a>\n',
                 encoding="utf-8",
             )
 
