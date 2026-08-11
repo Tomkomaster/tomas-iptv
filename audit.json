@@ -870,6 +870,9 @@
     },
     {
       "channel": "Nicktoons",
+      "stream_url": "http://88.212.15.19/live/nicktoons_hungary/index.m3u8",
+      "tvg_id": "Nicktoons.hu@SD",
+      "protocol": "HLS",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
