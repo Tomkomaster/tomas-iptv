@@ -1,4 +1,4 @@
-name: One-time validate Makó local EPG v2
+name: One-time final full local EPG validation
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - ".github/workflows/probe-second-epg-once.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -16,79 +16,99 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Apply Makó EPG patch
-        run: |
-          python3 patch_mako_epg_once.py
-          git diff --check
-
-      - name: Run tests and strict build
+      - name: Run tests and strict live build
         run: |
           python3 -m unittest discover -s tests -v
           python3 build.py --strict
 
-      - name: Live miniature overlay validation
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build full merged EPG
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .epg-builder
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "mediaklikk.hu,horizon.tv" \
+            --output .epg.channels.xml \
+            --report .epg-iptv-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections=3 \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
+            https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz \
+            -o .epg-external.download
+
+          python3 epg_merge.py \
+            --playlist public/tv.m3u \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external .epg-external.download \
+            --external-provider epgshare01.online \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days 7 \
+            --output public/guide.xml \
+            --report public/epg-coverage.json
+
+          python3 local_epg.py \
+            --playlist public/tv.m3u \
+            --guide public/guide.xml \
+            --coverage public/epg-coverage.json \
+            --report public/local-epg.json \
+            --reference-date 2026-08-11 \
+            --future-days 7
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+          python3 attention.py
+
+      - name: Require final coverage
         run: |
           python3 - <<'PY'
           import json
-          import tempfile
-          import xml.etree.ElementTree as ET
-          from datetime import date
           from pathlib import Path
 
-          from local_epg import overlay_local_epg
+          coverage = json.loads(Path('public/epg-coverage.json').read_text(encoding='utf-8'))
+          health = json.loads(Path('public/epg-health.json').read_text(encoding='utf-8'))
+          local = json.loads(Path('public/local-epg.json').read_text(encoding='utf-8'))
+          attention = json.loads(Path('public/attention.json').read_text(encoding='utf-8'))
 
-          with tempfile.TemporaryDirectory() as tmp:
-              root = Path(tmp)
-              playlist = root / 'tv.m3u'
-              guide = root / 'guide.xml'
-              coverage = root / 'coverage.json'
-              report = root / 'local.json'
+          print('LOCAL', json.dumps(local['summary'], ensure_ascii=False, indent=2))
+          for item in local['sources']:
+              print(item['tvg_id'], item['status'], item.get('programmes', 0), item.get('error', ''))
+          print('COVERAGE', coverage['matched_tvg_ids'], '/', coverage['playlist_tvg_ids'], coverage['mapping_coverage_percent'])
+          print('PROGRAMMES', health['channels_with_programmes'], '/', health['playlist_tvg_ids'], health['actual_programme_coverage_percent'])
+          print('ENTRIES', health['programme_entries'])
+          print('ATTENTION', json.dumps(attention['summary'], ensure_ascii=False, indent=2))
+          print('UNMATCHED', json.dumps(coverage['unmatched_tvg_ids'], ensure_ascii=False))
 
-              playlist.write_text(
-                  '#EXTM3U\n'
-                  '#EXTINF:-1 tvg-id="MakoiVarosiTelevizio.hu@SD",Makói Városi Televízió\n'
-                  'https://example.test/mako.m3u8\n',
-                  encoding='utf-8',
-              )
-              ET.ElementTree(ET.Element('tv')).write(guide, encoding='utf-8', xml_declaration=True)
-              coverage.write_text(json.dumps({
-                  'playlist_tvg_ids': 1,
-                  'matched_tvg_ids': 0,
-                  'matched': [],
-                  'unmatched_tvg_ids': ['MakoiVarosiTelevizio.hu@SD'],
-              }), encoding='utf-8')
-
-              result = overlay_local_epg(
-                  playlist_path=playlist,
-                  guide_path=guide,
-                  coverage_path=coverage,
-                  report_path=report,
-                  reference_date=date(2026, 8, 11),
-                  future_days=7,
-                  timeout=20,
-              )
-              data = json.loads(coverage.read_text(encoding='utf-8'))
-              tv = ET.parse(guide).getroot()
-              programmes = tv.findall('programme')
-              print('SUMMARY', json.dumps(result['summary'], ensure_ascii=False))
-              print('PROGRAMMES', len(programmes))
-              for node in programmes:
-                  title = node.findtext('title') or ''
-                  print(node.get('start'), title)
-              print('COVERAGE', data['matched_tvg_ids'], data['mapping_coverage_percent'])
-
-              if result['summary']['filled_channels'] != 1:
-                  raise SystemExit('Makó source did not fill the miniature guide.')
-              if len(programmes) < 5:
-                  raise SystemExit('Makó source returned too few programmes.')
-              if data['matched_tvg_ids'] != 1:
-                  raise SystemExit('Makó coverage was not updated.')
+          if coverage['matched_tvg_ids'] < 80:
+              raise SystemExit('Expected at least 80 mapped tvg-id values.')
+          if health['channels_with_programmes'] < 77:
+              raise SystemExit('Expected at least 77 channels with programmes.')
+          if len(coverage['unmatched_tvg_ids']) > 18:
+              raise SystemExit('Expected no more than 18 unmapped tvg-id values.')
+          if local['summary']['filled_channels'] < 14:
+              raise SystemExit('Too many local schedule sources failed in the live run.')
           PY
-
-      - name: Commit permanent Makó integration
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add local_epg.py tests/test_local_epg.py
-          git commit -m "Add Makó local EPG schedule"
-          git push
