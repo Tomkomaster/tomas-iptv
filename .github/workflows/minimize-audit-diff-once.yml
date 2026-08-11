@@ -30,8 +30,7 @@ jobs:
           from pathlib import Path
 
           path = Path("audit.json")
-          target_text = path.read_text(encoding="utf-8")
-          target_payload = json.loads(target_text)
+          target_payload = json.loads(path.read_text(encoding="utf-8"))
           target_items = target_payload.get("channels")
           if not isinstance(target_items, list):
               raise SystemExit("Target audit does not contain a channels list.")
@@ -46,13 +45,10 @@ jobs:
           if not isinstance(base_items, list):
               raise SystemExit("Main audit does not contain a channels list.")
 
-          marker = '"channels"'
-          marker_at = base_text.find(marker)
-          if marker_at < 0:
-              raise SystemExit("Could not locate channels property in main audit text.")
-          colon_at = base_text.find(":", marker_at + len(marker))
-          array_start = base_text.find("[", colon_at + 1)
-          if array_start < 0:
+          marker_at = base_text.find('"channels"')
+          colon_at = base_text.find(":", marker_at)
+          array_start = base_text.find("[", colon_at)
+          if marker_at < 0 or colon_at < 0 or array_start < 0:
               raise SystemExit("Could not locate channels array in main audit text.")
 
           decoder = json.JSONDecoder()
@@ -66,7 +62,6 @@ jobs:
               if base_text[pos] == "]":
                   array_end = pos
                   break
-
               parsed, end = decoder.raw_decode(base_text, pos)
               if not isinstance(parsed, dict):
                   raise SystemExit(f"Expected audit object at character {pos}.")
@@ -87,37 +82,76 @@ jobs:
                   f"Parsed {len(raw_items)} raw objects but JSON has {len(base_items)} rows."
               )
 
-          allowed_added = {"stream_url", "tvg_id", "protocol"}
+          allowed = ("stream_url", "tvg_id", "protocol")
+          allowed_set = set(allowed)
 
           def relation(base, target):
               if not isinstance(base, dict) or not isinstance(target, dict):
                   return None
-              if any(target.get(key) != value for key, value in base.items()):
+              if set(base) - set(target):
                   return None
-              extra = set(target) - set(base)
-              if not extra.issubset(allowed_added):
+              if (set(target) - set(base)) - allowed_set:
                   return None
-              return extra
 
-          def append_fields(raw, target, extra):
-              if not extra:
+              changes = {}
+              for key, value in base.items():
+                  target_value = target[key]
+                  if target_value == value:
+                      continue
+                  if key not in allowed_set or value not in ("", None):
+                      return None
+                  changes[key] = target_value
+
+              for key in set(target) - set(base):
+                  changes[key] = target[key]
+              return changes
+
+          def rewrite_raw(raw, base, target, changes):
+              if not changes:
                   return raw
+
+              lines = raw.splitlines()
+              for key in allowed:
+                  if key not in changes or key not in base:
+                      continue
+                  matches = [
+                      index for index, line in enumerate(lines)
+                      if line.lstrip().startswith(f'"{key}":')
+                  ]
+                  if len(matches) != 1:
+                      raise SystemExit(
+                          f"Expected exactly one existing {key} line; found {len(matches)}."
+                      )
+                  index = matches[0]
+                  old_line = lines[index]
+                  indent = old_line[: len(old_line) - len(old_line.lstrip())]
+                  comma = "," if old_line.rstrip().endswith(",") else ""
+                  lines[index] = (
+                      f'{indent}"{key}": '
+                      + json.dumps(target[key], ensure_ascii=False)
+                      + comma
+                  )
+
+              raw = "\n".join(lines)
+              additions = [
+                  key for key in allowed
+                  if key in changes and key not in base
+              ]
+              if not additions:
+                  return raw
+
               newline = raw.rfind("\n")
               if newline < 0 or raw[newline + 1 :].strip() != "}":
                   raise SystemExit("Unexpected audit object formatting; refusing rewrite.")
-              body = raw[:newline]
+              body = raw[:newline] + ","
               closing = raw[newline:]
-              body += ","
-              for key in ("stream_url", "tvg_id", "protocol"):
-                  if key in extra:
-                      encoded = json.dumps(target[key], ensure_ascii=False)
-                      body += f'\n      "{key}": {encoded}'
-                      remaining = [
-                          later for later in ("stream_url", "tvg_id", "protocol")
-                          if later in extra and later != key
-                      ]
-                      if remaining and key != [k for k in ("stream_url", "tvg_id", "protocol") if k in extra][-1]:
-                          body += ","
+              for position, key in enumerate(additions):
+                  comma = "," if position < len(additions) - 1 else ""
+                  body += (
+                      f'\n      "{key}": '
+                      + json.dumps(target[key], ensure_ascii=False)
+                      + comma
+                  )
               return body + closing
 
           rebuilt_raw = []
@@ -126,27 +160,29 @@ jobs:
           removed = 0
           unchanged = 0
 
-          for base_index, (base_item, raw) in enumerate(zip(base_items, raw_items), start=1):
+          for base_index, (base_item, raw) in enumerate(
+              zip(base_items, raw_items), start=1
+          ):
+              changes = None
               if target_index < len(target_items):
-                  extra = relation(base_item, target_items[target_index])
-              else:
-                  extra = None
+                  changes = relation(base_item, target_items[target_index])
 
-              if extra is not None:
-                  if extra:
-                      rebuilt_raw.append(
-                          append_fields(raw, target_items[target_index], extra)
+              if changes is not None:
+                  rebuilt_raw.append(
+                      rewrite_raw(
+                          raw,
+                          base_item,
+                          target_items[target_index],
+                          changes,
                       )
+                  )
+                  if changes:
                       migrated += 1
                   else:
-                      rebuilt_raw.append(raw)
                       unchanged += 1
                   target_index += 1
                   continue
 
-              # The migration is allowed to remove only a superseded legacy row.
-              # If the current target row does not correspond to this base row,
-              # omit the base row and let the next base row align to the same target.
               removed += 1
               print(
                   "TEXT-PRESERVING REMOVE: "
