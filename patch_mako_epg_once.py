@@ -25,13 +25,13 @@ anchor = '''def parse_vasarhely(lines: list[str], reference_date: date) -> list[
 addition = anchor + '''def parse_mako(lines: list[str], reference_date: date) -> list[Programme]:
     def marker(value: date) -> str:
         return folded(
-            f"{WEEKDAYS[value.weekday()]} {value.strftime('%m.%d')}."
-        )
+            f"{WEEKDAYS[value.weekday()]} {value.strftime('%m.%d')}"
+        ).rstrip(".")
 
     section = slice_section(
         lines,
-        lambda value: folded(value) == marker(reference_date),
-        lambda value: folded(value) == marker(reference_date + timedelta(days=1)),
+        lambda value: folded(value).rstrip(".") == marker(reference_date),
+        lambda value: folded(value).rstrip(".") == marker(reference_date + timedelta(days=1)),
     )
 
     normalized: list[str] = []
@@ -96,7 +96,7 @@ test_case = '''
             [
                 "Hétfő 08.10.",
                 "18.00 Monday News",
-                "Kedd 08.11.",
+                "Kedd 08.11",
                 "18.00 Híradó – helyi aktuális hírek",
                 "18.15 Időjárás előrejelzés",
                 "18.19 Ahogy elődeink arattak Makón",
