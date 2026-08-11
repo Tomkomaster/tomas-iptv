@@ -36,13 +36,17 @@ jobs:
       - name: Rebuild after conservative migration
         run: python3 build.py --strict
 
-      - name: Apply remaining builder-confirmed one-feed matches
+      - name: Resolve remaining builder-confirmed legacy rows
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import json
           import re
+          import unicodedata
+          from datetime import date
           from pathlib import Path
+
+          from migrate_audit import canonical_stream_url
 
           audit_path = Path("audit.json")
           report_path = Path("public/report.json")
@@ -57,63 +61,161 @@ jobs:
           ambiguous = audit_report.get("ambiguous_legacy_audits") or []
           if ambiguous:
               raise SystemExit(
-                  "Refusing builder-confirmed migration because ambiguous legacy audits exist."
+                  "Refusing cleanup because ambiguous legacy audits exist."
               )
 
-          pattern = re.compile(
+          warning_pattern = re.compile(
               r"^audit item #(?P<index>\d+) \((?P<channel>.*)\): "
               r"legacy channel-level audit still matches one current feed "
               r"\((?P<url>.+)\)\. Add stream_url when this row is next edited\.$"
           )
+          quality_suffix = re.compile(
+              r"\s*[\[(](?:2160p|1440p|1080p|720p|576p|540p|480p|440p|432p|406p|400p|396p|360p|240p|4k|uhd|fhd|hd|sd)[\])]\s*$",
+              re.IGNORECASE,
+          )
 
-          applied = 0
+          def normalized_name(value: str) -> str:
+              value = " ".join((value or "").split()).strip()
+              old = None
+              while value and value != old:
+                  old = value
+                  value = quality_suffix.sub("", value).strip()
+              value = unicodedata.normalize("NFKD", value).casefold()
+              value = "".join(ch for ch in value if not unicodedata.combining(ch))
+              value = re.sub(r"[^\w]+", " ", value, flags=re.UNICODE)
+              return " ".join(value.split())
+
+          def parsed_date(value: str) -> date | None:
+              text = str(value or "").strip()
+              if not text:
+                  return None
+              try:
+                  return date.fromisoformat(text[:10])
+              except ValueError:
+                  return None
+
+          removals: list[int] = []
+          direct_additions: list[tuple[int, str]] = []
+
           for warning in audit_report.get("warnings") or []:
               text = str(warning)
-              match = pattern.match(text)
+              match = warning_pattern.match(text)
               if not match:
                   continue
 
-              index = int(match.group("index")) - 1
-              channel = match.group("channel").strip()
-              url = match.group("url").strip()
+              legacy_index = int(match.group("index")) - 1
+              warning_channel = match.group("channel").strip()
+              warning_url = match.group("url").strip()
 
-              if index < 0 or index >= len(items):
+              if legacy_index < 0 or legacy_index >= len(items):
                   raise SystemExit(f"Invalid audit index in warning: {text}")
 
-              item = items[index]
-              if not isinstance(item, dict):
-                  raise SystemExit(f"Audit item #{index + 1} is not an object")
+              legacy = items[legacy_index]
+              if not isinstance(legacy, dict):
+                  raise SystemExit(
+                      f"Audit item #{legacy_index + 1} is not an object."
+                  )
+              if str(legacy.get("stream_url") or "").strip():
+                  raise SystemExit(
+                      f"Audit item #{legacy_index + 1} unexpectedly already has stream_url."
+                  )
 
-              actual_channel = str(
-                  item.get("channel") or item.get("channel_name") or ""
+              legacy_channel = str(
+                  legacy.get("channel") or legacy.get("channel_name") or ""
               ).strip()
-              if actual_channel != channel:
+              if legacy_channel != warning_channel:
                   raise SystemExit(
-                      f"Channel mismatch for audit item #{index + 1}: "
-                      f"warning={channel!r}, audit={actual_channel!r}"
+                      f"Warning/audit channel mismatch at item #{legacy_index + 1}: "
+                      f"{warning_channel!r} != {legacy_channel!r}"
                   )
 
-              if str(item.get("stream_url") or "").strip():
+              if not warning_url.startswith(("http://", "https://")):
                   raise SystemExit(
-                      f"Audit item #{index + 1} already has stream_url; refusing overwrite."
+                      f"Unexpected builder-confirmed URL for {legacy_channel}: {warning_url}"
                   )
 
-              if not url.startswith(("http://", "https://")):
+              canonical = canonical_stream_url(warning_url)
+              exact_matches = []
+              for exact_index, candidate in enumerate(items):
+                  if exact_index == legacy_index or not isinstance(candidate, dict):
+                      continue
+                  candidate_url = str(candidate.get("stream_url") or "").strip()
+                  if candidate_url and canonical_stream_url(candidate_url) == canonical:
+                      exact_matches.append((exact_index, candidate))
+
+              if not exact_matches:
+                  print(
+                      f"BUILDER-CONFIRMED MIGRATE: {legacy_channel} -> {warning_url}"
+                  )
+                  direct_additions.append((legacy_index, warning_url))
+                  continue
+
+              if len(exact_matches) != 1:
                   raise SystemExit(
-                      f"Unexpected stream URL in builder warning for {channel}: {url}"
+                      f"Refusing {legacy_channel}: builder says one current feed, "
+                      f"but {len(exact_matches)} exact audit rows already use that URL."
                   )
 
-              print(f"BUILDER-CONFIRMED MIGRATE: {channel} -> {url}")
-              item["stream_url"] = url
-              applied += 1
+              exact_index, exact = exact_matches[0]
+              exact_channel = str(
+                  exact.get("channel") or exact.get("channel_name") or ""
+              ).strip()
 
-          print(f"Builder-confirmed remaining migrations: {applied}")
+              if normalized_name(legacy_channel) != normalized_name(exact_channel):
+                  raise SystemExit(
+                      f"Refusing duplicate cleanup for {legacy_channel}: exact URL row "
+                      f"belongs to differently normalized channel {exact_channel!r}."
+                  )
 
-          if applied:
+              legacy_language = str(legacy.get("language_code") or "").strip().upper()
+              exact_language = str(exact.get("language_code") or "").strip().upper()
+              if legacy_language and exact_language and legacy_language != exact_language:
+                  raise SystemExit(
+                      f"Refusing duplicate cleanup for {legacy_channel}: language scope "
+                      f"differs ({legacy_language} vs {exact_language})."
+                  )
+
+              legacy_date = parsed_date(legacy.get("tested_on"))
+              exact_date = parsed_date(exact.get("tested_on"))
+              if legacy_date and exact_date and exact_date < legacy_date:
+                  raise SystemExit(
+                      f"Refusing duplicate cleanup for {legacy_channel}: exact URL row "
+                      f"is older ({exact_date}) than legacy row ({legacy_date})."
+                  )
+
+              for required in ("vlc", "samsung", "decision", "tested_on"):
+                  if not str(exact.get(required) or "").strip():
+                      raise SystemExit(
+                          f"Refusing duplicate cleanup for {legacy_channel}: exact URL row "
+                          f"#{exact_index + 1} lacks {required}."
+                      )
+
+              print(
+                  "REMOVE SUPERSEDED LEGACY: "
+                  f"#{legacy_index + 1} {legacy_channel} "
+                  f"({legacy.get('tested_on')}) -> exact row #{exact_index + 1} "
+                  f"{exact_channel} ({exact.get('tested_on')}); URL={warning_url}"
+              )
+              removals.append(legacy_index)
+
+          if not removals and not direct_additions:
+              print("No remaining builder-confirmed legacy rows required cleanup.")
+          else:
+              for index, url in direct_additions:
+                  items[index]["stream_url"] = url
+
+              for index in sorted(set(removals), reverse=True):
+                  del items[index]
+
               audit_path.write_text(
                   json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
                   encoding="utf-8",
               )
+
+          print(
+              f"Remaining cleanup: {len(direct_additions)} URL migrations, "
+              f"{len(removals)} superseded legacy rows removed."
+          )
           PY
 
       - name: Rebuild and verify zero legacy warnings
