@@ -7,6 +7,8 @@ on:
     paths:
       - "build.py"
       - "epg_prepare.py"
+      - "epg_health.py"
+      - "migrate_audit.py"
       - "config.json"
       - "audit.json"
       - "extras/**"
@@ -118,10 +120,13 @@ jobs:
 
           cd .epg-builder
 
+          rm -f "$GITHUB_WORKSPACE/.epg-grab.log"
+
           npm run grab --- \
             --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
             --output="$GITHUB_WORKSPACE/public/guide.xml" \
-            --maxConnections="$EPG_MAX_CONNECTIONS"
+            --maxConnections="$EPG_MAX_CONNECTIONS" \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
 
       - name: Validate XMLTV EPG
         run: |
@@ -383,6 +388,31 @@ jobs:
                       f"  - {tvg_id}"
                   )
           PY
+
+      - name: Analyze actual EPG health
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          EPG_ENABLED="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print("true" if (cfg.get("epg") or {}).get("enabled") else "false")
+          '
+          )"
+
+          if [ "$EPG_ENABLED" != "true" ]; then
+            echo "EPG disabled; health analysis skipped."
+            exit 0
+          fi
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
