@@ -9,6 +9,7 @@ on:
       - "build.py"
       - "epg_prepare.py"
       - "epg_merge.py"
+      - "epg_aliases.json"
       - "epg_health.py"
       - "healthcheck.py"
       - "migrate_audit.py"
