@@ -9,11 +9,6 @@ text = text.replace(
     "from pathlib import Path\nfrom time import sleep\nfrom urllib.error import HTTPError, URLError\n",
     1,
 )
-text = text.replace(
-    '    value = re.sub(r"\\s+", " ", value).strip(" .\\t\\r\\n")\n',
-    '    value = re.sub(r"\\s+", " ", value).strip(" .-\\t\\r\\n")\n',
-    1,
-)
 
 old = '''def fetch_lines(url: str, timeout: float = 15.0) -> list[str]:
     request = Request(
@@ -93,10 +88,10 @@ old = '''def parse_eger(lines: list[str], reference_date: date) -> list[Programm
     return parse_entries(section, reference_date, max_entries=50)
 '''
 new = '''def parse_eger(lines: list[str], reference_date: date) -> list[Programme]:
-    variants = hu_long_date_variants(reference_date)
+    variants = {value.rstrip(".") for value in hu_long_date_variants(reference_date)}
     section = best_section(
         lines,
-        lambda value: folded(value) in variants,
+        lambda value: folded(value).rstrip(".") in variants,
         looks_like_hu_dated_heading,
     )
     return parse_entries(section, reference_date, max_entries=50)
@@ -119,60 +114,17 @@ old = '''def parse_ozd(lines: list[str], reference_date: date) -> list[Programme
     return parse_entries(section, reference_date, max_entries=30)
 '''
 new = '''def parse_ozd(lines: list[str], reference_date: date) -> list[Programme]:
-    needle = folded(reference_date.strftime("%Y. %m. %d."))
-    section = best_section(
-        lines,
-        lambda value: folded(value) == needle,
-        lambda value: bool(NUMERIC_DATE_RE.match(value.replace(" ", ""))),
-    )
-    return parse_entries(section, reference_date, max_entries=30)
-
-
-def parse_szolnok(lines: list[str], reference_date: date) -> list[Programme]:
-    needle = folded(reference_date.strftime("%Y.%m.%d"))
+    needle = folded(reference_date.strftime("%Y. %m. %d.")).rstrip(".")
     section = best_section(
         lines,
         lambda value: folded(value).rstrip(".") == needle,
-        lambda value: bool(
-            re.fullmatch(
-                r"20\\d{2}[.\\-]\\d{1,2}[.\\-]\\d{1,2}\\.?",
-                value.replace(" ", ""),
-            )
-        ),
+        lambda value: bool(NUMERIC_DATE_RE.match(value.replace(" ", ""))),
     )
-    return parse_entries(section, reference_date, max_entries=70)
+    return parse_entries(section, reference_date, max_entries=30)
 '''
 if old not in text:
     raise SystemExit("parse_ozd block not found")
 text = text.replace(old, new, 1)
-
-old = '    "ozd": parse_ozd,\n    "vasarhely": parse_vasarhely,\n'
-new = '    "ozd": parse_ozd,\n    "szolnok": parse_szolnok,\n    "vasarhely": parse_vasarhely,\n'
-if old not in text:
-    raise SystemExit("parser registry anchor not found")
-text = text.replace(old, new, 1)
-
-anchor = '''        Source(
-            "TVKeszthely.hu@SD",
-            "Keszthely TV",
-            "tvkeszthely.hu",
-            "keszthely",
-            "https://tvkeszthely.hu/musor",
-            8,
-        ),
-'''
-insert = anchor + '''        Source(
-            "SzolnokTV.hu@SD",
-            "Szolnok TV",
-            "szolnoktv.hu",
-            "szolnok",
-            "https://www.szolnoktv.hu/musorujsag",
-            8,
-        ),
-'''
-if anchor not in text:
-    raise SystemExit("Keszthely source anchor not found")
-text = text.replace(anchor, insert, 1)
 p.write_text(text, encoding="utf-8")
 
 
@@ -180,20 +132,20 @@ t = Path("tests/test_local_epg.py")
 tests = t.read_text(encoding="utf-8")
 tests = tests.replace(
     "    parse_cegled,\n    parse_entries,\n    parse_tvmustra,\n",
-    "    parse_cegled,\n    parse_eger,\n    parse_entries,\n    parse_ozd,\n    parse_szolnok,\n    parse_tvmustra,\n",
+    "    parse_cegled,\n    parse_eger,\n    parse_entries,\n    parse_ozd,\n    parse_tvmustra,\n",
     1,
 )
 insert_tests = '''
-    def test_dated_parsers_choose_schedule_block_not_navigation_tab(self):
+    def test_dated_parsers_choose_real_schedule_block(self):
         eger = parse_eger(
             [
-                "Kedd: 2026. augusztus 11.",
-                "Szerda: 2026. augusztus 12.",
-                "Kedd: 2026. augusztus 11.",
+                "Kedd: 2026. augusztus 11",
+                "Szerda: 2026. augusztus 12",
+                "Kedd: 2026. augusztus 11",
                 "8:00 Tv Eger szignál",
                 "8:01 HírAdás Plusz",
                 "18:00 Híradó",
-                "Szerda: 2026. augusztus 12.",
+                "Szerda: 2026. augusztus 12",
             ],
             date(2026, 8, 11),
         )
@@ -201,36 +153,17 @@ insert_tests = '''
 
         ozd = parse_ozd(
             [
-                "2026. 08. 11.",
-                "2026. 08. 12.",
-                "2026. 08. 11.",
+                "2026. 08. 11",
+                "2026. 08. 12",
+                "2026. 08. 11",
                 "18:25 A szomszéd vár ism.",
                 "19:00 Ózdi Krónika",
                 "19:30 Forgószínpad",
-                "2026. 08. 12.",
+                "2026. 08. 12",
             ],
             date(2026, 8, 11),
         )
         self.assertEqual(len(ozd), 3)
-
-    def test_szolnok_date_section_parses_dash_titles(self):
-        programmes = parse_szolnok(
-            [
-                "2026.08.10",
-                "18:00 - Old",
-                "2026.08.11",
-                "05:50 - Napi üzenet",
-                "06:00 - Hírek+",
-                "19:00 - Aktuális",
-                "2026.08.12",
-                "05:50 - Tomorrow",
-            ],
-            date(2026, 8, 11),
-        )
-        self.assertEqual(
-            [item.title for item in programmes],
-            ["Napi üzenet", "Hírek+", "Aktuális"],
-        )
 '''
 marker = '\n\nif __name__ == "__main__":\n'
 if marker not in tests:
@@ -238,4 +171,4 @@ if marker not in tests:
 tests = tests.replace(marker, insert_tests + marker, 1)
 t.write_text(tests, encoding="utf-8")
 
-print("Patched local EPG retries, dated section selection, Szolnok source, and tests.")
+print("Patched local EPG retries and robust dated-section selection.")
