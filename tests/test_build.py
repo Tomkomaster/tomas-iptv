@@ -1413,7 +1413,7 @@ class AuditTests(unittest.TestCase):
             finally:
                 build.ROOT = old_root
 
-            playlist = (root / "public" / "tv.m3u").read_text(encoding="utf-8")
+            playlist = (root / "public" / "test.m3u").read_text(encoding="utf-8")
             self.assertEqual(playlist.count(url), 1)
 
             with (root / "public" / "duplicates.csv").open(
@@ -1431,12 +1431,22 @@ class AuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-            (
-                root / "audit.json"
-            ).write_text(
-                '{"channels": []}\n',
-                encoding="utf-8",
-            )
+(
+    root / "audit.json"
+).write_text(
+    json.dumps({
+        "channels": [
+            {
+                "channel": "Demo News",
+                "stream_url": url,
+                "vlc": "works",
+                "samsung": "works",
+                "decision": "auto",
+            }
+        ]
+    }),
+    encoding="utf-8",
+)
 
             (
                 root / "source.m3u"
@@ -1508,10 +1518,10 @@ class AuditTests(unittest.TestCase):
             )
 
             # Verification status remains available in the channel name.
-            self.assertIn(
-                "[HU ?] Demo News",
-                playlist,
-            )
+self.assertIn(
+    "[HU OK] Demo News",
+    playlist,
+)
 
             with (
                 root
@@ -1552,10 +1562,10 @@ class AuditTests(unittest.TestCase):
                 "Hungary | News",
             )
 
-            self.assertEqual(
-                row["test_status"],
-                "Needs review",
-            )
+self.assertEqual(
+    row["test_status"],
+    "Verified",
+)
 
     def test_build_uses_general_when_group_is_missing(self):
         url = "https://example.test/general.m3u8"
@@ -1563,12 +1573,22 @@ class AuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-            (
-                root / "audit.json"
-            ).write_text(
-                '{"channels": []}\n',
-                encoding="utf-8",
-            )
+(
+    root / "audit.json"
+).write_text(
+    json.dumps({
+        "channels": [
+            {
+                "channel": "Demo TV",
+                "stream_url": url,
+                "vlc": "works",
+                "samsung": "works",
+                "decision": "auto",
+            }
+        ]
+    }),
+    encoding="utf-8",
+)
 
             (
                 root / "source.m3u"
@@ -1686,7 +1706,7 @@ class AuditTests(unittest.TestCase):
                 build.ROOT = old_root
 
             playlist = (
-                root / "public" / "tv.m3u"
+                root / "public" / "test.m3u"
             ).read_text(encoding="utf-8")
 
             # The first/original source URL is preserved.
@@ -1713,12 +1733,36 @@ class AuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-            (
-                root / "audit.json"
-            ).write_text(
-                '{"channels": []}\n',
-                encoding="utf-8",
-            )
+(
+    root / "audit.json"
+).write_text(
+    json.dumps({
+        "channels": [
+            {
+                "channel": "Hungarian Base TV",
+                "stream_url": "https://example.test/hu.m3u8",
+                "vlc": "works",
+                "samsung": "works",
+                "decision": "auto",
+            },
+            {
+                "channel": "Slovak Base TV",
+                "stream_url": "https://example.test/sk.m3u8",
+                "vlc": "works",
+                "samsung": "works",
+                "decision": "auto",
+            },
+            {
+                "channel": "Hungarian Added TV",
+                "stream_url": "https://example.test/hu-extra.m3u8",
+                "vlc": "works",
+                "samsung": "works",
+                "decision": "auto",
+            },
+        ]
+    }),
+    encoding="utf-8",
+)
 
             (
                 root / "hu.m3u"
@@ -1920,12 +1964,29 @@ class AuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
 
-            (
-                root / "audit.json"
-            ).write_text(
-                '{"channels": []}\n',
-                encoding="utf-8",
-            )
+(
+    root / "audit.json"
+).write_text(
+    json.dumps({
+        "channels": [
+            {
+                "channel": "HU TV",
+                "stream_url": "https://example.test/hu.m3u8",
+                "vlc": "works",
+                "samsung": "works",
+                "decision": "auto",
+            },
+            {
+                "channel": "SK TV",
+                "stream_url": "https://example.test/sk.m3u8",
+                "vlc": "works",
+                "samsung": "works",
+                "decision": "auto",
+            },
+        ]
+    }),
+    encoding="utf-8",
+)
 
             (
                 root / "hu.m3u"
