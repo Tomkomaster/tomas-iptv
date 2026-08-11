@@ -579,3 +579,22 @@ https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8
 # Romanian public regional TV; dedicated Hungarian-language programme
 #EXTINF:-1 tvg-id="TVRTimisoara.ro@SD" tvg-name="TVR Timișoara",TVR Timișoara [RO/HU]
 https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8
+
+# Tolnatáj TV — active Hungarian regional television.
+# Current official player uses this ConnectMedia origin with an IP token.
+# Testing the same origin without the token to see whether it is required.
+#EXTINF:-1 tvg-name="Tolnatáj TV",Tolnatáj TV [ConnectMedia tokenless test]
+https://c801-node63-cdn.connectmedia.hu/4019/99dc038ad8fe08c17cdc89a85cb1242d/6a7a282c/index.m3u8
+
+# Pannon TV — Pécs / Baranya regional television.
+# NOT the Serbian/Vojvodina Pannon RTV already present in the project.
+# Current official player uses this ConnectMedia origin with an IP token.
+# Testing the same origin without the token to see whether it is required.
+#EXTINF:-1 tvg-name="Pannon TV Pécs",Pannon TV Pécs [ConnectMedia tokenless test]
+https://c202-node62-cdn.connectmedia.hu/4018/34b133143c3e5eeb44f0b29659624677/6a7a2815/index.m3u8
+
+# KisDuna TV Dunaharaszti — active local television.
+# This is an older publicly exposed Flynet HLS origin.
+# Station and Flynet are still active, but the old HLS address itself needs testing.
+#EXTINF:-1 tvg-name="KisDuna TV Dunaharaszti",KisDuna TV Dunaharaszti [Legacy Flynet test]
+https://nettv.flynet.hu/live/kisdunatv.m3u8
