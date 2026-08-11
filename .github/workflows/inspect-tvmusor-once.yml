@@ -16,58 +16,30 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Inspect current browser request code
+      - name: Trace tvmusor request construction
         shell: bash
         run: |
           set -euo pipefail
           UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
 
-          curl -fsS \
-            'https://tvmusor.borsonline.hu/most/' \
-            -A "$UA" \
-            -o /tmp/tvmusor-page.html
-
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
-          html = Path('/tmp/tvmusor-page.html').read_text(encoding='utf-8', errors='replace')
-          scripts = re.findall(r'<script[^>]+src=["\']([^"\']+)', html, flags=re.I)
-          print('script sources:')
-          for src in scripts:
-              print(src)
-          Path('/tmp/script-urls.txt').write_text('\n'.join(scripts), encoding='utf-8')
-          PY
-
-          : > /tmp/all-js.txt
-          while IFS= read -r src; do
-            [ -n "$src" ] || continue
-            case "$src" in
-              http://*|https://*) url="$src" ;;
-              //*) url="https:$src" ;;
-              /*) url="https://tvmusor.borsonline.hu$src" ;;
-              *) url="https://tvmusor.borsonline.hu/$src" ;;
-            esac
-            echo "FETCH $url"
-            curl -fsS -A "$UA" "$url" >> /tmp/all-js.txt || true
-            printf '\n' >> /tmp/all-js.txt
-          done < /tmp/script-urls.txt
+          curl -fsS 'https://tvmusor.borsonline.hu/most/' -A "$UA" -o /tmp/page.html
+          curl -fsS 'https://tvmusor.borsonline.hu/js/tv.js?v=1786090144' -A "$UA" -o /tmp/tv.js
+          curl -fsS 'https://tvmusor.borsonline.hu/js/events.js?v=1786090144' -A "$UA" -o /tmp/events.js
 
           python3 - <<'PY'
           from pathlib import Path
-          text = Path('/tmp/all-js.txt').read_text(encoding='utf-8', errors='replace')
-          for needle in ('get-events', 'loadedBlocks', 'blocks:', 'blocks =', 'blocks='):
-              print(f'--- {needle} ---')
-              start = 0
-              found = 0
-              while found < 10:
-                  pos = text.find(needle, start)
+          text = Path('/tmp/tv.js').read_text(encoding='utf-8', errors='replace') + '\n' + Path('/tmp/events.js').read_text(encoding='utf-8', errors='replace')
+          for needle in ('const ajax', 'function ajax', 'ajax =', 'JSON.stringify', 'requiredBlocks.push', "+'|'", ' + "|" + ', 'getDayByTime'):
+              print(f'=== {needle} ===')
+              pos = 0
+              hits = 0
+              while hits < 12:
+                  pos = text.find(needle, pos)
                   if pos < 0:
                       break
-                  left = max(0, pos - 500)
-                  right = min(len(text), pos + 1000)
-                  print(text[left:right].replace('\n', ' ')[:1500])
+                  print(text[max(0,pos-900):min(len(text),pos+1800)].replace('\n',' ')[:2700])
                   print()
-                  start = pos + len(needle)
-                  found += 1
-              print('matches:', found)
+                  pos += len(needle)
+                  hits += 1
+              print('hits:', hits)
           PY
