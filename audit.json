@@ -13,7 +13,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/16tv.sdp/playlist.m3u8",
+      "tvg_id": "16tvBudapest.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "AMC Europe Hungary",
@@ -28,7 +31,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/amc_hun/index.m3u8",
+      "tvg_id": "AMCEurope.uk@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "Apostol TV",
@@ -43,7 +49,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://live.apostoltv.hu/live/playlist.m3u8",
+      "tvg_id": "ApostolTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "AXN CEE",
@@ -58,7 +67,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/axn_hun/index.m3u8",
+      "tvg_id": "AXNCEE.es@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "AXN White",
@@ -73,7 +85,10 @@
       "tested_on": "2026-08-09",
       "language_code": "DE",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8",
+      "tvg_id": "AXNWhite.us@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Bajai TV",
@@ -88,7 +103,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay01/livestream002.sdp/playlist.m3u8",
+      "tvg_id": "BajaiTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Balaton TV (432p)",
@@ -103,7 +121,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://stream.iptvservice.eu/hls/balatontv.m3u8",
+      "tvg_id": "BalatonTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Budapest Európa Televízió",
@@ -183,7 +204,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/dikh/index.m3u8",
+      "tvg_id": "DikhTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "DTV",
@@ -198,7 +222,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://cloudfront44.lexanetwork.com:1732/hlsrelay003/hls/livestream.sdp.m3u8",
+      "tvg_id": "DTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Duna",
@@ -213,7 +240,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/duna_hun/index.m3u8",
+      "tvg_id": "Duna.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Euronews Hungarian",
@@ -244,7 +274,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://dash2.antik.sk/live/ewtn_bonum/index.m3u8",
+      "tvg_id": "EWTNBonumTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Fehérvár TV",
@@ -278,11 +311,14 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_fem3_atktv/playlist.m3u8",
+      "tvg_id": "FEM3.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Film+",
-	  "stream_url": "http://88.212.15.19/live/film_plus_hun_atk/index.m3u8",
+      "stream_url": "http://88.212.15.19/live/film_plus_hun_atk/index.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -309,7 +345,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/film_cafe/index.m3u8",
+      "tvg_id": "FilmCafe.hu@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "Film4",
@@ -324,7 +363,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/film4_hun/index.m3u8",
+      "tvg_id": "Film4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ Comedy Magyar & Romania",
@@ -339,7 +381,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_family_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "FILMBOXPlusComedy.pl@MagyarRomania",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ Emotion Hungary",
@@ -354,7 +399,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_extra_hd_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "FILMBOXPlusEmotion.pl@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ Hits Hungary",
@@ -369,7 +417,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/fb_premium_hungary/index.m3u8",
+      "tvg_id": "FILMBOXPlusHits.pl@Hungary",
+      "protocol": "HLS"
     },
     {
       "channel": "FILMBOX+ One Magyar",
@@ -384,7 +435,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_plus_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "FILMBOXPlusOne.pl@Magyar",
+      "protocol": "HLS"
     },
     {
       "channel": "Fix TV",
@@ -418,7 +472,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://budapest-cache-1.antik.sk/live/test_galaxy_4_atk_1200/playlist.m3u8",
+      "tvg_id": "Galaxy4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Gran TV",
@@ -486,7 +543,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/history_hun/index.m3u8",
+      "tvg_id": "History.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Hévízi TV",
@@ -501,7 +561,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay03/livestream003.sdp/playlist.m3u8",
+      "tvg_id": "HeviziTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Izaura TV",
@@ -516,7 +579,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/izaura/index.m3u8",
+      "tvg_id": "IzauraTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Jocky TV",
@@ -531,7 +597,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/jocky/index.m3u8",
+      "tvg_id": "JockyTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Jászsági Térségi TV (440p)",
@@ -561,7 +630,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/kanizsavtv.sdp/playlist.m3u8",
+      "tvg_id": "KanizsaTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Karcag TV",
@@ -576,7 +648,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay03/livestream003.sdp/playlist.m3u8",
+      "tvg_id": "KarcagTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Kiskőrös TV",
@@ -610,7 +685,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/kolyokklub_atk/index.m3u8",
+      "tvg_id": "Kolyokklub.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Komáromi Televízió (400p)",
@@ -640,7 +718,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://193.225.32.62:8890/live.m3u8",
+      "tvg_id": "LiceumTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Life TV",
@@ -655,7 +736,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/lifetv/index.m3u8",
+      "tvg_id": "LifeTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "M1 HD",
@@ -670,7 +754,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_m_1_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "M1.hu@HD",
+      "protocol": "HLS"
     },
     {
       "channel": "M2",
@@ -685,7 +772,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/m2_hun/index.m3u8",
+      "tvg_id": "M2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "M5",
@@ -700,7 +790,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_m_5_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "M5.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Magyar Mozi TV",
@@ -715,11 +808,14 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/mozi/index.m3u8",
+      "tvg_id": "MagyarMoziTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Minimax",
-	  "stream_url": "http://88.212.15.19/live/minimax_hun/index.m3u8",
+      "stream_url": "http://88.212.15.19/live/minimax_hun/index.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -746,7 +842,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/mozi_plusz/index.m3u8",
+      "tvg_id": "MoziPlus.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Moziklub",
@@ -761,7 +860,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/moziklub_atk/index.m3u8",
+      "tvg_id": "Moziklub.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Moziverzum",
@@ -776,7 +878,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/moziverzum/index.m3u8",
+      "tvg_id": "Moziverzum.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Muzsika TV",
@@ -791,7 +896,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_muzsika_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "MuzsikaTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Móra-Net TV",
@@ -806,7 +914,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://stream.moranettv.hu/live/index.m3u8",
+      "tvg_id": "MoraNetTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "National Geographic",
@@ -821,7 +932,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/ngc_hun/index.m3u8",
+      "tvg_id": "NationalGeographic.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "National Geographic Wild",
@@ -836,7 +950,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/ngw_hun/index.m3u8",
+      "tvg_id": "NationalGeographicWild.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Nick Jr.",
@@ -851,7 +968,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/nick_junior_hun/index.m3u8",
+      "tvg_id": "NickJr.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Nickelodeon",
@@ -866,7 +986,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_nickelodeon_hu_1200_atk/playlist.m3u8",
+      "tvg_id": "Nickelodeon.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Nicktoons",
@@ -881,7 +1004,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/nicktoons_hungary/index.m3u8",
+      "tvg_id": "Nicktoons.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Oroszlányi Városi Televízió",
@@ -896,7 +1022,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast002.sdp/playlist.m3u8",
+      "tvg_id": "OroszlanyiVarosiTelevizio.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Ozone TV",
@@ -911,7 +1040,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/ozone/index.m3u8",
+      "tvg_id": "OzoneTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "PilisTV",
@@ -945,7 +1077,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/prime/index.m3u8",
+      "tvg_id": "Prime.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTG int.",
@@ -960,7 +1095,10 @@
       "tested_on": "2026-08-09",
       "language_code": "RU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://213.91.179.28:8000/play/a0bw",
+      "tvg_id": "RTGint.ru@SD",
+      "protocol": "HTTP"
     },
     {
       "channel": "RTL",
@@ -975,7 +1113,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_rtl_klub_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTL.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Gold",
@@ -990,7 +1131,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://budapest-cache-1.antik.sk/live/test_film_plus_2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTLGold.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Harom",
@@ -1005,7 +1149,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_rtl_plus_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTLHarom.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Ketto",
@@ -1020,7 +1167,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_rtl2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "RTLKetto.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "RTL Otthon",
@@ -1035,7 +1185,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/rtl_otthon_atk/index.m3u8",
+      "tvg_id": "RTLOtthon.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Régió TV (406p)",
@@ -1050,7 +1203,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://tv.geniusnet.sk:8081/regiotv/pl.m3u8",
+      "tvg_id": "RegioTV.sk@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "SIXO TV",
@@ -1065,7 +1221,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/HDE038.sdp/playlist.m3u8",
+      "tvg_id": "SIXOTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Slager TV",
@@ -1080,7 +1239,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_slager_tv_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "SlagerTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Soltvadkerti Televízió",
@@ -1110,7 +1272,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_sorozat_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "SorozatPlus.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Sorozatklub",
@@ -1125,11 +1290,14 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/sorozatklub_atk/index.m3u8",
+      "tvg_id": "Sorozatklub.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Spektrum",
-	  "stream_url": "http://88.212.15.19/live/spektrum_hun/index.m3u8",
+      "stream_url": "http://88.212.15.19/live/spektrum_hun/index.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -1145,7 +1313,7 @@
     },
     {
       "channel": "Spektrum Home",
-	  "stream_url": "http://88.212.15.19/live/spektrum_home_hun/index.m3u8",
+      "stream_url": "http://88.212.15.19/live/spektrum_home_hun/index.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -1172,7 +1340,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/spiler1/index.m3u8",
+      "tvg_id": "Spiler1.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Spiler 2",
@@ -1187,7 +1358,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/spiler2/index.m3u8",
+      "tvg_id": "Spiler2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Sport 1",
@@ -1202,7 +1376,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/sport1_hun/index.m3u8",
+      "tvg_id": "Sport1.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Sport 2",
@@ -1217,7 +1394,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/sport2_hun/index.m3u8",
+      "tvg_id": "Sport2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Story4",
@@ -1232,7 +1412,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_story_4_atk_1200/playlist.m3u8",
+      "tvg_id": "Story4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Super TV2",
@@ -1247,7 +1430,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_super_tv2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "SuperTV2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Szolnok TV",
@@ -1262,7 +1448,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/livestream004.sdp/playlist.m3u8",
+      "tvg_id": "SzolnokTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TelePaks (396p)",
@@ -1277,7 +1466,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay02/livestream004.sdp/playlist.m3u8",
+      "tvg_id": "TelePaks.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "The Fishing & Hunting Channel",
@@ -1292,7 +1484,10 @@
       "tested_on": "2026-08-09",
       "language_code": "CZ",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_fishing_hunting/playlist.m3u8",
+      "tvg_id": "TheFishingHuntingChannel.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV Eger",
@@ -1307,7 +1502,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://stream.tveger.hu:8010/live.m3u8",
+      "tvg_id": "TVEger.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV Keszthely",
@@ -1322,7 +1520,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/keszthelyivtv.sdp/playlist.m3u8",
+      "tvg_id": "TVKeszthely.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2",
@@ -1337,7 +1538,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_tv_2_hungary_1200_atk/playlist.m3u8",
+      "tvg_id": "TV2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2 Comedy",
@@ -1352,7 +1556,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/tv2_comedy/index.m3u8",
+      "tvg_id": "TV2Comedy.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2 Kids",
@@ -1367,7 +1574,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/tv2_kids/index.m3u8",
+      "tvg_id": "TV2Kids.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV2 Sef",
@@ -1382,7 +1592,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_lichi_tv_atk_tv/playlist.m3u8",
+      "tvg_id": "TV2Sef.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV4",
@@ -1397,7 +1610,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/test_tv_4_hun_atk_1200/playlist.m3u8",
+      "tvg_id": "TV4.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "TV7 Bekescsaba",
@@ -1412,7 +1628,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://stream.y5.hu/stream/stream_bekescsaba/stream.m3u8",
+      "tvg_id": "7TV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat 3",
@@ -1427,7 +1646,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat3/index.m3u8",
+      "tvg_id": "Viasat3.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat 6",
@@ -1442,7 +1664,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat6/index.m3u8",
+      "tvg_id": "Viasat6.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat Film",
@@ -1457,7 +1682,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat_film/index.m3u8",
+      "tvg_id": "ViasatFilm.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Viasat2",
@@ -1472,7 +1700,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/viasat2/index.m3u8",
+      "tvg_id": "Viasat2.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Zalaegerszegi TV",
@@ -1487,7 +1718,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/zegtv.sdp/playlist.m3u8",
+      "tvg_id": "ZalaegerszegiTV.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Zenebutik",
@@ -1502,7 +1736,10 @@
       "tested_on": "2026-08-09",
       "language_code": "HU",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Current IPTV-org Hungary playlist/manual test",
+      "stream_url": "http://88.212.15.19/live/zenebutik/index.m3u8",
+      "tvg_id": "Zenebutik.hu@SD",
+      "protocol": "HLS"
     },
     {
       "channel": "Ózdi Városi TV",
