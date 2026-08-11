@@ -16,14 +16,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Inspect live TV2 response
+      - name: Inspect browser-like TV2 response
         shell: bash
         run: |
           set -euo pipefail
           TODAY="$(TZ=Europe/Budapest date +%F)"
+          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
+
+          curl -fsS \
+            'https://tvmusor.borsonline.hu/most/' \
+            -A "$UA" \
+            -c /tmp/tvmusor.cookies \
+            -o /tmp/tvmusor-page.html
+
           curl -fsS \
             'https://tvmusor.borsonline.hu/a/get-events/' \
+            -A "$UA" \
+            -b /tmp/tvmusor.cookies \
             -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \
+            -H 'X-Requested-With: XMLHttpRequest' \
+            -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+            -H 'Referer: https://tvmusor.borsonline.hu/most/' \
+            -H 'Origin: https://tvmusor.borsonline.hu' \
             --data-urlencode "data={\"blocks\":[\"3|$TODAY\"]}" \
             -o /tmp/tvmusor.json
 
@@ -31,17 +45,18 @@ jobs:
           import json
           from pathlib import Path
           data = json.loads(Path('/tmp/tvmusor.json').read_text(encoding='utf-8'))
-          print('top keys:', list(data) if isinstance(data, dict) else type(data).__name__)
+          print('status:', data.get('status') if isinstance(data, dict) else None)
           inner = data.get('data') if isinstance(data, dict) else None
-          print('data keys:', list(inner) if isinstance(inner, dict) else type(inner).__name__)
+          print('time:', inner.get('time') if isinstance(inner, dict) else None)
           blocks = inner.get('loadedBlocks') if isinstance(inner, dict) else None
           print('loadedBlocks type:', type(blocks).__name__)
           if isinstance(blocks, dict):
               print('block keys:', list(blocks)[:20])
               for key, value in list(blocks.items())[:3]:
-                  print('block', key, 'type', type(value).__name__, 'len', len(value) if hasattr(value, '__len__') else '?')
+                  print('block', key, 'value type', type(value).__name__, 'value', value if not isinstance(value, list) else f'list[{len(value)}]')
                   if isinstance(value, list) and value:
                       print('first item keys:', list(value[0]) if isinstance(value[0], dict) else type(value[0]).__name__)
                       print('first item:', value[0])
           print('response chars:', len(Path('/tmp/tvmusor.json').read_text(encoding='utf-8')))
+          print('cookie chars:', len(Path('/tmp/tvmusor.cookies').read_text(encoding='utf-8')))
           PY
