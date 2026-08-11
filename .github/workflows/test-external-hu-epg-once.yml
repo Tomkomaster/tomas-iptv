@@ -18,19 +18,17 @@ jobs:
         uses: actions/checkout@v7
       - name: Build playlist
         run: python3 build.py --strict
-      - name: Test GlobeTV Hungary
+      - name: Test EPGshare Hungary
         shell: bash
         run: |
           set -euo pipefail
-          curl -fLsS 'https://raw.githubusercontent.com/globetvapp/epg/main/Hungary/hungary1.xml.gz' -o /tmp/hu.download
+          curl -fLsS 'https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz' -o /tmp/hu.download
 
           python3 - <<'PY'
           import gzip
           from pathlib import Path
-
           source = Path('/tmp/hu.download').read_bytes()
           print('download bytes:', len(source))
-          print('magic:', source[:16])
           if source.startswith(b'\x1f\x8b'):
               data = gzip.decompress(source)
               print('transport: gzip')
@@ -55,59 +53,44 @@ jobs:
           p_base = {quality_base_id(x): x for x in playlist}
 
           root = ET.parse('/tmp/hu.xml').getroot()
-          channel_ids = [(c.get('id') or '').strip() for c in root.findall('channel')]
+          channels = root.findall('channel')
           programmes = root.findall('programme')
-          programme_ids = [(p.get('channel') or '').strip() for p in programmes]
-          starts = [(p.get('start') or '').strip() for p in programmes]
-
-          matched = set()
-          for cid in channel_ids:
-              if cid.casefold() in p_exact:
-                  matched.add(p_exact[cid.casefold()])
-              else:
-                  q = quality_base_id(cid)
-                  if q in p_base:
-                      matched.add(p_base[q])
-
-          populated = set()
-          current_populated = set()
+          ids = [(c.get('id') or '').strip() for c in channels]
           today = datetime.now(timezone.utc).strftime('%Y%m%d')
+
+          def target(cid):
+              if cid.casefold() in p_exact:
+                  return p_exact[cid.casefold()]
+              return p_base.get(quality_base_id(cid))
+
+          exact_matched = {target(cid) for cid in ids if target(cid)}
+          populated = set()
+          today_populated = set()
+          dates = Counter()
           for p in programmes:
               cid = (p.get('channel') or '').strip()
-              target = None
-              if cid.casefold() in p_exact:
-                  target = p_exact[cid.casefold()]
-              else:
-                  q = quality_base_id(cid)
-                  target = p_base.get(q)
-              if target:
-                  populated.add(target)
-                  start = (p.get('start') or '').strip()
-                  if start.startswith(today):
-                      current_populated.add(target)
-
-          dates = Counter()
-          for s in starts:
-              m = re.match(r'(\d{8})', s)
+              t = target(cid)
+              start = (p.get('start') or '').strip()
+              m = re.match(r'(\d{8})', start)
               if m:
                   dates[m.group(1)] += 1
+              if t:
+                  populated.add(t)
+                  if start.startswith(today):
+                      today_populated.add(t)
 
-          display_names = {}
-          for c in root.findall('channel'):
-              cid = (c.get('id') or '').strip()
-              names = [(d.text or '').strip() for d in c.findall('display-name') if (d.text or '').strip()]
-              display_names[cid] = names
-
-          print('feed channels:', len(channel_ids))
-          print('feed programmes:', len(programme_ids))
+          print('feed channels:', len(channels))
+          print('feed programmes:', len(programmes))
           print('playlist ids:', len(playlist))
-          print('exact/quality matched channels:', len(matched))
+          print('exact/quality matched:', len(exact_matched))
           print('matched with any programmes:', len(populated))
-          print('matched with TODAY programmes:', len(current_populated))
-          print('today matched IDs:', ', '.join(sorted(current_populated)))
+          print('matched with TODAY programmes:', len(today_populated))
+          print('today matched IDs:', ', '.join(sorted(today_populated)))
           print('programme date counts:', dict(sorted(dates.items())))
           print('current UTC date:', today)
-          print('sample channels:')
-          for cid in channel_ids[:30]:
-              print(' ', cid, '|', ' / '.join(display_names.get(cid, [])))
+          print('sample IDs:')
+          for c in channels[:60]:
+              cid = (c.get('id') or '').strip()
+              names = [(d.text or '').strip() for d in c.findall('display-name') if (d.text or '').strip()]
+              print(' ', cid, '|', ' / '.join(names))
           PY
