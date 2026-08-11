@@ -118,3 +118,46 @@ http://46.36.41.106:8888/rebit/187.m3u8
 # JOJ Šport — direct JOJ broadcaster CDN, 1080p
 #EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport
 https://live.cdn.joj.sk/live/andromeda/joj_sport-1080.m3u8
+
+#EXTINF:-1 tvg-name="Kanal1",Kanal1
+https://dash.antik.sk/live/test_upnetwork/playlist.m3u8
+
+#EXTINF:-1 tvg-id="Markiza.sk" tvg-name="Markíza",Markíza
+http://88.212.15.19/live/test_markiza_25p/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Doma",Doma
+http://88.212.15.19/live/test_doma_hd_hevc/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Dajto",Dajto
+http://88.212.15.19/live/test_dajto_25p/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Markíza Krimi",Markíza Krimi
+https://cdnsk003.panaccess.com/local/Markiza_krimi/index.m3u8
+
+#EXTINF:-1 tvg-name="Markíza Krimi",Markíza Krimi
+http://88.212.15.19/live/test_markiza_krimi_hevc/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Markíza Klasik",Markíza Klasik
+https://cdnsk003.panaccess.com/local/Markiza_Klasik/index.m3u8
+
+#EXTINF:-1 tvg-name="JOJ Svet",JOJ Svet
+http://88.212.15.19/live/test_joj_svet/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Jojko",Jojko
+http://88.212.15.19/live/test_jojko_25p/playlist.m3u8
+
+#EXTINF:-1 tvg-name="RiK TV",RiK TV
+https://dash2.antik.sk/live/rik_atk/index.m3u8
+
+#EXTINF:-1 tvg-name="LALA TV",LALA TV
+http://88.212.15.19/live/test_lala_25p/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Folklorika TV",Folklorika TV
+http://88.212.15.19/live/test_folklorika_atktv/playlist.m3u8
+
+#EXTINF:-1 tvg-name="PARK TV",PARK TV
+https://dash2.antik.sk/live/test_park_tv/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Fashion TV Czech & Slovak",Fashion TV Czech & Slovak
+https://lb.streaming.sk/fashiontv/stream/playlist.m3u8
+
