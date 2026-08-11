@@ -1,11 +1,51 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-from healthcheck import canonical_stream_url
+from urllib.parse import urlparse, urlunparse
 
 
 VALID_HEALTH_POLICIES = {"normal", "event_based"}
 SELECTORS = ("stream_url", "tvg_id", "channel")
+
+
+def canonical_stream_url(url: str) -> str:
+    value = (url or "").strip()
+    if not value:
+        return ""
+
+    parsed = urlparse(value)
+    if not parsed.scheme or not parsed.netloc or parsed.hostname is None:
+        return value
+
+    scheme = parsed.scheme.lower()
+    hostname = parsed.hostname.lower()
+    if ":" in hostname and not hostname.startswith("["):
+        hostname = f"[{hostname}]"
+
+    try:
+        port = parsed.port
+    except ValueError:
+        return value
+
+    if (scheme == "https" and port == 443) or (scheme == "http" and port == 80):
+        port = None
+
+    userinfo = ""
+    if "@" in parsed.netloc:
+        userinfo = parsed.netloc.rsplit("@", 1)[0] + "@"
+
+    netloc = f"{userinfo}{hostname}"
+    if port is not None:
+        netloc += f":{port}"
+
+    return urlunparse((
+        scheme,
+        netloc,
+        parsed.path or "/",
+        parsed.params,
+        parsed.query,
+        "",
+    ))
 
 
 def normalize_policy(value: object) -> str:
