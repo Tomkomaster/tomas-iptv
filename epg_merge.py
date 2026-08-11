@@ -314,6 +314,34 @@ def build_external_mapping(
         ]
 
         if len(best) != 1:
+            # When the playlist explicitly asks for @SD or @HD and the
+            # external guide contains otherwise-identical HD/non-HD entries,
+            # resolve only that declared quality variant. This is not fuzzy
+            # matching: all candidates already matched the same channel name.
+            variant = re.search(
+                r"@(SD|HD)(?:$|@)",
+                target,
+                re.IGNORECASE,
+            )
+            if variant:
+                wants_hd = (
+                    variant.group(1).upper() == "HD"
+                )
+                quality_matches = [
+                    candidate
+                    for candidate in best
+                    if bool(
+                        re.search(
+                            r"(?:^|[._-])HD(?:[._-]|$)",
+                            candidate["external_id"],
+                            re.IGNORECASE,
+                        )
+                    ) == wants_hd
+                ]
+                if len(quality_matches) == 1:
+                    best = quality_matches
+
+        if len(best) != 1:
             ambiguous.append({
                 "tvg_id": target,
                 "candidates": best,
