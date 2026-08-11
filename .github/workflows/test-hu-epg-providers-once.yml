@@ -1,0 +1,90 @@
+name: One-time test Hungarian EPG providers
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/test-hu-epg-providers-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test-provider:
+    strategy:
+      fail-fast: false
+      matrix:
+        provider:
+          - tvmusor.hu
+          - horizon.tv
+          - m.tv.sms.cz
+          - mujtvmusor.cz
+          - mujtprogram.cz
+          - mujtprogram.cz
+          - mujtprogram.sk
+          - mujtprogram.hu
+          - mujtprogramtv.cz
+          - mujtprogramtv.hu
+          - mujtprogramtv.sk
+          - mujtprogramtv.com
+          - mujtprogramtv.eu
+          - mujtprogramtv.net
+          - mujtvprogram.cz
+          - programetv.ro
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Strict build
+        run: python3 build.py --strict
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Clone and install IPTV-org EPG
+        run: |
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+          cd .epg-builder
+          npm ci
+
+      - name: Test provider
+        shell: bash
+        env:
+          PROVIDER: ${{ matrix.provider }}
+        run: |
+          set -euo pipefail
+
+          if [ ! -d ".epg-builder/sites/$PROVIDER" ]; then
+            echo "Provider $PROVIDER does not exist; skipping."
+            exit 0
+          fi
+
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "mediaklikk.hu,$PROVIDER" \
+            --output .epg.channels.xml \
+            --report public/epg-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/public/guide.xml" \
+            --maxConnections=3 \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+          echo "=== RESULT $PROVIDER ==="
+          cat public/epg-health.json
