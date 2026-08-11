@@ -27,13 +27,96 @@ jobs:
       - name: Build current audit inventory
         run: python3 build.py --strict
 
-      - name: Dry-run safe migration
+      - name: Dry-run conservative migrator
         run: python3 migrate_audit.py
 
-      - name: Apply only one-to-one migrations
+      - name: Apply conservative one-to-one migrations
         run: python3 migrate_audit.py --write
 
-      - name: Rebuild and validate migrated audit
+      - name: Rebuild after conservative migration
+        run: python3 build.py --strict
+
+      - name: Apply remaining builder-confirmed one-feed matches
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          audit_path = Path("audit.json")
+          report_path = Path("public/report.json")
+
+          payload = json.loads(audit_path.read_text(encoding="utf-8-sig"))
+          items = payload.get("channels") if isinstance(payload, dict) else payload
+          if not isinstance(items, list):
+              raise SystemExit("audit.json does not contain a channels list")
+
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          audit_report = report.get("audit") or {}
+          ambiguous = audit_report.get("ambiguous_legacy_audits") or []
+          if ambiguous:
+              raise SystemExit(
+                  "Refusing builder-confirmed migration because ambiguous legacy audits exist."
+              )
+
+          pattern = re.compile(
+              r"^audit item #(?P<index>\d+) \((?P<channel>.*)\): "
+              r"legacy channel-level audit still matches one current feed "
+              r"\((?P<url>.+)\)\. Add stream_url when this row is next edited\.$"
+          )
+
+          applied = 0
+          for warning in audit_report.get("warnings") or []:
+              text = str(warning)
+              match = pattern.match(text)
+              if not match:
+                  continue
+
+              index = int(match.group("index")) - 1
+              channel = match.group("channel").strip()
+              url = match.group("url").strip()
+
+              if index < 0 or index >= len(items):
+                  raise SystemExit(f"Invalid audit index in warning: {text}")
+
+              item = items[index]
+              if not isinstance(item, dict):
+                  raise SystemExit(f"Audit item #{index + 1} is not an object")
+
+              actual_channel = str(
+                  item.get("channel") or item.get("channel_name") or ""
+              ).strip()
+              if actual_channel != channel:
+                  raise SystemExit(
+                      f"Channel mismatch for audit item #{index + 1}: "
+                      f"warning={channel!r}, audit={actual_channel!r}"
+                  )
+
+              if str(item.get("stream_url") or "").strip():
+                  raise SystemExit(
+                      f"Audit item #{index + 1} already has stream_url; refusing overwrite."
+                  )
+
+              if not url.startswith(("http://", "https://")):
+                  raise SystemExit(
+                      f"Unexpected stream URL in builder warning for {channel}: {url}"
+                  )
+
+              print(f"BUILDER-CONFIRMED MIGRATE: {channel} -> {url}")
+              item["stream_url"] = url
+              applied += 1
+
+          print(f"Builder-confirmed remaining migrations: {applied}")
+
+          if applied:
+              audit_path.write_text(
+                  json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+          PY
+
+      - name: Rebuild and verify zero legacy warnings
         run: |
           set -euo pipefail
           python3 build.py --strict
@@ -51,17 +134,13 @@ jobs:
           ambiguous = audit.get("ambiguous_legacy_audits") or []
 
           print(f"Remaining audit warnings: {len(warnings)}")
-          print(f"Remaining legacy one-feed warnings: {len(legacy_warnings)}")
+          print(f"Remaining legacy warnings: {len(legacy_warnings)}")
           print(f"Ambiguous legacy audits: {len(ambiguous)}")
 
           if ambiguous:
-              raise SystemExit(
-                  "Refusing to commit: ambiguous legacy audits appeared after migration."
-              )
+              raise SystemExit("Ambiguous legacy audits remain; refusing commit.")
           if legacy_warnings:
-              raise SystemExit(
-                  "Refusing to commit: safe legacy one-feed warnings remain after migration."
-              )
+              raise SystemExit("Legacy channel-level warnings remain; refusing commit.")
           PY
 
       - name: Run unit tests after migration
