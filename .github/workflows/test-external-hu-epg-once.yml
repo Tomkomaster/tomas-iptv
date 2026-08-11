@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v7
       - name: Build playlist
         run: python3 build.py --strict
-      - name: Test EPGshare Hungary
+      - name: Test EPGshare strict unique-name mapping
         shell: bash
         run: |
           set -euo pipefail
@@ -28,69 +28,116 @@ jobs:
           import gzip
           from pathlib import Path
           source = Path('/tmp/hu.download').read_bytes()
-          print('download bytes:', len(source))
-          if source.startswith(b'\x1f\x8b'):
-              data = gzip.decompress(source)
-              print('transport: gzip')
-          else:
-              data = source
-              print('transport: plain')
+          data = gzip.decompress(source) if source.startswith(b'\x1f\x8b') else source
           Path('/tmp/hu.xml').write_bytes(data)
-          print('xml bytes:', len(data))
-          print('xml prefix:', data[:120])
+          print('download bytes:', len(source), 'xml bytes:', len(data))
           PY
 
           python3 - <<'PY'
           import re
           import xml.etree.ElementTree as ET
-          from collections import Counter
+          from collections import Counter, defaultdict
           from datetime import datetime, timezone
           from pathlib import Path
-          from epg_prepare import read_playlist_tvg_ids, quality_base_id
 
-          playlist = read_playlist_tvg_ids(Path('public/tv.m3u'))
-          p_exact = {x.casefold(): x for x in playlist}
-          p_base = {quality_base_id(x): x for x in playlist}
+          from epg_prepare import quality_base_id
+          from migrate_audit import clean_channel_name
+
+          ATTR_RE = re.compile(r'([\w-]+)="([^"]*)"')
+
+          playlist_rows = []
+          pending = None
+          for raw in Path('public/tv.m3u').read_text(encoding='utf-8-sig').splitlines():
+              line = raw.strip()
+              if line.startswith('#EXTINF:'):
+                  attrs = dict(ATTR_RE.findall(line))
+                  name = line.rsplit(',', 1)[-1].strip() if ',' in line else ''
+                  tvg_id = (attrs.get('tvg-id') or '').strip()
+                  pending = (tvg_id, name)
+              elif line and not line.startswith('#') and pending:
+                  tvg_id, name = pending
+                  if tvg_id:
+                      playlist_rows.append((tvg_id, name))
+                  pending = None
+
+          # One playlist row per tvg-id; preserve first name.
+          by_id = {}
+          for tvg_id, name in playlist_rows:
+              by_id.setdefault(tvg_id, name)
+          playlist_rows = list(by_id.items())
+
+          exact = {tvg_id.casefold(): tvg_id for tvg_id, _ in playlist_rows}
+          base = defaultdict(list)
+          name_map = defaultdict(list)
+          for tvg_id, name in playlist_rows:
+              base[quality_base_id(tvg_id)].append(tvg_id)
+              key = clean_channel_name(name)
+              if key:
+                  name_map[key].append(tvg_id)
 
           root = ET.parse('/tmp/hu.xml').getroot()
           channels = root.findall('channel')
           programmes = root.findall('programme')
-          ids = [(c.get('id') or '').strip() for c in channels]
+          external = {}
+          for c in channels:
+              cid = (c.get('id') or '').strip()
+              names = [(d.text or '').strip() for d in c.findall('display-name') if (d.text or '').strip()]
+              external[cid] = names
+
+          mapping = {}
+          methods = Counter()
+          ambiguous_names = []
+          for cid, names in external.items():
+              target = exact.get(cid.casefold())
+              method = 'exact'
+              if target is None:
+                  bases = base.get(quality_base_id(cid), [])
+                  if len(bases) == 1:
+                      target = bases[0]
+                      method = 'quality_id'
+              if target is None:
+                  candidates = set()
+                  for name in names:
+                      key = clean_channel_name(name)
+                      if key:
+                          candidates.update(name_map.get(key, []))
+                  if len(candidates) == 1:
+                      target = next(iter(candidates))
+                      method = 'unique_name'
+                  elif len(candidates) > 1:
+                      ambiguous_names.append((cid, names, sorted(candidates)))
+              if target:
+                  # Multiple external IDs may map to the same playlist ID; keep first.
+                  if target not in mapping.values():
+                      mapping[cid] = target
+                      methods[method] += 1
+
           today = datetime.now(timezone.utc).strftime('%Y%m%d')
-
-          def target(cid):
-              if cid.casefold() in p_exact:
-                  return p_exact[cid.casefold()]
-              return p_base.get(quality_base_id(cid))
-
-          exact_matched = {target(cid) for cid in ids if target(cid)}
-          populated = set()
-          today_populated = set()
           dates = Counter()
+          today_populated = set()
+          programme_counts = Counter()
           for p in programmes:
-              cid = (p.get('channel') or '').strip()
-              t = target(cid)
               start = (p.get('start') or '').strip()
               m = re.match(r'(\d{8})', start)
               if m:
                   dates[m.group(1)] += 1
-              if t:
-                  populated.add(t)
+              target = mapping.get((p.get('channel') or '').strip())
+              if target:
+                  programme_counts[target] += 1
                   if start.startswith(today):
-                      today_populated.add(t)
+                      today_populated.add(target)
 
-          print('feed channels:', len(channels))
-          print('feed programmes:', len(programmes))
-          print('playlist ids:', len(playlist))
-          print('exact/quality matched:', len(exact_matched))
-          print('matched with any programmes:', len(populated))
-          print('matched with TODAY programmes:', len(today_populated))
-          print('today matched IDs:', ', '.join(sorted(today_populated)))
-          print('programme date counts:', dict(sorted(dates.items())))
-          print('current UTC date:', today)
-          print('sample IDs:')
-          for c in channels[:60]:
-              cid = (c.get('id') or '').strip()
-              names = [(d.text or '').strip() for d in c.findall('display-name') if (d.text or '').strip()]
-              print(' ', cid, '|', ' / '.join(names))
+          print('playlist IDs:', len(playlist_rows))
+          print('external channels:', len(channels))
+          print('mapped playlist IDs:', len(set(mapping.values())))
+          print('mapping methods:', dict(methods))
+          print('TODAY populated:', len(today_populated))
+          print('TODAY IDs:', ', '.join(sorted(today_populated)))
+          print('date counts:', dict(sorted(dates.items())))
+          print('ambiguous external name mappings:', len(ambiguous_names))
+          for row in ambiguous_names[:20]:
+              print('AMBIGUOUS', row)
+          print('--- mapping details ---')
+          for cid, target in sorted(mapping.items(), key=lambda x: x[1].casefold()):
+              print(target, '<-', cid, '|', ' / '.join(external.get(cid, [])), '| programs', programme_counts.get(target, 0))
           PY
