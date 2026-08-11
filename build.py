@@ -889,6 +889,33 @@ def normalize_language_code(value: str) -> str:
     return ""
 
 
+def logical_channel_key(entry: dict) -> str:
+    """
+    Identify a logical channel inside one language/country playlist.
+
+    channel_key() intentionally remains language-agnostic so SD/HD variants
+    and equivalent source metadata still collapse. This helper adds the
+    playlist language only where cross-source grouping needs it.
+    """
+    language_code = (
+        normalize_language_code(
+            str(entry.get("language_code") or "")
+        )
+        or "UNKNOWN"
+    )
+
+    raw_key = str(
+        entry.get("channel_key")
+        or channel_key(entry)
+    )
+
+    prefix = f"{language_code}:"
+    if raw_key.startswith(prefix):
+        return raw_key
+
+    return f"{prefix}{raw_key}"
+
+
 def normalize_language_codes(value) -> list[str]:
     """
     Normalize a language-code list while preserving order and removing
@@ -1188,7 +1215,7 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
             str(item.get("reason") or "").strip(),
         )
 
-    if bool(item.get("exclude_from_playlist")):
+    if audit_excluded(item):
         return (
             "Rejected",
             str(
@@ -1288,6 +1315,11 @@ def audit_status_is_recognized(value: str) -> bool:
         return True
 
     return token == "needs_review"
+
+
+def audit_excluded(item: dict) -> bool:
+    """Return True only for the literal JSON boolean true."""
+    return item.get("exclude_from_playlist") is True
 
 
 def validate_audit_items(
@@ -1508,7 +1540,18 @@ def validate_audit_items(
                 f"Allowed values: {', '.join(sorted(allowed_decisions))}."
             )
 
-        exclude = bool(item.get("exclude_from_playlist"))
+        if (
+            "exclude_from_playlist" in item
+            and not isinstance(
+                item.get("exclude_from_playlist"),
+                bool,
+            )
+        ):
+            errors.append(
+                f"{label}: exclude_from_playlist must be true or false."
+            )
+
+        exclude = audit_excluded(item)
         if exclude and decision_token in {"verified", "tv_verified", "pc_only"}:
             errors.append(
                 f"{label}: exclude_from_playlist=true conflicts with "
@@ -1703,12 +1746,12 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
     # Assign stable feed numbers in current source order.
     counts: dict[str, int] = {}
     for entry in final_entries:
-        key = entry.get("channel_key") or channel_key(entry)
+        key = logical_channel_key(entry)
         counts[key] = counts.get(key, 0) + 1
 
     seen_feed: dict[str, int] = {}
     for entry in final_entries:
-        key = entry.get("channel_key") or channel_key(entry)
+        key = logical_channel_key(entry)
         seen_feed[key] = seen_feed.get(key, 0) + 1
         entry["variant_index"] = seen_feed[key]
         entry["variant_count"] = counts[key]
@@ -1888,7 +1931,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "decision": decision,
             "reason": str(item.get("reason") or auto_reason or "").strip(),
             "notes": str(item.get("notes") or "").strip(),
-            "exclude_from_playlist": bool(item.get("exclude_from_playlist")),
+            "exclude_from_playlist": audit_excluded(item),
             "tested_on": str(item.get("tested_on") or "").strip(),
             "in_playlist": True,
             "feed_index": feed_index,
@@ -2086,7 +2129,7 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "decision": decision,
             "reason": str(item.get("reason") or auto_reason or "").strip(),
             "notes": history_notes,
-            "exclude_from_playlist": bool(item.get("exclude_from_playlist")),
+            "exclude_from_playlist": audit_excluded(item),
             "tested_on": str(item.get("tested_on") or "").strip(),
             "in_playlist": False,
             "feed_index": 1,
@@ -2153,7 +2196,7 @@ def select_playlist_candidates(
         url_key = canonical_stream_url(url)
         audit = audit_by_url.get(url_key)
         decision = audit.get("decision", "Needs review") if audit else "Needs review"
-        exclude = bool(audit.get("exclude_from_playlist")) if audit else False
+        exclude = audit_excluded(audit) if audit else False
 
         if exclude or decision == "Rejected":
             excluded_rows.append({
@@ -2177,7 +2220,7 @@ def select_playlist_candidates(
 
     candidate_groups: dict[str, list[dict]] = {}
     for entry in candidate_entries:
-        candidate_groups.setdefault(entry["channel_key"], []).append(entry)
+        candidate_groups.setdefault(logical_channel_key(entry), []).append(entry)
 
     def verified_feed_rank(entry: dict) -> tuple:
         audit = entry.get("_audit") or {}
@@ -2538,11 +2581,7 @@ def select_stable_playlist_candidates(
             "Needs review",
         )
 
-        if bool(
-            audit.get(
-                "exclude_from_playlist"
-            )
-        ):
+        if audit_excluded(audit):
             add_excluded(
                 entry,
                 (
@@ -2598,7 +2637,7 @@ def select_stable_playlist_candidates(
             continue
 
         stable_groups.setdefault(
-            entry["channel_key"],
+            logical_channel_key(entry),
             [],
         ).append(
             entry
@@ -2719,7 +2758,7 @@ def prepare_published_entries(
 
     for entry in candidates:
         visible_groups.setdefault(
-            entry["channel_key"],
+            logical_channel_key(entry),
             [],
         ).append(
             entry
@@ -3786,6 +3825,7 @@ def main(strict: bool = False) -> None:
             entry["source"] = name
             entry["source_kind"] = kind
             entry["language_code"] = language_code
+            logical_key = logical_channel_key(entry)
 
             country_name = str(
                 spec.get("country_name")
@@ -3847,7 +3887,7 @@ def main(strict: bool = False) -> None:
                 })
                 continue
 
-            if key not in seen_channels:
+            if logical_key not in seen_channels:
                 new_channels += 1
 
                 if kind == "base":
@@ -3862,8 +3902,9 @@ def main(strict: bool = False) -> None:
                     )
                     added_channels += 1
 
-                seen_channels[key] = {
-                    "key": key,
+                seen_channels[logical_key] = {
+                    "key": logical_key,
+                    "raw_key": key,
                     "name": clean_name,
                     "first_source": name,
                     "first_source_kind": kind,
@@ -4026,9 +4067,11 @@ def main(strict: bool = False) -> None:
 
     by_channel: dict[str, dict] = {}
     for entry in published_entries:
-        key = entry["channel_key"]
+        key = logical_channel_key(entry)
         record = by_channel.setdefault(key, {
             "key": key,
+            "raw_key": entry.get("channel_key", ""),
+            "language_code": entry.get("language_code", ""),
             "name": entry["channel_name"],
             "tvg_id": entry.get("tvg_id", ""),
             "sources": [],
@@ -4058,12 +4101,38 @@ def main(strict: bool = False) -> None:
     }
 
     if previous_report:
-        previous_by_key = {
-            str(ch.get("key")): str(ch.get("name") or ch.get("key"))
+        previous_channels = [
+            ch
             for ch in previous_report.get("channels", [])
             if ch.get("key")
+        ]
+
+        previous_by_key = {
+            str(ch.get("key")): str(ch.get("name") or ch.get("key"))
+            for ch in previous_channels
         }
-        current_by_key = {ch["key"]: ch["name"] for ch in unique_channels}
+
+        current_by_key = {
+            ch["key"]: ch["name"]
+            for ch in unique_channels
+        }
+
+        # The first build after this migration compares against a report whose
+        # keys were not language-scoped. Compare raw legacy keys once so the
+        # dashboard does not report every channel as removed and re-added.
+        previous_has_scoped_keys = any(
+            re.fullmatch(
+                r"[A-Z]{2,3}:(?:id|name):.+",
+                key,
+            )
+            for key in previous_by_key
+        )
+
+        if previous_by_key and not previous_has_scoped_keys:
+            current_by_key = {
+                str(ch.get("raw_key") or ch["key"]): ch["name"]
+                for ch in unique_channels
+            }
 
         added_keys = sorted(
             set(current_by_key) - set(previous_by_key),
