@@ -598,3 +598,16 @@ https://c202-node62-cdn.connectmedia.hu/4018/34b133143c3e5eeb44f0b29659624677/6a
 # Station and Flynet are still active, but the old HLS address itself needs testing.
 #EXTINF:-1 tvg-name="KisDuna TV Dunaharaszti",KisDuna TV Dunaharaszti [Legacy Flynet test]
 https://nettv.flynet.hu/live/kisdunatv.m3u8
+
+# DragonHall+ TV — Hungarian anime / animation web television.
+# Current direct HLS reported ONLINE; not present in IPTV-org HU.
+# Test VLC + Samsung.
+#EXTINF:-1 tvg-name="DragonHall+ TV",DragonHall+ TV
+https://tv.dragonhall.hu/live/dragonhall.m3u8
+
+# PAX TV — active Hungarian religious/general television channel.
+# NOT present in current IPTV-org HU.
+# Current official online stream requires login/subscription.
+# This is an older public CloudFront HLS origin — legacy test only.
+#EXTINF:-1 tvg-name="PAX TV",PAX TV [Legacy CloudFront test]
+https://d2fxrfbiedz1tm.cloudfront.net/livepaxtv/smil:PC.smil/playlist.m3u8
