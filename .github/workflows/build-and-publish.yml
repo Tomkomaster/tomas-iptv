@@ -4,22 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "attention.py"
-      - "build.py"
-      - "research_exports.py"
-      - "epg_prepare.py"
-      - "epg_merge.py"
-      - "epg_aliases.json"
-      - "epg_health.py"
-      - "local_epg.py"
-      - "healthcheck.py"
-      - "migrate_audit.py"
-      - "config.json"
-      - "audit.json"
-      - "extras/**"
-      - "tests/**"
-      - ".github/workflows/build-and-publish.yml"
 
   workflow_dispatch:
 
