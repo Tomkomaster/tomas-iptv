@@ -90,15 +90,18 @@ def normalize_name(value: object) -> str:
 
 
 def row_country(row: dict[str, str]) -> str:
-    code = str(row.get("language_code") or "").strip().upper()
-    if code:
-        return code
-
+    # expected_language_codes describes the playlist/country being researched.
+    # Legacy audit rows sometimes used language_code for the observed (wrong)
+    # stream language, so prefer the expected code when it is available.
     expected = str(row.get("expected_language_codes") or "").strip()
     if expected:
         first = re.split(r"[,;/+]", expected)[0].strip().upper()
         if first:
             return first
+
+    code = str(row.get("language_code") or "").strip().upper()
+    if code:
+        return code
 
     return "UNKNOWN"
 
