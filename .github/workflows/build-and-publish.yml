@@ -7,6 +7,7 @@ on:
     paths:
       - "build.py"
       - "epg_prepare.py"
+      - "epg_merge.py"
       - "epg_health.py"
       - "migrate_audit.py"
       - "config.json"
@@ -88,13 +89,48 @@ jobs:
           '
           )"
 
+          EPG_EXTERNAL_URL="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          external = (cfg.get("epg") or {}).get("external") or {}
+          print(str(external.get("url") or "").strip())
+          '
+          )"
+
+          EPG_EXTERNAL_PROVIDER="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          external = (cfg.get("epg") or {}).get("external") or {}
+          print(str(external.get("provider") or "epgshare01.online").strip())
+          '
+          )"
+
+          EPG_FUTURE_DAYS="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          external = (cfg.get("epg") or {}).get("external") or {}
+          print(int(external.get("future_days") or 7))
+          '
+          )"
+
           if [ -z "$EPG_SITES" ]; then
             echo "EPG is enabled but epg.sites is empty."
             exit 1
           fi
 
           rm -rf .epg-builder
-          rm -f .epg.channels.xml
+          rm -f \
+            .epg.channels.xml \
+            .epg-iptv.xml \
+            .epg-iptv-coverage.json \
+            .epg-external.download \
+            .epg-grab.log
 
           git clone \
             --depth 1 \
@@ -111,22 +147,55 @@ jobs:
             --epg-root .epg-builder \
             --sites "$EPG_SITES" \
             --output .epg.channels.xml \
-            --report public/epg-coverage.json
+            --report .epg-iptv-coverage.json
 
           echo
-          echo "Custom EPG channel list:"
+          echo "Custom IPTV-org EPG channel list:"
           cat .epg.channels.xml
           echo
 
           cd .epg-builder
 
-          rm -f "$GITHUB_WORKSPACE/.epg-grab.log"
-
           npm run grab --- \
             --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
-            --output="$GITHUB_WORKSPACE/public/guide.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
             --maxConnections="$EPG_MAX_CONNECTIONS" \
             2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+
+          cd "$GITHUB_WORKSPACE"
+
+          if [ -n "$EPG_EXTERNAL_URL" ]; then
+            echo "Downloading external EPG source: $EPG_EXTERNAL_PROVIDER"
+            if ! curl \
+              --fail \
+              --location \
+              --silent \
+              --show-error \
+              --retry 3 \
+              --retry-delay 2 \
+              "$EPG_EXTERNAL_URL" \
+              -o .epg-external.download; then
+              echo "WARNING: external EPG download failed; continuing with IPTV-org fallbacks only."
+              rm -f .epg-external.download
+            fi
+          fi
+
+          MERGE_ARGS=(
+            --playlist public/tv.m3u
+            --iptv-guide .epg-iptv.xml
+            --iptv-coverage .epg-iptv-coverage.json
+            --external-provider "$EPG_EXTERNAL_PROVIDER"
+            --preferred-iptv-provider mediaklikk.hu
+            --future-days "$EPG_FUTURE_DAYS"
+            --output public/guide.xml
+            --report public/epg-coverage.json
+          )
+
+          if [ -f .epg-external.download ]; then
+            MERGE_ARGS+=(--external .epg-external.download)
+          fi
+
+          python3 epg_merge.py "${MERGE_ARGS[@]}"
 
       - name: Validate XMLTV EPG
         run: |
