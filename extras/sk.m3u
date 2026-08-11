@@ -172,3 +172,15 @@ https://sktv.mxnticek.eu/new/stream.php?ch=Mark%C3%ADza+TN+Live
 
 #EXTINF:-1 tvg-name="TV Košice" group-title="Slovakia",TV Košice
 http://lb.streaming.sk/tvnasa/stream/playlist.m3u8
+
+# Prima love SK — direct Antik HLS; approved July 2026
+#EXTINF:-1 tvg-id="PrimaLoveSK.sk" tvg-name="Prima love SK",Prima love SK
+http://88.212.15.19/live/prima_love_avc_25p/playlist.m3u8
+
+# GTTV — Slovak motorsport television
+#EXTINF:-1 tvg-name="GTTV" group-title="Sports",GTTV
+https://stream.ostv.sk/GTTV/index.m3u8
+
+# Mana Cirkev Online — Slovak-language Christian television
+#EXTINF:-1 tvg-name="Mana Cirkev Online" group-title="Religious",Mana Cirkev Online
+https://w2.manasat.com/cirkev-online/smil:cirkev-online.smil/playlist.m3u8
