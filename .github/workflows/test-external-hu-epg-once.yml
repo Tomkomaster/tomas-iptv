@@ -1,139 +1,85 @@
-name: One-time test external Hungarian EPG
+name: One-time validate merged Hungarian EPG
 
 on:
   push:
     branches:
       - agent/audit-epg-health
     paths:
+      - "epg_merge.py"
+      - "epg_health.py"
+      - "config.json"
+      - "tests/test_epg_merge.py"
       - ".github/workflows/test-external-hu-epg-once.yml"
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Build playlist
+
+      - name: Run all tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Strict build
         run: python3 build.py --strict
-      - name: Test metadata-stripped EPGshare mapping
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build merged live EPG
         shell: bash
         run: |
           set -euo pipefail
-          curl -fLsS 'https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz' -o /tmp/hu.xml.gz
-          gzip -dc /tmp/hu.xml.gz > /tmp/hu.xml
 
-          python3 - <<'PY'
-          import re
-          import unicodedata
-          import xml.etree.ElementTree as ET
-          from collections import Counter, defaultdict
-          from datetime import datetime, timezone
-          from pathlib import Path
-          from epg_prepare import quality_base_id
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
 
-          ATTR_RE = re.compile(r'([\w-]+)="([^"]*)"')
-          STATUS_PREFIX_RE = re.compile(r'^\[[A-Z]{2}\s+[^\]]+\]\s*', re.I)
-          RES_RE = re.compile(r'\s*[\[(]\s*\d{3,4}p\s*[\])]\s*', re.I)
-          NOT247_RE = re.compile(r'\s*\[Not\s+24/7\]\s*', re.I)
-          HD_SUFFIX_RE = re.compile(r'\s+HD$', re.I)
+          python3 epg_prepare.py \
+            --playlist public/tv.m3u \
+            --epg-root .epg-builder \
+            --sites "mediaklikk.hu,horizon.tv" \
+            --output .epg.channels.xml \
+            --report .epg-iptv-coverage.json
 
-          def name_key(value):
-              value = unicodedata.normalize('NFKC', value or '').strip()
-              value = STATUS_PREFIX_RE.sub('', value)
-              value = NOT247_RE.sub(' ', value)
-              value = RES_RE.sub(' ', value)
-              value = HD_SUFFIX_RE.sub('', value)
-              value = value.casefold()
-              value = re.sub(r'[^\w]+', ' ', value, flags=re.UNICODE)
-              return ' '.join(value.split())
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections=3 \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
 
-          rows = []
-          pending = None
-          for raw in Path('public/tv.m3u').read_text(encoding='utf-8-sig').splitlines():
-              line = raw.strip()
-              if line.startswith('#EXTINF:'):
-                  attrs = dict(ATTR_RE.findall(line))
-                  tvg_id = (attrs.get('tvg-id') or '').strip()
-                  name = line.rsplit(',', 1)[-1].strip() if ',' in line else ''
-                  pending = (tvg_id, name)
-              elif line and not line.startswith('#') and pending:
-                  if pending[0]:
-                      rows.append(pending)
-                  pending = None
+          curl --fail --location --silent --show-error --retry 3 \
+            'https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz' \
+            -o .epg-external.download
 
-          by_id = {}
-          for tvg_id, name in rows:
-              by_id.setdefault(tvg_id, name)
-          rows = list(by_id.items())
+          python3 epg_merge.py \
+            --playlist public/tv.m3u \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external .epg-external.download \
+            --external-provider epgshare01.online \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days 7 \
+            --output public/guide.xml \
+            --report public/epg-coverage.json
 
-          exact = {tvg_id.casefold(): tvg_id for tvg_id, _ in rows}
-          base = defaultdict(list)
-          playlist_names = defaultdict(list)
-          for tvg_id, name in rows:
-              base[quality_base_id(tvg_id)].append(tvg_id)
-              key = name_key(name)
-              if key:
-                  playlist_names[key].append(tvg_id)
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
 
-          root = ET.parse('/tmp/hu.xml').getroot()
-          channels = root.findall('channel')
-          programmes = root.findall('programme')
-          external = {}
-          for c in channels:
-              cid = (c.get('id') or '').strip()
-              external[cid] = [(d.text or '').strip() for d in c.findall('display-name') if (d.text or '').strip()]
-
-          mapping = {}
-          used_targets = set()
-          methods = Counter()
-          ambiguous = []
-          for cid, names in external.items():
-              target = exact.get(cid.casefold())
-              method = 'exact'
-              if target is None:
-                  candidates = base.get(quality_base_id(cid), [])
-                  if len(candidates) == 1:
-                      target = candidates[0]
-                      method = 'quality_id'
-              if target is None:
-                  candidates = set()
-                  for name in names:
-                      key = name_key(name)
-                      candidates.update(playlist_names.get(key, []))
-                  if len(candidates) == 1:
-                      target = next(iter(candidates))
-                      method = 'unique_name'
-                  elif len(candidates) > 1:
-                      ambiguous.append((cid, names, sorted(candidates)))
-              if target and target not in used_targets:
-                  mapping[cid] = target
-                  used_targets.add(target)
-                  methods[method] += 1
-
-          today = datetime.now(timezone.utc).strftime('%Y%m%d')
-          today_populated = set()
-          programme_counts = Counter()
-          for p in programmes:
-              target = mapping.get((p.get('channel') or '').strip())
-              if not target:
-                  continue
-              programme_counts[target] += 1
-              if (p.get('start') or '').strip().startswith(today):
-                  today_populated.add(target)
-
-          print('playlist IDs:', len(rows))
-          print('mapped playlist IDs:', len(used_targets))
-          print('mapping methods:', dict(methods))
-          print('TODAY populated:', len(today_populated))
-          print('TODAY IDs:', ', '.join(sorted(today_populated)))
-          print('ambiguous:', len(ambiguous))
-          for row in ambiguous[:20]:
-              print('AMBIGUOUS', row)
-          print('--- unique-name additions ---')
-          for cid, target in sorted(mapping.items(), key=lambda x: x[1].casefold()):
-              if cid.casefold() not in exact and not (len(base.get(quality_base_id(cid), [])) == 1 and base.get(quality_base_id(cid), [None])[0] == target):
-                  print(target, '<-', cid, '|', ' / '.join(external[cid]), '| programs', programme_counts[target])
-          PY
+          echo '=== MERGED COVERAGE ==='
+          cat public/epg-coverage.json
+          echo '=== HEALTH ==='
+          cat public/epg-health.json
