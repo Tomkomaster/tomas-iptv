@@ -1,0 +1,51 @@
+name: One-time migrate legacy audit
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - "migrate_audit.py"
+      - ".github/workflows/migrate-audit-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Build current playlist inventory
+        run: python3 build.py
+
+      - name: Migrate safe legacy audit rows
+        run: python3 migrate_audit.py --write
+
+      - name: Validate migrated audit strictly
+        run: python3 build.py --strict
+
+      - name: Commit migrated audit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- audit.json; then
+            echo "No safe legacy audit rows needed migration."
+            exit 0
+          fi
+
+          echo "Migrated audit diff summary:"
+          git diff --stat -- audit.json
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git commit -m "Migrate legacy audit rows to exact streams"
+          git push
