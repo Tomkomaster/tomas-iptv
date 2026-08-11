@@ -1,0 +1,58 @@
+name: One-time research priority publish
+
+on:
+  push:
+    branches:
+      - "agent/research-priority-queue"
+    paths:
+      - ".github/workflows/research-priority-publish.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout priority branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/research-priority-queue
+          fetch-depth: 0
+
+      - name: Apply already validated exporter patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          source = Path(".github/workflows/research-priority-once.yml").read_text(encoding="utf-8").splitlines()
+          start = next(i for i, line in enumerate(source) if line.strip() == "python3 - <<'PY'")
+          end = next(i for i in range(start + 1, len(source)) if source[i].strip() == "PY")
+          code = textwrap.dedent("\n".join(source[start + 1:end])) + "\n"
+          Path("/tmp/apply-research-priority.py").write_text(code, encoding="utf-8")
+          PY
+          python3 /tmp/apply-research-priority.py
+          git restore .github/workflows/build-and-publish.yml
+
+      - name: Revalidate exporter
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile research_priority.py research_exports.py
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+          python3 research_exports.py --public-dir public --priority-policy research_priority.json
+          git diff --check -- research_exports.py
+
+      - name: Commit and push exporter only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research_exports.py
+          git commit -m "Prioritize missing channel research"
+          git push origin HEAD:agent/research-priority-queue
