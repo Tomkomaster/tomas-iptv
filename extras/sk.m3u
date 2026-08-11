@@ -344,3 +344,8 @@ https://5ca49f2417d90.streamlock.net/live/reduta/playlist.m3u8
 #EXTINF:-1 tvg-name="360 TuneBox" group-title="Music",360 TuneBox
 https://dash2.antik.sk/live/test_360_tunebox_medium_atk/playlist.m3u8
 
+# TV Severka — Panaccess direct alternative
+# LOW CONFIDENCE: LOTOS currently reports HLS playlist request error
+# Test before keeping
+#EXTINF:-1 tvg-id="TVSeverka.sk" tvg-name="TV Severka" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Severka - PANACCESS TEST
+https://cdnsk003.panaccess.com/local/Severka/index.m3u8
