@@ -87,6 +87,10 @@ class ResearchExportTests(unittest.TestCase):
             row(
                 channel="RTL Klub",
                 tvg_id="RTLKlub.hu",
+                language_code="DE",
+                expected_language_codes="HU",
+                observed_language_codes="DE",
+                language_match="no",
                 stream_url="https://example.test/rtl.m3u8",
                 vlc="mrl_error",
                 samsung="generic_error",
@@ -170,14 +174,17 @@ class ResearchExportTests(unittest.TestCase):
                 research_rows = list(csv.DictReader(handle))
 
             statuses = {}
+            countries = {}
             for item in research_rows:
                 statuses.setdefault(item["channel"], item["channel_status"])
+                countries.setdefault(item["channel"], item["country"])
 
             self.assertEqual(statuses["TV2"], "WORKING")
             self.assertEqual(statuses["RTL Klub"], "NO WORKING FEED")
             self.assertEqual(statuses["Spektrum"], "CANDIDATES TO TEST")
             self.assertEqual(statuses["Film+"], "PARTIAL")
             self.assertEqual(statuses["Markiza"], "WORKING")
+            self.assertEqual(countries["RTL Klub"], "HU")
 
             with (public_dir / "missing.csv").open(
                 "r", encoding="utf-8-sig", newline=""
@@ -188,6 +195,7 @@ class ResearchExportTests(unittest.TestCase):
             self.assertEqual(missing_names, {"RTL Klub", "Spektrum", "Film+"})
 
             rtl = next(item for item in missing_rows if item["channel"] == "RTL Klub")
+            self.assertEqual(rtl["country"], "HU")
             self.assertEqual(rtl["known_feeds"], "2")
             self.assertEqual(rtl["rejected_feeds"], "2")
             self.assertEqual(rtl["last_tested"], "2026-08-09")
@@ -196,6 +204,7 @@ class ResearchExportTests(unittest.TestCase):
             research_md = (public_dir / "research.md").read_text(encoding="utf-8")
             self.assertIn("# HU", research_md)
             self.assertIn("# SK", research_md)
+            self.assertNotIn("# DE", research_md)
             self.assertIn("## ✅ TV2", research_md)
             self.assertIn("## ❌ RTL Klub", research_md)
             self.assertIn("https://example.test/tv2.m3u8", research_md)
