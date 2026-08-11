@@ -16,47 +16,58 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Inspect browser-like TV2 response
+      - name: Inspect current browser request code
         shell: bash
         run: |
           set -euo pipefail
-          TODAY="$(TZ=Europe/Budapest date +%F)"
           UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
 
           curl -fsS \
             'https://tvmusor.borsonline.hu/most/' \
             -A "$UA" \
-            -c /tmp/tvmusor.cookies \
             -o /tmp/tvmusor-page.html
 
-          curl -fsS \
-            'https://tvmusor.borsonline.hu/a/get-events/' \
-            -A "$UA" \
-            -b /tmp/tvmusor.cookies \
-            -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \
-            -H 'X-Requested-With: XMLHttpRequest' \
-            -H 'Accept: application/json, text/javascript, */*; q=0.01' \
-            -H 'Referer: https://tvmusor.borsonline.hu/most/' \
-            -H 'Origin: https://tvmusor.borsonline.hu' \
-            --data-urlencode "data={\"blocks\":[\"3|$TODAY\"]}" \
-            -o /tmp/tvmusor.json
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('/tmp/tvmusor-page.html').read_text(encoding='utf-8', errors='replace')
+          scripts = re.findall(r'<script[^>]+src=["\']([^"\']+)', html, flags=re.I)
+          print('script sources:')
+          for src in scripts:
+              print(src)
+          Path('/tmp/script-urls.txt').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+
+          : > /tmp/all-js.txt
+          while IFS= read -r src; do
+            [ -n "$src" ] || continue
+            case "$src" in
+              http://*|https://*) url="$src" ;;
+              //*) url="https:$src" ;;
+              /*) url="https://tvmusor.borsonline.hu$src" ;;
+              *) url="https://tvmusor.borsonline.hu/$src" ;;
+            esac
+            echo "FETCH $url"
+            curl -fsS -A "$UA" "$url" >> /tmp/all-js.txt || true
+            printf '\n' >> /tmp/all-js.txt
+          done < /tmp/script-urls.txt
 
           python3 - <<'PY'
-          import json
           from pathlib import Path
-          data = json.loads(Path('/tmp/tvmusor.json').read_text(encoding='utf-8'))
-          print('status:', data.get('status') if isinstance(data, dict) else None)
-          inner = data.get('data') if isinstance(data, dict) else None
-          print('time:', inner.get('time') if isinstance(inner, dict) else None)
-          blocks = inner.get('loadedBlocks') if isinstance(inner, dict) else None
-          print('loadedBlocks type:', type(blocks).__name__)
-          if isinstance(blocks, dict):
-              print('block keys:', list(blocks)[:20])
-              for key, value in list(blocks.items())[:3]:
-                  print('block', key, 'value type', type(value).__name__, 'value', value if not isinstance(value, list) else f'list[{len(value)}]')
-                  if isinstance(value, list) and value:
-                      print('first item keys:', list(value[0]) if isinstance(value[0], dict) else type(value[0]).__name__)
-                      print('first item:', value[0])
-          print('response chars:', len(Path('/tmp/tvmusor.json').read_text(encoding='utf-8')))
-          print('cookie chars:', len(Path('/tmp/tvmusor.cookies').read_text(encoding='utf-8')))
+          text = Path('/tmp/all-js.txt').read_text(encoding='utf-8', errors='replace')
+          for needle in ('get-events', 'loadedBlocks', 'blocks:', 'blocks =', 'blocks='):
+              print(f'--- {needle} ---')
+              start = 0
+              found = 0
+              while found < 10:
+                  pos = text.find(needle, start)
+                  if pos < 0:
+                      break
+                  left = max(0, pos - 500)
+                  right = min(len(text), pos + 1000)
+                  print(text[left:right].replace('\n', ' ')[:1500])
+                  print()
+                  start = pos + len(needle)
+                  found += 1
+              print('matches:', found)
           PY
