@@ -1,0 +1,87 @@
+name: One-time audit formatting cleanup
+
+on:
+  push:
+    branches:
+      - "agent/migrate-safe-legacy-audits"
+    paths:
+      - ".github/workflows/compact-audit-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  compact:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout migration branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/migrate-safe-legacy-audits
+          fetch-depth: 0
+
+      - name: Restore compact language-array formatting
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          path = Path("audit.json")
+          before_text = path.read_text(encoding="utf-8")
+          before_data = json.loads(before_text)
+
+          pattern = re.compile(
+              r'(?P<indent>\s*)"(?P<key>expected_language_codes|observed_language_codes)": \[\n'
+              r'(?P<body>(?:\s+[^\n]+\n)+?)'
+              r'(?P=indent)\]',
+              re.MULTILINE,
+          )
+
+          def compact(match):
+              indent = match.group("indent")
+              key = match.group("key")
+              body = match.group("body")
+              values = []
+              for raw in body.splitlines():
+                  value = raw.strip()
+                  if value.endswith(","):
+                      value = value[:-1]
+                  if value:
+                      values.append(json.loads(value))
+              return (
+                  f'{indent}"{key}": '
+                  + json.dumps(values, ensure_ascii=False)
+              )
+
+          after_text, count = pattern.subn(compact, before_text)
+          after_data = json.loads(after_text)
+          if after_data != before_data:
+              raise SystemExit("Formatting cleanup changed audit JSON semantics.")
+
+          print(f"Compacted {count} language arrays without changing JSON data.")
+          path.write_text(after_text, encoding="utf-8")
+          PY
+
+      - name: Validate strict build and tests
+        run: |
+          set -euo pipefail
+          python3 build.py --strict
+          python3 -m unittest discover -s tests -v
+          git diff --check -- audit.json
+
+      - name: Commit audit formatting only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- audit.json; then
+            echo "No formatting cleanup required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git commit -m "Preserve compact audit language arrays"
+          git push origin HEAD:agent/migrate-safe-legacy-audits
