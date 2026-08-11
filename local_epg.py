@@ -11,6 +11,7 @@ from collections import Counter
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
+from time import sleep
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
@@ -130,10 +131,20 @@ def fetch_lines(url: str, timeout: float = 15.0) -> list[str]:
             "Cache-Control": "no-cache",
         },
     )
-    with urlopen(request, timeout=timeout) as response:
-        raw = response.read(750_000)
-        charset = response.headers.get_content_charset() or "utf-8"
-    return html_lines(raw.decode(charset, errors="replace"))
+    last_error = None
+    for attempt in range(2):
+        try:
+            with urlopen(request, timeout=timeout) as response:
+                raw = response.read(750_000)
+                charset = response.headers.get_content_charset() or "utf-8"
+            return html_lines(raw.decode(charset, errors="replace"))
+        except (URLError, TimeoutError, OSError) as exc:
+            last_error = exc
+            if attempt == 0:
+                sleep(0.75)
+                continue
+            raise
+    raise RuntimeError(f"unreachable fetch failure: {last_error}")
 
 
 def time_parts(value: str) -> tuple[int, int, int, str] | None:
@@ -232,6 +243,20 @@ def slice_section(lines: list[str], start_predicate, end_predicate) -> list[str]
     return lines[start + 1 : end if end is not None else len(lines)]
 
 
+def best_section(lines: list[str], start_predicate, end_predicate) -> list[str]:
+    starts = [index for index, value in enumerate(lines) if start_predicate(value)]
+    best: list[str] = []
+    best_score = -1
+    for start in starts:
+        end = find_index(lines, end_predicate, start + 1)
+        section = lines[start + 1 : end if end is not None else len(lines)]
+        score = sum(1 for value in section if time_parts(value) is not None)
+        if score > best_score:
+            best = section
+            best_score = score
+    return best
+
+
 def current_weekday_section(lines: list[str], reference_date: date, adjective: bool) -> list[str]:
     weekday = reference_date.weekday()
     marker = WEEKDAY_ADJECTIVES[weekday] if adjective else WEEKDAYS[weekday]
@@ -300,10 +325,10 @@ def parse_kanizsa(lines: list[str], reference_date: date) -> list[Programme]:
 
 
 def parse_eger(lines: list[str], reference_date: date) -> list[Programme]:
-    variants = hu_long_date_variants(reference_date)
-    section = slice_section(
+    variants = {value.rstrip(".") for value in hu_long_date_variants(reference_date)}
+    section = best_section(
         lines,
-        lambda value: folded(value) in variants,
+        lambda value: folded(value).rstrip(".") in variants,
         looks_like_hu_dated_heading,
     )
     return parse_entries(section, reference_date, max_entries=50)
@@ -332,16 +357,12 @@ def parse_pannon(lines: list[str], reference_date: date) -> list[Programme]:
 
 
 def parse_ozd(lines: list[str], reference_date: date) -> list[Programme]:
-    needle = folded(reference_date.strftime("%Y. %m. %d."))
-    start = find_index(lines, lambda value: folded(value) == needle)
-    if start is None:
-        return []
-    end = find_index(
+    needle = folded(reference_date.strftime("%Y. %m. %d.")).rstrip(".")
+    section = best_section(
         lines,
+        lambda value: folded(value).rstrip(".") == needle,
         lambda value: bool(NUMERIC_DATE_RE.match(value.replace(" ", ""))),
-        start + 1,
     )
-    section = lines[start + 1 : end if end is not None else start + 80]
     return parse_entries(section, reference_date, max_entries=30)
 
 

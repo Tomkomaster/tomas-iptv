@@ -9,7 +9,9 @@ from local_epg import (
     Programme,
     overlay_local_epg,
     parse_cegled,
+    parse_eger,
     parse_entries,
+    parse_ozd,
     parse_tvmustra,
 )
 
@@ -197,6 +199,35 @@ class LocalEpgTests(unittest.TestCase):
             self.assertEqual(result["summary"]["filled_channels"], 0)
             data = json.loads(coverage.read_text(encoding="utf-8"))
             self.assertEqual(data["matched"][0]["provider"], "existing.example")
+
+    def test_dated_parsers_choose_real_schedule_block(self):
+        eger = parse_eger(
+            [
+                "Kedd: 2026. augusztus 11",
+                "Szerda: 2026. augusztus 12",
+                "Kedd: 2026. augusztus 11",
+                "8:00 Tv Eger szignál",
+                "8:01 HírAdás Plusz",
+                "18:00 Híradó",
+                "Szerda: 2026. augusztus 12",
+            ],
+            date(2026, 8, 11),
+        )
+        self.assertEqual(len(eger), 3)
+
+        ozd = parse_ozd(
+            [
+                "2026. 08. 11",
+                "2026. 08. 12",
+                "2026. 08. 11",
+                "18:25 A szomszéd vár ism.",
+                "19:00 Ózdi Krónika",
+                "19:30 Forgószínpad",
+                "2026. 08. 12",
+            ],
+            date(2026, 8, 11),
+        )
+        self.assertEqual(len(ozd), 3)
 
 
 if __name__ == "__main__":
