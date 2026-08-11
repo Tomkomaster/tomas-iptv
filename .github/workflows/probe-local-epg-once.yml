@@ -1,4 +1,4 @@
-name: One-time validate local EPG patch
+name: One-time validate dated local EPG patch
 
 on:
   push:
