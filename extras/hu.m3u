@@ -611,3 +611,21 @@ https://tv.dragonhall.hu/live/dragonhall.m3u8
 # This is an older public CloudFront HLS origin — legacy test only.
 #EXTINF:-1 tvg-name="PAX TV",PAX TV [Legacy CloudFront test]
 https://d2fxrfbiedz1tm.cloudfront.net/livepaxtv/smil:PC.smil/playlist.m3u8
+
+# TVR Târgu-Mureș / Marosvásárhely
+# Romanian regional public TV with substantial Hungarian-language programming.
+# Current direct TVR CDN feed.
+#EXTINF:-1 tvg-name="TVR Târgu-Mureș",TVR Târgu-Mureș [RO / Hungarian programming]
+https://tvr-tgmures.lg.mncdn.com/tvrtgmures/smil:tvrtgmures.smil/playlist.m3u8
+
+# TVR Cluj / Kolozsvár
+# Regional public TV with dedicated Hungarian-community programming,
+# including Erdélyi Figyelő.
+#EXTINF:-1 tvg-name="TVR Cluj",TVR Cluj [RO / Hungarian programming]
+https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8
+
+# TVR Timișoara / Temesvár
+# Regional public TV with a dedicated Hungarian-language minority programme.
+# Current direct TVR CDN feed.
+#EXTINF:-1 tvg-name="TVR Timișoara",TVR Timișoara [RO / Hungarian programming]
+https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8
