@@ -11,6 +11,7 @@ on:
       - "epg_merge.py"
       - "epg_aliases.json"
       - "epg_health.py"
+      - "local_epg.py"
       - "healthcheck.py"
       - "migrate_audit.py"
       - "config.json"
@@ -220,6 +221,13 @@ jobs:
           fi
 
           python3 epg_merge.py "${MERGE_ARGS[@]}"
+
+          python3 local_epg.py \
+            --playlist public/tv.m3u \
+            --guide public/guide.xml \
+            --coverage public/epg-coverage.json \
+            --report public/local-epg.json \
+            --future-days "$EPG_FUTURE_DAYS"
 
       - name: Validate XMLTV EPG
         run: |
