@@ -32,31 +32,49 @@ jobs:
           path = Path("audit.json")
           before_text = path.read_text(encoding="utf-8")
           before_data = json.loads(before_text)
+          lines = before_text.splitlines()
+          output = []
+          count = 0
+          index = 0
 
-          pattern = re.compile(
-              r'(?P<indent>\s*)"(?P<key>expected_language_codes|observed_language_codes)": \[\n'
-              r'(?P<body>(?:\s+[^\n]+\n)+?)'
-              r'(?P=indent)\]',
-              re.MULTILINE,
+          opener = re.compile(
+              r'^(?P<indent>\s*)"(?P<key>expected_language_codes|observed_language_codes)": \[$'
           )
 
-          def compact(match):
-              indent = match.group("indent")
-              key = match.group("key")
-              body = match.group("body")
-              values = []
-              for raw in body.splitlines():
-                  value = raw.strip()
-                  if value.endswith(","):
-                      value = value[:-1]
-                  if value:
-                      values.append(json.loads(value))
-              return (
-                  f'{indent}"{key}": '
-                  + json.dumps(values, ensure_ascii=False)
-              )
+          while index < len(lines):
+              line = lines[index]
+              match = opener.match(line)
+              if not match:
+                  output.append(line)
+                  index += 1
+                  continue
 
-          after_text, count = pattern.subn(compact, before_text)
+              values = []
+              cursor = index + 1
+              while cursor < len(lines):
+                  stripped = lines[cursor].strip()
+                  if stripped in {']', '],'}:
+                      break
+                  if stripped:
+                      value_text = stripped[:-1] if stripped.endswith(',') else stripped
+                      values.append(json.loads(value_text))
+                  cursor += 1
+
+              if cursor >= len(lines):
+                  raise SystemExit(
+                      f"Unclosed {match.group('key')} array at line {index + 1}."
+                  )
+
+              comma = ',' if lines[cursor].strip() == '],' else ''
+              output.append(
+                  f'{match.group("indent")}"{match.group("key")}": '
+                  + json.dumps(values, ensure_ascii=False)
+                  + comma
+              )
+              count += 1
+              index = cursor + 1
+
+          after_text = "\n".join(output) + ("\n" if before_text.endswith("\n") else "")
           after_data = json.loads(after_text)
           if after_data != before_data:
               raise SystemExit("Formatting cleanup changed audit JSON semantics.")
