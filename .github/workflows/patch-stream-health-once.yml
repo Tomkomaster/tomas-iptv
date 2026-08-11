@@ -1,0 +1,103 @@
+name: One-time integrate stream health
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/patch-stream-health-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Patch dashboard and production workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          build = Path('build.py')
+          text = build.read_text(encoding='utf-8')
+
+          old_link = '''    <a href="audit.csv">Manual verification (CSV)</a>\n    <a href="report.json">Machine report (JSON)</a>'''
+          new_link = '''    <a href="audit.csv">Manual verification (CSV)</a>\n    <a href="health.json">Automated stream health (JSON)</a>\n    <a href="report.json">Machine report (JSON)</a>'''
+          if old_link not in text:
+              raise SystemExit('Dashboard link anchor not found.')
+          text = text.replace(old_link, new_link, 1)
+
+          old_section = '''  {audit_warning_html}\n\n  <h2>Manual verification</h2>'''
+          new_section = '''  {audit_warning_html}\n\n  <h2>Automated stream health</h2>\n  <p class="muted">\n    Advisory network checks for the stable family playlist. For HLS streams the checker\n    loads the manifest, resolves a media playlist, and requests bytes from a real media\n    segment. This never changes manual VLC + Samsung verification, audit.json, or stable\n    playlist membership automatically. Three consecutive automated failures only recommend\n    a manual retest.\n  </p>\n\n  <div id="healthSummary" class="audit-summary">\n    <div class="card"><div class="value">…</div><div class="label">Loading stream health</div></div>\n  </div>\n\n  <div class="controls">\n    <input id="healthSearch" type="search" placeholder="Search automated health...">\n    <select id="healthStatusFilter">\n      <option value="">All automated statuses</option>\n      <option value="playable">Playable</option>\n      <option value="failed">Failed</option>\n      <option value="needs_manual_retest">Needs manual retest</option>\n      <option value="Online">Online</option>\n      <option value="Redirected">Redirected</option>\n      <option value="Slow startup">Slow startup</option>\n      <option value="HTTP error">HTTP error</option>\n      <option value="Manifest unavailable">Manifest unavailable</option>\n      <option value="No playable segments">No playable segments</option>\n      <option value="Timeout">Timeout</option>\n    </select>\n  </div>\n  <p id="healthVisibleCount" class="muted">Loading health.json…</p>\n\n  <div class="table-wrap">\n    <table id="healthTable">\n      <thead>\n        <tr>\n          <th>Channel</th>\n          <th>Manual</th>\n          <th>Auto health</th>\n          <th>Failure streak</th>\n          <th>Startup</th>\n          <th>Last checked</th>\n          <th>Detail</th>\n          <th>URL</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr><td colspan="8" class="muted">Loading automated stream health…</td></tr>\n      </tbody>\n    </table>\n  </div>\n\n  <h2>Manual verification</h2>'''
+          if old_section not in text:
+              raise SystemExit('Dashboard section anchor not found.')
+          text = text.replace(old_section, new_section, 1)
+
+          script_anchor = '''<script>\nconst search = document.getElementById('search');'''
+          health_script = '''<script>\nconst healthSearch = document.getElementById('healthSearch');\nconst healthStatusFilter = document.getElementById('healthStatusFilter');\nconst healthVisibleCount = document.getElementById('healthVisibleCount');\nconst healthSummary = document.getElementById('healthSummary');\nconst healthTableBody = document.querySelector('#healthTable tbody');\nlet healthRows = [];\n\nfunction healthEsc(value) {{\n  return String(value ?? '')\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll('>', '&gt;')\n    .replaceAll('"', '&quot;')\n    .replaceAll("'", '&#039;');\n}}\n\nfunction applyHealthFilters() {{\n  const q = healthSearch.value.trim().toLowerCase();\n  const status = healthStatusFilter.value;\n  let shown = 0;\n\n  for (const row of healthRows) {{\n    const matchesText = !q || row.innerText.toLowerCase().includes(q);\n    const matchesStatus = !status\n      || (status === 'playable' && row.dataset.healthSuccess === 'yes')\n      || (status === 'failed' && row.dataset.healthSuccess === 'no')\n      || (status === 'needs_manual_retest' && row.dataset.healthAttention === 'needs_manual_retest')\n      || row.dataset.healthStatus === status;\n    const show = matchesText && matchesStatus;\n    row.style.display = show ? '' : 'none';\n    if (show) shown++;\n  }}\n\n  healthVisibleCount.textContent = `Showing ${{shown}} of ${{healthRows.length}} stable streams`;\n}}\n\nfunction renderHealth(data) {{\n  const summary = data.summary || {{}};\n  const statusCounts = summary.status_counts || {{}};\n  const streams = Array.isArray(data.streams) ? data.streams : [];\n\n  healthSummary.innerHTML = `\n    <div class="card"><div class="value">${{summary.playable ?? 0}}</div><div class="label">Playable now</div></div>\n    <div class="card"><div class="value">${{statusCounts['Online'] ?? 0}}</div><div class="label">Online</div></div>\n    <div class="card"><div class="value">${{statusCounts['Redirected'] ?? 0}}</div><div class="label">Redirected</div></div>\n    <div class="card"><div class="value">${{statusCounts['Slow startup'] ?? 0}}</div><div class="label">Slow startup</div></div>\n    <div class="card"><div class="value">${{summary.failed ?? 0}}</div><div class="label">Failed this check</div></div>\n    <div class="card"><div class="value">${{summary.needs_manual_retest ?? 0}}</div><div class="label">Needs manual retest</div></div>\n    <div class="card"><div class="value">${{healthEsc(data.generated_at || '—')}}</div><div class="label">Last automated check</div></div>\n  `;\n\n  healthTableBody.innerHTML = streams.map(item => {{\n    const manualClass = item.manual_status === 'Samsung + VLC'\n      ? 'verified'\n      : (item.manual_status === 'Samsung' ? 'tv' : 'base');\n    const autoClass = item.manual_retest_recommended\n      ? 'rejected'\n      : (item.status === 'Online'\n          ? 'verified'\n          : (item.status === 'Redirected' ? 'tv' : 'review'));\n    const failureSuffix = item.success\n      ? ''\n      : ` ×${{item.consecutive_failures || 1}}`;\n    const startup = Number.isFinite(Number(item.startup_seconds))\n      ? `${{Number(item.startup_seconds).toFixed(2)}} s`\n      : '—';\n    const detail = item.manual_retest_recommended\n      ? `${{item.detail || ''}} Manual VLC + Samsung retest recommended.`\n      : (item.detail || '—');\n\n    return `\n      <tr data-health-status="${{healthEsc(item.status)}}" data-health-success="${{item.success ? 'yes' : 'no'}}" data-health-attention="${{healthEsc(item.attention)}}">\n        <td class="channel">${{healthEsc(item.channel)}}</td>\n        <td><span class="badge ${{manualClass}}">${{healthEsc(item.manual_status || 'Unknown')}}</span></td>\n        <td><span class="badge ${{autoClass}}">${{healthEsc(item.status)}}${{failureSuffix}}</span></td>\n        <td>${{item.consecutive_failures || 0}}</td>\n        <td>${{healthEsc(startup)}}</td>\n        <td>${{healthEsc(item.checked_at || data.generated_at || '—')}}</td>\n        <td><div class="detail">${{healthEsc(detail)}}</div></td>\n        <td class="url"><a href="${{healthEsc(item.stream_url)}}" target="_blank" rel="noopener">stream</a></td>\n      </tr>\n    `;\n  }}).join('');\n\n  healthRows = Array.from(document.querySelectorAll('#healthTable tbody tr'));\n  applyHealthFilters();\n}}\n\nfetch('health.json', {{ cache: 'no-store' }})\n  .then(response => {{\n    if (!response.ok) throw new Error(`HTTP ${{response.status}}`);\n    return response.json();\n  }})\n  .then(renderHealth)\n  .catch(error => {{\n    healthSummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Health data unavailable</div></div>';\n    healthTableBody.innerHTML = `<tr><td colspan="8">Automated health data could not be loaded: ${{healthEsc(error.message)}}</td></tr>`;\n    healthRows = [];\n    healthVisibleCount.textContent = 'health.json is not available yet.';\n  }});\n\nhealthSearch.addEventListener('input', applyHealthFilters);\nhealthStatusFilter.addEventListener('change', applyHealthFilters);\n\nconst search = document.getElementById('search');'''
+          if script_anchor not in text:
+              raise SystemExit('Dashboard script anchor not found.')
+          text = text.replace(script_anchor, health_script, 1)
+          build.write_text(text, encoding='utf-8')
+
+          workflow = Path('.github/workflows/build-and-publish.yml')
+          wf = workflow.read_text(encoding='utf-8')
+          path_anchor = '''      - "epg_health.py"\n      - "migrate_audit.py"'''
+          path_replacement = '''      - "epg_health.py"\n      - "healthcheck.py"\n      - "migrate_audit.py"'''
+          if path_anchor not in wf:
+              raise SystemExit('Workflow path anchor not found.')
+          wf = wf.replace(path_anchor, path_replacement, 1)
+
+          build_anchor = '''      - name: Build IPTV playlist\n        run: python3 build.py\n\n      - name: Set up Node.js for EPG'''
+          build_replacement = '''      - name: Build IPTV playlist\n        run: python3 build.py\n\n      - name: Check stable stream health\n        shell: bash\n        run: |\n          set -euo pipefail\n\n          HEALTH_ENABLED="$(\n            python3 -c '\n          import json\n          from pathlib import Path\n          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))\n          print("true" if (cfg.get("health") or {}).get("enabled", True) else "false")\n          '\n          )"\n\n          if [ "$HEALTH_ENABLED" != "true" ]; then\n            echo "Automated stream health disabled in config.json; skipping."\n            exit 0\n          fi\n\n          python3 healthcheck.py\n\n      - name: Set up Node.js for EPG'''
+          if build_anchor not in wf:
+              raise SystemExit('Workflow build anchor not found.')
+          wf = wf.replace(build_anchor, build_replacement, 1)
+          workflow.write_text(wf, encoding='utf-8')
+          PY
+
+          git diff --check
+          git diff -- build.py .github/workflows/build-and-publish.yml
+
+      - name: Run tests and strict build
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+
+      - name: Live-check all stable streams
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 healthcheck.py --no-previous
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('public/health.json').read_text(encoding='utf-8'))
+          summary = data['summary']
+          print('=== AUTOMATED STREAM HEALTH ===')
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          print('Needs manual retest:', [
+              item['channel'] for item in data['streams']
+              if item.get('manual_retest_recommended')
+          ])
+          if summary['total'] != 104:
+              raise SystemExit(f"Expected 104 stable streams, got {summary['total']}")
+          PY
+
+      - name: Commit integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build.py .github/workflows/build-and-publish.yml
+          git commit -m "Integrate automated stream health dashboard"
+          git push
