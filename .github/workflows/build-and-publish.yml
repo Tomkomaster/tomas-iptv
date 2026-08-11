@@ -9,6 +9,7 @@ on:
       - "epg_prepare.py"
       - "epg_merge.py"
       - "epg_health.py"
+      - "healthcheck.py"
       - "migrate_audit.py"
       - "config.json"
       - "audit.json"
@@ -44,6 +45,27 @@ jobs:
 
       - name: Build IPTV playlist
         run: python3 build.py
+
+      - name: Check stable stream health
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          HEALTH_ENABLED="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print("true" if (cfg.get("health") or {}).get("enabled", True) else "false")
+          '
+          )"
+
+          if [ "$HEALTH_ENABLED" != "true" ]; then
+            echo "Automated stream health disabled in config.json; skipping."
+            exit 0
+          fi
+
+          python3 healthcheck.py
 
       - name: Set up Node.js for EPG
         uses: actions/setup-node@v7
