@@ -8,6 +8,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 from healthcheck import canonical_stream_url
+from epg_policy import compile_epg_policy, resolve_epg_policy
 
 
 SEVERITY_RANK = {
@@ -109,6 +110,9 @@ def make_base_item(row: dict | None = None, *, channel: str = "", tvg_id: str = 
         "auto_status": "Unknown",
         "consecutive_failures": 0,
         "epg_status": "Unknown",
+        "epg_policy": "unknown",
+        "epg_policy_reason": "",
+        "epg_policy_match": "",
         "signals": [],
     }
 
@@ -126,13 +130,17 @@ def build_attention(
     health: dict | None = None,
     epg_coverage: dict | None = None,
     epg_health: dict | None = None,
+    epg_policy: dict | None = None,
     config: dict | None = None,
     reference_date: date | None = None,
 ) -> dict:
     health = health or {}
     epg_coverage = epg_coverage or {}
     epg_health = epg_health or {}
+    epg_policy = epg_policy or {}
     config = config or {}
+
+    epg_policy_default, epg_policy_indexes = compile_epg_policy(epg_policy)
 
     generated_at = str(report.get("generated_at") or "").strip()
     today = reference_date or parse_report_date(generated_at)
@@ -267,7 +275,9 @@ def build_attention(
             "action": "Repeat the manual VLC + Samsung playback test and update tested_on.",
         })
 
-    # 3) EPG gaps for current stable streams.
+    # 3) EPG gaps for current stable streams. The policy layer keeps
+    # genuinely actionable guide gaps in this queue while allowing local,
+    # web, event, and other schedule-light channels to opt out explicitly.
     matched_ids = {
         str(entry.get("tvg_id") or "").strip()
         for entry in (epg_coverage.get("matched") or [])
@@ -284,46 +294,99 @@ def build_attention(
         if isinstance(entry, dict) and str(entry.get("tvg_id") or "").strip()
     }
 
+    epg_policy_counts = Counter()
+    epg_suppressed_gap_counts = Counter()
+
+    def apply_epg_policy(item: dict, policy: dict) -> None:
+        item["epg_policy"] = str(policy.get("status") or "expected")
+        item["epg_policy_reason"] = str(policy.get("reason") or "")
+        item["epg_policy_match"] = str(policy.get("matched_by") or "default")
+
     for row in stable_rows:
+        policy = resolve_epg_policy(
+            row,
+            default=epg_policy_default,
+            indexes=epg_policy_indexes,
+        )
+        policy_status = str(policy.get("status") or epg_policy_default)
+        epg_policy_counts[policy_status] += 1
+
         tvg_id = str(row.get("tvg_id") or "").strip()
+        row_key = item_key(
+            stream_url=str(row.get("stream_url") or ""),
+            tvg_id=tvg_id,
+            channel=str(row.get("channel") or ""),
+        )
+        existing_item = items.get(row_key)
+        if existing_item is not None:
+            apply_epg_policy(existing_item, policy)
+
+        category = ""
+        severity = "low"
+        priority = 0
+        label = ""
+        detail = ""
+        action = ""
+        gap_status = ""
+
         if not tvg_id:
-            item = get_item(row)
-            item["epg_status"] = "No tvg-id"
-            add_signal(item, {
-                "category": "epg_missing_id",
-                "severity": "low",
-                "priority": 30,
-                "label": CATEGORY_LABELS["epg_missing_id"],
-                "detail": "The stable stream has no tvg-id, so it cannot be matched to the generated XMLTV guide.",
-                "action": "Find the correct channel tvg-id and add it to the source/extra entry.",
-            })
+            category = "epg_missing_id"
+            severity = "low"
+            priority = 30
+            label = CATEGORY_LABELS[category]
+            gap_status = "No tvg-id"
+            detail = (
+                "The stable stream has no tvg-id, so it cannot be matched to "
+                "the generated XMLTV guide."
+            )
+            action = "Find the correct channel tvg-id and add it to the source/extra entry."
         elif tvg_id in mapped_empty:
             provider = mapped_empty[tvg_id] or "selected EPG provider"
-            item = get_item(row)
-            item["epg_status"] = "Mapped, no programmes"
-            add_signal(item, {
-                "category": "epg_mapped_empty",
-                "severity": "medium",
-                "priority": 45,
-                "label": CATEGORY_LABELS["epg_mapped_empty"],
-                "detail": f"{tvg_id} maps to {provider}, but no current/future programme entries were produced.",
-                "action": "Check the provider mapping/data or add a working EPG fallback for this channel.",
-            })
+            category = "epg_mapped_empty"
+            severity = "medium"
+            priority = 45
+            label = CATEGORY_LABELS[category]
+            gap_status = "Mapped, no programmes"
+            detail = (
+                f"{tvg_id} maps to {provider}, but no current/future programme "
+                "entries were produced."
+            )
+            action = "Check the provider mapping/data or add a working EPG fallback for this channel."
         elif tvg_id in unmatched_ids:
-            item = get_item(row)
-            item["epg_status"] = "Unmapped"
-            add_signal(item, {
-                "category": "epg_unmapped",
-                "severity": "low",
-                "priority": 35,
-                "label": CATEGORY_LABELS["epg_unmapped"],
-                "detail": f"No EPG source currently maps playlist id {tvg_id}.",
-                "action": "Find an exact deterministic EPG mapping or provider for this channel.",
-            })
+            category = "epg_unmapped"
+            severity = "low"
+            priority = 35
+            label = CATEGORY_LABELS[category]
+            gap_status = "Unmapped"
+            detail = f"No EPG source currently maps playlist id {tvg_id}."
+            action = "Find an exact deterministic EPG mapping or provider for this channel."
         elif tvg_id in matched_ids:
-            item = items.get(item_key(stream_url=str(row.get("stream_url") or ""), tvg_id=tvg_id, channel=str(row.get("channel") or "")))
-            if item is not None:
-                item["epg_status"] = "Programme data"
+            if existing_item is not None:
+                existing_item["epg_status"] = "Programme data"
+            continue
+        else:
+            continue
+
+        if policy_status != "expected":
+            epg_suppressed_gap_counts[policy_status] += 1
+            if existing_item is not None:
+                if policy_status == "not_expected":
+                    existing_item["epg_status"] = "Not expected"
+                else:
+                    existing_item["epg_status"] = f"Optional: {gap_status}"
+            continue
+
+        item = get_item(row)
+        apply_epg_policy(item, policy)
+        item["epg_status"] = gap_status
+        add_signal(item, {
+            "category": category,
+            "severity": severity,
+            "priority": priority,
+            "label": label,
+            "detail": detail,
+            "action": action,
+        })
 
     # 4) Previously TV-safe verified URLs that no longer exist in any current
     # source/test candidate. This is advisory history, not automatic deletion.
@@ -410,7 +473,7 @@ def build_attention(
     )
 
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
         "reference_date": today.isoformat(),
         "advisory_only": True,
@@ -418,6 +481,7 @@ def build_attention(
         "settings": {
             "manual_stale_days": stale_days,
             "manual_very_stale_days": very_stale_days,
+            "epg_policy_default": epg_policy_default,
         },
         "summary": {
             "items": len(output_items),
@@ -427,6 +491,15 @@ def build_attention(
             "low": severity_counts.get("low", 0),
             "severity_counts": dict(sorted(severity_counts.items())),
             "category_counts": dict(sorted(category_counts.items())),
+            "epg_policy_counts": {
+                status: epg_policy_counts.get(status, 0)
+                for status in ("expected", "optional", "not_expected")
+            },
+            "epg_suppressed_gaps": sum(epg_suppressed_gap_counts.values()),
+            "epg_suppressed_gap_counts": {
+                status: epg_suppressed_gap_counts.get(status, 0)
+                for status in ("optional", "not_expected")
+            },
         },
         "category_labels": CATEGORY_LABELS,
         "items": output_items,
@@ -441,6 +514,7 @@ def main() -> None:
     parser.add_argument("--health", type=Path, default=Path("public/health.json"))
     parser.add_argument("--epg-coverage", type=Path, default=Path("public/epg-coverage.json"))
     parser.add_argument("--epg-health", type=Path, default=Path("public/epg-health.json"))
+    parser.add_argument("--epg-policy", type=Path, default=Path("epg_policy.json"))
     parser.add_argument("--config", type=Path, default=Path("config.json"))
     parser.add_argument("--output", type=Path, default=Path("public/attention.json"))
     args = parser.parse_args()
@@ -453,6 +527,7 @@ def main() -> None:
         health=load_json(args.health),
         epg_coverage=load_json(args.epg_coverage),
         epg_health=load_json(args.epg_health),
+        epg_policy=load_json(args.epg_policy),
         config=load_json(args.config),
     )
 
