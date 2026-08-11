@@ -184,3 +184,11 @@ https://stream.ostv.sk/GTTV/index.m3u8
 # Mana Cirkev Online — Slovak-language Christian television
 #EXTINF:-1 tvg-name="Mana Cirkev Online" group-title="Religious",Mana Cirkev Online
 https://w2.manasat.com/cirkev-online/smil:cirkev-online.smil/playlist.m3u8
+
+# Skvelé TV — Slovak documentary/lifestyle channel; recent Antik HLS candidate
+#EXTINF:-1 tvg-name="Skvelé TV",Skvelé TV
+https://dash3.antik.sk/live/test_skvele_tv_fhd/playlist.m3u8
+
+# TV Piánko — Slovak relaxation channel; recent Antik HLS candidate
+#EXTINF:-1 tvg-name="TV Piánko",TV Piánko
+http://budapest-cache-1.antik.sk/live/test_pianko/playlist.m3u8
