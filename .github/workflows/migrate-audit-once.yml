@@ -1,0 +1,86 @@
+name: One-time safe audit migration
+
+on:
+  push:
+    branches:
+      - "agent/migrate-safe-legacy-audits"
+    paths:
+      - ".github/workflows/migrate-audit-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout migration branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/migrate-safe-legacy-audits
+          fetch-depth: 0
+
+      - name: Run unit tests before migration
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Build current audit inventory
+        run: python3 build.py --strict
+
+      - name: Dry-run safe migration
+        run: python3 migrate_audit.py
+
+      - name: Apply only one-to-one migrations
+        run: python3 migrate_audit.py --write
+
+      - name: Rebuild and validate migrated audit
+        run: |
+          set -euo pipefail
+          python3 build.py --strict
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("public/report.json").read_text(encoding="utf-8"))
+          audit = report.get("audit") or {}
+          warnings = [str(item) for item in (audit.get("warnings") or [])]
+          legacy_warnings = [
+              item for item in warnings
+              if "legacy channel-level audit" in item.casefold()
+          ]
+          ambiguous = audit.get("ambiguous_legacy_audits") or []
+
+          print(f"Remaining audit warnings: {len(warnings)}")
+          print(f"Remaining legacy one-feed warnings: {len(legacy_warnings)}")
+          print(f"Ambiguous legacy audits: {len(ambiguous)}")
+
+          if ambiguous:
+              raise SystemExit(
+                  "Refusing to commit: ambiguous legacy audits appeared after migration."
+              )
+          if legacy_warnings:
+              raise SystemExit(
+                  "Refusing to commit: safe legacy one-feed warnings remain after migration."
+              )
+          PY
+
+      - name: Run unit tests after migration
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Commit migrated audit only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short
+          git diff --check -- audit.json
+
+          if git diff --quiet -- audit.json; then
+            echo "No safe audit migrations were available."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git commit -m "Migrate safe legacy audits to exact streams"
+          git push origin HEAD:agent/migrate-safe-legacy-audits
