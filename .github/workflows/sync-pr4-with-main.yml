@@ -42,6 +42,46 @@ jobs:
           # Today's main audit is the source of truth. Do not resurrect older
           # migrated/removed rows from the historical PR snapshot.
           git checkout origin/main -- audit.json
+
+          # One historical result needs exact attribution after a second DTV
+          # candidate was discovered. PR #4's earlier safe migration recorded
+          # which URL the 2026-08-09 successful VLC+Samsung test belonged to.
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('audit.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          rows = data.get('channels') if isinstance(data, dict) else data
+          if not isinstance(rows, list):
+              raise SystemExit('audit.json has no channels list.')
+
+          matches = [
+              row for row in rows
+              if isinstance(row, dict)
+              and str(row.get('channel') or '').strip() == 'DTV'
+              and not str(row.get('stream_url') or '').strip()
+          ]
+
+          if len(matches) != 1:
+              raise SystemExit(
+                  f'Expected exactly one legacy DTV audit row; found {len(matches)}.'
+              )
+
+          row = matches[0]
+          row['stream_url'] = (
+              'http://cloudfront44.lexanetwork.com:1732/'
+              'hlsrelay003/hls/livestream.sdp.m3u8'
+          )
+          row['tvg_id'] = 'DTV.hu@SD'
+          row['protocol'] = 'HLS'
+
+          path.write_text(
+              json.dumps(data, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          print('Restored exact DTV URL attribution from PR #4 migration history.')
+          PY
           git add audit.json
 
           # Keep PR #4's production workflow (health + improved EPG + attention)
