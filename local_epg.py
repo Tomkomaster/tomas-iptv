@@ -383,6 +383,31 @@ def parse_vasarhely(lines: list[str], reference_date: date) -> list[Programme]:
     return parse_entries(section, reference_date, max_entries=80)
 
 
+def parse_mako(lines: list[str], reference_date: date) -> list[Programme]:
+    def marker(value: date) -> str:
+        return folded(
+            f"{WEEKDAYS[value.weekday()]} {value.strftime('%m.%d')}"
+        ).rstrip(".")
+
+    section = slice_section(
+        lines,
+        lambda value: folded(value).rstrip(".") == marker(reference_date),
+        lambda value: folded(value).rstrip(".") == marker(reference_date + timedelta(days=1)),
+    )
+
+    normalized: list[str] = []
+    for line in section:
+        match = re.match(r"^(\d{1,2})[.:](\d{2})\s+(.+)$", clean_title(line))
+        if match:
+            normalized.append(
+                f"{int(match.group(1)):02d}:{match.group(2)} {match.group(3)}"
+            )
+        else:
+            normalized.append(line)
+
+    return parse_entries(normalized, reference_date, max_entries=30)
+
+
 def parse_tvmustra(lines: list[str], reference_date: date) -> list[Programme]:
     end = find_index(lines, lambda value: folded(value) == "epp most megy")
     section = lines[: end if end is not None else len(lines)]
@@ -410,6 +435,7 @@ PARSERS = {
     "pannon": parse_pannon,
     "ozd": parse_ozd,
     "vasarhely": parse_vasarhely,
+    "mako": parse_mako,
     "tvmustra": parse_tvmustra,
 }
 
@@ -484,6 +510,14 @@ def sources_for(reference_date: date) -> list[Source]:
             "vasarhely",
             "https://www.hodpress.hu/vtv-musor/",
             8,
+        ),
+        Source(
+            "MakoiVarosiTelevizio.hu@SD",
+            "Makói Városi Televízió",
+            "makotv.hu",
+            "mako",
+            "https://makotv.hu/heti-musor/",
+            5,
         ),
         Source(
             "EWTNBonumTV.hu@SD",

@@ -11,6 +11,7 @@ from local_epg import (
     parse_cegled,
     parse_eger,
     parse_entries,
+    parse_mako,
     parse_ozd,
     parse_tvmustra,
 )
@@ -228,6 +229,34 @@ class LocalEpgTests(unittest.TestCase):
             date(2026, 8, 11),
         )
         self.assertEqual(len(ozd), 3)
+
+    def test_mako_selects_exact_day_and_accepts_dot_times(self):
+        programmes = parse_mako(
+            [
+                "Hétfő 08.10.",
+                "18.00 Monday News",
+                "Kedd 08.11",
+                "18.00 Híradó – helyi aktuális hírek",
+                "18.15 Időjárás előrejelzés",
+                "18.19 Ahogy elődeink arattak Makón",
+                "19.45 Híradó – helyi aktuális hírek",
+                "20:00 Időjárás előrejelzés",
+                "Szerda 08.12.",
+                "18.00 Wednesday News",
+            ],
+            date(2026, 8, 11),
+        )
+        self.assertEqual(
+            [item.title for item in programmes],
+            [
+                "Híradó – helyi aktuális hírek",
+                "Időjárás előrejelzés",
+                "Ahogy elődeink arattak Makón",
+                "Híradó – helyi aktuális hírek",
+                "Időjárás előrejelzés",
+            ],
+        )
+        self.assertTrue(all(item.start.date() == date(2026, 8, 11) for item in programmes))
 
 
 if __name__ == "__main__":
