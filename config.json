@@ -79,7 +79,18 @@
       "language_code": "HU",
       "url": "https://iptv-org.github.io/iptv/languages/hun.m3u"
     },
-    
+    {
+      "name": "IPTV-org Slovak language",
+      "kind": "alternatives",
+      "language_code": "SK",
+      "url": "https://iptv-org.github.io/iptv/languages/slk.m3u"
+    },
+    {
+      "name": "IPTV-org Slovakia country",
+      "kind": "alternatives",
+      "language_code": "SK",
+      "url": "https://iptv-org.github.io/iptv/countries/sk.m3u"
+    }, 
     {
       "name": "IPTV-org Slovakia",
       "kind": "base",
