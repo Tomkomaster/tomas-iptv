@@ -1,0 +1,180 @@
+name: One-time sync PR 4 with main
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Merge current main and validate
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+
+          # Start a real merge. Conflicts are expected in audit/config/workflow
+          # because both sides continued evolving after the PR branch diverged.
+          set +e
+          git merge --no-commit --no-ff origin/main
+          merge_status=$?
+          set -e
+
+          if [ "$merge_status" -ne 0 ]; then
+            echo "Merge reported conflicts; applying the intentional resolutions."
+          fi
+
+          # Today's main audit is the source of truth. Do not resurrect older
+          # migrated/removed rows from the historical PR snapshot.
+          git checkout origin/main -- audit.json
+          git add audit.json
+
+          # Keep PR #4's production workflow (health + improved EPG + attention)
+          # and then add the newer research-export integration from main.
+          git checkout HEAD -- .github/workflows/build-and-publish.yml
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/build-and-publish.yml')
+          text = path.read_text(encoding='utf-8')
+
+          if '      - "research_exports.py"' not in text:
+              marker = '      - "build.py"\n'
+              if marker not in text:
+                  raise SystemExit('Could not locate build.py workflow path marker.')
+              text = text.replace(
+                  marker,
+                  marker + '      - "research_exports.py"\n',
+                  1,
+              )
+
+          if '      - name: Generate research exports\n' not in text:
+              marker = (
+                  '      - name: Build IPTV playlist\n'
+                  '        run: python3 build.py\n'
+              )
+              if marker not in text:
+                  raise SystemExit('Could not locate playlist build workflow step.')
+              text = text.replace(
+                  marker,
+                  marker
+                  + '\n'
+                  + '      - name: Generate research exports\n'
+                  + '        run: python3 research_exports.py\n',
+                  1,
+              )
+
+          path.write_text(text, encoding='utf-8')
+          PY
+          git add .github/workflows/build-and-publish.yml
+
+          # Keep PR #4's health/attention/EPG configuration and import every
+          # source definition that was added to current main after divergence.
+          git checkout HEAD -- config.json
+
+          python3 - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          path = Path('config.json')
+          cfg = json.loads(path.read_text(encoding='utf-8'))
+          main_cfg = json.loads(
+              subprocess.check_output(
+                  ['git', 'show', 'origin/main:config.json'],
+                  text=True,
+              )
+          )
+
+          sources = cfg.setdefault('sources', [])
+          existing = {
+              (
+                  str(item.get('name') or ''),
+                  str(item.get('url') or ''),
+                  str(item.get('path') or ''),
+                  str(item.get('language_code') or ''),
+              )
+              for item in sources
+              if isinstance(item, dict)
+          }
+
+          added = []
+          for item in main_cfg.get('sources', []):
+              if not isinstance(item, dict):
+                  continue
+              key = (
+                  str(item.get('name') or ''),
+                  str(item.get('url') or ''),
+                  str(item.get('path') or ''),
+                  str(item.get('language_code') or ''),
+              )
+              if key not in existing:
+                  sources.append(item)
+                  existing.add(key)
+                  added.append(item.get('name') or item.get('url') or 'source')
+
+          path.write_text(
+              json.dumps(cfg, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+
+          print('Imported main-only sources:', ', '.join(added) if added else 'none')
+          PY
+          git add config.json
+
+          # The build.py change on main is a small ducktv-HD identity override
+          # in a section untouched by PR #4, so Git should merge it normally.
+          # If anything remains unresolved, stop instead of guessing.
+          unresolved="$(git diff --name-only --diff-filter=U)"
+          if [ -n "$unresolved" ]; then
+            echo "Unresolved merge conflicts remain:"
+            echo "$unresolved"
+            exit 1
+          fi
+
+          # Remove this temporary workflow from the resulting merge commit.
+          git rm .github/workflows/sync-pr4-with-main.yml
+
+          echo "Resolved merge summary:"
+          git status --short
+          git diff --check
+
+          echo "Running complete unit-test suite..."
+          python3 -m unittest discover -s tests -v
+
+          echo "Running strict live-source build..."
+          python3 build.py --strict
+
+          echo "Generating research exports against the merged build..."
+          python3 research_exports.py
+
+          # Generated public outputs are validation artifacts, not merge input.
+          git reset -- public 2>/dev/null || true
+          git checkout -- public 2>/dev/null || true
+          rm -rf public 2>/dev/null || true
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit after synchronization."
+            exit 0
+          fi
+
+          git commit -m "Merge current main into PR #4 branch"
+          git push origin HEAD:agent/audit-epg-health
