@@ -54,9 +54,13 @@
     "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
     "sites": [
       "mediaklikk.hu",
-      "musor.tv",
-      "mujtvprogram.cz"
+      "horizon.tv"
     ],
+    "external": {
+      "provider": "epgshare01.online",
+      "url": "https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz",
+      "future_days": 7
+    },
     "max_connections": 3
   },
 
