@@ -1,4 +1,4 @@
-name: One-time validate merged Hungarian EPG
+name: One-time validate merged Hungarian EPG v2
 
 on:
   push:
