@@ -16,30 +16,54 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Trace tvmusor request construction
+      - name: Compare live tvmusor channel IDs
         shell: bash
         run: |
           set -euo pipefail
           UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
 
           curl -fsS 'https://tvmusor.borsonline.hu/most/' -A "$UA" -o /tmp/page.html
-          curl -fsS 'https://tvmusor.borsonline.hu/js/tv.js?v=1786090144' -A "$UA" -o /tmp/tv.js
-          curl -fsS 'https://tvmusor.borsonline.hu/js/events.js?v=1786090144' -A "$UA" -o /tmp/events.js
+          curl -fsS 'https://raw.githubusercontent.com/iptv-org/epg/master/sites/tvmusor.hu/tvmusor.hu.channels.xml' -o /tmp/channels.xml
 
           python3 - <<'PY'
+          import json
+          import re
+          import xml.etree.ElementTree as ET
           from pathlib import Path
-          text = Path('/tmp/tv.js').read_text(encoding='utf-8', errors='replace') + '\n' + Path('/tmp/events.js').read_text(encoding='utf-8', errors='replace')
-          for needle in ('const ajax', 'function ajax', 'ajax =', 'JSON.stringify', 'requiredBlocks.push', "+'|'", ' + "|" + ', 'getDayByTime'):
-              print(f'=== {needle} ===')
-              pos = 0
-              hits = 0
-              while hits < 12:
-                  pos = text.find(needle, pos)
-                  if pos < 0:
-                      break
-                  print(text[max(0,pos-900):min(len(text),pos+1800)].replace('\n',' ')[:2700])
-                  print()
-                  pos += len(needle)
-                  hits += 1
-              print('hits:', hits)
+
+          html = Path('/tmp/page.html').read_text(encoding='utf-8', errors='replace')
+          match = re.search(r'const CHANNEL_DATA = (.*);', html)
+          if not match:
+              raise SystemExit('CHANNEL_DATA not found')
+          raw = match.group(1).replace('},}', '}}')
+          raw = re.sub(r'(\d+):', r'"\1":', raw)
+          live = json.loads(raw)
+          live_by_name = {str(v.get('name','')).strip(): str(v.get('id','')) for v in live.values()}
+
+          root = ET.parse('/tmp/channels.xml').getroot()
+          static = []
+          for ch in root.findall('channel'):
+              name = (ch.text or '').strip()
+              static.append((name, ch.get('site_id',''), ch.get('xmltv_id','')))
+
+          changed = []
+          missing = []
+          for name, old_id, xmltv_id in static:
+              new_id = live_by_name.get(name)
+              if new_id is None:
+                  missing.append((name, old_id, xmltv_id))
+              elif str(new_id) != str(old_id):
+                  changed.append((name, old_id, str(new_id), xmltv_id))
+
+          print('live channels:', len(live_by_name))
+          print('static channels:', len(static))
+          print('changed IDs:', len(changed))
+          for row in changed:
+              print('CHANGED', *row, sep=' | ')
+          print('missing names:', len(missing))
+          for row in missing:
+              print('MISSING', *row, sep=' | ')
+
+          for target in ('TV2', 'RTL', 'Sport1', 'Nickelodeon', 'National Geographic'):
+              print('LIVE', target, live_by_name.get(target))
           PY
