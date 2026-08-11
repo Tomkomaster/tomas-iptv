@@ -1,0 +1,119 @@
+name: One-time research priority retry
+
+on:
+  push:
+    branches:
+      - "agent/research-priority-queue"
+    paths:
+      - ".github/workflows/research-priority-retry.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout priority branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/research-priority-queue
+          fetch-depth: 0
+
+      - name: Build baseline research queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 build.py --strict
+          cp public/audit.csv /tmp/audit.csv
+          cp public/index.html /tmp/index-clean.html
+          python3 research_exports.py --public-dir public
+          cp public/missing.csv /tmp/missing-before.csv
+
+      - name: Reuse guarded exporter patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          source = Path(".github/workflows/research-priority-once.yml").read_text(encoding="utf-8").splitlines()
+          start = next(i for i, line in enumerate(source) if line.strip() == "python3 - <<'PY'")
+          end = next(i for i in range(start + 1, len(source)) if source[i].strip() == "PY")
+          code = textwrap.dedent("\n".join(source[start + 1:end])) + "\n"
+          Path("/tmp/apply-research-priority.py").write_text(code, encoding="utf-8")
+          PY
+          python3 /tmp/apply-research-priority.py
+
+      - name: Test and generate prioritized queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile research_priority.py research_exports.py
+          python3 -m unittest discover -s tests -v
+          rm -rf public
+          mkdir -p public
+          cp /tmp/audit.csv public/audit.csv
+          cp /tmp/index-clean.html public/index.html
+          python3 research_exports.py --public-dir public --priority-policy research_priority.json
+          git diff --check
+
+      - name: Validate queue preservation and ranking
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          from collections import Counter
+          from pathlib import Path
+          from research_priority import PRIORITY_ORDER, priority_rank
+
+          def read(path):
+              with Path(path).open("r", encoding="utf-8-sig", newline="") as handle:
+                  return list(csv.DictReader(handle))
+
+          old = read("/tmp/missing-before.csv")
+          new = read("public/missing.csv")
+          identity = lambda row: (row.get("country", ""), row.get("channel", ""), row.get("status", ""), row.get("tvg_id", ""))
+          if Counter(map(identity, old)) != Counter(map(identity, new)):
+              raise SystemExit("Prioritization changed the underlying missing-channel set.")
+
+          priorities = Counter(row["priority"] for row in new)
+          ranks = [priority_rank(row["priority"]) for row in new]
+          if ranks != sorted(ranks):
+              raise SystemExit("missing.csv is not sorted by P1-P5 priority.")
+          if any(priority not in PRIORITY_ORDER for priority in priorities):
+              raise SystemExit(f"Unexpected priorities: {priorities}")
+          if not all(priorities[p] for p in ("P1", "P2", "P3", "P4", "P5")):
+              raise SystemExit(f"One or more research tiers are empty: {priorities}")
+
+          expected_work = {
+              "PARTIAL": "Finish compatibility",
+              "CANDIDATES TO TEST": "Test candidates",
+              "NOT RESEARCHED": "Find first candidate",
+              "NO WORKING FEED": "Hunt new source",
+          }
+          for row in new:
+              if row["work_type"] != expected_work.get(row["status"], "Review"):
+                  raise SystemExit(f"Wrong work_type for {row['channel']}")
+              if not row["priority_reason"].strip():
+                  raise SystemExit(f"Missing priority reason for {row['channel']}")
+
+          print("Baseline rows:", len(old))
+          print("Prioritized rows:", len(new))
+          print("Priority counts:", dict(sorted(priorities.items())))
+          print("Top 20 research tasks:")
+          for row in new[:20]:
+              print(f"  {row['country']} | {row['channel']} | {row['priority']} | {row['work_type']} | {row['status']}")
+          PY
+
+      - name: Commit source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research_exports.py .github/workflows/build-and-publish.yml
+          git commit -m "Prioritize missing channel research"
+          git push origin HEAD:agent/research-priority-queue
