@@ -5,9 +5,16 @@ on:
     branches:
       - main
     paths:
+      - "attention.py"
       - "build.py"
       - "research_exports.py"
       - "epg_prepare.py"
+      - "epg_merge.py"
+      - "epg_aliases.json"
+      - "epg_health.py"
+      - "local_epg.py"
+      - "healthcheck.py"
+      - "migrate_audit.py"
       - "config.json"
       - "audit.json"
       - "extras/**"
@@ -45,6 +52,27 @@ jobs:
 
       - name: Generate research exports
         run: python3 research_exports.py
+
+      - name: Check stable stream health
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          HEALTH_ENABLED="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print("true" if (cfg.get("health") or {}).get("enabled", True) else "false")
+          '
+          )"
+
+          if [ "$HEALTH_ENABLED" != "true" ]; then
+            echo "Automated stream health disabled in config.json; skipping."
+            exit 0
+          fi
+
+          python3 healthcheck.py
 
       - name: Set up Node.js for EPG
         uses: actions/setup-node@v7
@@ -90,13 +118,48 @@ jobs:
           '
           )"
 
+          EPG_EXTERNAL_URL="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          external = (cfg.get("epg") or {}).get("external") or {}
+          print(str(external.get("url") or "").strip())
+          '
+          )"
+
+          EPG_EXTERNAL_PROVIDER="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          external = (cfg.get("epg") or {}).get("external") or {}
+          print(str(external.get("provider") or "epgshare01.online").strip())
+          '
+          )"
+
+          EPG_FUTURE_DAYS="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          external = (cfg.get("epg") or {}).get("external") or {}
+          print(int(external.get("future_days") or 7))
+          '
+          )"
+
           if [ -z "$EPG_SITES" ]; then
             echo "EPG is enabled but epg.sites is empty."
             exit 1
           fi
 
           rm -rf .epg-builder
-          rm -f .epg.channels.xml
+          rm -f \
+            .epg.channels.xml \
+            .epg-iptv.xml \
+            .epg-iptv-coverage.json \
+            .epg-external.download \
+            .epg-grab.log
 
           git clone \
             --depth 1 \
@@ -113,10 +176,10 @@ jobs:
             --epg-root .epg-builder \
             --sites "$EPG_SITES" \
             --output .epg.channels.xml \
-            --report public/epg-coverage.json
+            --report .epg-iptv-coverage.json
 
           echo
-          echo "Custom EPG channel list:"
+          echo "Custom IPTV-org EPG channel list:"
           cat .epg.channels.xml
           echo
 
@@ -124,8 +187,51 @@ jobs:
 
           npm run grab --- \
             --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
-            --output="$GITHUB_WORKSPACE/public/guide.xml" \
-            --maxConnections="$EPG_MAX_CONNECTIONS"
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections="$EPG_MAX_CONNECTIONS" \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+
+          cd "$GITHUB_WORKSPACE"
+
+          if [ -n "$EPG_EXTERNAL_URL" ]; then
+            echo "Downloading external EPG source: $EPG_EXTERNAL_PROVIDER"
+            if ! curl \
+              --fail \
+              --location \
+              --silent \
+              --show-error \
+              --retry 3 \
+              --retry-delay 2 \
+              "$EPG_EXTERNAL_URL" \
+              -o .epg-external.download; then
+              echo "WARNING: external EPG download failed; continuing with IPTV-org fallbacks only."
+              rm -f .epg-external.download
+            fi
+          fi
+
+          MERGE_ARGS=(
+            --playlist public/tv.m3u
+            --iptv-guide .epg-iptv.xml
+            --iptv-coverage .epg-iptv-coverage.json
+            --external-provider "$EPG_EXTERNAL_PROVIDER"
+            --preferred-iptv-provider mediaklikk.hu
+            --future-days "$EPG_FUTURE_DAYS"
+            --output public/guide.xml
+            --report public/epg-coverage.json
+          )
+
+          if [ -f .epg-external.download ]; then
+            MERGE_ARGS+=(--external .epg-external.download)
+          fi
+
+          python3 epg_merge.py "${MERGE_ARGS[@]}"
+
+          python3 local_epg.py \
+            --playlist public/tv.m3u \
+            --guide public/guide.xml \
+            --coverage public/epg-coverage.json \
+            --report public/local-epg.json \
+            --future-days "$EPG_FUTURE_DAYS"
 
       - name: Validate XMLTV EPG
         run: |
@@ -386,6 +492,59 @@ jobs:
                   print(
                       f"  - {tvg_id}"
                   )
+          PY
+
+      - name: Analyze actual EPG health
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          EPG_ENABLED="$(
+            python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print("true" if (cfg.get("epg") or {}).get("enabled") else "false")
+          '
+          )"
+
+          if [ "$EPG_ENABLED" != "true" ]; then
+            echo "EPG disabled; health analysis skipped."
+            exit 0
+          fi
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+      - name: Build needs attention queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 attention.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("public/attention.json")
+          if not path.is_file():
+              raise SystemExit("attention.json was not generated.")
+
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if data.get("advisory_only") is not True:
+              raise SystemExit("attention.json must remain advisory only.")
+
+          summary = data.get("summary") or {}
+          print(
+              "Attention queue: "
+              f"{summary.get('items', 0)} items; "
+              f"{summary.get('critical', 0)} critical, "
+              f"{summary.get('high', 0)} high, "
+              f"{summary.get('medium', 0)} medium, "
+              f"{summary.get('low', 0)} low."
+          )
           PY
 
       - name: Configure GitHub Pages
