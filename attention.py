@@ -200,6 +200,11 @@ def build_attention(
     for stream in health.get("streams", []) or []:
         if not isinstance(stream, dict) or truthy(stream.get("success")):
             continue
+        if (
+            stream.get("actionable_failure") is False
+            or str(stream.get("attention") or "").strip().casefold() == "informational"
+        ):
+            continue
 
         url = str(stream.get("stream_url") or "").strip()
         row = stable_by_url.get(canonical_stream_url(url))
