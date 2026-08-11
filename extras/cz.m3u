@@ -41,3 +41,7 @@ https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_cool/playlist/cze/live_hd.m
 
 #EXTINF:-1 tvg-id="PrimaShow.cz" tvg-name="Prima Show" group-title="Entertainment",Prima Show
 https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_show/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
+
+# TV GIMI - former Kurýr TV, verify current stream identity
+#EXTINF:-1 tvg-name="TV Gimi" group-title="Regional",TV Gimi
+https://stream-35.mazana.tv/jc2.jc.m3u8
