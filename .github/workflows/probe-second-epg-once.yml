@@ -1,4 +1,4 @@
-name: One-time inspect Makó EPG structure
+name: One-time validate Makó local EPG
 
 on:
   push:
@@ -8,33 +8,87 @@ on:
       - ".github/workflows/probe-second-epg-once.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  probe:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Inspect Makó weekly schedule
+
+      - name: Apply Makó EPG patch
+        run: |
+          python3 patch_mako_epg_once.py
+          git diff --check
+
+      - name: Run tests and strict build
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+
+      - name: Live miniature overlay validation
         run: |
           python3 - <<'PY'
-          from urllib.request import Request, urlopen
-          import html, re
+          import json
+          import tempfile
+          import xml.etree.ElementTree as ET
+          from datetime import date
+          from pathlib import Path
 
-          url = 'https://makotv.hu/heti-musor/'
-          req = Request(url, headers={'User-Agent':'Mozilla/5.0 Tomas-IPTV-EPG/1.0'})
-          with urlopen(req, timeout=20) as r:
-              raw = r.read(600000)
-              charset = r.headers.get_content_charset() or 'utf-8'
-              text = raw.decode(charset, errors='replace')
-          plain = re.sub(r'(?is)<script.*?</script>|<style.*?</style>', ' ', text)
-          plain = re.sub(r'(?i)<br\s*/?>|</(?:p|div|tr|td|th|li|h[1-6]|a|span|section|article|button)>', '\n', plain)
-          plain = re.sub(r'(?s)<[^>]+>', ' ', plain)
-          lines = [' '.join(html.unescape(x).split()) for x in plain.splitlines()]
-          lines = [x for x in lines if x]
-          for i, line in enumerate(lines):
-              if re.search(r'08\.1[0-7]|augusztus 1[0-7]|^\d{1,2}[.:]\d{2}\b', line, re.I):
-                  lo = max(0, i - 2)
-                  hi = min(len(lines), i + 3)
-                  print('CTX', i, lines[lo:hi])
+          from local_epg import overlay_local_epg
+
+          with tempfile.TemporaryDirectory() as tmp:
+              root = Path(tmp)
+              playlist = root / 'tv.m3u'
+              guide = root / 'guide.xml'
+              coverage = root / 'coverage.json'
+              report = root / 'local.json'
+
+              playlist.write_text(
+                  '#EXTM3U\n'
+                  '#EXTINF:-1 tvg-id="MakoiVarosiTelevizio.hu@SD",Makói Városi Televízió\n'
+                  'https://example.test/mako.m3u8\n',
+                  encoding='utf-8',
+              )
+              ET.ElementTree(ET.Element('tv')).write(guide, encoding='utf-8', xml_declaration=True)
+              coverage.write_text(json.dumps({
+                  'playlist_tvg_ids': 1,
+                  'matched_tvg_ids': 0,
+                  'matched': [],
+                  'unmatched_tvg_ids': ['MakoiVarosiTelevizio.hu@SD'],
+              }), encoding='utf-8')
+
+              result = overlay_local_epg(
+                  playlist_path=playlist,
+                  guide_path=guide,
+                  coverage_path=coverage,
+                  report_path=report,
+                  reference_date=date(2026, 8, 11),
+                  future_days=7,
+                  timeout=20,
+              )
+              data = json.loads(coverage.read_text(encoding='utf-8'))
+              tv = ET.parse(guide).getroot()
+              programmes = tv.findall('programme')
+              print('SUMMARY', json.dumps(result['summary'], ensure_ascii=False))
+              print('PROGRAMMES', len(programmes))
+              for node in programmes:
+                  title = node.findtext('title') or ''
+                  print(node.get('start'), title)
+              print('COVERAGE', data['matched_tvg_ids'], data['mapping_coverage_percent'])
+
+              if result['summary']['filled_channels'] != 1:
+                  raise SystemExit('Makó source did not fill the miniature guide.')
+              if len(programmes) < 5:
+                  raise SystemExit('Makó source returned too few programmes.')
+              if data['matched_tvg_ids'] != 1:
+                  raise SystemExit('Makó coverage was not updated.')
           PY
+
+      - name: Commit permanent Makó integration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add local_epg.py tests/test_local_epg.py
+          git commit -m "Add Makó local EPG schedule"
+          git push
