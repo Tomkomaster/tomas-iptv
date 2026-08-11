@@ -1,0 +1,79 @@
+name: One-time test external Hungarian EPG
+
+on:
+  push:
+    branches:
+      - agent/audit-epg-health
+    paths:
+      - ".github/workflows/test-external-hu-epg-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Build playlist
+        run: python3 build.py --strict
+      - name: Test FreeEPG Hungary
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fLsS 'https://www.free-epg.de/api/epg/hu.xml.gz' -o /tmp/hu.xml.gz
+          gzip -dc /tmp/hu.xml.gz > /tmp/hu.xml
+
+          python3 - <<'PY'
+          import re
+          import xml.etree.ElementTree as ET
+          from collections import Counter
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from epg_prepare import read_playlist_tvg_ids, quality_base_id
+
+          playlist = read_playlist_tvg_ids(Path('public/tv.m3u'))
+          p_exact = {x.casefold(): x for x in playlist}
+          p_base = {quality_base_id(x): x for x in playlist}
+
+          root = ET.parse('/tmp/hu.xml').getroot()
+          channel_ids = [(c.get('id') or '').strip() for c in root.findall('channel')]
+          programme_ids = [(p.get('channel') or '').strip() for p in root.findall('programme')]
+          starts = [(p.get('start') or '').strip() for p in root.findall('programme')]
+
+          matched = set()
+          for cid in channel_ids:
+              if cid.casefold() in p_exact:
+                  matched.add(p_exact[cid.casefold()])
+              else:
+                  q = quality_base_id(cid)
+                  if q in p_base:
+                      matched.add(p_base[q])
+
+          populated = set()
+          for cid in programme_ids:
+              if cid.casefold() in p_exact:
+                  populated.add(p_exact[cid.casefold()])
+              else:
+                  q = quality_base_id(cid)
+                  if q in p_base:
+                      populated.add(p_base[q])
+
+          dates = Counter()
+          for s in starts:
+              m = re.match(r'(\d{8})', s)
+              if m:
+                  dates[m.group(1)] += 1
+
+          print('download bytes gz:', Path('/tmp/hu.xml.gz').stat().st_size)
+          print('xml bytes:', Path('/tmp/hu.xml').stat().st_size)
+          print('feed channels:', len(channel_ids))
+          print('feed programmes:', len(programme_ids))
+          print('playlist ids:', len(playlist))
+          print('exact/quality matched channels:', len(matched))
+          print('matched with programmes:', len(populated))
+          print('matched IDs:', ', '.join(sorted(populated)))
+          print('programme date counts:', dict(sorted(dates.items())))
+          print('current UTC date:', datetime.now(timezone.utc).strftime('%Y%m%d'))
+          PY
