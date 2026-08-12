@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>@@V000@@</title>
+<title>@@TITLE@@</title>
 <link rel="stylesheet" href="static/dashboard.css">
 </head>
 <body>
 <main>
-  <h1>@@V000@@</h1>
-  <p class="muted">Generated automatically: @@V001@@</p>
+  <h1>@@TITLE@@</h1>
+  <p class="muted">Generated automatically: @@GENERATED@@</p>
 
   <div class="links">
     <a href="tv.m3u">Stable family playlist (tv.m3u)</a>
     <a href="test.m3u">Testing playlist (test.m3u)</a>
     <a href="hu.m3u">Stable Hungary (hu.m3u)</a>
     <a href="sk.m3u">Stable Slovakia (sk.m3u)</a>
-    @@V002@@
+    @@EPG_LINKS@@
     <a href="channels.csv">Channel inventory (CSV)</a>
     <a href="duplicates.csv">Ignored duplicate URLs (CSV)</a>
     <a href="excluded.csv">Excluded from playlist (CSV)</a>
@@ -27,14 +27,14 @@
   </div>
 
   <div class="cards">
-    <div class="card"><div class="value">@@V003@@</div><div class="label">Unique channels</div></div>
-    <div class="card"><div class="value">@@V004@@</div><div class="label">Unique stream URLs</div></div>
-    <div class="card"><div class="value">@@V005@@</div><div class="label">Channels added beyond base</div></div>
-    <div class="card"><div class="value">@@V006@@</div><div class="label">Alternative streams kept</div></div>
-    <div class="card"><div class="value">@@V007@@</div><div class="label">Duplicate URLs ignored</div></div>
+    <div class="card"><div class="value">@@TOTAL_CHANNELS@@</div><div class="label">Unique channels</div></div>
+    <div class="card"><div class="value">@@TOTAL_STREAMS@@</div><div class="label">Unique stream URLs</div></div>
+    <div class="card"><div class="value">@@ADDED_FROM_NONBASE@@</div><div class="label">Channels added beyond base</div></div>
+    <div class="card"><div class="value">@@TOTAL_ALTERNATIVES@@</div><div class="label">Alternative streams kept</div></div>
+    <div class="card"><div class="value">@@TOTAL_DUPLICATES@@</div><div class="label">Duplicate URLs ignored</div></div>
   </div>
 
-  @@V008@@
+  @@AUDIT_WARNINGS@@
 
   <h2>EPG coverage by country</h2>
   <p class="muted">
@@ -161,16 +161,16 @@
   </p>
 
   <div class="audit-summary">
-    <div class="card"><div class="value">@@V009@@</div><div class="label">Channels/streams in testing queue</div></div>
-    <div class="card"><div class="value">@@V010@@</div><div class="label">Tested on both devices</div></div>
-    <div class="card"><div class="value">@@V011@@</div><div class="label">VLC tests remaining</div></div>
-    <div class="card"><div class="value">@@V012@@</div><div class="label">Samsung tests remaining</div></div>
-    <div class="card"><div class="value">@@V013@@</div><div class="label">✓ Verified both</div></div>
-    <div class="card"><div class="value">@@V014@@</div><div class="label">TV verified</div></div>
-    <div class="card"><div class="value">@@V015@@</div><div class="label">PC only</div></div>
-    <div class="card"><div class="value">@@V016@@</div><div class="label">? Needs review</div></div>
-    <div class="card"><div class="value">@@V017@@</div><div class="label">Supported cross-language</div></div>
-    <div class="card"><div class="value">@@V018@@</div><div class="label">✕ Rejected</div></div>
+    <div class="card"><div class="value">@@AUDIT_CURRENT_COUNT@@</div><div class="label">Channels/streams in testing queue</div></div>
+    <div class="card"><div class="value">@@AUDIT_BOTH_TESTED@@</div><div class="label">Tested on both devices</div></div>
+    <div class="card"><div class="value">@@AUDIT_VLC_PENDING@@</div><div class="label">VLC tests remaining</div></div>
+    <div class="card"><div class="value">@@AUDIT_SAMSUNG_PENDING@@</div><div class="label">Samsung tests remaining</div></div>
+    <div class="card"><div class="value">@@AUDIT_VERIFIED@@</div><div class="label">✓ Verified both</div></div>
+    <div class="card"><div class="value">@@AUDIT_TV_VERIFIED@@</div><div class="label">TV verified</div></div>
+    <div class="card"><div class="value">@@AUDIT_PC_ONLY@@</div><div class="label">PC only</div></div>
+    <div class="card"><div class="value">@@AUDIT_REVIEW@@</div><div class="label">? Needs review</div></div>
+    <div class="card"><div class="value">@@AUDIT_CROSS_LANGUAGE@@</div><div class="label">Supported cross-language</div></div>
+    <div class="card"><div class="value">@@AUDIT_REJECTED@@</div><div class="label">✕ Rejected</div></div>
   </div>
 
   <div class="controls">
@@ -230,7 +230,7 @@
           <th>URL</th>
         </tr>
       </thead>
-      <tbody>@@V019@@</tbody>
+      <tbody>@@AUDIT_TABLE_ROWS@@</tbody>
     </table>
   </div>
 
@@ -258,7 +258,7 @@
       </thead>
 
       <tbody>
-        @@V020@@
+        @@LANGUAGE_ROWS@@
       </tbody>
     </table>
   </div>
@@ -280,12 +280,12 @@
           <th>Duplicate URLs ignored</th>
         </tr>
       </thead>
-      <tbody>@@V021@@</tbody>
+      <tbody>@@SOURCE_ROWS@@</tbody>
     </table>
   </div>
 
   <h2>Changes since previous build</h2>
-  @@V022@@
+  @@CHANGE_HTML@@
 
   <h2>Channel inventory</h2>
   <p class="muted">
@@ -301,7 +301,7 @@
     <input id="search" type="search" placeholder="Search channel, TVG ID, group or URL...">
     <select id="sourceFilter">
       <option value="">All sources</option>
-      @@V023@@
+      @@SOURCE_OPTIONS@@
     </select>
     <select id="statusFilter">
       <option value="">All classifications</option>
@@ -326,7 +326,7 @@
         </tr>
       </thead>
       <tbody>
-        @@V024@@
+        @@CHANNEL_ROWS@@
       </tbody>
     </table>
   </div>

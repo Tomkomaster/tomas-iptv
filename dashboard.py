@@ -16,7 +16,7 @@ def _render_dashboard_template(context: dict[str, str]) -> str:
     rendered = DASHBOARD_TEMPLATE.read_text(encoding="utf-8")
     for key, value in context.items():
         rendered = rendered.replace(f"@@{key}@@", value)
-    if "@@V" in rendered:
+    if any(f"@@{key}@@" in rendered for key in context):
         raise RuntimeError("Dashboard template still contains an unresolved value token.")
     return rendered
 
@@ -353,30 +353,30 @@ def render_dashboard(
         """
 
     context = {
-        "V000": str(esc(title)),
-        "V001": str(esc(generated)),
-        "V002": str(epg_link_html),
-        "V003": str(total_channels),
-        "V004": str(total_streams),
-        "V005": str(added_from_nonbase),
-        "V006": str(total_alternatives),
-        "V007": str(total_duplicates),
-        "V008": str(audit_warning_html),
-        "V009": str(len(audit_current)),
-        "V010": str(audit_both_tested),
-        "V011": str(audit_vlc_pending),
-        "V012": str(audit_samsung_pending),
-        "V013": str(audit_verified),
-        "V014": str(audit_tv_verified),
-        "V015": str(audit_pc_only),
-        "V016": str(audit_review),
-        "V017": str(audit_cross_language),
-        "V018": str(audit_rejected),
-        "V019": str(''.join(audit_table_rows)),
-        "V020": str(language_rows),
-        "V021": str(source_rows),
-        "V022": str(change_html),
-        "V023": str(source_options),
-        "V024": str(''.join(channel_rows)),
+        "TITLE": str(esc(title)),
+        "GENERATED": str(esc(generated)),
+        "EPG_LINKS": str(epg_link_html),
+        "TOTAL_CHANNELS": str(total_channels),
+        "TOTAL_STREAMS": str(total_streams),
+        "ADDED_FROM_NONBASE": str(added_from_nonbase),
+        "TOTAL_ALTERNATIVES": str(total_alternatives),
+        "TOTAL_DUPLICATES": str(total_duplicates),
+        "AUDIT_WARNINGS": str(audit_warning_html),
+        "AUDIT_CURRENT_COUNT": str(len(audit_current)),
+        "AUDIT_BOTH_TESTED": str(audit_both_tested),
+        "AUDIT_VLC_PENDING": str(audit_vlc_pending),
+        "AUDIT_SAMSUNG_PENDING": str(audit_samsung_pending),
+        "AUDIT_VERIFIED": str(audit_verified),
+        "AUDIT_TV_VERIFIED": str(audit_tv_verified),
+        "AUDIT_PC_ONLY": str(audit_pc_only),
+        "AUDIT_REVIEW": str(audit_review),
+        "AUDIT_CROSS_LANGUAGE": str(audit_cross_language),
+        "AUDIT_REJECTED": str(audit_rejected),
+        "AUDIT_TABLE_ROWS": str(''.join(audit_table_rows)),
+        "LANGUAGE_ROWS": str(language_rows),
+        "SOURCE_ROWS": str(source_rows),
+        "CHANGE_HTML": str(change_html),
+        "SOURCE_OPTIONS": str(source_options),
+        "CHANNEL_ROWS": str(''.join(channel_rows)),
     }
     return _render_dashboard_template(context)
