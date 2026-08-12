@@ -23,7 +23,9 @@ jobs:
           ref: agent/source-concentration-report
 
       - name: Apply source concentration patch
-        run: python3 .github/source_concentration_patch.py
+        run: |
+          python3 .github/source_concentration_patch.py
+          python3 .github/source_concentration_fix.py
 
       - name: Compile changed Python
         run: python3 -m py_compile feed_quality.py source_concentration.py build.py tests/test_source_concentration.py
