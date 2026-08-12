@@ -1,8 +1,8 @@
 {
   "channels": [
     {
-      "channel": "A11",
-      "stream_url": "https://dash2.antik.sk/live/test_regionalni_tv/playlist.m3u8",
+      "channel": "Frýdek-Místek - Zámecké náměstí",
+      "stream_url": "https://stream.polar.cz/kamery/cam010/playlist.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -24,8 +24,8 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     },
     {
-      "channel": "AXN Black Czech Republic",
-      "stream_url": "http://88.212.15.19/live/test_black/playlist.m3u8",
+      "channel": "Golf Channel",
+      "stream_url": "https://dash4.antik.sk/live/test_golf_channel/playlist.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -47,8 +47,8 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     },
     {
-      "channel": "AXN CEE Czech Republic",
-      "stream_url": "http://88.212.15.19/live/test_axn/playlist.m3u8",
+      "channel": "Havířov - Náměstí Republiky",
+      "stream_url": "https://stream.polar.cz/kamery/cam001/playlist.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -70,8 +70,8 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     },
     {
-      "channel": "AXN White CzechRepublic",
-      "stream_url": "http://88.212.15.19/live/test_white/playlist.m3u8",
+      "channel": "History",
+      "stream_url": "http://88.212.15.19/live/test_history/playlist.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -93,8 +93,31 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     },
     {
-      "channel": "BBC Earth Czechia",
-      "stream_url": "http://88.212.15.29/live/test_bbc_eartch_hevc/playlist.m3u8",
+      "channel": "History2",
+      "stream_url": "http://88.212.15.19/live/test_h2/playlist.m3u8",
+      "vlc": "wrong_language",
+      "samsung": "wrong_language",
+      "vlc_note": "Stream works, but the spoken language was English.",
+      "samsung_note": "Stream works, but the spoken language was English.",
+      "language": "English",
+      "language_code": "EN",
+      "language_codes": ["eng"],
+      "expected_language_codes": ["ces"],
+      "observed_language_codes": ["eng"],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Playback works on both tested devices, but the spoken language is English, so this stream is not suitable for the Czech playlist.",
+      "reason": "Expected Czech, but the active stream was manually verified as English on both tested devices."
+    },
+    {
+      "channel": "Jablunkov - náměstí",
+      "stream_url": "https://stream.silesnet.net/webcams/jablunkov.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -116,8 +139,8 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     },
     {
-      "channel": "CNN Prima News",
-      "stream_url": "http://88.212.15.19/live/test_cnn_pirma_news/playlist.m3u8",
+      "channel": "Jihočeská televize",
+      "stream_url": "https://vysilani.zaktv.cz/broadcast/hls/jtv/index.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -139,8 +162,8 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     },
     {
-      "channel": "CNN Prima News Feed 2",
-      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_cnn/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "channel": "JOJ Family",
+      "stream_url": "https://live.cdn.joj.sk/live/hls/family-540.m3u8",
       "vlc": "mrl_error",
       "samsung": "format_error",
       "vlc_note": "skips to the next channel",
@@ -162,8 +185,8 @@
       "reason": "Failed the manual playback test on both devices."
     },
     {
-      "channel": "CS Mystery",
-      "stream_url": "http://88.212.15.17/live/test_cs_mystery_avc_25p/playlist.m3u8",
+      "channel": "JČ1",
+      "stream_url": "https://stream.jc1.cz/hls/jc1.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
@@ -185,17 +208,17 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     },
     {
-      "channel": "Current Time TV",
-      "stream_url": "http://stream.mcquack.net/384/index.m3u8",
-      "vlc": "wrong_language",
-      "samsung": "wrong_language",
-      "vlc_note": "Stream works, but the spoken language was Russian.",
-      "samsung_note": "Stream works, but the spoken language was Russian.",
-      "language": "Russian",
-      "language_code": "RU",
-      "language_codes": ["rus"],
+      "channel": "Karlova Studánka",
+      "stream_url": "https://stream.polar.cz/kamery/cam012/playlist.m3u8",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": ["ces"],
       "expected_language_codes": ["ces"],
-      "observed_language_codes": ["rus"],
+      "observed_language_codes": ["ces"],
       "protocol": "HLS",
       "decision": "rejected",
       "exclude_from_playlist": true,
@@ -204,35 +227,12 @@
       "output_country_code": "CZ",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
-      "notes": "Playback works on both tested devices, but the spoken language is Russian, so this stream is not suitable for the Czech playlist.",
-      "reason": "Expected Czech, but the active stream was manually verified as Russian on both tested devices."
+      "notes": "VLC skipped to the next channel and Samsung reported NOT_SUPPORTED_FILE. Reject this exact stream URL from the shared playlist.",
+      "reason": "Failed the manual playback test on both devices."
     },
     {
-      "channel": "DVTV Extra",
-      "stream_url": "https://antik.streaming.tivio.studio/channels/IxLi19VRasgu94bIaXbH/index.m3u8",
-      "vlc": "works",
-      "samsung": "works",
-      "vlc_note": "ok",
-      "samsung_note": "ok",
-      "language": "Czech",
-      "language_code": "CZ",
-      "language_codes": ["ces"],
-      "expected_language_codes": ["ces"],
-      "observed_language_codes": ["ces"],
-      "protocol": "HLS",
-      "decision": "auto",
-      "exclude_from_playlist": false,
-      "tested_on": "2026-08-12",
-      "playlist_country_code": "CZ",
-      "output_country_code": "CZ",
-      "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test",
-      "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
-    },
-    {
-      "channel": "Elektrika TV",
-      "stream_url": "https://rtmp.elektrika.cz/live/myStream.sdp/playlist.m3u8",
+      "channel": "Krušná TV",
+      "stream_url": "https://kamery2.wolfnet.cz/krusna.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
