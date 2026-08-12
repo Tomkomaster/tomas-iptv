@@ -2,37 +2,42 @@
   "schema_version": 1,
   "default": "normal",
   "description": "Controls how automated stream failures affect health history. normal = failures build a daily streak; event_based = offline/inactive probes are informational because the stream is not expected to broadcast continuously.",
-"entries": [
-  {
-    "name": "Országgyűlés (Plenáris)",
-    "tvg_id": "OrszaggyulesOGYplenaris.hu@SD",
-    "health_policy": "event_based",
-    "reason": "Parliamentary plenary stream is event-based and may legitimately have no active broadcast outside sitting hours."
-  },
-  {
-    "name": "Poslanecká sněmovna ČR",
-    "health_policy": "event_based",
-    "reason": "Official parliamentary stream is event-based and may legitimately be offline outside plenary sitting hours."
-  },
-  {
-    "name": "Poslanecká sněmovna ČR - Tiskové konference",
-    "health_policy": "event_based",
-    "reason": "Official parliamentary press conference stream is event-based and may legitimately be offline when no press conference is taking place."
-  },
-  {
-    "name": "Poslanecká sněmovna ČR - Stream 3",
-    "health_policy": "event_based",
-    "reason": "Official parliamentary committee and seminar stream is event-based and may legitimately be offline when no event is taking place."
-  },
-  {
-    "name": "Poslanecká sněmovna ČR - Stream 4",
-    "health_policy": "event_based",
-    "reason": "Official parliamentary committee and seminar stream is event-based and may legitimately be offline when no event is taking place."
-  },
-  {
-    "name": "Poslanecká sněmovna ČR - Stream 5",
-    "health_policy": "event_based",
-    "reason": "Official parliamentary committee and seminar stream is event-based and may legitimately be offline when no event is taking place."
-  }
-]
+  "entries": [
+    {
+      "name": "Országgyűlés (Plenáris)",
+      "tvg_id": "OrszaggyulesOGYplenaris.hu@SD",
+      "health_policy": "event_based",
+      "reason": "Parliamentary plenary stream is event-based and may legitimately have no active broadcast outside sitting hours."
+    },
+    {
+      "name": "Poslanecká sněmovna ČR",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream1/playlist/cze.m3u8",
+      "health_policy": "event_based",
+      "reason": "Official parliamentary stream is event-based and may legitimately be offline outside plenary sitting hours."
+    },
+    {
+      "name": "Poslanecká sněmovna ČR - Tiskové konference",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream2/playlist/cze.m3u8",
+      "health_policy": "event_based",
+      "reason": "Official parliamentary press conference stream is event-based and may legitimately be offline when no press conference is taking place."
+    },
+    {
+      "name": "Poslanecká sněmovna ČR - Stream 3",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream3/playlist/cze.m3u8",
+      "health_policy": "event_based",
+      "reason": "Official parliamentary committee and seminar stream is event-based and may legitimately be offline when no event is taking place."
+    },
+    {
+      "name": "Poslanecká sněmovna ČR - Stream 4",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream4/playlist/cze.m3u8",
+      "health_policy": "event_based",
+      "reason": "Official parliamentary committee and seminar stream is event-based and may legitimately be offline when no event is taking place."
+    },
+    {
+      "name": "Poslanecká sněmovna ČR - Stream 5",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream5/playlist/cze.m3u8",
+      "health_policy": "event_based",
+      "reason": "Official parliamentary committee and seminar stream is event-based and may legitimately be offline when no event is taking place."
+    }
+  ]
 }
