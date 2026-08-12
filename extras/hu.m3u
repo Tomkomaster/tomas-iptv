@@ -18,7 +18,7 @@ http://s01.diazol.hu:9150/live.m3u8
 # V17 PLAYBACK-WORKING / IDENTITY-REVIEW CANDIDATE
 # ============================================================
 # Lóverseny közvetítés — works on VLC + Samsung, but confirm actual content/language
-#EXTINF:-1 tvg-id="Loversenykozvetites.hu@SD" tvg-name="Lóverseny közvetítés",Lóverseny LexaNetwork candidate
+#EXTINF:-1 tvg-id="Loversenykozvetites.hu@SD" tvg-name="Lóverseny közvetítés",Lóverseny közvetítés
 https://cloudfront41.lexanetwork.com:1344/xrelay/loverseny2.sdp/playlist.m3u8
 
 # ============================================================
