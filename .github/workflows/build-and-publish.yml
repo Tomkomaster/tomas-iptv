@@ -35,8 +35,8 @@ jobs:
       - name: Run tests
         run: python3 -m unittest discover -s tests -v
 
-      - name: Build IPTV playlist
-        run: python3 build.py --strict
+      - name: Build IPTV playlist with verified-feed failover
+        run: python3 reliable_build.py --strict
 
       - name: Generate research exports
         run: python3 research_exports.py
