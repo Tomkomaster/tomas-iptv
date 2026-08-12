@@ -30,6 +30,16 @@
         "slk"
       ],
       "language_code": "SK"
+    },
+    "sk:godzone-tv": {
+      "channel_name": "Godzone TV",
+      "tvg_name": "Godzone TV",
+      "tvg_id": "",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ],
+      "language_code": "SK"
     }
   },
   "selectors": [
@@ -53,6 +63,13 @@
       },
       "canonical_id": "sk:info-tv-sen",
       "note": "Manual screenshots taken at the same time as the Panaccess TV Sen feed show this Video Studio RIS stream is the distinct INFO TV SEN service."
+    },
+    {
+      "match": {
+        "url": "http://46.36.41.106:8888/rebit/177.m3u8"
+      },
+      "canonical_id": "sk:godzone-tv",
+      "note": "The REBIT IDENTIFY text is research provenance, not the published channel name."
     }
   ]
 }
