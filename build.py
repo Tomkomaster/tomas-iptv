@@ -3466,9 +3466,15 @@ def write_m3u_playlist(
     entries: list[dict],
     generated: str,
     playlist_label: str,
+    name_style: str = "status",
 ) -> None:
     """
     Write one generated M3U playlist.
+
+    name_style controls only the visible channel-name prefix:
+      status   -> [HU OK] / [SK ?] / [CZ TV] (testing playlist)
+      language -> [HU] / [SK] / [CZ] (shared stable playlist)
+      plain    -> no generated prefix (single-country playlists)
     """
     path.parent.mkdir(
         parents=True,
@@ -3492,9 +3498,50 @@ def write_m3u_playlist(
         "",
     ]
 
+    valid_name_styles = {
+        "status",
+        "language",
+        "plain",
+    }
+
+    if name_style not in valid_name_styles:
+        raise ValueError(
+            f"Unsupported playlist name_style: {name_style!r}"
+        )
+
     for entry in entries:
+        entry_lines = entry["lines"]
+
+        if name_style != "status":
+            original_display = strip_custom_prefix(
+                str(
+                    entry.get("published_name")
+                    or entry.get("display_name")
+                    or "Unnamed channel"
+                )
+            )
+
+            if name_style == "language":
+                language_code = str(
+                    entry.get("language_code")
+                    or cfg.get("default_language_code")
+                    or "HU"
+                ).strip().upper()
+
+                output_name = (
+                    f"[{language_code}] {original_display}"
+                )
+            else:
+                output_name = original_display
+
+            entry_lines = rewrite_entry_lines(
+                entry_lines,
+                output_name,
+                str(entry.get("group_title") or ""),
+            )
+
         out_lines.extend(
-            entry["lines"]
+            entry_lines
         )
 
         out_lines.append(
@@ -5092,6 +5139,7 @@ def main(strict: bool = False) -> None:
         published_entries,
         generated,
         "Stable family playlist",
+        name_style="language",
     )
 
     # Full testing/research playlist.
@@ -5189,6 +5237,7 @@ def main(strict: bool = False) -> None:
                 f"Stable {country_name} "
                 "playlist"
             ),
+            name_style="plain",
         )
 
         country_playlist_counts[
