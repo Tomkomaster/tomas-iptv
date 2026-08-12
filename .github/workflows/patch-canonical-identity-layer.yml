@@ -1,0 +1,165 @@
+name: Temporary canonical identity integration patch
+
+on:
+  push:
+    branches:
+      - agent/canonical-identity-layer
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: ${{ !contains(github.event.head_commit.message, '[canonical-identity-patched]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/canonical-identity-layer
+
+      - name: Integrate canonical identity layer
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('build.py')
+          text = path.read_text(encoding='utf-8')
+
+          old = 'from feed_quality import build_feed_quality_context, score_feed_quality\n'
+          new = old + 'from identity_overrides import load_identity_registry\n'
+          if text.count(old) != 1:
+              raise SystemExit('feed quality import anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''                "group_title": attrs.get("group-title", ""),\n            }\n'''
+          new = '''                "group_title": attrs.get("group-title", ""),\n                "canonical_id": attrs.get("canonical-id", ""),\n            }\n'''
+          if text.count(old) != 1:
+              raise SystemExit('parse entry anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''def apply_stream_metadata_override(\n    entry: dict,\n    override: dict,\n) -> None:\n    """\n    Apply a manually curated identity override to one exact stream URL.\n\n    This is used when an upstream playlist has the correct playable URL\n    but incorrect channel identity, tvg metadata, or country/language.\n\n    The parsed metadata and the preserved #EXTINF line are both updated so\n    the corrected identity also reaches the generated M3U files.\n    """\n'''
+          new = '''def apply_canonical_identity(\n    entry: dict,\n    override: dict,\n) -> None:\n    """Apply canonical channel metadata after identity resolution.\n\n    Selector matching lives in identity_overrides.py. This function only\n    applies the already-resolved channel identity to parsed feed metadata.\n    Feed URL/source provenance and audit state remain separate.\n    """\n'''
+          if text.count(old) != 1:
+              raise SystemExit('identity apply function anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''def channel_key(entry: dict) -> str:\n    """\n    Identify a logical channel.\n\n    Priority:\n      1. tvg-id, with @SD/@HD-style variants collapsed\n      2. tvg-name\n      3. cleaned display name\n    """\n    tvg_id = normalized_tvg_id(entry.get("tvg_id", ""))\n'''
+          new = '''def channel_key(entry: dict) -> str:\n    """\n    Identify a logical channel.\n\n    Priority:\n      1. explicit canonical channel ID from the identity layer\n      2. tvg-id, with @SD/@HD-style variants collapsed\n      3. tvg-name\n      4. cleaned display name\n    """\n    canonical_id = str(entry.get("canonical_id") or "").strip().casefold()\n    if canonical_id:\n        return f"canonical:{canonical_id}"\n\n    tvg_id = normalized_tvg_id(entry.get("tvg_id", ""))\n'''
+          if text.count(old) != 1:
+              raise SystemExit('channel key anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''    raw_stream_overrides = (\n        cfg.get("stream_overrides")\n        or {}\n    )\n\n    if not isinstance(\n        raw_stream_overrides,\n        dict,\n    ):\n        raise RuntimeError(\n            "config.json stream_overrides must be an object."\n        )\n\n    stream_overrides: dict[str, dict] = {}\n\n    for (\n        override_url,\n        override_data,\n    ) in raw_stream_overrides.items():\n        if not isinstance(\n            override_data,\n            dict,\n        ):\n            raise RuntimeError(\n                "Each stream_overrides entry must be an object."\n            )\n\n        override_key = canonical_stream_url(\n            str(override_url)\n        )\n\n        if not override_key:\n            continue\n\n        stream_overrides[\n            override_key\n        ] = dict(\n            override_data\n        )\n\n'''
+          new = '''    identity_path = ROOT / str(\n        cfg.get("identity_overrides_path")\n        or "identity_overrides.json"\n    )\n    identity_registry = load_identity_registry(identity_path)\n\n'''
+          if text.count(old) != 1:
+              raise SystemExit('legacy stream override block anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '        source_keys = {channel_key(e) for e in entries}\n'
+          new = '        source_keys: set[str] = set()\n'
+          if text.count(old) != 1:
+              raise SystemExit('source keys anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''            stream_override = (\n                stream_overrides.get(\n                    url_key\n                )\n            )\n\n            if stream_override:\n                apply_stream_metadata_override(\n                    entry,\n                    stream_override,\n                )\n\n                raw_override_language = str(\n                    stream_override.get(\n                        "language_code"\n                    )\n                    or ""\n                ).strip()\n\n                if raw_override_language:\n                    override_language = (\n                        normalize_language_code(\n                            raw_override_language\n                        )\n                    )\n\n                    if not override_language:\n                        raise RuntimeError(\n                            "Invalid stream override "\n                            "language_code "\n                            f"{raw_override_language!r} "\n                            f"for {url}"\n                        )\n\n                    entry[\n                        "language_code"\n                    ] = override_language\n\n            key = channel_key(entry)\n'''
+          new = '''            identity_name = strip_display_annotations(\n                strip_internal_candidate_annotations(\n                    entry.get("tvg_name")\n                    or entry.get("display_name")\n                    or ""\n                )\n            )\n            identity_match = identity_registry.resolve(\n                entry,\n                source=name,\n                normalized_name=identity_name,\n            )\n\n            entry["identity_match_type"] = ""\n            entry["identity_selector_index"] = None\n            entry["identity_note"] = ""\n\n            if identity_match:\n                canonical_identity = identity_match["identity"]\n                apply_canonical_identity(\n                    entry,\n                    canonical_identity,\n                )\n                entry["canonical_id"] = identity_match["canonical_id"]\n                entry["identity_match_type"] = identity_match["match_type"]\n                entry["identity_selector_index"] = identity_match["selector_index"]\n                entry["identity_note"] = identity_match["note"]\n\n                raw_identity_language = str(\n                    canonical_identity.get("language_code")\n                    or ""\n                ).strip()\n\n                if raw_identity_language:\n                    identity_language = normalize_language_code(\n                        raw_identity_language\n                    )\n                    if not identity_language:\n                        raise RuntimeError(\n                            "Invalid canonical identity language_code "\n                            f"{raw_identity_language!r} for {url}"\n                        )\n                    entry["language_code"] = identity_language\n\n            key = channel_key(entry)\n            source_keys.add(key)\n'''
+          if text.count(old) != 1:
+              raise SystemExit('stream override application anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''                    "name": clean_name,\n                    "first_source": name,\n'''
+          new = '''                    "name": clean_name,\n                    "canonical_id": entry.get("canonical_id", ""),\n                    "first_source": name,\n'''
+          if text.count(old) != 1:
+              raise SystemExit('seen channel identity anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''            "name": entry["channel_name"],\n            "tvg_id": entry.get("tvg_id", ""),\n            "feed_quality_score": int(\n'''
+          new = '''            "name": entry["channel_name"],\n            "canonical_id": entry.get("canonical_id", ""),\n            "tvg_id": entry.get("tvg_id", ""),\n            "feed_quality_score": int(\n'''
+          if text.count(old) != 1:
+              raise SystemExit('report channel identity anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''                r"[A-Z]{2,3}:(?:id|name):.+",\n'''
+          new = '''                r"[A-Z]{2,3}:(?:canonical|id|name):.+",\n'''
+          if text.count(old) != 1:
+              raise SystemExit('scoped key migration regex anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''            "tvg_id": e.get(\n                "tvg_id",\n                "",\n            ),\n\n            "country_name": e.get(\n'''
+          new = '''            "tvg_id": e.get(\n                "tvg_id",\n                "",\n            ),\n            "canonical_id": e.get("canonical_id", ""),\n            "identity_match_type": e.get("identity_match_type", ""),\n\n            "country_name": e.get(\n'''
+          if text.count(old) != 1:
+              raise SystemExit('inventory identity fields anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''            "feed_count",\n            "tvg_id",\n\n            "country_name",\n'''
+          new = '''            "feed_count",\n            "tvg_id",\n            "canonical_id",\n            "identity_match_type",\n\n            "country_name",\n'''
+          if text.count(old) != 1:
+              raise SystemExit('inventory CSV header anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '        "schema_version": 20,\n'
+          new = '        "schema_version": 21,\n'
+          if text.count(old) != 1:
+              raise SystemExit('report schema anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''        "sources": source_stats,\n        "languages": language_stats,\n\n        "epg": {\n'''
+          new = '''        "sources": source_stats,\n        "languages": language_stats,\n        "identity": {\n            "path": str(identity_path.relative_to(ROOT)),\n            "canonical_identities": len(identity_registry.identities),\n            "selectors": len(identity_registry.selectors),\n        },\n\n        "epg": {\n'''
+          if text.count(old) != 1:
+              raise SystemExit('report identity summary anchor changed')
+          text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+          config_path = Path('config.json')
+          cfg = json.loads(config_path.read_text(encoding='utf-8'))
+          cfg.pop('stream_overrides', None)
+          ordered = {}
+          for key, value in cfg.items():
+              ordered[key] = value
+              if key == 'country_names':
+                  ordered['identity_overrides_path'] = 'identity_overrides.json'
+          config_path.write_text(
+              json.dumps(ordered, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+          python3 -m py_compile build.py identity_overrides.py
+          python3 -m json.tool config.json >/dev/null
+          python3 -m json.tool identity_overrides.json >/dev/null
+          python3 -m unittest tests.test_identity_overrides -v
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+          python3 - <<'PY'
+          import csv
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path('config.json').read_text(encoding='utf-8'))
+          assert 'stream_overrides' not in cfg
+          assert cfg['identity_overrides_path'] == 'identity_overrides.json'
+
+          rows = list(csv.DictReader(Path('public/channels.csv').open(encoding='utf-8')))
+          kanal = [row for row in rows if row.get('canonical_id') == 'sk:kanal1']
+          assert kanal, 'Kanal1 canonical identity did not reach channels.csv'
+          assert all(row['channel_name'] == 'Kanal1' for row in kanal)
+          assert all(row['identity_match_type'] == 'exact_url' for row in kanal)
+
+          report = json.loads(Path('public/report.json').read_text(encoding='utf-8'))
+          assert report['schema_version'] == 21
+          assert report['identity']['canonical_identities'] >= 1
+          assert report['identity']['selectors'] >= 1
+          PY
+          git diff --check
+
+      - name: Commit permanent integration
+        shell: bash
+        run: |
+          git config user.name "Tomkomaster"
+          git config user.email "tomkomaster@freemail.hu"
+          git add build.py config.json
+          git commit -m "Integrate canonical identity data layer [canonical-identity-patched]"
+          git push origin HEAD:agent/canonical-identity-layer
