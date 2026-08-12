@@ -19,5 +19,20 @@ jobs:
       - name: Run unit tests
         run: python3 -m unittest discover -s tests -v
 
+      - name: Validate repository health policy
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from health_policy import compile_health_policy
+
+          payload = json.loads(
+              Path("health_policy.json").read_text(encoding="utf-8")
+          )
+          compile_health_policy(payload)
+          print("health_policy.json is valid.")
+          PY
+
       - name: Run strict playlist build
         run: python3 build.py --strict
