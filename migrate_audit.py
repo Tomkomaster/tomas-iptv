@@ -98,6 +98,71 @@ def load_current_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def csv_bool(value: object) -> bool | None:
+    """Parse generated CSV booleans while tolerating older CSV schemas."""
+    token = str(value or "").strip().casefold()
+    if not token:
+        return None
+    if token in {"true", "1", "yes", "y"}:
+        return True
+    if token in {"false", "0", "no", "n"}:
+        return False
+    return None
+
+
+def current_exact_candidate(
+    item: dict,
+    rows: list[dict[str, str]],
+) -> dict[str, str] | None:
+    """Return the authoritative current row for an audit item's exact URL.
+
+    public/audit.csv may contain both a current row and historical evidence for
+    the same URL after a country/language identity split. Prefer the row whose
+    in_playlist value is true. Explicit historical rows (in_playlist=false)
+    must never redefine the current playlist country.
+    """
+    url_key = canonical_stream_url(
+        str(item.get("stream_url") or "")
+    )
+    if not url_key:
+        return None
+
+    matches = [
+        row
+        for row in rows
+        if canonical_stream_url(
+            str(row.get("stream_url") or "")
+        ) == url_key
+    ]
+    if not matches:
+        return None
+
+    explicitly_current = [
+        row
+        for row in matches
+        if csv_bool(row.get("in_playlist")) is True
+    ]
+    if len(explicitly_current) == 1:
+        return explicitly_current[0]
+    if len(explicitly_current) > 1:
+        return None
+
+    not_historical = [
+        row
+        for row in matches
+        if csv_bool(row.get("in_playlist")) is not False
+    ]
+    if len(not_historical) == 1:
+        return not_historical[0]
+
+    # Older test/export schemas did not include in_playlist. A single exact
+    # URL row is still unambiguous and safe.
+    if len(matches) == 1:
+        return matches[0]
+
+    return None
+
+
 def candidate_rows(
     item: dict,
     rows: list[dict[str, str]],
@@ -161,39 +226,59 @@ def _first_country(*values) -> str:
     return ""
 
 
+def audit_has_wrong_language_evidence(item: dict) -> bool:
+    if str(item.get("language_match") or "").strip().casefold() == "no":
+        return True
+    return any(
+        str(item.get(field) or "").strip().casefold() == "wrong_language"
+        for field in ("vlc", "samsung")
+    )
+
+
 def modernize_audit_item(
     item: dict,
     candidate: dict[str, str] | None = None,
     cfg: dict | None = None,
+    *,
+    prefer_candidate_scope: bool = False,
 ) -> bool:
-    """Add the modern country/language model while retaining legacy aliases.
+    """Add modern country/language fields while retaining legacy aliases.
 
-    The migration deliberately leaves cross-language output_country_code blank
-    unless an explicit legacy output exists. A blank modern output field lets
-    the normal verified-country routing logic decide later and avoids pinning a
-    rejected/untested row to the wrong destination.
+    For an exact URL that is present in the generated current audit, the
+    generated row is authoritative for playlist country. This matters because
+    historical `language_code` sometimes stored the observed wrong language
+    rather than the country in which the stream was being tested.
+
+    Cross-language output remains unpinned when no current exact row provides a
+    safe output country; normal verified-country routing stays authoritative.
     """
     cfg = cfg or {}
     candidate = candidate or {}
 
-    playlist_country = _first_country(
+    stored_playlist_country = _first_country(
         item.get("playlist_country_code"),
         item.get("playlist_language_code"),
         item.get("language_code"),
+    )
+    candidate_country = _first_country(
         candidate.get("playlist_country_code"),
         candidate.get("country_code"),
+        candidate.get("playlist_language_code"),
         candidate.get("language_code"),
     )
+
+    if prefer_candidate_scope and candidate_country:
+        playlist_country = candidate_country
+    else:
+        playlist_country = (
+            stored_playlist_country
+            or candidate_country
+        )
+
     if not playlist_country:
         playlist_country = country_code_from_tvg_id(
             str(item.get("tvg_id") or candidate.get("tvg_id") or "")
         )
-
-    expected = normalize_language_codes(
-        item.get("expected_language_codes")
-    )
-    if not expected and playlist_country:
-        expected = country_language_defaults(cfg, playlist_country)
 
     observed = normalize_language_codes(
         item.get("observed_language_codes")
@@ -203,26 +288,56 @@ def modernize_audit_item(
             item.get("language")
         )
 
+    scope_changed_to_current = bool(
+        prefer_candidate_scope
+        and candidate_country
+        and candidate_country != stored_playlist_country
+    )
+
+    expected = normalize_language_codes(
+        item.get("expected_language_codes")
+    )
+    if (
+        not expected
+        or scope_changed_to_current
+        or (
+            prefer_candidate_scope
+            and audit_has_wrong_language_evidence(item)
+        )
+    ):
+        expected = country_language_defaults(
+            cfg,
+            playlist_country,
+        )
+
     language_codes = normalize_language_codes(
         item.get("language_codes")
     )
-    if not language_codes:
+    if not language_codes or scope_changed_to_current:
         language_codes = list(observed or expected)
 
-    output_country = _first_country(
-        item.get("output_country_code"),
-        item.get("output_language_code"),
+    candidate_output_country = _first_country(
         candidate.get("output_country_code"),
+        candidate.get("output_language_code"),
     )
-    if not output_country and playlist_country:
-        defaults = set(
-            country_language_defaults(cfg, playlist_country)
+    if prefer_candidate_scope and candidate_output_country:
+        output_country = candidate_output_country
+    elif prefer_candidate_scope and candidate_country:
+        # A generated current row without an explicit output still belongs to
+        # the current source country. This is safe for rejected/untested rows
+        # and prevents an old observed-language alias from becoming geography.
+        output_country = candidate_country
+    else:
+        output_country = _first_country(
+            item.get("output_country_code"),
+            item.get("output_language_code"),
         )
-        # Same-country/unknown-language rows are safe to make explicit. For a
-        # true cross-language row, leave output blank so verified routing stays
-        # authoritative instead of this migration silently pinning a country.
-        if not observed or defaults.intersection(observed):
-            output_country = playlist_country
+        if not output_country and playlist_country:
+            defaults = set(
+                country_language_defaults(cfg, playlist_country)
+            )
+            if not observed or defaults.intersection(observed):
+                output_country = playlist_country
 
     modern = {
         "playlist_country_code": playlist_country,
@@ -286,15 +401,25 @@ def migrate(
         if not isinstance(item, dict):
             continue
 
-        candidate = choose_unique_candidate(
+        exact_candidate = current_exact_candidate(
             item,
             rows,
+        )
+        candidate = (
+            exact_candidate
+            or choose_unique_candidate(
+                item,
+                rows,
+            )
         )
 
         if modernize_audit_item(
             item,
             candidate=candidate,
             cfg=cfg,
+            prefer_candidate_scope=(
+                exact_candidate is not None
+            ),
         ):
             modernized += 1
 
