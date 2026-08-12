@@ -368,12 +368,14 @@ A typical audited stream can contain information such as:
   "channel": "Example TV",
   "stream_url": "https://example.com/live/playlist.m3u8",
   "tvg_id": "ExampleTV.hu",
+  "playlist_country_code": "HU",
+  "output_country_code": "HU",
   "vlc": "works",
   "samsung": "works",
   "vlc_note": "ok",
   "samsung_note": "ok",
-  "expected_language_codes": ["HU"],
-  "observed_language_codes": ["HU"],
+  "expected_language_codes": ["hun"],
+  "observed_language_codes": ["hun"],
   "decision": "auto",
   "exclude_from_playlist": false,
   "tested_on": "2026-08-10",
@@ -383,9 +385,7 @@ A typical audited stream can contain information such as:
 }
 ```
 
-Not every field is required for every historical entry.
-
-The builder also understands older audit entries while the audit format continues to evolve.
+Not every field is required for every record.
 
 ---
 
@@ -500,7 +500,7 @@ If an old channel-level audit becomes ambiguous because several current feeds ex
 
 Country, spoken language and publication destination are separate concepts.
 
-Modern source/channel metadata uses:
+Source/channel metadata uses:
 
 ```json
 {
@@ -511,7 +511,7 @@ Modern source/channel metadata uses:
 
 `country_code` is the publication/audit geography (ISO-3166-style two-letter code). `language_codes` contains spoken/content languages using ISO-639-3-style codes such as `hun`, `slk`, `ces`, `deu`, `srp` or `ron`.
 
-Manual audit rows additionally expose:
+Manual audit/export rows use:
 
 ```text
 playlist_country_code
@@ -520,7 +520,7 @@ expected_language_codes
 observed_language_codes
 ```
 
-The first two are countries. The latter two are spoken-language evidence. Existing audit values such as `["HU"]`, `["SK"]` and `["CZ"]` remain accepted and normalize to `hun`, `slk` and `ces`. Historical fields `language_code`, `playlist_language_code` and `output_language_code` remain supported as compatibility aliases for the old country bucket.
+The first two are countries. The latter two are spoken-language evidence and use ISO-639-3-style values such as `hun`, `slk`, `ces` or `deu`.
 
 Verified streams are **not** generically routed by language. Current HU/SK/CZ cross-routing is explicitly configured in `verified_country_routes`, for example `SK + ces -> CZ`. That preserves today's useful behavior without creating a future rule that would incorrectly force every German stream into Germany or every Hungarian stream into Hungary.
 
@@ -636,9 +636,10 @@ A typical Czech audit record can look like:
 {
   "channel": "Example Czech TV",
   "stream_url": "https://example.cz/live/playlist.m3u8",
-  "playlist_language_code": "CZ",
-  "expected_language_codes": ["CZ"],
-  "observed_language_codes": ["CZ"],
+  "playlist_country_code": "CZ",
+  "output_country_code": "CZ",
+  "expected_language_codes": ["ces"],
+  "observed_language_codes": ["ces"],
   "vlc": "works",
   "samsung": "works",
   "decision": "auto",
@@ -660,7 +661,7 @@ public/
 
 ## `tv.m3u`
 
-Shared stable family/friends playlist containing HU, SK and CZ channels. Stable names use language-only prefixes such as `[HU]`, `[SK]` and `[CZ]`.
+Shared stable family/friends playlist containing HU, SK and CZ channels. Stable names use country prefixes such as `[HU]`, `[SK]` and `[CZ]`.
 
 ```text
 https://tomkomaster.github.io/tomas-iptv/tv.m3u
@@ -784,12 +785,15 @@ Useful for reviewing:
 * individual feeds;
 * VLC tests;
 * Samsung tests;
-* language information;
+* country placement;
+* spoken-language information;
 * audit decisions;
 * exclusions;
 * testing dates;
 * notes;
 * whether the exact feed is currently in the playlist.
+
+Country-related export columns use `playlist_country_code` and `output_country_code`. Spoken-language evidence uses `expected_language_codes` and `observed_language_codes`.
 
 ---
 
@@ -925,48 +929,68 @@ The main configuration lives in:
 config.json
 ```
 
-Current simplified structure:
+A simplified modern structure looks like:
 
 ```json
 {
   "site_title": "Tomas IPTV",
-  "default_language_code": "HU",
+  "default_country_code": "HU",
+  "default_language_codes": ["hun"],
 
   "country_names": {
     "HU": "Hungary",
     "SK": "Slovakia",
     "CZ": "Czechia"
   },
+  "country_outputs": {
+    "HU": "public/hu.m3u",
+    "SK": "public/sk.m3u",
+    "CZ": "public/cz.m3u"
+  },
+
+  "language_names": {
+    "hun": "Hungarian",
+    "slk": "Slovak",
+    "ces": "Czech"
+  },
+  "language_outputs": {
+    "hun": "public/by-language/hun.m3u",
+    "slk": "public/by-language/slk.m3u",
+    "ces": "public/by-language/ces.m3u"
+  },
 
   "output": "public/tv.m3u",
   "audit_path": "audit.json",
-
   "sources": [],
   "extras": []
 }
 ```
 
-Remote sources use:
+A fixed-country remote source uses separate country and spoken-language metadata:
 
 ```json
 {
   "name": "Example source",
   "kind": "base",
-  "language_code": "HU",
+  "country_code": "HU",
+  "language_codes": ["hun"],
   "url": "https://example.com/list.m3u"
 }
 ```
 
-Local sources use:
+A local extras source uses the same model:
 
 ```json
 {
   "name": "Example extras",
   "kind": "extras",
-  "language_code": "HU",
+  "country_code": "HU",
+  "language_codes": ["hun"],
   "path": "extras/example.m3u"
 }
 ```
+
+Language-wide sources should use `country_mode: "tvg_id"` so geography comes from each channel's `tvg-id` rather than from the language of the source.
 
 ---
 
@@ -1058,6 +1082,10 @@ tomas-iptv/
     ├── hu.m3u
     ├── sk.m3u
     ├── cz.m3u
+    ├── by-language/
+    │   ├── hun.m3u
+    │   ├── slk.m3u
+    │   └── ces.m3u
     ├── index.html
     ├── channels.csv
     ├── duplicates.csv
