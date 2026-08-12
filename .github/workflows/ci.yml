@@ -34,8 +34,32 @@ jobs:
           print("health_policy.json is valid.")
           PY
 
-      - name: Run strict playlist build
-        run: python3 build.py --strict
+      - name: Run reliable strict playlist build
+        run: python3 reliable_build.py --strict
+
+      - name: Validate same-build failover report
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("public/same-build-health.json")
+          if not path.is_file():
+              raise SystemExit("same-build-health.json was not generated.")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if data.get("selection_only") is not True:
+              raise SystemExit("same-build-health.json must remain selection_only=true.")
+          unsafe = [
+              row for row in (data.get("streams") or [])
+              if row.get("decision") not in {"Verified", "TV verified"}
+          ]
+          if unsafe:
+              raise SystemExit("Same-build probe included a feed without manual TV-safe verification.")
+          print(
+              "Same-build failover report OK: "
+              f"{(data.get('summary') or {}).get('redundant_channels', 0)} redundant channels."
+          )
+          PY
 
       - name: Validate research exports
         run: >-
