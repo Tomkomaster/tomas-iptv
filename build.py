@@ -12,6 +12,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from dashboard import copy_dashboard_assets, render_dashboard
+from feed_quality import build_feed_quality_context, score_feed_quality
 
 ROOT = Path(__file__).resolve().parent
 
@@ -3178,6 +3179,12 @@ def select_stable_playlist_candidates(
         or {}
     )
 
+    quality_context = (
+        build_feed_quality_context(
+            cfg
+        )
+    )
+
     allowed_decisions = {
         str(value).strip()
         for value in (
@@ -3309,54 +3316,24 @@ def select_stable_playlist_candidates(
     def stable_feed_rank(
         entry: dict,
     ) -> tuple:
-        audit = (
-            entry.get("_audit")
-            or {}
+        quality = score_feed_quality(
+            entry,
+            cfg,
+            context=quality_context,
         )
 
-        decision = entry.get(
-            "_decision",
-            "Needs review",
+        entry[
+            "_feed_quality_score"
+        ] = int(
+            quality.get("score")
+            or 0
         )
 
-        decision_rank = {
-            "TV verified": 1,
-            "Verified": 2,
-        }.get(
-            decision,
-            0,
-        )
-
-        vlc = normalize_test_status(
-            str(
-                audit.get("vlc")
-                or ""
-            )
-        )
-
-        samsung = (
-            normalize_test_status(
-                str(
-                    audit.get(
-                        "samsung"
-                    )
-                    or ""
-                )
-            )
-        )
-
-        vlc_rank = {
-            "works": 3,
-            "works_with_warning": 2,
-        }.get(
-            vlc,
-            0,
-        )
-
-        samsung_rank = (
-            1
-            if samsung == "works"
-            else 0
+        entry[
+            "_feed_quality_summary"
+        ] = str(
+            quality.get("summary")
+            or ""
         )
 
         source_rank = -int(
@@ -3367,9 +3344,9 @@ def select_stable_playlist_candidates(
         )
 
         return (
-            decision_rank,
-            vlc_rank,
-            samsung_rank,
+            entry[
+                "_feed_quality_score"
+            ],
             source_rank,
         )
 
@@ -3385,16 +3362,32 @@ def select_stable_playlist_candidates(
             winner
         )
 
+        winner_score = int(
+            winner.get(
+                "_feed_quality_score"
+            )
+            or 0
+        )
+
         for entry in group:
             if entry is winner:
                 continue
+
+            entry_score = int(
+                entry.get(
+                    "_feed_quality_score"
+                )
+                or 0
+            )
 
             add_excluded(
                 entry,
                 (
                     "Another stable feed for "
                     "this logical channel was "
-                    "ranked higher."
+                    "ranked higher by feed-quality "
+                    f"score (winner {winner_score}; "
+                    f"this feed {entry_score})."
                 ),
             )
 
@@ -4250,6 +4243,12 @@ def main(strict: bool = False) -> None:
             "language_code": entry.get("language_code", ""),
             "name": entry["channel_name"],
             "tvg_id": entry.get("tvg_id", ""),
+            "feed_quality_score": int(
+                entry.get("_feed_quality_score") or 0
+            ),
+            "feed_quality_summary": str(
+                entry.get("_feed_quality_summary") or ""
+            ),
             "sources": [],
             "stream_count": 0,
         })
@@ -4498,6 +4497,12 @@ def main(strict: bool = False) -> None:
                 "test_status",
                 "Needs review",
             ),
+            "feed_quality_score": int(
+                e.get("_feed_quality_score") or 0
+            ),
+            "feed_quality_summary": str(
+                e.get("_feed_quality_summary") or ""
+            ),
             "source_flags": ", ".join(e.get("source_flags") or []),
             "source": e["source"],
             "classification": e["classification"],
@@ -4522,6 +4527,8 @@ def main(strict: bool = False) -> None:
             "group_title",
 
             "test_status",
+            "feed_quality_score",
+            "feed_quality_summary",
             "source_flags",
             "source",
             "classification",
@@ -4608,7 +4615,7 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 19,
+        "schema_version": 20,
         "generated_at": generated,
         "playlists": {
             "stable": {
