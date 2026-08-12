@@ -18,6 +18,12 @@ Historical `language_code`, `playlist_language_code` and `output_language_code` 
 
 Language does not globally imply country. A verified cross-country move requires either an explicit `output_country_code` or a configured `verified_country_routes` rule matching both source country and observed language. Current HU/SK/CZ behavior is represented by explicit rules such as `SK + ces -> CZ`; adding Serbia later will not cause an RS Hungarian-language channel to move to HU unless a rule explicitly says so.
 
+## Language-wide upstream sources
+
+IPTV-org language playlists are intentionally country-neutral inputs. They use `country_mode=tvg_id`, so each entry derives geography from its IPTV-org `tvg-id` suffix instead of inheriting a country from the spoken language. For example, a Hungarian-language `PannonRTV.rs@SD` entry is `country_code=RS`, `language_codes=[hun]`, not HU.
+
+Derived entries whose country is not currently configured in `country_outputs` are ignored rather than mislabeled. When that country is enabled later, the same language source can contribute it without changing the attribution model.
+
 ## Expansion examples
 
 - Austria: `country_code=AT`, `language_codes=[deu]`
