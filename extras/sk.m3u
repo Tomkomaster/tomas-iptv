@@ -119,6 +119,9 @@ http://46.36.41.106:8888/rebit/187.m3u8
 #EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport
 https://live.cdn.joj.sk/live/andromeda/joj_sport-1080.m3u8
 
+# Kanal1 — manually verified 2026-08-12.
+# This exact URL is mislabeled upstream in IPTV-org Czechia as "Up Network".
+# Manual playback confirms Kanal1 with Slovak speech, so it belongs to SK.
 #EXTINF:-1 tvg-name="Kanal1",Kanal1
 https://dash.antik.sk/live/test_upnetwork/playlist.m3u8
 
