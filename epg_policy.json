@@ -1,79 +1,444 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "default": "expected",
   "description": "Controls whether EPG gaps create Needs Attention signals. expected = actionable gap; optional = suppress gap but use EPG when available; not_expected = conventional EPG does not apply.",
   "entries": [
-    {"name": "16tv Budapest", "tvg_id": "16tvBudapest.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "ATV Žiar", "channel": "ATV Žiar", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Bajai TV", "tvg_id": "BajaiTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Balaton TV (432p)", "tvg_id": "BalatonTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Bardejovská TV", "tvg_id": "BTV.sk", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "City TV", "tvg_id": "CityTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Csurgó TV", "tvg_id": "CsurgoTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "DTV", "tvg_id": "DTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "ESTV", "tvg_id": "ESTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Folklorika TV", "channel": "Folklorika TV", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "GTTV", "channel": "GTTV", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Gyöngyösi TV", "tvg_id": "GyongyosiTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "HNTV", "channel": "HNTV", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Hévízi TV", "tvg_id": "HeviziTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Kanal1", "channel": "Kanal1", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Karcag TV", "tvg_id": "KarcagTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Kecskemeti TV", "tvg_id": "KecskemetiTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Liceum TV", "tvg_id": "LiceumTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "LifeTv", "tvg_id": "LifeTv.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "MTR", "tvg_id": "MTR.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Makói Városi Televízió", "tvg_id": "MakoiVarosiTelevizio.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Mestská TV Košice", "channel": "Mestská TV Košice", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Mestská Televízia Partizánske", "channel": "Mestská Televízia Partizánske", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Mestská televízia Trnava", "channel": "Mestská televízia Trnava", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Miestna TV Trebišov", "channel": "Miestna TV Trebišov", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Moldava TV", "channel": "Moldava TV", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Móra-Net TV", "tvg_id": "MoraNetTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Oroszlányi Városi Televízió", "tvg_id": "OroszlanyiVarosiTelevizio.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "PARK TV", "channel": "PARK TV", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Pannon RTV [stream2 alternate] (648p)", "tvg_id": "TVPanon.rs", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "RVTV", "channel": "RVTV", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Régió TV (406p)", "tvg_id": "RegioTV.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "SIXO TV", "tvg_id": "SIXOTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Skvelé TV", "channel": "Skvelé TV", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Szolnok TV", "tvg_id": "SzolnokTV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Bratislava", "tvg_id": "TVBratislava.sk", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Central", "tvg_id": "TVCentral.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV DK", "tvg_id": "TVDK.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV DOKTOR", "channel": "TV DOKTOR", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Hronka", "channel": "TV Hronka", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Kežmarok", "channel": "TV Kežmarok", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Liptov", "tvg_id": "TVLiptov.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV LocAll", "tvg_id": "TVLocAll.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Mistral", "tvg_id": "TVMistral.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Nitricka", "tvg_id": "TVNitricka.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Povazie", "tvg_id": "TVPovazie.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Reduta", "channel": "TV Reduta", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV Sen", "tvg_id": "TVSen.sk", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV13", "tvg_id": "TV13.hu", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV7 Bekescsaba", "tvg_id": "7TV.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV7 Prešov", "channel": "TV7 Prešov", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TV9", "tvg_id": "TV9.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TVT", "tvg_id": "TVT.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "TelePaks (396p)", "tvg_id": "TelePaks.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Televízia Močenok", "tvg_id": "TeleviziaMocenok.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Televízia Turiec", "channel": "Televízia Turiec", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Televízia ZEMPLÍN", "channel": "Televízia ZEMPLÍN", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "Zapadoslovenska TV", "tvg_id": "ZapadoslovenskaTV.sk@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},
-    {"name": "360 TuneBox", "channel": "360 TuneBox", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Antik Info TV", "tvg_id": "AntikInfoTV.sk@HD", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Bunyó TV", "channel": "Bunyó TV", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Classics TV", "channel": "Classics TV", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Disco TV", "channel": "Disco TV", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Lóverseny közvetítés", "tvg_id": "Loversenykozvetites.hu@SD", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Maná Cirkev Online", "tvg_id": "ManaCirkevOnline.pt@SD", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Markíza TN Live", "channel": "Markíza TN Live", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Marosvásárhelyi Rádió [Visual Radio]", "channel": "Marosvásárhelyi Rádió [Visual Radio]", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Országgyűlés (Plenáris)", "tvg_id": "OrszaggyulesOGYplenaris.hu@SD", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Oxygen Music", "channel": "Oxygen Music", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "Play Music TV Feed 1", "channel": "Play Music TV Feed 1", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "STVR Live", "channel": "STVR Live", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."},
-    {"name": "TV Panorama", "tvg_id": "TVPanorama.sk@SD", "status": "not_expected", "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."}
-  ]
+    {
+      "name": "16tv Budapest",
+      "tvg_id": "16tvBudapest.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "ATV Žiar",
+      "channel": "ATV Žiar",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Bajai TV",
+      "tvg_id": "BajaiTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Balaton TV (432p)",
+      "tvg_id": "BalatonTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Bardejovská TV",
+      "tvg_id": "BTV.sk",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "City TV",
+      "tvg_id": "CityTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Csurgó TV",
+      "tvg_id": "CsurgoTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "DTV",
+      "tvg_id": "DTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "ESTV",
+      "tvg_id": "ESTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Folklorika TV",
+      "channel": "Folklorika TV",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "GTTV",
+      "channel": "GTTV",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Gyöngyösi TV",
+      "tvg_id": "GyongyosiTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "HNTV",
+      "channel": "HNTV",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Hévízi TV",
+      "tvg_id": "HeviziTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Kanal1",
+      "channel": "Kanal1",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Karcag TV",
+      "tvg_id": "KarcagTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Kecskemeti TV",
+      "tvg_id": "KecskemetiTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Liceum TV",
+      "tvg_id": "LiceumTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "LifeTv",
+      "tvg_id": "LifeTv.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "MTR",
+      "tvg_id": "MTR.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Makói Városi Televízió",
+      "tvg_id": "MakoiVarosiTelevizio.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Mestská TV Košice",
+      "channel": "Mestská TV Košice",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Mestská Televízia Partizánske",
+      "channel": "Mestská Televízia Partizánske",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Mestská televízia Trnava",
+      "channel": "Mestská televízia Trnava",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Miestna TV Trebišov",
+      "channel": "Miestna TV Trebišov",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Moldava TV",
+      "channel": "Moldava TV",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Móra-Net TV",
+      "tvg_id": "MoraNetTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Oroszlányi Városi Televízió",
+      "tvg_id": "OroszlanyiVarosiTelevizio.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "PARK TV",
+      "channel": "PARK TV",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Pannon RTV [stream2 alternate] (648p)",
+      "tvg_id": "TVPanon.rs",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "RVTV",
+      "channel": "RVTV",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Régió TV (406p)",
+      "tvg_id": "RegioTV.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "SIXO TV",
+      "tvg_id": "SIXOTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Skvelé TV",
+      "channel": "Skvelé TV",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Szolnok TV",
+      "tvg_id": "SzolnokTV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Bratislava",
+      "tvg_id": "TVBratislava.sk",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Central",
+      "tvg_id": "TVCentral.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV DK",
+      "tvg_id": "TVDK.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV DOKTOR",
+      "channel": "TV DOKTOR",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Hronka",
+      "channel": "TV Hronka",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Kežmarok",
+      "channel": "TV Kežmarok",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Liptov",
+      "tvg_id": "TVLiptov.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV LocAll",
+      "tvg_id": "TVLocAll.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Mistral",
+      "tvg_id": "TVMistral.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Nitricka",
+      "tvg_id": "TVNitricka.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Povazie",
+      "tvg_id": "TVPovazie.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Reduta",
+      "channel": "TV Reduta",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV Sen",
+      "tvg_id": "TVSen.sk",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV13",
+      "tvg_id": "TV13.hu",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV7 Bekescsaba",
+      "tvg_id": "7TV.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV7 Prešov",
+      "channel": "TV7 Prešov",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TV9",
+      "tvg_id": "TV9.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TVT",
+      "tvg_id": "TVT.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "TelePaks (396p)",
+      "tvg_id": "TelePaks.hu@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Televízia Močenok",
+      "tvg_id": "TeleviziaMocenok.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Televízia Turiec",
+      "channel": "Televízia Turiec",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Televízia ZEMPLÍN",
+      "channel": "Televízia ZEMPLÍN",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "Zapadoslovenska TV",
+      "tvg_id": "ZapadoslovenskaTV.sk@SD",
+      "status": "optional",
+      "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."
+    },
+    {
+      "name": "360 TuneBox",
+      "channel": "360 TuneBox",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Antik Info TV",
+      "tvg_id": "AntikInfoTV.sk@HD",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Bunyó TV",
+      "channel": "Bunyó TV",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Classics TV",
+      "channel": "Classics TV",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Disco TV",
+      "channel": "Disco TV",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Lóverseny közvetítés",
+      "tvg_id": "Loversenykozvetites.hu@SD",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Maná Cirkev Online",
+      "tvg_id": "ManaCirkevOnline.pt@SD",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Markíza TN Live",
+      "channel": "Markíza TN Live",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Marosvásárhelyi Rádió [Visual Radio]",
+      "channel": "Marosvásárhelyi Rádió [Visual Radio]",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Országgyűlés (Plenáris)",
+      "tvg_id": "OrszaggyulesOGYplenaris.hu@SD",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Oxygen Music",
+      "channel": "Oxygen Music",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "Play Music TV Feed 1",
+      "channel": "Play Music TV Feed 1",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "STVR Live",
+      "channel": "STVR Live",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    },
+    {
+      "name": "TV Panorama",
+      "tvg_id": "TVPanorama.sk@SD",
+      "status": "not_expected",
+      "reason": "Live/event/web/info feed: a conventional programme guide is not expected, so EPG gaps are not actionable."
+    }
+  ],
+  "country_defaults": {
+    "HU": "expected",
+    "SK": "expected",
+    "CZ": "expected"
+  }
 }

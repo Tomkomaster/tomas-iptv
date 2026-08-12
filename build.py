@@ -4052,6 +4052,16 @@ details ul {{ max-height: 260px; overflow: auto; }}
 
   {audit_warning_html}
 
+  <h2>EPG coverage by country</h2>
+  <p class="muted">
+    Programme-guide coverage is shown separately for HU, SK and CZ so growth in
+    one country does not hide gaps in another. Percentages use stable channels
+    that currently have a tvg-id. Missing tvg-id values remain visible in Needs attention.
+  </p>
+  <div id="epgCountrySummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading EPG coverage</div></div>
+  </div>
+
   <h2>Needs attention</h2>
   <p class="muted">
     One prioritized advisory queue combining automated stream failures, old manual
@@ -4339,6 +4349,43 @@ details ul {{ max-height: 260px; overflow: auto; }}
 </main>
 
 <script>
+const epgCountrySummary = document.getElementById('epgCountrySummary');
+
+function renderEpgCountryCoverage(data) {{
+  const countries = data.countries || {{}};
+  const codes = ['HU', 'SK', 'CZ'].filter(code => countries[code]);
+  if (!codes.length) {{
+    epgCountrySummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Country EPG data unavailable</div></div>';
+    return;
+  }}
+
+  epgCountrySummary.innerHTML = codes.map(code => {{
+    const info = countries[code] || {{}};
+    const total = Number(info.playlist_tvg_ids || 0);
+    const mapped = Number(info.mapped_tvg_ids || 0);
+    const populated = Number(info.channels_with_programmes || 0);
+    const actual = Number(info.actual_programme_coverage_percent || 0).toFixed(1);
+    const mappedPct = Number(info.mapping_coverage_percent || 0).toFixed(1);
+    return `
+      <div class="card">
+        <div class="value">${{actual}}%</div>
+        <div class="label">${{code}} programmes (${{populated}}/${{total}})</div>
+        <div class="detail">Mapped: ${{mapped}}/${{total}} (${{mappedPct}}%)</div>
+      </div>
+    `;
+  }}).join('');
+}}
+
+fetch('epg-health.json', {{ cache: 'no-store' }})
+  .then(response => {{
+    if (!response.ok) throw new Error(`HTTP ${{response.status}}`);
+    return response.json();
+  }})
+  .then(renderEpgCountryCoverage)
+  .catch(error => {{
+    epgCountrySummary.innerHTML = `<div class="card"><div class="value">—</div><div class="label">EPG coverage unavailable: ${{attentionEsc(error.message)}}</div></div>`;
+  }});
+
 const attentionSearch = document.getElementById('attentionSearch');
 const attentionSeverityFilter = document.getElementById('attentionSeverityFilter');
 const attentionCategoryFilter = document.getElementById('attentionCategoryFilter');

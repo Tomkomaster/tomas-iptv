@@ -38,6 +38,11 @@ def analyse_epg_health(
 
     provider_by_tvg: dict[str, str] = {}
     mapped_by_provider: Counter[str] = Counter()
+    country_by_tvg = {
+        str(tvg_id): str(code).strip().upper()
+        for tvg_id, code in (coverage.get("tvg_id_countries") or {}).items()
+        if str(tvg_id).strip() and str(code).strip()
+    }
 
     for item in matched:
         if not isinstance(item, dict):
@@ -119,6 +124,44 @@ def analyse_epg_health(
         else 0.0
     )
 
+    countries: dict[str, dict] = {}
+    configured_countries = coverage.get("countries") or {}
+    if isinstance(configured_countries, dict):
+        for raw_code, raw_info in configured_countries.items():
+            code = str(raw_code or "").strip().upper()
+            info = raw_info if isinstance(raw_info, dict) else {}
+            if not code:
+                continue
+            country_total = int(info.get("playlist_tvg_ids") or 0)
+            mapped_ids = {
+                tvg_id
+                for tvg_id in provider_by_tvg
+                if country_by_tvg.get(tvg_id) == code
+            }
+            populated_country = mapped_ids & populated_ids
+            mapped_country = len(mapped_ids)
+            populated_country_count = len(populated_country)
+            countries[code] = {
+                "playlist_tvg_ids": country_total,
+                "mapped_tvg_ids": mapped_country,
+                "mapping_coverage_percent": round(
+                    mapped_country / country_total * 100.0
+                    if country_total else 0.0,
+                    1,
+                ),
+                "channels_with_programmes": populated_country_count,
+                "actual_programme_coverage_percent": round(
+                    populated_country_count / country_total * 100.0
+                    if country_total else 0.0,
+                    1,
+                ),
+                "mapped_channels_effective_percent": round(
+                    populated_country_count / mapped_country * 100.0
+                    if mapped_country else 0.0,
+                    1,
+                ),
+            }
+
     providers: dict[str, dict] = {}
     provider_names = sorted(
         set(mapped_by_provider)
@@ -195,6 +238,7 @@ def analyse_epg_health(
         "programme_entries": sum(programme_counts.values()),
         "grab_http_errors_total": grab_errors_total,
         "providers": providers,
+        "countries": countries,
         "mapped_without_programmes_count": len(missing_programmes),
         "mapped_without_programmes": missing_programmes,
     }
@@ -224,6 +268,15 @@ def analyse_epg_health(
         f"only {populated_total}/{mapped_total or 0} mapped channels "
         "produced programmes."
     )
+
+    for code, info in countries.items():
+        print(
+            f"- {code} EPG: "
+            f"{info['channels_with_programmes']}/"
+            f"{info['playlist_tvg_ids']} tvg-id channels have programmes "
+            f"({info['actual_programme_coverage_percent']:.1f}%); "
+            f"{info['mapped_tvg_ids']} mapped."
+        )
 
     for provider, info in providers.items():
         errors = info["http_errors"]
