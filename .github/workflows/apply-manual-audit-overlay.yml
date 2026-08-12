@@ -61,6 +61,7 @@ jobs:
           fixes_path = Path('.manual-audit-source-fixes.json')
           if fixes_path.is_file():
               fixes = json.loads(fixes_path.read_text(encoding='utf-8'))
+
               for item in fixes.get('m3u_entries', []):
                   path = Path(str(item['path']))
                   url = str(item['url']).strip()
@@ -78,18 +79,34 @@ jobs:
                   if not text.endswith('\n'):
                       text += '\n'
                   path.write_text(text + block, encoding='utf-8')
+
+              for item in fixes.get('text_replacements', []):
+                  path = Path(str(item['path']))
+                  old = str(item['old'])
+                  new = str(item['new'])
+                  text = path.read_text(encoding='utf-8')
+                  if new in text and old not in text:
+                      continue
+                  if old not in text:
+                      raise SystemExit(
+                          f"Expected text not found in {path}: {old[:120]!r}"
+                      )
+                  path.write_text(
+                      text.replace(old, new, 1),
+                      encoding='utf-8',
+                  )
           PY
 
       - name: Validate and commit changes
         shell: bash
         run: |
           python -m json.tool audit.json > /dev/null
-          if git diff --quiet -- audit.json extras/hu.m3u; then
-            echo "Audit and retained test candidates already up to date"
+          if git diff --quiet -- audit.json extras/hu.m3u iptv/build_core.py; then
+            echo "Audit and retained test/name fixes already up to date"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add audit.json extras/hu.m3u
+          git add audit.json extras/hu.m3u iptv/build_core.py
           git commit -m "Apply manual IPTV audit batch"
           git push
