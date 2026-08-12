@@ -155,6 +155,7 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             "vlc": "works",
             "samsung": "works",
             "decision": "auto",
+            "playlist_language_code": "SK",
             "expected_language_codes": ["SK"],
             "observed_language_codes": ["SK"],
             "language": "Slovak",
@@ -170,7 +171,7 @@ class LanguageScopingRegressionTests(unittest.TestCase):
         self.assertEqual(ambiguity_warnings, [])
         self.assertTrue(
             any(
-                "saved audit explicitly expects SK" in warning
+                "saved audit belongs to SK playlist scope" in warning
                 for warning in warnings
             )
         )
@@ -218,6 +219,152 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             },
         )
         self.assertEqual(stable, [])
+
+
+    def test_supported_cross_language_stays_in_first_country_bucket_once(self):
+        url = "https://example.test/cross-language.m3u8"
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            (root / "audit.json").write_text(
+                json.dumps({
+                    "channels": [{
+                        "channel": "Cross Language TV",
+                        "stream_url": url,
+                        "playlist_language_code": "SK",
+                        "expected_language_codes": ["SK"],
+                        "observed_language_codes": ["CZ"],
+                        "language": "Czech",
+                        "language_code": "CZ",
+                        "vlc": "wrong_language",
+                        "samsung": "wrong_language",
+                        "decision": "auto",
+                        "exclude_from_playlist": False,
+                    }]
+                }),
+                encoding="utf-8",
+            )
+
+            for filename, tvg_id in (
+                ("sk-source.m3u", "CrossLanguage.sk@SD"),
+                ("cz-source.m3u", "CrossLanguage.cz@SD"),
+            ):
+                (root / filename).write_text(
+                    "#EXTM3U\n"
+                    f'#EXTINF:-1 tvg-id="{tvg_id}" '
+                    'tvg-name="Cross Language TV",Cross Language TV\n'
+                    f"{url}\n",
+                    encoding="utf-8",
+                )
+
+            (root / "config.json").write_text(
+                json.dumps({
+                    "site_title": "Test",
+                    "default_language_code": "SK",
+                    "country_names": {
+                        "SK": "Slovakia",
+                        "CZ": "Czechia",
+                    },
+                    "output": "public/tv.m3u",
+                    "test_output": "public/test.m3u",
+                    "country_outputs": {
+                        "SK": "public/sk.m3u",
+                        "CZ": "public/cz.m3u",
+                    },
+                    "audit_path": "audit.json",
+                    "sources": [
+                        {
+                            "name": "Slovakia",
+                            "kind": "base",
+                            "language_code": "SK",
+                            "path": "sk-source.m3u",
+                        },
+                        {
+                            "name": "Czechia",
+                            "kind": "base",
+                            "language_code": "CZ",
+                            "path": "cz-source.m3u",
+                        },
+                    ],
+                    "extras": [],
+                }),
+                encoding="utf-8",
+            )
+
+            old_root = build.ROOT
+            try:
+                build.ROOT = root
+                build.main(strict=True)
+            finally:
+                build.ROOT = old_root
+
+            stable = (root / "public" / "tv.m3u").read_text(
+                encoding="utf-8"
+            )
+            sk_playlist = (root / "public" / "sk.m3u").read_text(
+                encoding="utf-8"
+            )
+            cz_playlist = (root / "public" / "cz.m3u").read_text(
+                encoding="utf-8"
+            )
+
+            self.assertEqual(stable.count(url), 1)
+            self.assertIn("[SK OK] Cross Language TV", sk_playlist)
+            self.assertIn(url, sk_playlist)
+            self.assertNotIn(url, cz_playlist)
+
+            with (root / "public" / "audit.csv").open(
+                encoding="utf-8-sig",
+                newline="",
+            ) as f:
+                audit_rows = list(csv.DictReader(f))
+
+            current = [
+                row
+                for row in audit_rows
+                if row["in_playlist"] == "True"
+            ]
+            self.assertEqual(len(current), 1)
+            self.assertEqual(
+                current[0]["playlist_language_code"],
+                "SK",
+            )
+            self.assertEqual(
+                current[0]["observed_language_codes"],
+                "CZ",
+            )
+            self.assertEqual(
+                current[0]["language_acceptance"],
+                "supported_cross_language",
+            )
+            self.assertEqual(
+                current[0]["decision"],
+                "Verified",
+            )
+
+    def test_unsupported_cross_language_remains_rejected(self):
+        decision, _reason = build.calculate_audit_decision(
+            {
+                "playlist_language_code": "HU",
+                "expected_language_codes": ["HU"],
+                "observed_language_codes": ["RU"],
+                "vlc": "wrong_language",
+                "samsung": "wrong_language",
+                "decision": "auto",
+                "exclude_from_playlist": False,
+            },
+            supported_language_codes=[
+                "HU",
+                "SK",
+                "CZ",
+            ],
+        )
+
+        self.assertEqual(
+            decision,
+            "Rejected",
+        )
 
 
 class AuditBooleanRegressionTests(unittest.TestCase):
