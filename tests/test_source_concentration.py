@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 
 from feed_quality import classify_feed_source, score_feed_quality
-from source_concentration import build_source_concentration
+from iptv.source_concentration import build_source_concentration
 
 
 class SourceClassificationTests(unittest.TestCase):
