@@ -143,3 +143,15 @@ https://stream.silesnet.net/webcams/jablunkov.m3u8
 # Český Těšín - Náměstí ČSA
 #EXTINF:-1 tvg-name="Český Těšín - Náměstí ČSA" group-title="Webcams",Český Těšín - Náměstí ČSA
 https://stream.silesnet.net/webcams/tesin.m3u8
+
+# FashionTV Czech&Slovak - CZ/SK regional version; direct HLS candidate
+#EXTINF:-1 tvg-id="FashionTVCzechSlovak.fr" tvg-name="FashionTV Czech&Slovak" group-title="Lifestyle",FashionTV Czech&Slovak
+https://lb.streaming.sk/fashiontv/stream/playlist.m3u8
+
+# TN Live - third-party relay candidate; verify stability and channel identity
+#EXTINF:-1 tvg-id="TNLive.cz" tvg-name="TN Live" group-title="News",TN Live
+https://sktv.mxnticek.eu/new/stream.php?ch=Nova%20TN%20Live
+
+# CT sport Plus - event/online sports service; relay candidate
+#EXTINF:-1 tvg-name="ČT sport Plus" group-title="Sports",ČT sport Plus
+https://sktv.mxnticek.eu/new/stream.php?ch=%C4%8CT%20sport%20Plus
