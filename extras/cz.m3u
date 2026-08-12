@@ -168,3 +168,18 @@ https://streamer05.low-latency.cz/oiktv/index.m3u8
 # Czech speech; Samsung not yet tested
 #EXTINF:-1 tvg-id="DVTV Extra.cz" tvg-name="DVTV Extra" tvg-country="CZ" tvg-language="Czech" group-title="News",DVTV Extra
 https://antik.streaming.tivio.studio/channels/IxLi19VRasgu94bIaXbH/index.m3u8
+
+#EXTINF:-1 tvg-id="FashionTVCzechSlovak.fr" tvg-name="FashionTV Czech&Slovak" group-title="Lifestyle",FashionTV Czech&Slovak
+https://lb.streaming.sk/fashiontv/stream/playlist.m3u8
+
+#EXTINF:-1 tvg-id="Polar2.cz" tvg-name="POLAR 2" group-title="Regional",POLAR 2
+https://stream.polar.cz/polar2/polarlive2-1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="OIKTV.cz" tvg-name="OIK TV" group-title="Regional",OIK TV
+https://streamer05.low-latency.cz/oiktv/index.m3u8
+
+#EXTINF:-1 tvg-id="TNLive.cz" tvg-name="TN Live" group-title="News",TN Live
+https://sktv.mxnticek.eu/new/stream.php?ch=Nova%20TN%20Live
+
+#EXTINF:-1 tvg-name="ČT sport Plus" group-title="Sports",ČT sport Plus
+https://sktv.mxnticek.eu/new/stream.php?ch=%C4%8CT%20sport%20Plus
