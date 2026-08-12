@@ -19,18 +19,20 @@ class DocumentationNamingTests(unittest.TestCase):
         for path in paths:
             text = path.read_text(encoding="utf-8")
             for field in forbidden_fields:
-                if re.search(rf"(?<![A-Za-z0-9_]){re.escape(field)}(?![A-Za-z0-9_])", text):
+                if re.search(
+                    rf"(?<![A-Za-z0-9_]){re.escape(field)}(?![A-Za-z0-9_])",
+                    text,
+                ):
                     failures.append(f"{path.relative_to(root)} teaches legacy field {field}")
 
-            for field in ("expected_language_codes", "observed_language_codes"):
-                if re.search(
-                    rf'{field}\s*[`"=: ]+[^\n]*\[?\s*["`]?(HU|SK|CZ)["`]?',
-                    text,
-                    flags=re.IGNORECASE,
-                ):
-                    failures.append(
-                        f"{path.relative_to(root)} uses country-style values for {field}"
-                    )
+            for line in text.splitlines():
+                for field in ("expected_language_codes", "observed_language_codes"):
+                    if field not in line:
+                        continue
+                    if re.search(r'["`](?:HU|SK|CZ)["`]', line, flags=re.IGNORECASE):
+                        failures.append(
+                            f"{path.relative_to(root)} uses country-style values for {field}"
+                        )
 
         self.assertEqual(failures, [], "\n".join(failures))
 
