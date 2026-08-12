@@ -287,6 +287,128 @@ def canonical_stream_url(url: str) -> str:
         parsed.query,
         "",
     ))
+
+def apply_stream_metadata_override(
+    entry: dict,
+    override: dict,
+) -> None:
+    """
+    Apply a manually curated identity override to one exact stream URL.
+
+    This is used when an upstream playlist has the correct playable URL
+    but incorrect channel identity, tvg metadata, or country/language.
+
+    The parsed metadata and the preserved #EXTINF line are both updated so
+    the corrected identity also reaches the generated M3U files.
+    """
+    if not isinstance(override, dict):
+        return
+
+    channel_name = ""
+
+    if "channel_name" in override:
+        channel_name = str(
+            override.get("channel_name") or ""
+        ).strip()
+
+        if channel_name:
+            entry["display_name"] = channel_name
+            entry["channel_name"] = channel_name
+
+    if "tvg_name" in override:
+        entry["tvg_name"] = str(
+            override.get("tvg_name") or ""
+        ).strip()
+
+    if "tvg_id" in override:
+        entry["tvg_id"] = str(
+            override.get("tvg_id") or ""
+        ).strip()
+
+    updated_lines = list(
+        entry.get("lines") or []
+    )
+
+    for i, line in enumerate(updated_lines):
+        if not line.strip().startswith("#EXTINF:"):
+            continue
+
+        metadata, old_display_name = split_extinf(line)
+
+        def set_attribute(
+            metadata_value: str,
+            attribute: str,
+            value: str,
+        ) -> str:
+            pattern = (
+                rf'\s+{re.escape(attribute)}="[^"]*"'
+            )
+
+            if value == "":
+                return re.sub(
+                    pattern,
+                    "",
+                    metadata_value,
+                    count=1,
+                    flags=re.IGNORECASE,
+                )
+
+            safe_value = value.replace(
+                '"',
+                "'",
+            )
+
+            replacement = (
+                f' {attribute}="{safe_value}"'
+            )
+
+            if re.search(
+                pattern,
+                metadata_value,
+                flags=re.IGNORECASE,
+            ):
+                return re.sub(
+                    pattern,
+                    replacement,
+                    metadata_value,
+                    count=1,
+                    flags=re.IGNORECASE,
+                )
+
+            return metadata_value + replacement
+
+        if "tvg_id" in override:
+            metadata = set_attribute(
+                metadata,
+                "tvg-id",
+                str(
+                    override.get("tvg_id")
+                    or ""
+                ).strip(),
+            )
+
+        if "tvg_name" in override:
+            metadata = set_attribute(
+                metadata,
+                "tvg-name",
+                str(
+                    override.get("tvg_name")
+                    or ""
+                ).strip(),
+            )
+
+        display_name = (
+            channel_name
+            or old_display_name
+        )
+
+        updated_lines[i] = (
+            f"{metadata},{display_name}"
+        )
+
+        break
+
+    entry["lines"] = updated_lines
 	
 def channel_key(entry: dict) -> str:
     """
@@ -3664,6 +3786,46 @@ def main(strict: bool = False) -> None:
         )
     )
 
+    raw_stream_overrides = (
+        cfg.get("stream_overrides")
+        or {}
+    )
+
+    if not isinstance(
+        raw_stream_overrides,
+        dict,
+    ):
+        raise RuntimeError(
+            "config.json stream_overrides must be an object."
+        )
+
+    stream_overrides: dict[str, dict] = {}
+
+    for (
+        override_url,
+        override_data,
+    ) in raw_stream_overrides.items():
+        if not isinstance(
+            override_data,
+            dict,
+        ):
+            raise RuntimeError(
+                "Each stream_overrides entry must be an object."
+            )
+
+        override_key = canonical_stream_url(
+            str(override_url)
+        )
+
+        if not override_key:
+            continue
+
+        stream_overrides[
+            override_key
+        ] = dict(
+            override_data
+        )
+
     source_items: list[dict] = []
 
     # Entries under "sources" are base sources by default.
@@ -3760,24 +3922,76 @@ def main(strict: bool = False) -> None:
                 continue
 
             url_key = canonical_stream_url(url)
-            key = channel_key(entry)
-            clean_name = strip_display_annotations(
-                strip_internal_candidate_annotations(
-                    entry.get("display_name", "")
-                )
-            )
-            entry["channel_key"] = key
-            entry["channel_name"] = clean_name
+
             entry["source"] = name
             entry["source_kind"] = kind
             entry["language_code"] = language_code
-            logical_key = logical_channel_key(entry)
+
+            stream_override = (
+                stream_overrides.get(
+                    url_key
+                )
+            )
+
+            if stream_override:
+                apply_stream_metadata_override(
+                    entry,
+                    stream_override,
+                )
+
+                raw_override_language = str(
+                    stream_override.get(
+                        "language_code"
+                    )
+                    or ""
+                ).strip()
+
+                if raw_override_language:
+                    override_language = (
+                        normalize_language_code(
+                            raw_override_language
+                        )
+                    )
+
+                    if not override_language:
+                        raise RuntimeError(
+                            "Invalid stream override "
+                            "language_code "
+                            f"{raw_override_language!r} "
+                            f"for {url}"
+                        )
+
+                    entry[
+                        "language_code"
+                    ] = override_language
+
+            key = channel_key(entry)
+
+            clean_name = (
+                strip_display_annotations(
+                    strip_internal_candidate_annotations(
+                        entry.get(
+                            "display_name",
+                            ""
+                        )
+                    )
+                )
+            )
+
+            entry["channel_key"] = key
+            entry["channel_name"] = clean_name
+
+            logical_key = (
+                logical_channel_key(
+                    entry
+                )
+            )
 
             country_name = str(
                 spec.get("country_name")
                 or country_name_for_language(
                     cfg,
-                    language_code,
+                    entry["language_code"],
                 )
             ).strip()
 
@@ -3801,7 +4015,7 @@ def main(strict: bool = False) -> None:
             ] = normalize_content_group(
                 source_group_title,
                 country_name=country_name,
-                language_code=language_code,
+                language_code=entry["language_code"],
                 default_group=str(
                     spec.get(
                         "default_group_title"
@@ -3855,7 +4069,7 @@ def main(strict: bool = False) -> None:
                     "first_source": name,
                     "first_source_kind": kind,
                     "language_code": (
-                        language_code
+                        entry["language_code"]
                     ),
                 }
 
