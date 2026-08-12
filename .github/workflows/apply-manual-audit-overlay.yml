@@ -6,6 +6,7 @@ on:
       - agent/manual-audit-132-channels
     paths:
       - .manual-audit-overlay.json
+      - .manual-audit-source-fixes.json
 
 permissions:
   contents: write
@@ -20,7 +21,7 @@ jobs:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: Apply manual audit records
+      - name: Apply manual audit records and source fixes
         shell: bash
         run: |
           python - <<'PY'
@@ -56,18 +57,39 @@ jobs:
               json.dumps(audit, ensure_ascii=False, indent=2) + '\n',
               encoding='utf-8',
           )
+
+          fixes_path = Path('.manual-audit-source-fixes.json')
+          if fixes_path.is_file():
+              fixes = json.loads(fixes_path.read_text(encoding='utf-8'))
+              for item in fixes.get('m3u_entries', []):
+                  path = Path(str(item['path']))
+                  url = str(item['url']).strip()
+                  text = path.read_text(encoding='utf-8')
+                  if url in text:
+                      continue
+
+                  block = '\n'.join([
+                      '',
+                      str(item.get('comment') or '').strip(),
+                      str(item['extinf']).strip(),
+                      url,
+                      '',
+                  ])
+                  if not text.endswith('\n'):
+                      text += '\n'
+                  path.write_text(text + block, encoding='utf-8')
           PY
 
-      - name: Validate and commit audit.json
+      - name: Validate and commit changes
         shell: bash
         run: |
           python -m json.tool audit.json > /dev/null
-          if git diff --quiet -- audit.json; then
-            echo "audit.json already contains this overlay"
+          if git diff --quiet -- audit.json extras/hu.m3u; then
+            echo "Audit and retained test candidates already up to date"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add audit.json
+          git add audit.json extras/hu.m3u
           git commit -m "Apply manual IPTV audit batch"
           git push
