@@ -24,6 +24,7 @@
     <a href="audit.csv">Manual verification (CSV)</a>
     <a href="attention.json">Needs attention (JSON)</a>
     <a href="health.json">Automated stream health (JSON)</a>
+    <a href="source-concentration.json">Source concentration reliability (JSON)</a>
     <a href="report.json">Machine report (JSON)</a>
   </div>
 
@@ -166,6 +167,31 @@
       <tbody>
         <tr><td colspan="9" class="muted">Loading prioritized attention queue…</td></tr>
       </tbody>
+    </table>
+  </div>
+
+  <h2>Source concentration reliability</h2>
+  <p class="muted">
+    Stable channels grouped by exact stream hostname and by provenance class.
+    Official broadcaster, broadcaster CDN and third-party relay counts use the
+    same evidence as feed-quality scoring. Unknown provenance stays Unclassified.
+    Concentration warnings are reserved for third-party relay hosts carrying a
+    material share of one country's stable playlist.
+  </p>
+  <div id="sourceConcentrationSummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading source concentration</div></div>
+  </div>
+  <h3>Source type by country</h3>
+  <div id="sourceConcentrationCountrySummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading country concentration</div></div>
+  </div>
+  <p id="sourceConcentrationVisibleCount" class="muted">Loading source-concentration.json…</p>
+  <div class="table-wrap">
+    <table id="sourceConcentrationTable">
+      <thead>
+        <tr><th>Country</th><th>Hostname / CDN</th><th>Type</th><th>Stable channels</th><th>Country share</th><th>Relay exposure</th><th>Risk</th><th>Channels</th></tr>
+      </thead>
+      <tbody><tr><td colspan="8" class="muted">Loading hostname concentration…</td></tr></tbody>
     </table>
   </div>
 
