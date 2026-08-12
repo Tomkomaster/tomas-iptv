@@ -1,4 +1,7 @@
+import csv
+import tempfile
 import unittest
+from pathlib import Path
 
 import research_exports
 from wanted_channels import compile_wanted_channels
@@ -160,6 +163,74 @@ class WantedChannelTests(unittest.TestCase):
         self.assertEqual(missing[0]["channel"], "Regional Demo")
         self.assertFalse(missing[0]["wanted"])
         self.assertEqual(missing[0]["status"], "CANDIDATES TO TEST")
+
+    def test_generate_exports_writes_unseen_wanted_target(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            public_dir = Path(tmp)
+            fieldnames = [
+                "channel",
+                "tvg_id",
+                "playlist_country_code",
+                "in_playlist",
+                "in_stable_playlist",
+                "vlc",
+                "samsung",
+                "decision",
+            ]
+            with (public_dir / "audit.csv").open(
+                "w", encoding="utf-8-sig", newline=""
+            ) as handle:
+                writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerow(
+                    {
+                        "channel": "Existing Demo",
+                        "tvg_id": "ExistingDemo.sk",
+                        "playlist_country_code": "SK",
+                        "in_playlist": "True",
+                        "in_stable_playlist": "False",
+                        "vlc": "not_tested",
+                        "samsung": "not_tested",
+                        "decision": "Needs review",
+                    }
+                )
+
+            (public_dir / "index.html").write_text(
+                '<a href="audit.csv">Manual verification (CSV)</a>',
+                encoding="utf-8",
+            )
+            wanted = compile_wanted_channels(
+                {
+                    "channels": [
+                        {
+                            "country_code": "CZ",
+                            "channel": "Never Seen TV",
+                            "tvg_id": "NeverSeenTV.cz",
+                            "priority": "P1",
+                        }
+                    ]
+                }
+            )
+            stats = research_exports.generate_exports(
+                public_dir,
+                generated_at="2026-08-12 17:00:00 UTC",
+                priority_policy={"schema_version": 1, "default_priority": "P3"},
+                wanted_channels=wanted,
+            )
+
+            with (public_dir / "missing.csv").open(
+                "r", encoding="utf-8-sig", newline=""
+            ) as handle:
+                missing = list(csv.DictReader(handle))
+
+            unseen = next(row for row in missing if row["channel"] == "Never Seen TV")
+            self.assertEqual(unseen["wanted"], "True")
+            self.assertEqual(unseen["status"], "NOT RESEARCHED")
+            self.assertEqual(unseen["known_feeds"], "0")
+            self.assertEqual(unseen["priority"], "P1")
+            self.assertEqual(stats["wanted_channels"], 1)
+            self.assertEqual(stats["wanted_missing"], 1)
+            self.assertEqual(stats["wanted_not_researched"], 1)
 
 
 if __name__ == "__main__":
