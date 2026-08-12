@@ -45,3 +45,23 @@ https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_show/playlist/cze/live_hd.m
 # TV GIMI - former Kurýr TV, verify current stream identity
 #EXTINF:-1 tvg-name="TV Gimi" group-title="Regional",TV Gimi
 https://stream-35.mazana.tv/jc2.jc.m3u8
+
+# A11 - Antik candidate; visually verify channel identity
+#EXTINF:-1 tvg-id="A11.cz@SD" tvg-name="A11" group-title="General",A11
+https://dash2.antik.sk/live/test_regionalni_tv/playlist.m3u8
+
+# REBEL
+#EXTINF:-1 tvg-id="Rebel.cz@SD" tvg-name="REBEL" group-title="Music",REBEL
+https://dash3.antik.sk/live/test_rebel/playlist.m3u8
+
+# RELAX
+#EXTINF:-1 tvg-id="Relax.cz@SD" tvg-name="RELAX" group-title="Entertainment",RELAX
+https://dash2.antik.sk/live/test_relax/playlist.m3u8
+
+# Warner TV - experimental
+#EXTINF:-1 tvg-name="Warner TV" group-title="Movies",Warner TV
+http://88.212.7.10/live/warner_tv/index.m3u8
+
+# Nova Krimi - former Nova Gold; verify visually
+#EXTINF:-1 tvg-id="NovaGold.cz@SD" tvg-name="Nova Krimi" group-title="Entertainment",Nova Krimi
+http://88.212.7.10/live/nova_gold_avc_25p/playlist.m3u8
