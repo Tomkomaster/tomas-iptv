@@ -410,3 +410,8 @@ https://videostudioris.sk/hls/tvs.m3u8
 # Alternative to IPTV-org's older 95.105.193.219 HTTP endpoint
 #EXTINF:-1 tvg-id="TVStaraTura.sk" tvg-name="TV Stará Turá" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Stará Turá
 https://videostudioris.sk/hls/tvst.m3u8
+
+# Západoslovenská TV — LZNET HTTPS alternative
+# New independent feed candidate; test on PC + Samsung
+#EXTINF:-1 tvg-id="ZapadoslovenskaTV.sk" tvg-name="Západoslovenská TV" tvg-country="SK" tvg-language="Slovak" group-title="General",Západoslovenská TV
+https://livestream.lznet.work/hls/zstv-live/index.m3u8
