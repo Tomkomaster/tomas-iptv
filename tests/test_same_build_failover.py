@@ -110,6 +110,26 @@ class SameBuildFailoverTests(unittest.TestCase):
             all(item["decision"] == "Verified" for item in report["streams"])
         )
 
+    def test_unexpected_probe_error_is_not_selection_evidence(self):
+        rows = [
+            self.audit_row(stream_url="https://example.test/a.m3u8"),
+            self.audit_row(stream_url="https://example.test/b.m3u8"),
+        ]
+
+        def broken_probe(_entry, **_kwargs):
+            raise RuntimeError("probe implementation exploded")
+
+        report = same_build_failover.probe_verified_redundancy(
+            rows,
+            workers=1,
+            probe_fn=broken_probe,
+        )
+        self.assertEqual(report["summary"]["unknown"], 2)
+        self.assertEqual(stable_build.same_build_health_by_url(report), {})
+        self.assertTrue(
+            all(item["usable_evidence"] is False for item in report["streams"])
+        )
+
     def test_live_verified_feed_beats_higher_quality_failed_feed(self):
         cfg = {
             "stable_playlist": {
