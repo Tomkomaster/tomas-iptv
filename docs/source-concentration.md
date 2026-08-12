@@ -34,3 +34,33 @@ Both the count and percentage threshold must be met. Broadcaster CDN concentrati
 is still visible in the dashboard/table, but is not labeled as third-party relay
 risk. Thresholds can be overridden with a top-level `source_concentration` object
 in `config.json`.
+
+## Needs-attention integration
+
+`attention.py` also consumes `public/source-concentration.json` and combines it
+with the current audit rows. This produces two reliability signals:
+
+- **`relay_concentration`** — one host-level attention item for every relay
+  concentration flag. A source-concentration `warning` maps to medium attention,
+  `high` maps to high, and `critical` remains critical. The item also says how
+  many affected stable channels currently lack an independent verified backup.
+- **`no_independent_backup`** — a channel-level signal for a stable third-party
+  relay feed when no other current `Verified` or `TV verified` URL for the same
+  logical channel exists on another hostname.
+
+A second verified URL on the **same hostname does not count as independent
+redundancy**. A verified URL on another hostname does, regardless of whether it is
+currently selected as the stable winner. Unverified, rejected, excluded, and
+historical-only URLs never count as backups.
+
+For relay channels on a hostname that is already concentration-flagged, missing
+an independent backup is high priority. A lone third-party relay without an
+independent backup is still shown as a medium-priority fragility signal even when
+the hostname is below the concentration thresholds.
+
+The attention output includes summary counts for relay stable channels, channels
+with an independent verified hostname, and channels without one. Individual
+fragile channel items also expose `stable_hostname`,
+`verified_backup_hostnames`, and `redundancy_status` fields. These fields are the
+foundation for a future broader redundancy grade such as Excellent / Good /
+Fragile without changing manual verification authority.
