@@ -11974,17 +11974,17 @@
       "observed_language_codes": [
         "ces"
       ],
-      "provenance": "IPTV-org Czech-language candidate; manually tested",
-      "discovery": "IPTV-org Czech-language source; migrated from legacy Hungarian-scope audit",
-      "tested_on": "2026-08-11",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "tested_on": "2026-08-12",
       "vlc": "works",
       "samsung": "works",
-      "vlc_note": "Stream works, but playback is in Czech.",
-      "samsung_note": "Stream works, but playback is in Czech.",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "This exact stream was already manually verified as working Czech on both devices. It was rejected only because it was originally audited under Hungarian scope; after country/language separation it is a correctly scoped Czech feed.",
-      "notes": "Migrated to the modern CZ/ces audit model on 2026-08-12. Legacy aliases are retained for backward compatibility.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "notes": "Passed both manual playback tests.",
       "playlist_country_code": "CZ",
       "output_country_code": "CZ",
       "language_codes": [
@@ -14038,6 +14038,352 @@
     {
       "channel": "Krušná TV",
       "stream_url": "https://kamery2.wolfnet.cz/krusna.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Music Box Classic",
+      "stream_url": "http://88.212.15.19/live/mb_classic/index.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Music Box Dance",
+      "stream_url": "http://88.212.15.19/live/mb_dance/index.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Music Box Hits",
+      "stream_url": "http://88.212.15.19/live/mb_hits/index.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Music Box Sexy",
+      "stream_url": "http://88.212.15.19/live/mb_sexy/index.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Mňau TV",
+      "stream_url": "https://5ca49f2417d90.streamlock.net/mnau/livestream/playlist.m3u8",
+      "vlc": "works_with_warning",
+      "samsung": "broken",
+      "vlc_note": "Video plays, but no audio was heard; the manual result was noted with uncertainty.",
+      "samsung_note": "Stream opens, but no video or audio is produced.",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "VLC produced video but apparently no audio; Samsung produced neither usable video nor audio. Reject this exact feed from the shared playlist.",
+      "reason": "The stream did not provide complete usable playback on the tested devices."
+    },
+    {
+      "channel": "Nickelodeon",
+      "stream_url": "http://88.212.15.19/live/test_nickelodeon_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Nova",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Nova Action",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_action_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Nova Cinema",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_cinema_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Nova Fun",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_fun_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Nova Krimi",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_gold_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Nova Lady",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_lady_hevc_25p/playlist.m3u8",
       "vlc": "works",
       "samsung": "works",
       "vlc_note": "ok",
