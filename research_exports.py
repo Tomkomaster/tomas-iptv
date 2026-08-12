@@ -9,6 +9,10 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from country_language import (
+    legacy_country_scope_from_language_token,
+    normalize_country_code,
+)
 from research_priority import (
     PRIORITY_ORDER,
     compile_research_priority_policy,
@@ -98,21 +102,34 @@ def normalize_name(value: object) -> str:
     return " ".join(text.split())
 
 
+def legacy_expected_country(value: object) -> str:
+    """Recover only old HU/SK/CZ-style country tokens from expected languages."""
+    for raw in re.split(r"[,;/+]", str(value or "")):
+        country = legacy_country_scope_from_language_token(raw)
+        if country:
+            return country
+    return ""
+
+
 def row_country(row: dict[str, str]) -> str:
-    # expected_language_codes describes the playlist/country being researched.
-    # Legacy audit rows sometimes used language_code for the observed (wrong)
-    # stream language, so prefer the expected code when it is available.
-    expected = str(row.get("expected_language_codes") or "").strip()
-    if expected:
-        first = re.split(r"[,;/+]", expected)[0].strip().upper()
-        if first:
-            return first
+    """Return research geography without conflating spoken language with country."""
+    for field in (
+        "playlist_country_code",
+        "playlist_language_code",
+    ):
+        country = normalize_country_code(str(row.get(field) or ""))
+        if country:
+            return country
 
-    code = str(row.get("language_code") or "").strip().upper()
-    if code:
-        return code
+    # Historical audit.csv rows stored country-style HU/SK/CZ tokens in
+    # expected_language_codes. Modern hun/slk/ces values are spoken-language
+    # metadata and must never be promoted to HUN/SLK/CES country buckets.
+    country = legacy_expected_country(row.get("expected_language_codes"))
+    if country:
+        return country
 
-    return "UNKNOWN"
+    country = normalize_country_code(str(row.get("language_code") or ""))
+    return country or "UNKNOWN"
 
 
 def channel_key(row: dict[str, str]) -> str:
