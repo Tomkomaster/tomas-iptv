@@ -295,6 +295,65 @@ def build_feed_quality_context(
     }
 
 
+def classify_feed_source(entry: dict, cfg: dict | None = None) -> dict:
+    """Classify one stream source using the same evidence as feed-quality scoring.
+
+    This intentionally keeps unknown provenance as Unclassified. A missing
+    official/CDN marker is not evidence that a stream is a third-party relay.
+    Relay classification has highest precedence when signals conflict, followed
+    by broadcaster CDN and then direct/official broadcaster.
+    """
+    audit = entry.get("_audit") or {}
+    if not isinstance(audit, dict):
+        audit = {}
+
+    flags = _parse_quality_flags(entry, audit)
+    haystack = _text_haystack(entry, audit)
+
+    official_terms = _term_list(
+        cfg, "official_source_terms", DEFAULT_OFFICIAL_SOURCE_TERMS
+    )
+    cdn_terms = _term_list(
+        cfg, "broadcaster_cdn_terms", DEFAULT_BROADCASTER_CDN_TERMS
+    )
+    relay_terms = _term_list(
+        cfg, "provider_relay_terms", DEFAULT_PROVIDER_RELAY_TERMS
+    )
+
+    official = (
+        "official_broadcaster" in flags
+        or any(term in haystack for term in official_terms)
+    )
+    broadcaster_cdn = (
+        "broadcaster_cdn" in flags
+        or any(term in haystack for term in cdn_terms)
+    )
+    provider_relay = (
+        "provider_relay" in flags
+        or any(term in haystack for term in relay_terms)
+    )
+
+    if provider_relay:
+        source_type = "Third-party relay"
+    elif broadcaster_cdn:
+        source_type = "Broadcaster CDN"
+    elif official:
+        source_type = "Official broadcaster"
+    else:
+        source_type = "Unclassified"
+
+    url = str(entry.get("url") or audit.get("stream_url") or "").strip()
+    hostname = (urlparse(url).hostname or "").strip().casefold()
+
+    return {
+        "source_type": source_type,
+        "hostname": hostname,
+        "official_broadcaster": official,
+        "broadcaster_cdn": broadcaster_cdn,
+        "provider_relay": provider_relay,
+    }
+
+
 def score_feed_quality(
     entry: dict,
     cfg: dict | None = None,
@@ -348,28 +407,12 @@ def score_feed_quality(
     flags = _parse_quality_flags(entry, audit)
     haystack = _text_haystack(entry, audit)
 
-    official_terms = _term_list(cfg, "official_source_terms", DEFAULT_OFFICIAL_SOURCE_TERMS)
-    official = (
-        "official_broadcaster" in flags
-        or any(term in haystack for term in official_terms)
-    )
-    if official:
+    source_classification = classify_feed_source(entry, cfg)
+    if source_classification["official_broadcaster"]:
         add("official_broadcaster", "Official broadcaster source")
-
-    cdn_terms = _term_list(cfg, "broadcaster_cdn_terms", DEFAULT_BROADCASTER_CDN_TERMS)
-    broadcaster_cdn = (
-        "broadcaster_cdn" in flags
-        or any(term in haystack for term in cdn_terms)
-    )
-    if broadcaster_cdn:
+    if source_classification["broadcaster_cdn"]:
         add("broadcaster_cdn", "Broadcaster CDN")
-
-    relay_terms = _term_list(cfg, "provider_relay_terms", DEFAULT_PROVIDER_RELAY_TERMS)
-    provider_relay = (
-        "provider_relay" in flags
-        or any(term in haystack for term in relay_terms)
-    )
-    if provider_relay:
+    if source_classification["provider_relay"]:
         add("provider_relay", "Provider relay")
 
     if HIGH_DEFINITION_RE.search(haystack):

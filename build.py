@@ -14,6 +14,7 @@ from pathlib import Path
 from dashboard import copy_dashboard_assets, render_dashboard
 from feed_quality import build_feed_quality_context, score_feed_quality
 from identity_overrides import IdentityRegistry, load_identity_registry
+from source_concentration import build_source_concentration
 from country_language import (
     configured_country_codes,
     configured_language_codes,
@@ -4437,7 +4438,7 @@ def main(strict: bool = False) -> None:
 
     country_stats = summarize_country_stats(published_entries, source_stats)
     language_stats = summarize_language_stats(published_entries, source_stats)
-	
+
     previous_report = load_previous_report(cfg.get("previous_report_url"))
     changes = {
         "previous_generated_at": None,
@@ -4512,6 +4513,16 @@ def main(strict: bool = False) -> None:
         timezone.utc
     ).strftime(
         "%Y-%m-%d %H:%M:%S UTC"
+    )
+
+    source_concentration = build_source_concentration(
+        published_entries,
+        cfg,
+        generated_at=generated,
+    )
+    (public_dir / "source-concentration.json").write_text(
+        json.dumps(source_concentration, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
     )
 
     # Main stable family playlist.
@@ -4887,6 +4898,7 @@ def main(strict: bool = False) -> None:
         "sources": source_stats,
         "countries": country_stats,
         "languages": language_stats,
+        "source_concentration": source_concentration.get("summary", {}),
         "geography_language_model": {
             "country_field": "country_code",
             "language_field": "language_codes",

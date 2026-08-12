@@ -43,6 +43,7 @@ function setCountry(country) {
   renderHealthSummary();
   renderHealthCountrySummary();
   applyHealthFilters();
+  renderSourceConcentration();
   renderCandidateSummary();
   applyCandidateFilters();
   applyAuditFilters();
@@ -210,6 +211,120 @@ fetch('attention.json', { cache: 'no-store' })
 if (attentionSearch) attentionSearch.addEventListener('input', applyAttentionFilters);
 if (attentionSeverityFilter) attentionSeverityFilter.addEventListener('change', applyAttentionFilters);
 if (attentionCategoryFilter) attentionCategoryFilter.addEventListener('change', applyAttentionFilters);
+
+// Source concentration -----------------------------------------------------
+const sourceConcentrationSummary = document.getElementById('sourceConcentrationSummary');
+const sourceConcentrationCountrySummary = document.getElementById('sourceConcentrationCountrySummary');
+const sourceConcentrationVisibleCount = document.getElementById('sourceConcentrationVisibleCount');
+const sourceConcentrationTableBody = document.querySelector('#sourceConcentrationTable tbody');
+let sourceConcentrationData = null;
+
+function concentrationBadgeClass(risk) {
+  if (risk === 'critical' || risk === 'high') return 'rejected';
+  if (risk === 'warning') return 'review';
+  return 'base';
+}
+
+function sourceTypeShortLabel(sourceType) {
+  if (sourceType === 'Official broadcaster') return 'Official';
+  if (sourceType === 'Broadcaster CDN') return 'Broadcaster CDN';
+  if (sourceType === 'Third-party relay') return 'Relay';
+  return 'Unclassified';
+}
+
+function renderSourceConcentration() {
+  if (!sourceConcentrationData) return;
+  const data = sourceConcentrationData;
+  const countries = data.countries || {};
+  const summary = data.summary || {};
+  const selectedCodes = SUPPORTED_COUNTRIES
+    .filter(code => countries[code])
+    .filter(countryMatches);
+
+  const visibleCountries = selectedCountry === 'ALL'
+    ? selectedCodes
+    : selectedCodes.filter(code => code === selectedCountry);
+  const visibleTotal = visibleCountries.reduce((sum, code) => sum + Number(countries[code]?.stable_channels || 0), 0);
+  const typeCounts = {
+    'Official broadcaster': 0,
+    'Broadcaster CDN': 0,
+    'Third-party relay': 0,
+    'Unclassified': 0,
+  };
+  for (const code of visibleCountries) {
+    for (const row of countries[code]?.source_types || []) {
+      typeCounts[row.source_type] = (typeCounts[row.source_type] || 0) + Number(row.channels || 0);
+    }
+  }
+  const visibleFlags = (data.flags || []).filter(flag => countryMatches(flag.country_code));
+  const pct = value => visibleTotal ? (100 * Number(value || 0) / visibleTotal).toFixed(1) : '0.0';
+
+  if (sourceConcentrationSummary) {
+    sourceConcentrationSummary.innerHTML = `
+      <div class="card"><div class="value">${visibleTotal}</div><div class="label">Stable channels measured</div></div>
+      <div class="card"><div class="value">${typeCounts['Official broadcaster']}</div><div class="label">Official broadcaster (${pct(typeCounts['Official broadcaster'])}%)</div></div>
+      <div class="card"><div class="value">${typeCounts['Broadcaster CDN']}</div><div class="label">Broadcaster CDN (${pct(typeCounts['Broadcaster CDN'])}%)</div></div>
+      <div class="card"><div class="value">${typeCounts['Third-party relay']}</div><div class="label">Third-party relay (${pct(typeCounts['Third-party relay'])}%)</div></div>
+      <div class="card"><div class="value">${typeCounts.Unclassified}</div><div class="label">Unclassified (${pct(typeCounts.Unclassified)}%)</div></div>
+      <div class="card"><div class="value">${visibleFlags.length}</div><div class="label">Relay concentration flags</div></div>`;
+  }
+
+  if (sourceConcentrationCountrySummary) {
+    sourceConcentrationCountrySummary.innerHTML = visibleCountries.map(code => {
+      const info = countries[code] || {};
+      const counts = Object.fromEntries((info.source_types || []).map(row => [row.source_type, row]));
+      const relay = counts['Third-party relay'] || { channels: 0, percent: 0 };
+      const cdn = counts['Broadcaster CDN'] || { channels: 0, percent: 0 };
+      const official = counts['Official broadcaster'] || { channels: 0, percent: 0 };
+      const unknown = counts.Unclassified || { channels: 0, percent: 0 };
+      return `<div class="card" data-country="${esc(code)}">
+        <div class="value">${Number(relay.percent || 0).toFixed(1)}%</div>
+        <div class="label">${code} third-party relay (${Number(relay.channels || 0)}/${Number(info.stable_channels || 0)})</div>
+        <div class="detail">Official ${official.channels || 0} · CDN ${cdn.channels || 0} · Unclassified ${unknown.channels || 0}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const hostRows = [];
+  for (const code of visibleCountries) {
+    for (const host of countries[code]?.hostnames || []) {
+      hostRows.push({ ...host, country_code: code });
+    }
+  }
+  if (sourceConcentrationTableBody) {
+    sourceConcentrationTableBody.innerHTML = hostRows.map(host => {
+      const typeDetail = Object.entries(host.source_types || {})
+        .map(([type, count]) => `${sourceTypeShortLabel(type)} ${count}`)
+        .join(' · ');
+      const channelNames = Array.isArray(host.channel_names) ? host.channel_names : [];
+      const shown = channelNames.slice(0, 8).join(', ');
+      const extra = channelNames.length > 8 ? ` +${channelNames.length - 8} more` : '';
+      const risk = String(host.risk || 'none');
+      return `<tr data-country="${esc(host.country_code)}">
+        <td><strong>${esc(host.country_code)}</strong></td>
+        <td>${esc(host.hostname)}</td>
+        <td>${esc(host.source_type || 'Unclassified')}<div class="detail">${esc(typeDetail)}</div></td>
+        <td>${Number(host.channels || 0)}</td>
+        <td>${Number(host.country_percent || 0).toFixed(1)}%</td>
+        <td>${Number(host.third_party_relay_channels || 0)} (${Number(host.third_party_relay_percent || 0).toFixed(1)}%)</td>
+        <td><span class="badge ${concentrationBadgeClass(risk)}">${esc(risk === 'none' ? 'OK' : risk.toUpperCase())}</span></td>
+        <td class="detail">${esc(shown + extra)}</td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="8" class="muted">No source concentration data for this country.</td></tr>';
+  }
+  if (sourceConcentrationVisibleCount) {
+    sourceConcentrationVisibleCount.textContent = `Showing ${hostRows.length} hostname dependencies · ${visibleFlags.length} relay concentration flags`;
+  }
+}
+
+fetch('source-concentration.json', { cache: 'no-store' })
+  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
+  .then(data => { sourceConcentrationData = data; renderSourceConcentration(); })
+  .catch(error => {
+    if (sourceConcentrationSummary) sourceConcentrationSummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Source concentration unavailable</div></div>';
+    if (sourceConcentrationTableBody) sourceConcentrationTableBody.innerHTML = `<tr><td colspan="8">source-concentration.json could not be loaded: ${esc(error.message)}</td></tr>`;
+    if (sourceConcentrationVisibleCount) sourceConcentrationVisibleCount.textContent = 'source-concentration.json is not available yet.';
+  });
 
 // Automated health ---------------------------------------------------------
 const healthSearch = document.getElementById('healthSearch');
