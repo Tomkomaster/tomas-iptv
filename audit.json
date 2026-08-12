@@ -133,13 +133,13 @@
       "stream_url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8",
       "tvg_id": "AXNWhite.us@SD",
       "protocol": "HLS",
-      "playlist_country_code": "DE",
+      "playlist_country_code": "HU",
       "output_country_code": "HU",
       "language_codes": [
         "deu"
       ],
       "expected_language_codes": [
-        "deu"
+        "hun"
       ],
       "observed_language_codes": [
         "deu"
@@ -2797,7 +2797,7 @@
       "language_code": "EN",
       "tvg_id": "BabyFirst.us@US",
       "playlist_country_code": "EN",
-      "output_country_code": "",
+      "output_country_code": "EN",
       "language_codes": [
         "eng"
       ],
@@ -2825,7 +2825,7 @@
       "language_code": "EN",
       "tvg_id": "LoveNature.ca@SD",
       "playlist_country_code": "EN",
-      "output_country_code": "",
+      "output_country_code": "EN",
       "language_codes": [
         "eng"
       ],
@@ -7001,13 +7001,13 @@
       "exclude_from_playlist": true,
       "notes": "Reject this exact stream URL from the shared playlist. The channel itself can still remain a research target for a replacement feed.",
       "reason": "This exact feed failed the manual VLC + Samsung test.",
-      "playlist_country_code": "HU",
+      "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
-        "hun"
+        "slk"
       ],
       "expected_language_codes": [
-        "hun"
+        "slk"
       ],
       "observed_language_codes": []
     },
@@ -12173,7 +12173,7 @@
       "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK",
       "playlist_country_code": "SK",
-      "output_country_code": "",
+      "output_country_code": "CZ",
       "language_codes": [
         "ces"
       ]
@@ -12942,7 +12942,7 @@
       "exclude_from_playlist": true,
       "reason": "Expected Hungarian, but the active stream was manually verified as Russian on both tested devices.",
       "notes": "Replace the older Russian-language observation with this newer Russian-language retest. The feed may be intermittent in practice, but when active it still does not satisfy the Hungarian-language requirement.",
-      "playlist_country_code": "RO",
+      "playlist_country_code": "HU",
       "output_country_code": "HU",
       "language_codes": [
         "rus"
@@ -12971,7 +12971,7 @@
       "exclude_from_playlist": true,
       "reason": "The stream works technically on both devices, but the observed spoken language was Romanian rather than the expected Hungarian.",
       "notes": "Reject this exact feed from the Hungarian-language playlist. This does not mean the broadcaster is unavailable; it means this service is not suitable as a general Hungarian-language channel based on the manual test.",
-      "playlist_country_code": "RO",
+      "playlist_country_code": "HU",
       "output_country_code": "HU",
       "language_codes": [
         "ron"
@@ -13028,7 +13028,7 @@
       "exclude_from_playlist": false,
       "reason": "The regional channel carries Hungarian programming, but the manual tests so far encountered Romanian spoken programming rather than a confirmed Hungarian-language programme.",
       "notes": "Keep as a scheduled Hungarian-programming candidate. Re-test during a known Hungarian programme block such as Erdélyi Figyelő before deciding whether it is useful for the Hungarian playlist.",
-      "playlist_country_code": "RO",
+      "playlist_country_code": "HU",
       "output_country_code": "HU",
       "language_codes": [
         "ron"
@@ -13058,7 +13058,7 @@
       "exclude_from_playlist": false,
       "reason": "The regional channel has dedicated Hungarian programming, but the manual tests so far encountered Romanian spoken programming.",
       "notes": "Keep as a scheduled Hungarian-programming candidate. Re-test specifically during its Hungarian-language minority programme before verifying it for HU.",
-      "playlist_country_code": "RO",
+      "playlist_country_code": "HU",
       "output_country_code": "HU",
       "language_codes": [
         "ron"
@@ -13088,7 +13088,7 @@
       "exclude_from_playlist": false,
       "reason": "The regional channel carries substantial Hungarian programming, but the manual tests so far encountered Romanian spoken programming rather than a confirmed Hungarian-language programme.",
       "notes": "Keep as a scheduled Hungarian-programming candidate. Re-test during a known Hungarian-language broadcast block before verifying it for the HU playlist.",
-      "playlist_country_code": "RO",
+      "playlist_country_code": "HU",
       "output_country_code": "HU",
       "language_codes": [
         "ron"
