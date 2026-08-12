@@ -98,9 +98,29 @@ def manual_status(row: dict) -> str:
     return str(row.get("decision") or "Unknown").strip() or "Unknown"
 
 
+def row_country(row: dict) -> str:
+    for key in ("output_language_code", "playlist_language_code"):
+        value = str(row.get(key) or "").strip().upper()
+        if 2 <= len(value) <= 3 and value.isalpha():
+            return value
+
+    expected = row.get("expected_language_codes")
+    if isinstance(expected, (list, tuple)) and expected:
+        value = str(expected[0] or "").strip().upper()
+        if 2 <= len(value) <= 3 and value.isalpha():
+            return value
+    elif expected:
+        value = str(expected).split(",", 1)[0].strip().upper()
+        if 2 <= len(value) <= 3 and value.isalpha():
+            return value
+
+    return "UNKNOWN"
+
+
 def make_base_item(row: dict | None = None, *, channel: str = "", tvg_id: str = "", stream_url: str = "") -> dict:
     row = row or {}
     return {
+        "country": row_country(row),
         "channel": str(row.get("channel") or channel or "Unnamed channel").strip(),
         "tvg_id": str(row.get("tvg_id") or tvg_id or "").strip(),
         "stream_url": str(row.get("stream_url") or stream_url or "").strip(),
@@ -184,6 +204,7 @@ def build_attention(
         else:
             current = items[key]
             for field in (
+                "country",
                 "channel",
                 "tvg_id",
                 "stream_url",

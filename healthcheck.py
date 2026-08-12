@@ -20,7 +20,7 @@ from health_policy import compile_health_policy, resolve_health_policy
 
 ATTR_RE = re.compile(r'([A-Za-z0-9_-]+)="([^"]*)"')
 STATUS_PREFIX_RE = re.compile(
-    r"^\[(?P<country>[A-Z]{2,3})\s+(?P<status>OK|TV|PC|\?|X)\]\s*",
+    r"^\[(?P<country>[A-Z]{2,3})(?:\s+(?P<status>OK|TV|PC|\?|X))?\]\s*",
     re.IGNORECASE,
 )
 FEED_SUFFIX_RE = re.compile(r"\s+\[Feed\s+\d+/\d+\]\s*$", re.IGNORECASE)
@@ -109,7 +109,7 @@ def manual_status_from_name(display_name: str) -> tuple[str, str]:
     match = STATUS_PREFIX_RE.match(value)
     token = ""
     if match:
-        token = match.group("status").upper()
+        token = (match.group("status") or "").upper()
         value = value[match.end() :].strip()
 
     value = FEED_SUFFIX_RE.sub("", value).strip()
@@ -136,12 +136,18 @@ def read_playlist(path: Path) -> list[dict]:
         if line.startswith("#EXTINF:"):
             metadata, display_name = split_extinf(line)
             attrs = {key.lower(): value for key, value in ATTR_RE.findall(metadata)}
-            channel, manual_status = manual_status_from_name(
-                display_name or attrs.get("tvg-name", "")
+            visible_name = display_name or attrs.get("tvg-name", "")
+            prefix_match = STATUS_PREFIX_RE.match(visible_name)
+            language_code = (
+                prefix_match.group("country").upper()
+                if prefix_match
+                else ""
             )
+            channel, manual_status = manual_status_from_name(visible_name)
             pending = {
                 "channel": channel,
                 "playlist_name": display_name,
+                "language_code": language_code,
                 "manual_status": manual_status,
                 "tvg_id": attrs.get("tvg-id", ""),
                 "group_title": attrs.get("group-title", ""),
@@ -625,6 +631,7 @@ def apply_history(
     return {
         "channel": entry.get("channel", ""),
         "playlist_name": entry.get("playlist_name", ""),
+        "language_code": entry.get("language_code", ""),
         "tvg_id": entry.get("tvg_id", ""),
         "group_title": entry.get("group_title", ""),
         "stream_url": entry.get("stream_url", ""),

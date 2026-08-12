@@ -16,6 +16,7 @@
     <a href="test.m3u">Testing playlist (test.m3u)</a>
     <a href="hu.m3u">Stable Hungary (hu.m3u)</a>
     <a href="sk.m3u">Stable Slovakia (sk.m3u)</a>
+    <a href="cz.m3u">Stable Czechia (cz.m3u)</a>
     @@EPG_LINKS@@
     <a href="channels.csv">Channel inventory (CSV)</a>
     <a href="duplicates.csv">Ignored duplicate URLs (CSV)</a>
@@ -34,7 +35,31 @@
     <div class="card"><div class="value">@@TOTAL_DUPLICATES@@</div><div class="label">Duplicate URLs ignored</div></div>
   </div>
 
+  <nav id="countryTabs" class="country-tabs" aria-label="Dashboard country filter">
+    @@COUNTRY_TABS@@
+  </nav>
+  <p id="countryFilterLabel" class="muted country-filter-label">Showing all countries. Country tabs filter country-aware cards and tables below.</p>
+
   @@AUDIT_WARNINGS@@
+
+  <h2>Conflicting identities</h2>
+  <p class="muted">
+    Identity safety is kept separate from playback status. Unresolved rows are audit
+    identities that could not be safely attached to one current feed. Resolved-routing
+    rows are verified streams whose spoken language publishes them under a different
+    country from the source/audit scope; these are informational, not duplicate channels.
+  </p>
+  <div class="audit-summary">
+    <div class="card"><div class="value">@@IDENTITY_UNRESOLVED@@</div><div class="label">Unresolved identity warnings</div></div>
+    <div class="card"><div class="value">@@IDENTITY_REROUTED@@</div><div class="label">Verified cross-country routings</div></div>
+  </div>
+  <p id="identityVisibleCount" class="muted"></p>
+  <div class="table-wrap">
+    <table id="identityTable">
+      <thead><tr><th>Status</th><th>Channel / warning</th><th>Audit/source scope</th><th>Published under</th><th>Observed language</th><th>Detail</th></tr></thead>
+      <tbody>@@IDENTITY_ROWS@@</tbody>
+    </table>
+  </div>
 
   <h2>EPG coverage by country</h2>
   <p class="muted">
@@ -44,6 +69,34 @@
   </p>
   <div id="epgCountrySummary" class="audit-summary">
     <div class="card"><div class="value">…</div><div class="label">Loading EPG coverage</div></div>
+  </div>
+
+  <h2>Candidate streams to test</h2>
+  <p class="muted">
+    This queue is built from the generated research ledger. It shows current, non-stable
+    feed URLs that still need VLC/Samsung testing or review, ordered by the P1/P2/P3
+    research priority. Test these before hunting for additional sources.
+  </p>
+  <div id="candidateSummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading candidate queue</div></div>
+  </div>
+  <div class="controls">
+    <input id="candidateSearch" type="search" placeholder="Search candidate streams...">
+    <select id="candidatePriorityFilter">
+      <option value="">All research priorities</option>
+      <option value="P1">P1</option>
+      <option value="P2">P2</option>
+      <option value="P3">P3</option>
+    </select>
+  </div>
+  <p id="candidateVisibleCount" class="muted">Loading research.csv and missing.csv…</p>
+  <div class="table-wrap">
+    <table id="candidateTable">
+      <thead>
+        <tr><th>Priority</th><th>Country</th><th>Channel</th><th>Feed</th><th>Source</th><th>VLC</th><th>Samsung</th><th>Last tested</th><th>URL</th></tr>
+      </thead>
+      <tbody><tr><td colspan="9" class="muted">Loading candidate streams…</td></tr></tbody>
+    </table>
   </div>
 
   <h2>Needs attention</h2>
@@ -111,6 +164,10 @@
 
   <div id="healthSummary" class="audit-summary">
     <div class="card"><div class="value">…</div><div class="label">Loading stream health</div></div>
+  </div>
+  <h3>Health by country</h3>
+  <div id="healthCountrySummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading country health</div></div>
   </div>
 
   <div class="controls">
@@ -243,7 +300,7 @@
   </p>
 
   <div class="table-wrap">
-    <table>
+    <table id="languageTable">
       <thead>
         <tr>
           <th>Language</th>
@@ -263,9 +320,10 @@
     </table>
   </div>
   
-  <h2>Source contribution</h2>
+  <h2>Source contribution and yield</h2>
+  <p class="muted">Yield is the percentage of raw source entries whose unique stream URLs survive source-level URL deduplication into the combined candidate inventory.</p>
   <div class="table-wrap">
-    <table>
+    <table id="sourceTable">
       <thead>
         <tr>
           <th>Source</th>
@@ -274,6 +332,7 @@
           <th>Raw entries</th>
           <th>Unique channels in source</th>
           <th>Stream URLs kept</th>
+          <th>Source yield</th>
           <th>Base channels</th>
           <th>Added channels</th>
           <th>Alternative streams</th>
