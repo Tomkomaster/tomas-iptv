@@ -13744,6 +13744,325 @@
       "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
       "playlist_country_code": "CZ",
       "output_country_code": "CZ"
+    },
+    {
+      "channel": "Frýdek-Místek - Zámecké náměstí",
+      "stream_url": "https://stream.polar.cz/kamery/cam010/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Golf Channel",
+      "stream_url": "https://dash4.antik.sk/live/test_golf_channel/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Havířov - Náměstí Republiky",
+      "stream_url": "https://stream.polar.cz/kamery/cam001/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "History",
+      "stream_url": "http://88.212.15.19/live/test_history/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "History2",
+      "stream_url": "http://88.212.15.19/live/test_h2/playlist.m3u8",
+      "vlc": "wrong_language",
+      "samsung": "wrong_language",
+      "vlc_note": "Stream works, but the spoken language was English.",
+      "samsung_note": "Stream works, but the spoken language was English.",
+      "language": "English",
+      "language_code": "EN",
+      "language_codes": [
+        "eng"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "eng"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Playback works on both tested devices, but the spoken language is English, so this stream is not suitable for the Czech playlist.",
+      "reason": "Expected Czech, but the active stream was manually verified as English on both tested devices."
+    },
+    {
+      "channel": "Jablunkov - náměstí",
+      "stream_url": "https://stream.silesnet.net/webcams/jablunkov.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Jihočeská televize",
+      "stream_url": "https://vysilani.zaktv.cz/broadcast/hls/jtv/index.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "JOJ Family",
+      "stream_url": "https://live.cdn.joj.sk/live/hls/family-540.m3u8",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "VLC skipped to the next channel and Samsung reported NOT_SUPPORTED_FILE. Reject this exact stream URL from the shared playlist.",
+      "reason": "Failed the manual playback test on both devices."
+    },
+    {
+      "channel": "JČ1",
+      "stream_url": "https://stream.jc1.cz/hls/jc1.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Karlova Studánka",
+      "stream_url": "https://stream.polar.cz/kamery/cam012/playlist.m3u8",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "VLC skipped to the next channel and Samsung reported NOT_SUPPORTED_FILE. Reject this exact stream URL from the shared playlist.",
+      "reason": "Failed the manual playback test on both devices."
+    },
+    {
+      "channel": "Krušná TV",
+      "stream_url": "https://kamery2.wolfnet.cz/krusna.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
     }
   ]
 }
