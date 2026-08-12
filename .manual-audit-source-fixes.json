@@ -1,0 +1,16 @@
+{
+  "m3u_entries": [
+    {
+      "path": "extras/hu.m3u",
+      "comment": "# EBS — retained manual retest candidate; audit status needs_review",
+      "extinf": "#EXTINF:-1 tvg-id=\"EbS.be@SD\" tvg-name=\"EBS\",EBS",
+      "url": "https://streams.prd.commavservices.eu/live/ebs/index.m3u8"
+    },
+    {
+      "path": "extras/hu.m3u",
+      "comment": "# EBS Plus — retained manual retest candidate; audit status needs_review",
+      "extinf": "#EXTINF:-1 tvg-id=\"EbSPlus.be@SD\" tvg-name=\"EBS Plus\",EBS Plus",
+      "url": "https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8"
+    }
+  ]
+}
