@@ -629,3 +629,32 @@ https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8
 # Current direct TVR CDN feed.
 #EXTINF:-1 tvg-name="TVR Timișoara",TVR Timișoara [RO / Hungarian programming]
 https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8
+
+# Hír TV — P1 replacement candidate.
+# Our current direct Videa feed is already rejected.
+# This is a different OnlineStream playlist-wrapper route currently listed for Hír TV.
+# Check whether it actually resolves to a different usable backend.
+#EXTINF:-1 tvg-id="HirTV.hu@SD" tvg-name="Hir TV",Hir TV [TEST] [OnlineStream wrapper]
+https://onlinestream.live/play.m3u?id=4740&ext=.m3u
+
+# M4 Sport — P2 replacement candidate.
+# Different ConnectMedia node/path from the ConnectMedia candidate already tested in the project.
+#EXTINF:-1 tvg-id="M4Sport.hu@SD" tvg-name="M4 Sport",M4 Sport [TEST] [Alternate ConnectMedia]
+http://c202-node61-cdn.connectmedia.hu/110104/657ed1d307300865a03a222af3d19249/638bd144/index.m3u8
+
+# Fehérvár TV — P3 replacement candidate.
+# We already rejected the same freerelay endpoint WITHOUT the key.
+# This source publishes it with a key parameter, so it is worth checking whether that was the missing piece.
+#EXTINF:-1 tvg-id="FehervarTV.hu@SD" tvg-name="Fehérvár TV",Fehérvár TV [TEST] [Keyed feed]
+https://cloudfront44.lexanetwork.com:1344/freerelay/fehervartv.sdp/playlist.m3u8?key=EWSj2
+
+# Zugló TV — NEW CHANNEL: not present in our current Hungarian research inventory.
+# Direct native HLS candidate.
+#EXTINF:-1 tvg-name="Zugló TV",Zugló TV [NEW] [TEST]
+https://cloudfront44.lexanetwork.com:1344/freerelay/zuglotv.sdp/playlist.m3u8
+
+# AXN White — P2 language/identity replacement test.
+# Current public relay exposes multiple audio tracks.
+# IMPORTANT: verify whether one of the audio tracks is Hungarian before accepting it.
+#EXTINF:-1 tvg-name="AXN White",AXN White [TEST] [HU audio check]
+https://t.freetv.fun/live/axn-white.m3u8
