@@ -88,10 +88,45 @@ _LANGUAGE_ALIASES = {
 }
 
 
+SOURCE_COUNTRY_MODES = {
+    "fixed",
+    "tvg_id",
+}
+
+
+def source_country_mode(spec: dict) -> str:
+    """Return how a source assigns publication geography to its entries."""
+    raw = str(spec.get("country_mode") or "fixed").strip().casefold()
+    raw = raw.replace("-", "_").replace(" ", "_")
+    aliases = {
+        "fixed": "fixed",
+        "source": "fixed",
+        "derived": "tvg_id",
+        "derive": "tvg_id",
+        "tvg": "tvg_id",
+        "tvg_id": "tvg_id",
+    }
+    mode = aliases.get(raw)
+    if not mode:
+        raise RuntimeError(
+            f"Unsupported source country_mode {spec.get('country_mode')!r}. "
+            f"Allowed modes: {', '.join(sorted(SOURCE_COUNTRY_MODES))}."
+        )
+    return mode
+
+
 def normalize_country_code(value: str) -> str:
     """Normalize one ISO-3166-style two-letter country code."""
     code = str(value or "").strip().upper()
     return code if re.fullmatch(r"[A-Z]{2}", code) else ""
+
+
+def country_code_from_tvg_id(value: str) -> str:
+    """Derive IPTV-org channel geography from the final .cc tvg-id suffix."""
+    base = str(value or "").strip().split("@", 1)[0].strip()
+    if "." not in base:
+        return ""
+    return normalize_country_code(base.rsplit(".", 1)[-1])
 
 
 def normalize_language_code(value: str) -> str:
@@ -161,6 +196,9 @@ def country_language_defaults(cfg: dict, country_code: str) -> list[str]:
 
 def source_country_code(spec: dict, cfg: dict) -> str:
     """Resolve a source's country scope with legacy config compatibility."""
+    if source_country_mode(spec) == "tvg_id":
+        return ""
+
     for value in (
         spec.get("country_code"),
         # Historical source config used language_code as the country bucket.
