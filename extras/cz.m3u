@@ -163,3 +163,8 @@ https://stream.polar.cz/polar2/polarlive2-1/playlist.m3u8
 # OIK TV - regional Czech television; current public HLS candidate
 #EXTINF:-1 tvg-name="OIK TV" group-title="Regional",OIK TV
 https://streamer05.low-latency.cz/oiktv/index.m3u8
+
+# DVTV Extra — manually verified on PC 2026-08-12
+# Czech speech; Samsung not yet tested
+#EXTINF:-1 tvg-id="DVTV Extra.cz" tvg-name="DVTV Extra" tvg-country="CZ" tvg-language="Czech" group-title="News",DVTV Extra
+https://antik.streaming.tivio.studio/channels/IxLi19VRasgu94bIaXbH/index.m3u8
