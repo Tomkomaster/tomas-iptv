@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Run unit tests
-        run: python3 -m unittest discover -s tests -v
+        run: python3 run_tests.py
 
       - name: Validate repository health policy
         shell: bash
@@ -28,14 +28,14 @@ jobs:
           from health_policy import compile_health_policy
 
           payload = json.loads(
-              Path("health_policy.json").read_text(encoding="utf-8")
+              Path("data/health_policy.json").read_text(encoding="utf-8")
           )
           compile_health_policy(payload)
-          print("health_policy.json is valid.")
+          print("data/health_policy.json is valid.")
           PY
 
       - name: Run reliable strict playlist build
-        run: python3 reliable_build.py --strict
+        run: python3 -m tools.reliable_build --strict
 
       - name: Validate same-build failover report
         run: |
@@ -63,7 +63,7 @@ jobs:
 
       - name: Validate research exports
         run: >-
-          python3 research_exports.py
+          python3 -m tools.research_exports
           --public-dir public
-          --priority-policy research_priority.json
-          --wanted-channels wanted_channels.json
+          --priority-policy data/research_priority.json
+          --wanted-channels data/wanted_channels.json
