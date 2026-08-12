@@ -380,3 +380,33 @@ http://88.212.10.27:81/streams/region.m3u8
 # LOW CONFIDENCE until manually tested
 #EXTINF:-1 tvg-name="JOJ +1" tvg-country="SK" tvg-language="Slovak" group-title="General",JOJ +1
 http://88.202.231.174:80/live/joj_plus1_medium_atk/playlist.m3u8
+
+# TV Brezová — newer HTTPS Video Studio RIS feed
+# Alternative to IPTV-org's older 95.105.193.219 HTTP endpoint
+#EXTINF:-1 tvg-id="TVBrezova.sk" tvg-name="TV Brezová" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Brezová
+https://videostudioris.sk/hls/tvb.m3u8
+
+# TV Myjava — newer HTTPS Video Studio RIS feed
+# Alternative to IPTV-org's older 95.105.193.219 HTTP endpoint
+#EXTINF:-1 tvg-id="TVMyjava.sk" tvg-name="TV Myjava" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Myjava
+https://videostudioris.sk/hls/tvm.m3u8
+
+# TV Nové Zámky — newer HTTPS LZNET feed
+# Alternative to IPTV-org's old Media-Planet HTTP stream
+#EXTINF:-1 tvg-id="NZTV.sk" tvg-name="TV Nové Zámky" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Nové Zámky
+https://livestream.lznet.work/hls/nztv-playout/index.m3u8
+
+# TV Sen — newer HTTPS Video Studio RIS feed
+# Alternative to IPTV-org's older 95.105.193.219 HTTP endpoint
+#EXTINF:-1 tvg-id="TVSen.sk" tvg-name="TV Sen" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Sen
+https://videostudioris.sk/hls/tvsen.m3u8
+
+# TV Skalica — newer HTTPS Video Studio RIS feed
+# Alternative to IPTV-org's older 95.105.193.219 HTTP endpoint
+#EXTINF:-1 tvg-id="TVSkalica.sk" tvg-name="TV Skalica" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Skalica
+https://videostudioris.sk/hls/tvs.m3u8
+
+# TV Stará Turá — newer HTTPS Video Studio RIS feed
+# Alternative to IPTV-org's older 95.105.193.219 HTTP endpoint
+#EXTINF:-1 tvg-id="TVStaraTura.sk" tvg-name="TV Stará Turá" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Stará Turá
+https://videostudioris.sk/hls/tvst.m3u8
