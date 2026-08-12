@@ -63,3 +63,27 @@ http://88.212.7.10/live/nova_gold_avc_25p/playlist.m3u8
 # RT Ústecko - official broadcaster stream
 #EXTINF:-1 tvg-id="RTUstecko.cz" tvg-name="RT Ústecko" group-title="Regional",RT Ústecko
 https://1459594018.rsc.cdn77.org/1459594018/index.m3u8
+
+# ============================================================
+# POSLANECKÁ SNĚMOVNA ČR - OFFICIAL EVENT STREAMS
+# ============================================================
+
+# Stream 1 - plenary sessions
+#EXTINF:-1 tvg-name="Poslanecká sněmovna ČR" group-title="Government",Poslanecká sněmovna ČR
+https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream1/playlist/cze.m3u8
+
+# Stream 2 - press conferences
+#EXTINF:-1 tvg-name="Poslanecká sněmovna ČR - Tiskové konference" group-title="Government",Poslanecká sněmovna ČR - Tiskové konference
+https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream2/playlist/cze.m3u8
+
+# Stream 3 - committees / seminars
+#EXTINF:-1 tvg-name="Poslanecká sněmovna ČR - Stream 3" group-title="Government",Poslanecká sněmovna ČR - Stream 3
+https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream3/playlist/cze.m3u8
+
+# Stream 4 - committees / seminars
+#EXTINF:-1 tvg-name="Poslanecká sněmovna ČR - Stream 4" group-title="Government",Poslanecká sněmovna ČR - Stream 4
+https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream4/playlist/cze.m3u8
+
+# Stream 5 - committees / seminars
+#EXTINF:-1 tvg-name="Poslanecká sněmovna ČR - Stream 5" group-title="Government",Poslanecká sněmovna ČR - Stream 5
+https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream5/playlist/cze.m3u8
