@@ -43,7 +43,50 @@
     ],
     "blocked_source_flags": [
       "Offline"
-    ]
+    ],
+    "feed_quality": {
+      "evidence_timeout_seconds": 4,
+      "manual_stale_days": 30,
+      "previous_epg_coverage_url": "https://tomkomaster.github.io/tomas-iptv/epg-coverage.json",
+      "previous_epg_health_url": "https://tomkomaster.github.io/tomas-iptv/epg-health.json",
+      "weights": {
+        "samsung_works": 100,
+        "vlc_works": 60,
+        "vlc_works_with_warning": 50,
+        "official_broadcaster": 50,
+        "broadcaster_cdn": 30,
+        "https": 20,
+        "current_epg": 20,
+        "high_definition": 10,
+        "recent_manual_test": 10,
+        "redirect": -15,
+        "tls_certificate_warning": -25,
+        "provider_relay": -30,
+        "health_warning": -40,
+        "stale_manual_test": -50,
+        "event_only": -80
+      },
+      "provider_relay_terms": [
+        "antik",
+        "panaccess",
+        "lexanetwork",
+        "rebit",
+        "kabelko",
+        "provider relay"
+      ],
+      "official_source_terms": [
+        "official broadcaster",
+        "current broadcaster stream",
+        "direct broadcaster",
+        "broadcaster stream",
+        "broadcaster cdn"
+      ],
+      "broadcaster_cdn_terms": [
+        "broadcaster cdn",
+        "direct joj cdn",
+        "joj cdn"
+      ]
+    }
   },
   "previous_report_url": "https://tomkomaster.github.io/tomas-iptv/report.json",
   "audit_path": "audit.json",
