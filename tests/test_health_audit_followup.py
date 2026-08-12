@@ -75,19 +75,33 @@ class ManualTvVerifiedHealthTests(unittest.TestCase):
 
 
 class ModernAuditMigrationTests(unittest.TestCase):
-    def write_current(self, path: Path):
+    CURRENT_FIELDS = [
+        "channel",
+        "tvg_id",
+        "stream_url",
+        "protocol",
+        "playlist_country_code",
+        "output_country_code",
+        "country_code",
+        "language_code",
+        "in_playlist",
+    ]
+
+    def write_current(self, path: Path, rows: list[dict] | None = None):
+        rows = rows or [{
+            "channel": "Example",
+            "tvg_id": "Example.sk@SD",
+            "stream_url": "https://example.test/live.m3u8",
+            "protocol": "HLS",
+        }]
         with path.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.DictWriter(
                 handle,
-                fieldnames=["channel", "tvg_id", "stream_url", "protocol"],
+                fieldnames=self.CURRENT_FIELDS,
+                extrasaction="ignore",
             )
             writer.writeheader()
-            writer.writerow({
-                "channel": "Example",
-                "tvg_id": "Example.sk@SD",
-                "stream_url": "https://example.test/live.m3u8",
-                "protocol": "HLS",
-            })
+            writer.writerows(rows)
 
     def test_modernize_only_adds_iso_fields_and_keeps_legacy_aliases(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -121,7 +135,7 @@ class ModernAuditMigrationTests(unittest.TestCase):
             self.assertEqual(item["observed_language_codes"], ["slk"])
             self.assertEqual(summary["modernized"], 1)
 
-    def test_cross_language_output_is_not_pinned_by_metadata_migration(self):
+    def test_cross_language_output_is_not_pinned_without_current_scope(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             audit = root / "audit.json"
@@ -136,13 +150,108 @@ class ModernAuditMigrationTests(unittest.TestCase):
                     "observed_language_codes": ["CZ"],
                 }]
             }), encoding="utf-8")
-            self.write_current(current)
+            self.write_current(current, [{
+                "channel": "Cross",
+                "tvg_id": "Cross.sk@SD",
+                "stream_url": "https://example.test/cross.m3u8",
+                "protocol": "HLS",
+            }])
             migrate(audit, current, write=True, modernize_only=True)
             item = json.loads(audit.read_text(encoding="utf-8"))["channels"][0]
             self.assertEqual(item["playlist_country_code"], "SK")
             self.assertEqual(item["output_country_code"], "")
             self.assertEqual(item["expected_language_codes"], ["slk"])
             self.assertEqual(item["observed_language_codes"], ["ces"])
+
+    def test_wrong_language_alias_does_not_become_playlist_country(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            audit = root / "audit.json"
+            current = root / "audit.csv"
+            url = "https://example.test/axn-white.m3u8"
+            audit.write_text(json.dumps({
+                "channels": [{
+                    "channel": "AXN White",
+                    "tvg_id": "AXNWhite.us@SD",
+                    "stream_url": url,
+                    "language": "German",
+                    "language_code": "DE",
+                    "vlc": "wrong_language",
+                    "samsung": "wrong_language",
+                    "playlist_country_code": "DE",
+                    "output_country_code": "HU",
+                    "expected_language_codes": ["deu"],
+                    "observed_language_codes": ["deu"],
+                    "language_codes": ["deu"],
+                }]
+            }), encoding="utf-8")
+            self.write_current(current, [{
+                "channel": "AXN White",
+                "tvg_id": "AXNWhite.us@SD",
+                "stream_url": url,
+                "protocol": "HLS",
+                "playlist_country_code": "HU",
+                "output_country_code": "HU",
+                "country_code": "HU",
+                "language_code": "HU",
+                "in_playlist": "True",
+            }])
+
+            migrate(audit, current, write=True, modernize_only=True)
+            item = json.loads(audit.read_text(encoding="utf-8"))["channels"][0]
+
+            # Keep the legacy alias/evidence but make geography modern and exact.
+            self.assertEqual(item["language_code"], "DE")
+            self.assertEqual(item["playlist_country_code"], "HU")
+            self.assertEqual(item["output_country_code"], "HU")
+            self.assertEqual(item["expected_language_codes"], ["hun"])
+            self.assertEqual(item["observed_language_codes"], ["deu"])
+            self.assertEqual(item["language_codes"], ["deu"])
+
+    def test_current_exact_row_beats_historical_duplicate_for_same_url(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            audit = root / "audit.json"
+            current = root / "audit.csv"
+            url = "https://example.test/shared.m3u8"
+            audit.write_text(json.dumps({
+                "channels": [{
+                    "channel": "Shared",
+                    "tvg_id": "Shared.hu@SD",
+                    "stream_url": url,
+                    "language": "German",
+                    "language_code": "DE",
+                    "vlc": "wrong_language",
+                    "playlist_country_code": "DE",
+                    "observed_language_codes": ["deu"],
+                }]
+            }), encoding="utf-8")
+            self.write_current(current, [
+                {
+                    "channel": "Shared",
+                    "tvg_id": "Shared.hu@SD",
+                    "stream_url": url,
+                    "playlist_country_code": "DE",
+                    "output_country_code": "DE",
+                    "in_playlist": "False",
+                },
+                {
+                    "channel": "Shared",
+                    "tvg_id": "Shared.hu@SD",
+                    "stream_url": url,
+                    "playlist_country_code": "HU",
+                    "output_country_code": "HU",
+                    "country_code": "HU",
+                    "in_playlist": "True",
+                },
+            ])
+
+            migrate(audit, current, write=True, modernize_only=True)
+            item = json.loads(audit.read_text(encoding="utf-8"))["channels"][0]
+            self.assertEqual(item["playlist_country_code"], "HU")
+            self.assertEqual(item["output_country_code"], "HU")
+            self.assertEqual(item["expected_language_codes"], ["hun"])
+            self.assertEqual(item["observed_language_codes"], ["deu"])
 
     def test_nicktoons_czech_audit_is_modern_and_not_legacy_hu_rejected(self):
         payload = json.loads((ROOT / "audit.json").read_text(encoding="utf-8"))
