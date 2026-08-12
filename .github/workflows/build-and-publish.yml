@@ -96,28 +96,6 @@ jobs:
           '
           )"
 
-          EPG_EXTERNAL_URL="$(
-            python3 -c '
-          import json
-          from pathlib import Path
-          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
-          epg = cfg.get("epg") or {}
-          external = (((epg.get("countries") or {}).get("HU") or {}).get("external") or {})
-          print(str(external.get("url") or "").strip())
-          '
-          )"
-
-          EPG_EXTERNAL_PROVIDER="$(
-            python3 -c '
-          import json
-          from pathlib import Path
-          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
-          epg = cfg.get("epg") or {}
-          external = (((epg.get("countries") or {}).get("HU") or {}).get("external") or {})
-          print(str(external.get("provider") or "epgshare01.online").strip())
-          '
-          )"
-
           EPG_FUTURE_DAYS="$(
             python3 -c '
           import json
@@ -128,12 +106,11 @@ jobs:
           '
           )"
 
-          rm -rf .epg-builder
+          rm -rf .epg-builder .epg-external
           rm -f \
             .epg.channels.xml \
             .epg-iptv.xml \
             .epg-iptv-coverage.json \
-            .epg-external.download \
             .epg-grab.log
 
           mkdir .epg-builder
@@ -174,8 +151,28 @@ jobs:
 
           cd "$GITHUB_WORKSPACE"
 
-          if [ -n "$EPG_EXTERNAL_URL" ]; then
-            echo "Downloading external EPG source: $EPG_EXTERNAL_PROVIDER"
+          mkdir -p .epg-external
+          python3 - <<'PY' > .epg-external/sources.tsv
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          for raw_code, raw_country in ((cfg.get("epg") or {}).get("countries") or {}).items():
+              code = str(raw_code or "").strip().upper()
+              country = raw_country if isinstance(raw_country, dict) else {}
+              external = country.get("external") or {}
+              if not isinstance(external, dict):
+                  continue
+              url = str(external.get("url") or "").strip()
+              provider = str(external.get("provider") or "epgshare01.online").strip()
+              if code and url:
+                  print(f"{code}\t{provider}\t{url}")
+          PY
+
+          while IFS=$'\t' read -r code provider url; do
+            [ -n "$code" ] || continue
+            target=".epg-external/${code}.xml.gz"
+            echo "Downloading external EPG source for ${code}: ${provider}"
             if ! curl \
               --fail \
               --location \
@@ -183,29 +180,22 @@ jobs:
               --show-error \
               --retry 3 \
               --retry-delay 2 \
-              "$EPG_EXTERNAL_URL" \
-              -o .epg-external.download; then
-              echo "WARNING: external EPG download failed; continuing with IPTV-org fallbacks only."
-              rm -f .epg-external.download
+              "$url" \
+              -o "$target"; then
+              echo "WARNING: external EPG download failed for ${code}; continuing with IPTV-org fallbacks for that country."
+              rm -f "$target"
             fi
-          fi
+          done < .epg-external/sources.tsv
 
-          MERGE_ARGS=(
-            --playlist public/tv.m3u
-            --iptv-guide .epg-iptv.xml
-            --iptv-coverage .epg-iptv-coverage.json
-            --external-provider "$EPG_EXTERNAL_PROVIDER"
-            --preferred-iptv-provider mediaklikk.hu
-            --future-days "$EPG_FUTURE_DAYS"
-            --output public/guide.xml
+          python3 epg_multi_merge.py \
+            --config config.json \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external-dir .epg-external \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days "$EPG_FUTURE_DAYS" \
+            --output public/guide.xml \
             --report public/epg-coverage.json
-          )
-
-          if [ -f .epg-external.download ]; then
-            MERGE_ARGS+=(--external .epg-external.download)
-          fi
-
-          python3 epg_merge.py "${MERGE_ARGS[@]}"
 
           python3 local_epg.py \
             --playlist public/tv.m3u \
