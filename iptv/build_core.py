@@ -3465,15 +3465,34 @@ def prepare_published_entries(
         )
 
         # Pick one clean, canonical channel name for all feeds.
+        # A URL-specific manual audit name is authoritative: manual playback
+        # often resolves shortened or research-only upstream display names.
         canonical_name = ""
 
         for candidate in group:
-            candidate_name = str(
-                candidate.get("channel_name")
-                or candidate.get("tvg_name")
-                or candidate.get("display_name")
+            audit_name = str(
+                (candidate.get("_audit") or {}).get("channel")
                 or ""
             ).strip()
+            # Feed numbering is presentation metadata and is added below.
+            # Do not let an old audit label such as "Channel Feed 2" become
+            # the logical base channel name.
+            audit_name = re.sub(
+                r"\s+Feed\s+\d+\s*$",
+                "",
+                audit_name,
+                flags=re.IGNORECASE,
+            ).strip()
+
+            candidate_name = (
+                audit_name
+                or str(
+                    candidate.get("channel_name")
+                    or candidate.get("tvg_name")
+                    or candidate.get("display_name")
+                    or ""
+                ).strip()
+            )
 
             candidate_name = strip_custom_prefix(
                 candidate_name
