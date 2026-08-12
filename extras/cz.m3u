@@ -52,14 +52,6 @@ https://dash3.antik.sk/live/test_rebel/playlist.m3u8
 #EXTINF:-1 tvg-id="Relax.cz@SD" tvg-name="RELAX" group-title="Entertainment",RELAX
 https://dash2.antik.sk/live/test_relax/playlist.m3u8
 
-# Warner TV - experimental
-#EXTINF:-1 tvg-name="Warner TV" group-title="Movies",Warner TV
-http://88.212.7.10/live/warner_tv/index.m3u8
-
-# Nova Krimi - former Nova Gold; verify visually
-#EXTINF:-1 tvg-id="NovaGold.cz@SD" tvg-name="Nova Krimi" group-title="Entertainment",Nova Krimi
-http://88.212.7.10/live/nova_gold_avc_25p/playlist.m3u8
-
 # RT Ústecko - official broadcaster stream
 #EXTINF:-1 tvg-id="RTUstecko.cz" tvg-name="RT Ústecko" group-title="Regional",RT Ústecko
 https://1459594018.rsc.cdn77.org/1459594018/index.m3u8
@@ -83,10 +75,6 @@ https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream4/playlist/cze.m3u8
 # Stream 5 - committees / seminars
 #EXTINF:-1 tvg-name="Poslanecká sněmovna ČR - Stream 5" group-title="Government",Poslanecká sněmovna ČR - Stream 5
 https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream5/playlist/cze.m3u8
-
-# POLAR2 - official second program of TV POLAR
-#EXTINF:-1 tvg-id="Polar2.cz" tvg-name="POLAR2" group-title="Regional",POLAR2
-https://stream.polar.cz/polar2/polarlive2-1/playlist.m3u8
 
 # Krušná TV - regional Karlovy Vary/Ostrov channel
 #EXTINF:-1 tvg-name="Krušná TV" group-title="Regional",Krušná TV
@@ -127,3 +115,31 @@ http://88.212.15.19:80/live/test_nova_gold_hevc_25p/playlist.m3u8
 # Warner TV - Antik test feed
 #EXTINF:-1 tvg-name="Warner TV" group-title="Movies",Warner TV
 http://88.212.15.19:80/live/warner_tv/index.m3u8
+
+# ============================================================
+# OFFICIAL POLAR LIVE WEBCAMS
+# ============================================================
+
+# Havířov - Náměstí Republiky
+#EXTINF:-1 tvg-name="Havířov - Náměstí Republiky" group-title="Webcams",Havířov - Náměstí Republiky
+https://stream.polar.cz/kamery/cam001/playlist.m3u8
+
+# Frýdek-Místek - Zámecké náměstí
+#EXTINF:-1 tvg-name="Frýdek-Místek - Zámecké náměstí" group-title="Webcams",Frýdek-Místek - Zámecké náměstí
+https://stream.polar.cz/kamery/cam010/playlist.m3u8
+
+# Štramberk - náměstí / Štramberská Trúba
+#EXTINF:-1 tvg-name="Štramberk - náměstí" group-title="Webcams",Štramberk - náměstí
+https://stream.polar.cz/kamery/stramberk.stream/playlist.m3u8
+
+# Karlova Studánka
+#EXTINF:-1 tvg-name="Karlova Studánka" group-title="Webcams",Karlova Studánka
+https://stream.polar.cz/kamery/cam012/playlist.m3u8
+
+# Jablunkov - náměstí
+#EXTINF:-1 tvg-name="Jablunkov - náměstí" group-title="Webcams",Jablunkov - náměstí
+https://stream.silesnet.net/webcams/jablunkov.m3u8
+
+# Český Těšín - Náměstí ČSA
+#EXTINF:-1 tvg-name="Český Těšín - Náměstí ČSA" group-title="Webcams",Český Těšín - Náměstí ČSA
+https://stream.silesnet.net/webcams/tesin.m3u8
