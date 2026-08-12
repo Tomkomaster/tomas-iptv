@@ -971,6 +971,71 @@ def merge_guides(
         matched
     )
 
+    raw_country_map = iptv_coverage.get("tvg_id_countries") or {}
+    tvg_id_countries = {
+        str(tvg_id).strip(): str(code).strip().upper()
+        for tvg_id, code in raw_country_map.items()
+        if (
+            str(tvg_id).strip() in playlist_set
+            and str(code).strip()
+        )
+    } if isinstance(raw_country_map, dict) else {}
+
+    raw_countries = iptv_coverage.get("countries") or {}
+    if not isinstance(raw_countries, dict):
+        raw_countries = {}
+
+    country_codes: list[str] = []
+    for raw_code in raw_countries:
+        code = str(raw_code or "").strip().upper()
+        if code and code not in country_codes:
+            country_codes.append(code)
+    for code in tvg_id_countries.values():
+        if code and code not in country_codes:
+            country_codes.append(code)
+
+    country_provider_counts: dict[str, Counter[str]] = {
+        code: Counter() for code in country_codes
+    }
+    for item in matched:
+        tvg_id = str(item.get("tvg_id") or "").strip()
+        code = tvg_id_countries.get(tvg_id, "")
+        if code:
+            item["country_code"] = code
+            country_provider_counts.setdefault(code, Counter())[
+                str(item.get("provider") or "unknown")
+            ] += 1
+
+    countries: dict[str, dict] = {}
+    for code in country_codes:
+        base_info = raw_countries.get(code) or raw_countries.get(code.lower()) or {}
+        if not isinstance(base_info, dict):
+            base_info = {}
+        country_ids = [
+            tvg_id for tvg_id in playlist_ids
+            if tvg_id_countries.get(tvg_id) == code
+        ]
+        country_matched_ids = [
+            tvg_id for tvg_id in country_ids
+            if tvg_id in matched_ids
+        ]
+        country_total = len(country_ids)
+        country_mapped = len(country_matched_ids)
+        countries[code] = {
+            "playlist_tvg_ids": country_total,
+            "matched_tvg_ids": country_mapped,
+            "unmatched_tvg_ids_count": country_total - country_mapped,
+            "mapping_coverage_percent": round(
+                country_mapped / country_total * 100.0
+                if country_total else 0.0,
+                1,
+            ),
+            "sites": list(base_info.get("sites") or []),
+            "providers": dict(
+                sorted(country_provider_counts.get(code, Counter()).items())
+            ),
+        }
+
     report = {
         "playlist_tvg_ids": total,
         "matched_tvg_ids": mapped,
@@ -989,6 +1054,8 @@ def merge_guides(
                 provider_counts.items()
             )
         ),
+        "countries": countries,
+        "tvg_id_countries": tvg_id_countries,
         "fresh_channels_by_provider": dict(
             sorted(
                 fresh_provider_counts.items()
