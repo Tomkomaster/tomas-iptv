@@ -642,6 +642,34 @@ def recalculate_coverage(coverage: dict, playlist_ids: list[str]) -> None:
     coverage["matched"] = matched
     coverage["unmatched_tvg_ids"] = [tvg_id for tvg_id in playlist_ids if tvg_id not in matched_ids]
 
+    raw_country_map = coverage.get("tvg_id_countries") or {}
+    country_map = {
+        str(tvg_id).strip(): str(code).strip().upper()
+        for tvg_id, code in raw_country_map.items()
+        if str(tvg_id).strip() and str(code).strip()
+    } if isinstance(raw_country_map, dict) else {}
+    countries = coverage.get("countries") or {}
+    if isinstance(countries, dict):
+        for raw_code, info in countries.items():
+            if not isinstance(info, dict):
+                continue
+            code = str(raw_code or "").strip().upper()
+            country_ids = [
+                tvg_id for tvg_id in playlist_ids
+                if country_map.get(tvg_id) == code
+            ]
+            country_matched = sum(
+                1 for tvg_id in country_ids if tvg_id in matched_ids
+            )
+            info["playlist_tvg_ids"] = len(country_ids)
+            info["matched_tvg_ids"] = country_matched
+            info["unmatched_tvg_ids_count"] = len(country_ids) - country_matched
+            info["mapping_coverage_percent"] = round(
+                country_matched / len(country_ids) * 100.0
+                if country_ids else 0.0,
+                1,
+            )
+
     providers: Counter[str] = Counter()
     fresh: Counter[str] = Counter()
     for item in matched:

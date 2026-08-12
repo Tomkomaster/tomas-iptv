@@ -125,31 +125,31 @@ https://dash.antik.sk/live/test_upnetwork/playlist.m3u8
 #EXTINF:-1 tvg-id="Markiza.sk" tvg-name="Markíza",Markíza
 http://88.212.15.19/live/test_markiza_25p/playlist.m3u8
 
-#EXTINF:-1 tvg-name="Doma",Doma
+#EXTINF:-1 tvg-id="MarkizaDoma.sk" tvg-name="Doma",Doma
 http://88.212.15.19/live/test_doma_hd_hevc/playlist.m3u8
 
-#EXTINF:-1 tvg-name="Dajto",Dajto
+#EXTINF:-1 tvg-id="MarkizaDajto.sk" tvg-name="Dajto",Dajto
 http://88.212.15.19/live/test_dajto_25p/playlist.m3u8
 
-#EXTINF:-1 tvg-name="Markíza Krimi",Markíza Krimi
+#EXTINF:-1 tvg-id="MarkizaKrimi.sk" tvg-name="Markíza Krimi",Markíza Krimi
 https://cdnsk003.panaccess.com/local/Markiza_krimi/index.m3u8
 
-#EXTINF:-1 tvg-name="Markíza Krimi",Markíza Krimi
+#EXTINF:-1 tvg-id="MarkizaKrimi.sk" tvg-name="Markíza Krimi",Markíza Krimi
 http://88.212.15.19/live/test_markiza_krimi_hevc/playlist.m3u8
 
-#EXTINF:-1 tvg-name="Markíza Klasik",Markíza Klasik
+#EXTINF:-1 tvg-id="MarkizaKlasik.sk" tvg-name="Markíza Klasik",Markíza Klasik
 https://cdnsk003.panaccess.com/local/Markiza_Klasik/index.m3u8
 
 #EXTINF:-1 tvg-name="JOJ Svet",JOJ Svet
 http://88.212.15.19/live/test_joj_svet/playlist.m3u8
 
-#EXTINF:-1 tvg-name="Jojko",Jojko
+#EXTINF:-1 tvg-id="Jojko.sk" tvg-name="Jojko",Jojko
 http://88.212.15.19/live/test_jojko_25p/playlist.m3u8
 
 #EXTINF:-1 tvg-name="RiK TV",RiK TV
 https://dash2.antik.sk/live/rik_atk/index.m3u8
 
-#EXTINF:-1 tvg-name="LALA TV",LALA TV
+#EXTINF:-1 tvg-id="LalaTV.sk" tvg-name="LALA TV",LALA TV
 http://88.212.15.19/live/test_lala_25p/playlist.m3u8
 
 #EXTINF:-1 tvg-name="Folklorika TV",Folklorika TV

@@ -83,16 +83,6 @@ jobs:
             exit 0
           fi
 
-          EPG_SITES="$(
-            python3 -c '
-          import json
-          from pathlib import Path
-          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
-          sites = (cfg.get("epg") or {}).get("sites") or []
-          print(",".join(str(site).strip() for site in sites if str(site).strip()))
-          '
-          )"
-
           EPG_MAX_CONNECTIONS="$(
             python3 -c '
           import json
@@ -107,7 +97,8 @@ jobs:
           import json
           from pathlib import Path
           cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
-          external = (cfg.get("epg") or {}).get("external") or {}
+          epg = cfg.get("epg") or {}
+          external = (((epg.get("countries") or {}).get("HU") or {}).get("external") or {})
           print(str(external.get("url") or "").strip())
           '
           )"
@@ -117,7 +108,8 @@ jobs:
           import json
           from pathlib import Path
           cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
-          external = (cfg.get("epg") or {}).get("external") or {}
+          epg = cfg.get("epg") or {}
+          external = (((epg.get("countries") or {}).get("HU") or {}).get("external") or {})
           print(str(external.get("provider") or "epgshare01.online").strip())
           '
           )"
@@ -127,15 +119,10 @@ jobs:
           import json
           from pathlib import Path
           cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
-          external = (cfg.get("epg") or {}).get("external") or {}
-          print(int(external.get("future_days") or 7))
+          epg = cfg.get("epg") or {}
+          print(int(epg.get("future_days") or 7))
           '
           )"
-
-          if [ -z "$EPG_SITES" ]; then
-            echo "EPG is enabled but epg.sites is empty."
-            exit 1
-          fi
 
           rm -rf .epg-builder
           rm -f \
@@ -155,10 +142,9 @@ jobs:
           npm ci
           cd "$GITHUB_WORKSPACE"
 
-          python3 epg_prepare.py \
-            --playlist public/tv.m3u \
+          python3 epg_country_prepare.py \
+            --config config.json \
             --epg-root .epg-builder \
-            --sites "$EPG_SITES" \
             --output .epg.channels.xml \
             --report .epg-iptv-coverage.json
 

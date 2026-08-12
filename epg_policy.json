@@ -1,6 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "default": "expected",
+  "country_defaults": {
+    "HU": "expected",
+    "SK": "expected",
+    "CZ": "expected"
+  },
   "description": "Controls whether EPG gaps create Needs Attention signals. expected = actionable gap; optional = suppress gap but use EPG when available; not_expected = conventional EPG does not apply.",
   "entries": [
     {"name": "16tv Budapest", "tvg_id": "16tvBudapest.hu@SD", "status": "optional", "reason": "Local/regional or niche channel: EPG is useful if a reliable source exists, but its absence should not create Needs Attention noise."},

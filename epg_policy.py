@@ -5,6 +5,7 @@ from healthcheck import canonical_stream_url
 
 EPG_POLICY_STATUSES = ("expected", "optional", "not_expected")
 EPG_POLICY_SELECTORS = ("stream_url", "tvg_id", "channel")
+EPG_COUNTRY_DEFAULTS_KEY = "__country_defaults__"
 
 
 def _normalize_selector(field: str, value: str) -> str:
@@ -39,6 +40,24 @@ def compile_epg_policy(payload: dict | None) -> tuple[str, dict[str, dict[str, d
     indexes: dict[str, dict[str, dict]] = {
         selector: {} for selector in EPG_POLICY_SELECTORS
     }
+
+    raw_country_defaults = payload.get("country_defaults") or {}
+    if not isinstance(raw_country_defaults, dict):
+        raise ValueError("EPG policy country_defaults must be an object.")
+
+    country_defaults: dict[str, str] = {}
+    for raw_code, raw_status in raw_country_defaults.items():
+        code = str(raw_code or "").strip().upper()
+        status = str(raw_status or "").strip().casefold()
+        if not code:
+            raise ValueError("EPG policy country default has an empty country code.")
+        if status not in EPG_POLICY_STATUSES:
+            raise ValueError(
+                f"Invalid EPG policy country default for {code}: {status!r}."
+            )
+        country_defaults[code] = status
+
+    indexes[EPG_COUNTRY_DEFAULTS_KEY] = country_defaults
 
     for position, entry in enumerate(entries, start=1):
         if not isinstance(entry, dict):
@@ -102,6 +121,22 @@ def resolve_epg_policy(
         match = indexes.get(field, {}).get(key)
         if match:
             return dict(match)
+
+    country_code = str(
+        row.get("output_language_code")
+        or row.get("language_code")
+        or row.get("playlist_language_code")
+        or ""
+    ).strip().upper()
+    country_defaults = indexes.get(EPG_COUNTRY_DEFAULTS_KEY, {})
+    country_status = country_defaults.get(country_code) if country_code else None
+    if country_status:
+        return {
+            "status": country_status,
+            "reason": "",
+            "name": "",
+            "matched_by": "country_default",
+        }
 
     return {
         "status": default,

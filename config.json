@@ -55,15 +55,33 @@
   "epg": {
     "enabled": true,
     "public_url": "https://tomkomaster.github.io/tomas-iptv/guide.xml",
-    "sites": [
-      "mediaklikk.hu",
-      "horizon.tv"
-    ],
-    "external": {
-      "provider": "epgshare01.online",
-      "url": "https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz",
-      "future_days": 7
+    "countries": {
+      "HU": {
+        "sites": [
+          "mediaklikk.hu",
+          "horizon.tv"
+        ],
+        "external": {
+          "provider": "epgshare01.online",
+          "url": "https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz"
+        }
+      },
+      "SK": {
+        "sites": [
+          "horizon.tv",
+          "m.tv.sms.cz",
+          "mujtvprogram.cz"
+        ]
+      },
+      "CZ": {
+        "sites": [
+          "horizon.tv",
+          "m.tv.sms.cz",
+          "mujtvprogram.cz"
+        ]
+      }
     },
+    "future_days": 7,
     "max_connections": 3
   },
   "sources": [
