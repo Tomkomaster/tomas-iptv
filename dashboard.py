@@ -34,6 +34,7 @@ def render_dashboard(
     final_entries: list[dict],
     unique_channels: list[dict],
     source_stats: list[dict],
+    country_stats: list[dict],
     language_stats: list[dict],
     duplicate_rows: list[dict],
     changes: dict,
@@ -105,10 +106,14 @@ def render_dashboard(
         return code if 2 <= len(code) <= 3 and code.isalpha() else "UNKNOWN"
 
     def audit_country_code(row: dict) -> str:
-        output = normalized_country_code(row.get("output_language_code"))
+        output = normalized_country_code(
+            row.get("output_country_code") or row.get("output_country_code") or row.get("output_language_code")
+        )
         if output != "UNKNOWN":
             return output
-        scope = normalized_country_code(row.get("playlist_language_code"))
+        scope = normalized_country_code(
+            row.get("playlist_country_code") or row.get("playlist_country_code") or row.get("playlist_language_code")
+        )
         if scope != "UNKNOWN":
             return scope
         expected = row.get("expected_language_codes") or []
@@ -163,9 +168,25 @@ def render_dashboard(
         for s in source_stats
     )
 
+    country_rows = "\n".join(
+        f"""
+        <tr data-country="{esc(normalized_country_code(s["country_code"]))}">
+          <td><strong>{esc(s["country_code"])}</strong></td>
+          <td>{s["source_count"]}</td>
+          <td>{s["base_source_count"]}</td>
+          <td>{s["unique_channels"]}</td>
+          <td>{s["stream_urls"]}</td>
+          <td>{s["base_channels"]}</td>
+          <td>{s["added_channels"]}</td>
+          <td>{s["alternative_streams"]}</td>
+        </tr>
+        """
+        for s in country_stats
+    )
+
     language_rows = "\n".join(
         f"""
-        <tr data-country="{esc(normalized_country_code(s["language_code"]))}">
+        <tr>
           <td><strong>{esc(s["language_code"])}</strong></td>
           <td>{s["source_count"]}</td>
           <td>{s["base_source_count"]}</td>
@@ -190,9 +211,10 @@ def render_dashboard(
         )
         source_row_parts.append(
             f"""
-        <tr data-country="{esc(normalized_country_code(s.get("language_code")))}">
+        <tr data-country="{esc(normalized_country_code(s.get("country_code") or s.get("language_code")))}">
           <td>{esc(s["name"])}</td>
-          <td>{esc(s["language_code"])}</td>
+          <td>{esc(s.get("country_code") or s.get("language_code"))}</td>
+          <td>{esc(", ".join(s.get("language_codes") or []) or "—")}</td>
           <td>{esc(s["kind"])}</td>
           <td>{raw_entries}</td>
           <td>{s["unique_channels_in_source"]}</td>
@@ -209,7 +231,7 @@ def render_dashboard(
 
     channel_rows = []
     for e in final_entries:
-        entry_country = normalized_country_code(e.get("language_code"))
+        entry_country = normalized_country_code(e.get("country_code") or e.get("language_code"))
         classification = e["classification"]
         badge_class = {
             "Base channel": "base",
@@ -343,8 +365,8 @@ def render_dashboard(
               <td>{esc(a.get("source", "") or "—")}</td>
               <td>{esc(a["discovery"])}</td>
               <td>{esc(a["protocol"] or "—")}</td>
-              <td>{esc(a.get("playlist_language_code", "") or "—")}</td>
-              <td>{esc(a.get("output_language_code", "") or "—")}</td>
+              <td>{esc(a.get("playlist_country_code") or a.get("playlist_language_code", "") or "—")}</td>
+              <td>{esc(a.get("output_country_code") or a.get("output_language_code", "") or "—")}</td>
               <td>{esc(format_language_codes(a.get("expected_language_codes")))}</td>
               <td>{esc(format_language_codes(a.get("observed_language_codes")))}</td>
               <td>{language_match_badge(a.get("language_acceptance") or a.get("language_match", "unknown"))}</td>
@@ -387,7 +409,7 @@ def render_dashboard(
         identities = {
             (
                 str(row.get("channel") or "").strip().casefold(),
-                normalized_country_code(row.get("playlist_language_code")),
+                normalized_country_code(row.get("playlist_country_code") or row.get("playlist_language_code")),
             )
             for row in rows_for_url
         }
@@ -400,14 +422,14 @@ def render_dashboard(
             for row in rows_for_url
         }, key=str.casefold)
         source_scopes = sorted({
-            normalized_country_code(row.get("playlist_language_code"))
+            normalized_country_code(row.get("playlist_country_code") or row.get("playlist_language_code"))
             for row in rows_for_url
-            if normalized_country_code(row.get("playlist_language_code")) != "UNKNOWN"
+            if normalized_country_code(row.get("playlist_country_code") or row.get("playlist_language_code")) != "UNKNOWN"
         })
         output_scopes = sorted({
-            normalized_country_code(row.get("output_language_code"))
+            normalized_country_code(row.get("output_country_code") or row.get("output_language_code"))
             for row in rows_for_url
-            if normalized_country_code(row.get("output_language_code")) != "UNKNOWN"
+            if normalized_country_code(row.get("output_country_code") or row.get("output_language_code")) != "UNKNOWN"
         })
         identity_rows.append(
             f"""
@@ -424,8 +446,8 @@ def render_dashboard(
 
     reroute_count = 0
     for a in audit_rows:
-        source_scope = normalized_country_code(a.get("playlist_language_code"))
-        output_scope = normalized_country_code(a.get("output_language_code"))
+        source_scope = normalized_country_code(a.get("playlist_country_code") or a.get("playlist_language_code"))
+        output_scope = normalized_country_code(a.get("output_country_code") or a.get("output_language_code"))
         if (
             not a.get("in_playlist")
             or source_scope == "UNKNOWN"
@@ -442,7 +464,7 @@ def render_dashboard(
               <td>{esc(source_scope)}</td>
               <td>{esc(output_scope)}</td>
               <td>{esc(format_language_codes(a.get("observed_language_codes")))}</td>
-              <td><div class="detail">Verified spoken language routes this stream to {esc(output_scope)} while the saved audit/source identity remains {esc(source_scope)}.</div></td>
+              <td><div class="detail">An explicit verified country-routing rule publishes this stream under {esc(output_scope)} while the saved audit/source identity remains {esc(source_scope)}.</div></td>
             </tr>
             """
         )
@@ -510,6 +532,7 @@ def render_dashboard(
         "AUDIT_CROSS_LANGUAGE": str(audit_cross_language),
         "AUDIT_REJECTED": str(audit_rejected),
         "AUDIT_TABLE_ROWS": str(''.join(audit_table_rows)),
+        "COUNTRY_ROWS": str(country_rows),
         "LANGUAGE_ROWS": str(language_rows),
         "SOURCE_ROWS": str(source_rows),
         "CHANGE_HTML": str(change_html),

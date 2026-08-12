@@ -62,8 +62,8 @@
   <p class="muted">
     Identity safety is kept separate from playback status. Unresolved rows are audit
     identities that could not be safely attached to one current feed. Resolved-routing
-    rows are verified streams whose spoken language publishes them under a different
-    country from the source/audit scope; these are informational, not duplicate channels.
+    rows are verified streams whose explicit country-routing rule publishes them under a different
+    country from the source/audit scope; spoken language remains separate metadata.
   </p>
   <div class="audit-summary">
     <div class="card"><div class="value">@@IDENTITY_UNRESOLVED@@</div><div class="label">Unresolved identity warnings</div></div>
@@ -73,7 +73,7 @@
   <p id="identityVisibleCount" class="muted"></p>
   <div class="table-wrap">
     <table id="identityTable">
-      <thead><tr><th>Status</th><th>Channel / warning</th><th>Audit/source scope</th><th>Published under</th><th>Observed language</th><th>Detail</th></tr></thead>
+      <thead><tr><th>Status</th><th>Channel / warning</th><th>Audit/source country</th><th>Published country</th><th>Observed language</th><th>Detail</th></tr></thead>
       <tbody>@@IDENTITY_ROWS@@</tbody>
     </table>
   </div>
@@ -288,8 +288,8 @@
           <th>Source</th>
           <th>Discovery</th>
           <th>Protocol</th>
-          <th>Audit/source scope</th>
-          <th>Published under</th>
+          <th>Audit/source country</th>
+          <th>Published country</th>
           <th>Expected language</th>
           <th>Observed language</th>
           <th>Language acceptance</th>
@@ -308,32 +308,27 @@
     </table>
   </div>
 
-  <h2>Language summary</h2>
+  <h2>Country summary</h2>
 
   <p class="muted">
-    Counts are based on the final published playlist.
-    Base channels come from sources whose kind is "base".
-    Added channels were first discovered by non-base sources.
+    Publication geography is counted independently from spoken-language metadata.
+    Country tabs filter this table; a future German-language channel can therefore
+    remain AT, DE or CH without language deciding its destination.
   </p>
 
   <div class="table-wrap">
-    <table id="languageTable">
-      <thead>
-        <tr>
-          <th>Language</th>
-          <th>Sources</th>
-          <th>Base sources</th>
-          <th>Unique channels</th>
-          <th>Stream URLs</th>
-          <th>Base channels</th>
-          <th>Added channels</th>
-          <th>Alternative streams</th>
-        </tr>
-      </thead>
+    <table id="countryTable">
+      <thead><tr><th>Country</th><th>Sources</th><th>Base sources</th><th>Unique channels</th><th>Stream URLs</th><th>Base channels</th><th>Added channels</th><th>Alternative streams</th></tr></thead>
+      <tbody>@@COUNTRY_ROWS@@</tbody>
+    </table>
+  </div>
 
-      <tbody>
-        @@LANGUAGE_ROWS@@
-      </tbody>
+  <h2>Spoken language summary</h2>
+  <p class="muted">Languages use ISO-639-3-style codes such as hun, slk, ces and deu. One country may have several languages and one language may appear in several countries.</p>
+  <div class="table-wrap">
+    <table id="languageTable">
+      <thead><tr><th>Language</th><th>Sources</th><th>Base sources</th><th>Unique channels</th><th>Stream URLs</th><th>Base channels</th><th>Added channels</th><th>Alternative streams</th></tr></thead>
+      <tbody>@@LANGUAGE_ROWS@@</tbody>
     </table>
   </div>
   
@@ -344,7 +339,8 @@
       <thead>
         <tr>
           <th>Source</th>
-          <th>Language</th>
+          <th>Country</th>
+          <th>Languages</th>
           <th>Kind</th>
           <th>Raw entries</th>
           <th>Unique channels in source</th>
