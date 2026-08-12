@@ -12,7 +12,7 @@ class CzechResearchPriorityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         payload = json.loads(
-            Path("research_priority.json").read_text(encoding="utf-8")
+            Path("data/research_priority.json").read_text(encoding="utf-8")
         )
         cls.policy = compile_research_priority_policy(payload)
 

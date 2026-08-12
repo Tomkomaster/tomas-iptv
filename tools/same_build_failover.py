@@ -9,8 +9,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
-from healthcheck import probe_stream
-from research_exports import channel_key
+from tools.healthcheck import probe_stream
+from tools.research_exports import channel_key
 
 
 TV_SAFE_DECISIONS = frozenset({"Verified", "TV verified"})
