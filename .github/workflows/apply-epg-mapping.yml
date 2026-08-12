@@ -1,0 +1,181 @@
+name: Validate and apply EPG mapping improvement
+
+on:
+  push:
+    branches:
+      - agent/improve-epg-mapping
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-epg-mapping
+  cancel-in-progress: true
+
+env:
+  IPTV_ORG_EPG_REV: "15965406e3d950433788a085a15ab256a8e0035d"
+
+jobs:
+  apply-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/improve-epg-mapping
+
+      - name: Apply deterministic mapping patch
+        run: python3 .github/epg_mapping_patch.py
+
+      - name: Compile changed Python modules
+        run: python3 -m py_compile epg_cross_country_alias.py epg_multi_merge.py tests/test_epg_cross_country_alias.py
+
+      - name: Run full unit test suite
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Run strict playlist build
+        run: python3 build.py --strict
+
+      - name: Set up Node.js for EPG
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Run full production EPG integration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          EPG_MAX_CONNECTIONS="$(python3 -c 'import json; from pathlib import Path; cfg=json.loads(Path("config.json").read_text()); print(int((cfg.get("epg") or {}).get("max_connections") or 3))')"
+          EPG_FUTURE_DAYS="$(python3 -c 'import json; from pathlib import Path; cfg=json.loads(Path("config.json").read_text()); print(int((cfg.get("epg") or {}).get("future_days") or 7))')"
+
+          rm -rf .epg-builder .epg-external
+          rm -f .epg.channels.xml .epg-iptv.xml .epg-iptv-coverage.json .epg-grab.log
+
+          mkdir .epg-builder
+          git -C .epg-builder init
+          git -C .epg-builder remote add origin https://github.com/iptv-org/epg.git
+          git -C .epg-builder fetch --depth 1 origin "$IPTV_ORG_EPG_REV"
+          git -C .epg-builder checkout --detach FETCH_HEAD
+          test "$(git -C .epg-builder rev-parse HEAD)" = "$IPTV_ORG_EPG_REV"
+
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 epg_country_prepare.py \
+            --config config.json \
+            --epg-root .epg-builder \
+            --output .epg.channels.xml \
+            --report .epg-iptv-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections="$EPG_MAX_CONNECTIONS" \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          mkdir -p .epg-external
+          python3 - <<'PY' > .epg-external/sources.tsv
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path('config.json').read_text(encoding='utf-8'))
+          for raw_code, raw_country in ((cfg.get('epg') or {}).get('countries') or {}).items():
+              code = str(raw_code or '').strip().upper()
+              country = raw_country if isinstance(raw_country, dict) else {}
+              external = country.get('external') or {}
+              url = str(external.get('url') or '').strip() if isinstance(external, dict) else ''
+              provider = str(external.get('provider') or 'epgshare01.online').strip() if isinstance(external, dict) else 'epgshare01.online'
+              if code and url:
+                  print(f'{code}\t{provider}\t{url}')
+          PY
+
+          while IFS=$'\t' read -r code provider url; do
+            [ -n "$code" ] || continue
+            curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
+              "$url" -o ".epg-external/${code}.xml.gz"
+          done < .epg-external/sources.tsv
+
+          python3 epg_multi_merge.py \
+            --config config.json \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external-dir .epg-external \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days "$EPG_FUTURE_DAYS" \
+            --output public/guide.xml \
+            --report public/epg-coverage.json
+
+          python3 local_epg.py \
+            --playlist public/tv.m3u \
+            --guide public/guide.xml \
+            --coverage public/epg-coverage.json \
+            --report public/local-epg.json \
+            --future-days "$EPG_FUTURE_DAYS"
+
+          python3 epg_health.py \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+      - name: Verify mapping improvement and freshness
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          coverage = json.loads(Path('public/epg-coverage.json').read_text(encoding='utf-8'))
+          health = json.loads(Path('public/epg-health.json').read_text(encoding='utf-8'))
+
+          print('Overall mapping:', coverage['matched_tvg_ids'], '/', coverage['playlist_tvg_ids'], coverage['mapping_coverage_percent'])
+          for code, info in coverage['countries'].items():
+              print(code, info['matched_tvg_ids'], '/', info['playlist_tvg_ids'], info['mapping_coverage_percent'])
+
+          assert coverage['matched_tvg_ids'] >= 130, coverage['matched_tvg_ids']
+          assert coverage['mapping_coverage_percent'] >= 76.5, coverage['mapping_coverage_percent']
+          assert coverage['countries']['CZ']['matched_tvg_ids'] == coverage['countries']['CZ']['playlist_tvg_ids']
+          assert coverage['countries']['SK']['matched_tvg_ids'] >= 30
+
+          external = coverage.get('external') or {}
+          used = external.get('cross_country_aliases_used') or []
+          used_targets = {str(item.get('tvg_id') or '') for item in used if isinstance(item, dict)}
+          expected = {
+              'ducktvPLUS.sk@SD',
+              'HAHATV.sk@SD',
+              'PrimaKrimiSK.sk@HD',
+              'TVT.sk@SD',
+              'ZapadoslovenskaTV.sk@SD',
+          }
+          assert expected <= used_targets, (expected, used_targets)
+          for item in used:
+              if item.get('tvg_id') in expected:
+                  assert int(item.get('fresh_programmes') or 0) > 0, item
+
+          with_programmes = int((health.get('summary') or {}).get('channels_with_programmes') or health.get('channels_with_programmes') or 0)
+          print('Channels with current programmes:', with_programmes)
+          assert with_programmes >= 128, with_programmes
+          PY
+
+      - name: Check formatting
+        run: git diff --check
+
+      - name: Commit validated production changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            epg_cross_country_alias.py \
+            epg_multi_merge.py \
+            epg_aliases.json \
+            docs/multi-country-external-epg.md \
+            tests/test_epg_cross_country_alias.py
+          git commit -m "Improve deterministic EPG mapping coverage"
+          git push origin HEAD:agent/improve-epg-mapping
