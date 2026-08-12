@@ -1,0 +1,68 @@
+name: Fix EPG country metadata handoff
+
+on:
+  push:
+    branches:
+      - agent/country-aware-epg
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Preserve country metadata through merge and local overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f"{label}: expected one match, found {count}")
+              return text.replace(old, new, 1)
+
+          path = Path('epg_merge.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''    total = len(\n        playlist_ids\n    )\n    mapped = len(\n        matched\n    )\n\n    report = {'''
+          new = '''    total = len(\n        playlist_ids\n    )\n    mapped = len(\n        matched\n    )\n\n    raw_country_map = iptv_coverage.get(\"tvg_id_countries\") or {}\n    tvg_id_countries = {\n        str(tvg_id).strip(): str(code).strip().upper()\n        for tvg_id, code in raw_country_map.items()\n        if (\n            str(tvg_id).strip() in playlist_set\n            and str(code).strip()\n        )\n    } if isinstance(raw_country_map, dict) else {}\n\n    raw_countries = iptv_coverage.get(\"countries\") or {}\n    if not isinstance(raw_countries, dict):\n        raw_countries = {}\n\n    country_codes: list[str] = []\n    for raw_code in raw_countries:\n        code = str(raw_code or \"\").strip().upper()\n        if code and code not in country_codes:\n            country_codes.append(code)\n    for code in tvg_id_countries.values():\n        if code and code not in country_codes:\n            country_codes.append(code)\n\n    country_provider_counts: dict[str, Counter[str]] = {\n        code: Counter() for code in country_codes\n    }\n    for item in matched:\n        tvg_id = str(item.get(\"tvg_id\") or \"\").strip()\n        code = tvg_id_countries.get(tvg_id, \"\")\n        if code:\n            item[\"country_code\"] = code\n            country_provider_counts.setdefault(code, Counter())[\n                str(item.get(\"provider\") or \"unknown\")\n            ] += 1\n\n    countries: dict[str, dict] = {}\n    for code in country_codes:\n        base_info = raw_countries.get(code) or raw_countries.get(code.lower()) or {}\n        if not isinstance(base_info, dict):\n            base_info = {}\n        country_ids = [\n            tvg_id for tvg_id in playlist_ids\n            if tvg_id_countries.get(tvg_id) == code\n        ]\n        country_matched_ids = [\n            tvg_id for tvg_id in country_ids\n            if tvg_id in matched_ids\n        ]\n        country_total = len(country_ids)\n        country_mapped = len(country_matched_ids)\n        countries[code] = {\n            \"playlist_tvg_ids\": country_total,\n            \"matched_tvg_ids\": country_mapped,\n            \"unmatched_tvg_ids_count\": country_total - country_mapped,\n            \"mapping_coverage_percent\": round(\n                country_mapped / country_total * 100.0\n                if country_total else 0.0,\n                1,\n            ),\n            \"sites\": list(base_info.get(\"sites\") or []),\n            \"providers\": dict(\n                sorted(country_provider_counts.get(code, Counter()).items())\n            ),\n        }\n\n    report = {'''
+          text = replace_once(text, old, new, 'epg_merge country metadata calculation')
+
+          old = '''        \"providers\": dict(\n            sorted(\n                provider_counts.items()\n            )\n        ),\n        \"fresh_channels_by_provider\": dict('''
+          new = '''        \"providers\": dict(\n            sorted(\n                provider_counts.items()\n            )\n        ),\n        \"countries\": countries,\n        \"tvg_id_countries\": tvg_id_countries,\n        \"fresh_channels_by_provider\": dict('''
+          text = replace_once(text, old, new, 'epg_merge report country metadata')
+          path.write_text(text, encoding='utf-8')
+
+          path = Path('local_epg.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''    coverage[\"matched\"] = matched\n    coverage[\"unmatched_tvg_ids\"] = [tvg_id for tvg_id in playlist_ids if tvg_id not in matched_ids]\n\n    providers: Counter[str] = Counter()'''
+          new = '''    coverage[\"matched\"] = matched\n    coverage[\"unmatched_tvg_ids\"] = [tvg_id for tvg_id in playlist_ids if tvg_id not in matched_ids]\n\n    raw_country_map = coverage.get(\"tvg_id_countries\") or {}\n    country_map = {\n        str(tvg_id).strip(): str(code).strip().upper()\n        for tvg_id, code in raw_country_map.items()\n        if str(tvg_id).strip() and str(code).strip()\n    } if isinstance(raw_country_map, dict) else {}\n    countries = coverage.get(\"countries\") or {}\n    if isinstance(countries, dict):\n        for raw_code, info in countries.items():\n            if not isinstance(info, dict):\n                continue\n            code = str(raw_code or \"\").strip().upper()\n            country_ids = [\n                tvg_id for tvg_id in playlist_ids\n                if country_map.get(tvg_id) == code\n            ]\n            country_matched = sum(\n                1 for tvg_id in country_ids if tvg_id in matched_ids\n            )\n            info[\"playlist_tvg_ids\"] = len(country_ids)\n            info[\"matched_tvg_ids\"] = country_matched\n            info[\"unmatched_tvg_ids_count\"] = len(country_ids) - country_matched\n            info[\"mapping_coverage_percent\"] = round(\n                country_matched / len(country_ids) * 100.0\n                if country_ids else 0.0,\n                1,\n            )\n\n    providers: Counter[str] = Counter()'''
+          text = replace_once(text, old, new, 'local epg country coverage recalculation')
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          python3 -m unittest discover -s tests -v
+          python3 build.py --strict
+
+      - name: Commit handoff fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add epg_merge.py local_epg.py tests/test_epg_country_handoff.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Preserve country EPG metadata through merge"
+          git push origin HEAD:agent/country-aware-epg
