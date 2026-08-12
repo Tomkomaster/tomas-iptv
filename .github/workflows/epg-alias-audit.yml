@@ -36,7 +36,6 @@ jobs:
 
           candidates = {
               'CZ': [
-                  'Canal+.Action.cz',
                   'CANAL.PLUS.ACTION.CZ.cz',
                   'Filmbox+.comedy.cz',
                   'Filmbox+.emotion.cz',
@@ -44,33 +43,33 @@ jobs:
                   'Filmbox+.one.cz',
                   'ducktv.plus.cz',
                   'HaHa.TV.cz',
-                  'LifeTV.cz',
-                  'TV.Bratislava.cz',
-                  'Televízia.Dolný.Kubín.cz',
-                  'Liptov.cz',
-                  'TV.Považie.cz',
-                  'TV.SEN.cz',
+                  'Prima.KRIMI.SK.cz',
+                  'Mestská.televízia.Ružomberok.cz',
                   'TVT.cz',
                   'Západoslovenská.televízia.cz',
-                  'Régió.TV.cz',
+                  'TV9.KTV.cz',
+                  'TVC.cz',
+                  'TV.NR.SR.cz',
               ],
               'SK': [
                   'Prima.Krimi.HD.sk',
-                  'Prima.KRIMI.SK.cz',
               ],
           }
 
           today = datetime.now(ZoneInfo('Europe/Bratislava')).date()
-          end = today.replace()
+          last_day = today.fromordinal(today.toordinal() + 7)
 
           roots = {}
-          for code in ('HU','SK','CZ'):
+          for code in ('HU', 'SK', 'CZ'):
               data = gzip.decompress(Path(f'/tmp/epg/{code}.xml.gz').read_bytes())
               roots[code] = ET.fromstring(data)
 
           for source_code, ids in candidates.items():
               root = roots[source_code]
-              channel_map = {str(c.get('id') or '').strip(): c for c in root.findall('channel')}
+              channel_map = {
+                  str(c.get('id') or '').strip(): c
+                  for c in root.findall('channel')
+              }
               counts = Counter()
               for programme in root.findall('programme'):
                   channel = str(programme.get('channel') or '').strip()
@@ -79,7 +78,7 @@ jobs:
                       day = datetime.strptime(start, '%Y%m%d').date()
                   except ValueError:
                       continue
-                  if today <= day <= today.fromordinal(today.toordinal() + 7):
+                  if today <= day <= last_day:
                       counts[channel] += 1
 
               print(f'\n=== {source_code} candidates ===')
@@ -93,5 +92,8 @@ jobs:
                       for node in channel.findall('display-name')
                       if ' '.join((node.text or '').split())
                   ]
-                  print(f'FOUND | fresh={counts[channel_id]:4d} | {channel_id} | names={names}')
+                  print(
+                      f'FOUND | fresh={counts[channel_id]:4d} | '
+                      f'{channel_id} | names={names}'
+                  )
           PY
