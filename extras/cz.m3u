@@ -64,10 +64,6 @@ http://88.212.7.10/live/nova_gold_avc_25p/playlist.m3u8
 #EXTINF:-1 tvg-id="RTUstecko.cz" tvg-name="RT Ústecko" group-title="Regional",RT Ústecko
 https://1459594018.rsc.cdn77.org/1459594018/index.m3u8
 
-# ============================================================
-# POSLANECKÁ SNĚMOVNA ČR - OFFICIAL EVENT STREAMS
-# ============================================================
-
 # Stream 1 - plenary sessions
 #EXTINF:-1 tvg-name="Poslanecká sněmovna ČR" group-title="Government",Poslanecká sněmovna ČR
 https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream1/playlist/cze.m3u8
@@ -87,3 +83,47 @@ https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream4/playlist/cze.m3u8
 # Stream 5 - committees / seminars
 #EXTINF:-1 tvg-name="Poslanecká sněmovna ČR - Stream 5" group-title="Government",Poslanecká sněmovna ČR - Stream 5
 https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream5/playlist/cze.m3u8
+
+# POLAR2 - official second program of TV POLAR
+#EXTINF:-1 tvg-id="Polar2.cz" tvg-name="POLAR2" group-title="Regional",POLAR2
+https://stream.polar.cz/polar2/polarlive2-1/playlist.m3u8
+
+# Krušná TV - regional Karlovy Vary/Ostrov channel
+#EXTINF:-1 tvg-name="Krušná TV" group-title="Regional",Krušná TV
+https://kamery2.wolfnet.cz/krusna.m3u8
+
+# Panorama TV - regional panoramic/camera television
+#EXTINF:-1 tvg-name="Panorama TV" group-title="Regional",Panorama TV
+https://kamery2.wolfnet.cz/panorama.m3u8
+
+# CS Mystery - Antik FTA test feed
+#EXTINF:-1 tvg-id="CSMystery.cz@SD" tvg-name="CS Mystery" group-title="Documentary",CS Mystery
+http://88.212.15.17/live/test_cs_mystery_avc_25p/playlist.m3u8
+
+# Nova
+#EXTINF:-1 tvg-id="TVNova.cz@SD" tvg-name="Nova" group-title="General",Nova
+http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8
+
+# Nova Cinema
+#EXTINF:-1 tvg-id="NovaCinema.cz@SD" tvg-name="Nova Cinema" group-title="Movies",Nova Cinema
+http://88.212.15.19:80/live/test_nova_cinema_hevc_25p/playlist.m3u8
+
+# Nova Action
+#EXTINF:-1 tvg-id="NovaAction.cz@SD" tvg-name="Nova Action" group-title="Entertainment",Nova Action
+http://88.212.15.19:80/live/test_nova_action_hevc_25p/playlist.m3u8
+
+# Nova Fun
+#EXTINF:-1 tvg-id="NovaFun.cz@SD" tvg-name="Nova Fun" group-title="Entertainment",Nova Fun
+http://88.212.15.19:80/live/test_nova_fun_hevc_25p/playlist.m3u8
+
+# Nova Lady
+#EXTINF:-1 tvg-id="NovaLady.cz@SD" tvg-name="Nova Lady" group-title="Entertainment",Nova Lady
+http://88.212.15.19:80/live/test_nova_lady_hevc_25p/playlist.m3u8
+
+# Nova Krimi - former Nova Gold; Antik HEVC test feed
+#EXTINF:-1 tvg-id="NovaGold.cz@SD" tvg-name="Nova Krimi" group-title="Entertainment",Nova Krimi
+http://88.212.15.19:80/live/test_nova_gold_hevc_25p/playlist.m3u8
+
+# Warner TV - Antik test feed
+#EXTINF:-1 tvg-name="Warner TV" group-title="Movies",Warner TV
+http://88.212.15.19:80/live/warner_tv/index.m3u8
