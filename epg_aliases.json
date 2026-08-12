@@ -1,6 +1,6 @@
 {
   "provider": "epgshare01.online",
-  "description": "Explicit audited aliases from exact playlist tvg-id values to EPGshare XMLTV channel IDs. Runtime fuzzy matching is intentionally not used.",
+  "description": "Explicit audited aliases from exact playlist tvg-id values to EPGshare XMLTV channel IDs. Runtime fuzzy matching is intentionally not used. cross_country_aliases may read another already-downloaded country guide only through an explicit country + XMLTV ID declaration.",
   "aliases": {
     "AMCEurope.uk@Hungary": "AMC.hu",
     "AXNCEE.es@Hungary": "AXN.hu",
@@ -10,6 +10,38 @@
     "Spiler1.hu@SD": "Spíler1.TV.hu",
     "Spiler2.hu@SD": "Spíler2.TV.hu",
     "Viasat2.hu@SD": "Viasat.2.hu",
-    "ZalaegerszegiTV.hu@SD": "Zeg.TV.hu"
+    "ZalaegerszegiTV.hu@SD": "Zeg.TV.hu",
+    "CanalPlusActionEurope.nl@Czechia": "CANAL.PLUS.ACTION.CZ.cz",
+    "FILMBOXPlusComedy.pl@Czechia": "Filmbox+.comedy.cz",
+    "FILMBOXPlusEmotion.pl@Czechia": "Filmbox+.emotion.cz",
+    "FILMBOXPlusHits.pl@Czechia": "Filmbox+.hits.cz",
+    "FILMBOXPlusOne.pl@Czechia": "Filmbox+.one.cz"
+  },
+  "cross_country_aliases": {
+    "ducktvPLUS.sk@SD": {
+      "playlist_country_code": "SK",
+      "external_country_code": "CZ",
+      "external_id": "ducktv.plus.cz"
+    },
+    "HAHATV.sk@SD": {
+      "playlist_country_code": "SK",
+      "external_country_code": "CZ",
+      "external_id": "HaHa.TV.cz"
+    },
+    "PrimaKrimiSK.sk@HD": {
+      "playlist_country_code": "SK",
+      "external_country_code": "CZ",
+      "external_id": "Prima.KRIMI.SK.cz"
+    },
+    "TVT.sk@SD": {
+      "playlist_country_code": "SK",
+      "external_country_code": "CZ",
+      "external_id": "TVT.cz"
+    },
+    "ZapadoslovenskaTV.sk@SD": {
+      "playlist_country_code": "SK",
+      "external_country_code": "CZ",
+      "external_id": "Západoslovenská.televízia.cz"
+    }
   }
 }
