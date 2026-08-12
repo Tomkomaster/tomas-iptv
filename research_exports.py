@@ -19,6 +19,7 @@ from research_priority import (
     priority_rank,
     resolve_research_priority,
 )
+from wanted_channels import load_wanted_channels
 
 
 TESTED_STATUSES = {
@@ -66,7 +67,7 @@ STATUS_GUIDANCE = {
         "unsuitable, or historical; keep hunting for a new source."
     ),
     "NOT RESEARCHED": (
-        "The channel is known, but no source URL has been recorded yet."
+        "The channel is wanted, but no source URL has been recorded yet."
     ),
 }
 
@@ -263,6 +264,83 @@ def group_channels(rows: list[dict[str, str]]) -> dict[str, list[dict[str, str]]
     return grouped
 
 
+def match_wanted_channels(
+    grouped: dict[str, list[dict[str, str]]],
+    wanted_channels: list[dict[str, str]] | None,
+) -> tuple[dict[str, dict[str, str]], list[dict[str, str]]]:
+    """Match wanted targets to audit groups without fuzzy or ambiguous guessing."""
+    by_id: dict[tuple[str, str], list[str]] = {}
+    by_name: dict[tuple[str, str], list[str]] = {}
+
+    for key, rows in grouped.items():
+        if not rows:
+            continue
+        country = row_country(rows[0])
+        tvg_id = normalize_tvg_id(display_tvg_id(rows))
+        name = normalize_name(display_channel(rows))
+        if tvg_id:
+            by_id.setdefault((country, tvg_id), []).append(key)
+        if name:
+            by_name.setdefault((country, name), []).append(key)
+
+    matched: dict[str, dict[str, str]] = {}
+    unmatched: list[dict[str, str]] = []
+
+    for wanted in wanted_channels or []:
+        country = str(wanted.get("country_code") or "").strip().upper()
+        wanted_id = normalize_tvg_id(wanted.get("tvg_id"))
+        wanted_name = normalize_name(wanted.get("channel"))
+        candidates: list[str] = []
+
+        if wanted_id:
+            candidates = by_id.get((country, wanted_id), [])
+            if len(candidates) > 1:
+                raise ValueError(
+                    f"Wanted channel {country} {wanted.get('channel')!r} matches multiple "
+                    f"audit groups by tvg_id {wanted.get('tvg_id')!r}."
+                )
+
+        if not candidates and wanted_name:
+            candidates = by_name.get((country, wanted_name), [])
+            if len(candidates) > 1:
+                raise ValueError(
+                    f"Wanted channel {country} {wanted.get('channel')!r} matches multiple "
+                    "audit groups by name; add an exact tvg_id to wanted_channels.json."
+                )
+
+        if not candidates:
+            unmatched.append(wanted)
+            continue
+
+        key = candidates[0]
+        if key in matched:
+            raise ValueError(
+                f"Multiple wanted channel entries resolve to the same audit group {key}."
+            )
+        matched[key] = wanted
+
+    return matched, unmatched
+
+
+def target_priority(
+    row: dict[str, object],
+    compiled_priority: dict,
+    wanted: dict[str, str] | None,
+) -> dict[str, str]:
+    resolved = resolve_research_priority(row, compiled_priority)
+    explicit = str((wanted or {}).get("priority") or "").strip().upper()
+    if not explicit:
+        return resolved
+
+    reason = str((wanted or {}).get("reason") or "").strip()
+    return {
+        "priority": explicit,
+        "label": compiled_priority["labels"][explicit],
+        "reason": reason or f"Explicit wanted-channel priority {explicit}.",
+        "matched_by": "wanted_channels",
+    }
+
+
 def make_research_rows(
     grouped: dict[str, list[dict[str, str]]],
 ) -> list[dict[str, object]]:
@@ -318,11 +396,13 @@ def make_missing_rows(
     grouped: dict[str, list[dict[str, str]]],
     *,
     priority_policy: dict | None = None,
+    wanted_channels: list[dict[str, str]] | None = None,
 ) -> list[dict[str, object]]:
     output: list[dict[str, object]] = []
     compiled_priority = compile_research_priority_policy(priority_policy)
+    matched_wanted, unmatched_wanted = match_wanted_channels(grouped, wanted_channels)
 
-    for rows in grouped.values():
+    for group_key, rows in grouped.items():
         status = derive_channel_status(rows)
         if status == "WORKING":
             continue
@@ -330,6 +410,7 @@ def make_missing_rows(
         country = row_country(rows[0]) if rows else "UNKNOWN"
         channel = display_channel(rows)
         tvg_id = display_tvg_id(rows)
+        wanted = matched_wanted.get(group_key)
 
         current = [row for row in rows if is_current(row)]
         tested = [
@@ -367,14 +448,13 @@ def make_missing_rows(
             )
         elif status == "CANDIDATES TO TEST":
             next_action = "Test/review the current candidate feeds before hunting for more."
-        elif status == "NOT RESEARCHED":
-            next_action = "Find the first candidate source/feed."
         else:
             next_action = "Hunt for a new source/feed."
 
         missing_row = {
             "country": country,
             "channel": channel,
+            "wanted": bool(wanted),
             "status": status,
             "tvg_id": tvg_id,
             "known_feeds": len(rows),
@@ -389,18 +469,51 @@ def make_missing_rows(
             "next_action": next_action,
             "work_type": work_type_for_status(status),
         }
-        priority = resolve_research_priority(missing_row, compiled_priority)
-        missing_row.update({
-            "priority": priority["priority"],
-            "priority_label": priority["label"],
-            "priority_reason": priority["reason"],
-            "priority_match": priority["matched_by"],
-        })
+        priority = target_priority(missing_row, compiled_priority, wanted)
+        missing_row.update(
+            {
+                "priority": priority["priority"],
+                "priority_label": priority["label"],
+                "priority_reason": priority["reason"],
+                "priority_match": priority["matched_by"],
+            }
+        )
+        output.append(missing_row)
+
+    for wanted in unmatched_wanted:
+        missing_row = {
+            "country": wanted["country_code"],
+            "channel": wanted["channel"],
+            "wanted": True,
+            "status": "NOT RESEARCHED",
+            "tvg_id": wanted.get("tvg_id", ""),
+            "known_feeds": 0,
+            "current_candidates": 0,
+            "tested_feeds": 0,
+            "fully_tested_feeds": 0,
+            "followup_candidates": 0,
+            "rejected_feeds": 0,
+            "unique_sources": 0,
+            "sources": "",
+            "last_tested": "",
+            "next_action": "Find the first candidate source/feed.",
+            "work_type": work_type_for_status("NOT RESEARCHED"),
+        }
+        priority = target_priority(missing_row, compiled_priority, wanted)
+        missing_row.update(
+            {
+                "priority": priority["priority"],
+                "priority_label": priority["label"],
+                "priority_reason": priority["reason"],
+                "priority_match": priority["matched_by"],
+            }
+        )
         output.append(missing_row)
 
     output.sort(
         key=lambda row: (
             priority_rank(row.get("priority")),
+            0 if row.get("wanted") else 1,
             STATUS_ORDER.get(str(row["status"]), 99),
             str(row["country"]),
             normalize_name(row["channel"]),
@@ -532,6 +645,7 @@ def generate_exports(
     generated_at: str | None = None,
     *,
     priority_policy: dict | None = None,
+    wanted_channels: list[dict[str, str]] | None = None,
 ) -> dict[str, object]:
     public_dir = Path(public_dir)
     audit_rows = load_audit_rows(public_dir / "audit.csv")
@@ -540,6 +654,7 @@ def generate_exports(
     missing_rows = make_missing_rows(
         grouped,
         priority_policy=priority_policy,
+        wanted_channels=wanted_channels,
     )
 
     generated_at = generated_at or datetime.now(timezone.utc).strftime(
@@ -580,6 +695,7 @@ def generate_exports(
         [
             "country",
             "channel",
+            "wanted",
             "priority",
             "work_type",
             "status",
@@ -609,10 +725,16 @@ def generate_exports(
     inject_dashboard_links(public_dir / "index.html")
 
     priority_counts = Counter(str(row.get("priority") or "") for row in missing_rows)
+    wanted_missing = [row for row in missing_rows if row.get("wanted")]
     return {
         "channels": len(grouped),
         "research_rows": len(research_rows),
         "missing_channels": len(missing_rows),
+        "wanted_channels": len(wanted_channels or []),
+        "wanted_missing": len(wanted_missing),
+        "wanted_not_researched": sum(
+            1 for row in wanted_missing if row.get("status") == "NOT RESEARCHED"
+        ),
         "priority_counts": {
             priority: priority_counts.get(priority, 0)
             for priority in PRIORITY_ORDER
@@ -635,17 +757,30 @@ def main() -> None:
         default=Path("research_priority.json"),
         help="Research priority policy JSON (default: research_priority.json)",
     )
+    parser.add_argument(
+        "--wanted-channels",
+        type=Path,
+        default=Path("wanted_channels.json"),
+        help="Wanted channel catalog JSON (default: wanted_channels.json)",
+    )
     args = parser.parse_args()
 
     stats = generate_exports(
         Path(args.public_dir),
         priority_policy=load_priority_policy(args.priority_policy),
+        wanted_channels=load_wanted_channels(args.wanted_channels),
     )
     print(
         "Research exports complete: "
-        f"{stats['channels']} channels, "
+        f"{stats['channels']} encountered channels, "
         f"{stats['research_rows']} feed/history rows, "
         f"{stats['missing_channels']} channels needing attention."
+    )
+    print(
+        "Wanted coverage: "
+        f"{stats['wanted_channels']} targets, "
+        f"{stats['wanted_missing']} not yet stable, "
+        f"{stats['wanted_not_researched']} not researched."
     )
     priorities = stats["priority_counts"]
     print(
