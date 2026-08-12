@@ -172,13 +172,68 @@ def parse_entries(text: str) -> list[dict]:
     return entries
 
 
+def split_display_annotations(name: str) -> tuple[str, list[str]]:
+    """Split recognized trailing quality/status annotations from a name."""
+    value = " ".join(str(name or "").split()).strip()
+    annotations: list[str] = []
+
+    while value:
+        match = QUALITY_SUFFIX_RE.search(value)
+        if not match or match.end() != len(value):
+            break
+
+        annotation = " ".join(match.group(0).split()).strip()
+        if annotation:
+            annotations.append(annotation)
+
+        value = value[:match.start()].strip()
+
+    annotations.reverse()
+    return (value or "Unnamed channel", annotations)
+
+
+def deduplicate_identical_annotations(annotations: list[str]) -> list[str]:
+    """Collapse only adjacent identical recognized annotations."""
+    result: list[str] = []
+
+    for annotation in annotations:
+        if (
+            result
+            and annotation.casefold() == result[-1].casefold()
+        ):
+            continue
+        result.append(annotation)
+
+    return result
+
+
+def collapse_duplicate_quality_suffixes(name: str) -> str:
+    """Collapse repeated identical trailing quality/status suffixes safely."""
+    base, annotations = split_display_annotations(name)
+    annotations = deduplicate_identical_annotations(annotations)
+    return " ".join([base, *annotations]).strip()
+
+
+def published_display_from_canonical(
+    canonical_name: str,
+    research_display_name: str,
+) -> str:
+    """Build a published name from canonical identity plus safe annotations.
+
+    Research/provider wording stays out of the base identity. Only the
+    already-recognized trailing quality/status annotations are carried over.
+    """
+    cleaned_display = strip_internal_candidate_annotations(
+        strip_custom_prefix(research_display_name)
+    )
+    _, annotations = split_display_annotations(cleaned_display)
+    annotations = deduplicate_identical_annotations(annotations)
+    return " ".join([canonical_name, *annotations]).strip()
+
+
 def strip_display_annotations(name: str) -> str:
-    value = " ".join((name or "").split()).strip()
-    old = None
-    while value and value != old:
-        old = value
-        value = QUALITY_SUFFIX_RE.sub("", value).strip()
-    return value or "Unnamed channel"
+    base, _ = split_display_annotations(name)
+    return base
 
 
 def normalize_text(value: str) -> str:
@@ -3444,8 +3499,8 @@ def prepare_published_entries(
 
         for candidate in group:
             candidate_name = str(
-                candidate.get("tvg_name")
-                or candidate.get("channel_name")
+                candidate.get("channel_name")
+                or candidate.get("tvg_name")
                 or candidate.get("display_name")
                 or ""
             ).strip()
@@ -3509,17 +3564,12 @@ def prepare_published_entries(
                         f" Feed {visible_index}"
                     )
             else:
-                # Single-feed channels keep their original
-                # quality/status annotations.
-                original_display = (
-                    strip_internal_candidate_annotations(
-                        strip_custom_prefix(
-                            entry.get(
-                                "display_name",
-                                "",
-                            )
-                        )
-                    )
+                # The published base name always comes from canonical channel
+                # identity. Preserve only recognized quality/status suffixes
+                # from the research display name, collapsing exact repeats.
+                original_display = published_display_from_canonical(
+                    canonical_name,
+                    str(entry.get("display_name") or ""),
                 )
 
             published_name = (
