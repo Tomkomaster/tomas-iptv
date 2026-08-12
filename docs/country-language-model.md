@@ -22,7 +22,9 @@ Language does not globally imply country. A verified cross-country move requires
 
 IPTV-org language playlists are intentionally country-neutral inputs. They use `country_mode=tvg_id`, so each entry derives geography from its IPTV-org `tvg-id` suffix instead of inheriting a country from the spoken language. For example, a Hungarian-language `PannonRTV.rs@SD` entry is `country_code=RS`, `language_codes=[hun]`, not HU.
 
-Derived entries whose country is not currently configured in `country_outputs` are ignored rather than mislabeled. When that country is enabled later, the same language source can contribute it without changing the attribution model.
+Derived entries whose country is not currently configured in `country_outputs` are excluded from the existing shared/country/testing publication universe, but they are retained in an isolated spoken-language catalog. If such an entry is manually verified, it can be published under its real country prefix in a configured `by-language/<iso639-3>.m3u` output without requiring a country playlist first.
+
+For example, `PannonRTV.rs@SD` with `language_codes=[hun]` can appear as `[RS] Pannon RTV` in `by-language/hun.m3u` while no `rs.m3u` exists. Exact URLs already owned by the established country build keep their current country identity in the language catalog, so adding language outputs cannot silently change existing country URL precedence.
 
 ## Expansion examples
 
