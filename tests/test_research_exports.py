@@ -16,6 +16,10 @@ FIELDNAMES = [
     "discovery",
     "stream_url",
     "protocol",
+    "playlist_country_code",
+    "output_country_code",
+    "playlist_language_code",
+    "output_language_code",
     "expected_language_codes",
     "observed_language_codes",
     "language_match",
@@ -48,8 +52,12 @@ def row(**kwargs):
         "discovery": "Source A",
         "stream_url": "https://example.test/live.m3u8",
         "protocol": "HLS",
-        "expected_language_codes": "HU",
-        "observed_language_codes": "HU",
+        "playlist_country_code": "HU",
+        "output_country_code": "HU",
+        "playlist_language_code": "HU",
+        "output_language_code": "HU",
+        "expected_language_codes": "hun",
+        "observed_language_codes": "hun",
         "language_match": "yes",
         "language": "Hungarian",
         "language_code": "HU",
@@ -72,6 +80,54 @@ def row(**kwargs):
 
 
 class ResearchExportTests(unittest.TestCase):
+    def test_row_country_prefers_modern_country_and_keeps_legacy_fallbacks(self):
+        self.assertEqual(
+            research_exports.row_country(
+                {
+                    "playlist_country_code": "SK",
+                    "playlist_language_code": "HU",
+                    "expected_language_codes": "HU",
+                    "language_code": "DE",
+                }
+            ),
+            "SK",
+        )
+        self.assertEqual(
+            research_exports.row_country(
+                {
+                    "playlist_language_code": "CZ",
+                    "expected_language_codes": "HU",
+                    "language_code": "DE",
+                }
+            ),
+            "CZ",
+        )
+        self.assertEqual(
+            research_exports.row_country(
+                {
+                    "expected_language_codes": "HU",
+                    "language_code": "DE",
+                }
+            ),
+            "HU",
+        )
+        self.assertEqual(
+            research_exports.row_country(
+                {
+                    "expected_language_codes": "hun",
+                }
+            ),
+            "UNKNOWN",
+        )
+        self.assertEqual(
+            research_exports.row_country(
+                {
+                    "language_code": "DE",
+                }
+            ),
+            "DE",
+        )
+
     def write_fixture(self, public_dir: Path) -> None:
         rows = [
             row(
@@ -88,8 +144,8 @@ class ResearchExportTests(unittest.TestCase):
                 channel="RTL Klub",
                 tvg_id="RTLKlub.hu",
                 language_code="DE",
-                expected_language_codes="HU",
-                observed_language_codes="DE",
+                expected_language_codes="hun",
+                observed_language_codes="deu",
                 language_match="no",
                 stream_url="https://example.test/rtl.m3u8",
                 vlc="mrl_error",
@@ -127,9 +183,13 @@ class ResearchExportTests(unittest.TestCase):
             row(
                 channel="Markiza",
                 tvg_id="Markiza.sk",
+                playlist_country_code="SK",
+                output_country_code="SK",
+                playlist_language_code="SK",
+                output_language_code="SK",
                 language_code="SK",
-                expected_language_codes="SK",
-                observed_language_codes="SK",
+                expected_language_codes="slk",
+                observed_language_codes="slk",
                 stream_url="https://example.test/markiza.m3u8",
                 vlc="works",
                 samsung="works",
@@ -185,6 +245,7 @@ class ResearchExportTests(unittest.TestCase):
             self.assertEqual(statuses["Film+"], "PARTIAL")
             self.assertEqual(statuses["Markiza"], "WORKING")
             self.assertEqual(countries["RTL Klub"], "HU")
+            self.assertEqual(countries["Markiza"], "SK")
 
             with (public_dir / "missing.csv").open(
                 "r", encoding="utf-8-sig", newline=""
@@ -205,6 +266,8 @@ class ResearchExportTests(unittest.TestCase):
             self.assertIn("# HU", research_md)
             self.assertIn("# SK", research_md)
             self.assertNotIn("# DE", research_md)
+            self.assertNotIn("# HUN", research_md)
+            self.assertNotIn("# SLK", research_md)
             self.assertIn("## ✅ TV2", research_md)
             self.assertIn("## ❌ RTL Klub", research_md)
             self.assertIn("https://example.test/tv2.m3u8", research_md)
