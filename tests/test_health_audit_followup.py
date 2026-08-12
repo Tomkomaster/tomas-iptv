@@ -57,7 +57,9 @@ class ManualTvVerifiedHealthTests(unittest.TestCase):
         self.assertEqual(row["status"], "TV verified; PC probe unavailable")
 
     def test_three_current_false_positives_are_explicitly_scoped(self):
-        payload = json.loads((ROOT / "health_policy.json").read_text(encoding="utf-8"))
+        payload = json.loads(
+            (ROOT / "data" / "health_policy.json").read_text(encoding="utf-8")
+        )
         default, indexes = compile_health_policy(payload)
         for tvg_id in (
             "24.sk@SD",
@@ -200,7 +202,6 @@ class ModernAuditMigrationTests(unittest.TestCase):
             migrate(audit, current, write=True, modernize_only=True)
             item = json.loads(audit.read_text(encoding="utf-8"))["channels"][0]
 
-            # Keep the legacy alias/evidence but make geography modern and exact.
             self.assertEqual(item["language_code"], "DE")
             self.assertEqual(item["playlist_country_code"], "HU")
             self.assertEqual(item["output_country_code"], "HU")
