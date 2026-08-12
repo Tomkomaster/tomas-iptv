@@ -195,15 +195,15 @@ http://budapest-cache-1.antik.sk/live/test_pianko/playlist.m3u8
 
 # Bardejovská TV — Kabelko HTTPS alternative
 # Identity of former "BTV HD ALT" resolved
-#EXTINF:-1 tvg-id="BTV.sk" tvg-name="Bardejovská TV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Bardejovská TV - KABELKO TEST
+#EXTINF:-1 tvg-id="BTV.sk" tvg-name="Bardejovská TV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Bardejovská TV
 https://fs3.kabelko.sk/9011/index.m3u8?token=btv
 
 # JOJ Šport 2 — Antik direct candidate
-#EXTINF:-1 tvg-name="JOJ Šport 2 ANTIK TEST" group-title="Slovakia Test",JOJ Šport 2
+#EXTINF:-1 tvg-name="JOJ Šport 2" group-title="Slovakia Test",JOJ Šport 2
 http://88.212.15.47/live/joj_sport_2_avc/index.m3u8
 
 # JOJ Šport 2 — REBIT direct candidate, Jan 2026
-#EXTINF:-1 tvg-name="JOJ Šport 2 REBIT TEST" group-title="Slovakia Test",JOJ Šport 2
+#EXTINF:-1 tvg-name="JOJ Šport 2" group-title="Slovakia Test",JOJ Šport 2
 http://46.36.41.106:8888/rebit/80.m3u8
 
 # Prima SK — REBIT candidate
@@ -254,27 +254,27 @@ https://dash2.antik.sk/live/test_partizanske/playlist.m3u8
 
 # TV Bratislava — Antik HTTPS alternative
 # Current extras uses old 88.212.15.9 HTTP candidate
-#EXTINF:-1 tvg-id="TVBratislava.sk" tvg-name="TV Bratislava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Bratislava - ANTIK TEST
+#EXTINF:-1 tvg-id="TVBratislava.sk" tvg-name="TV Bratislava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Bratislava
 https://dash2.antik.sk/live/test_batv/playlist.m3u8
 
 # TV Reduta — Antik HTTPS alternative
 # Current extras uses Panaccess candidate
-#EXTINF:-1 tvg-name="TV Reduta" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Reduta - ANTIK TEST
+#EXTINF:-1 tvg-name="TV Reduta" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Reduta
 https://dash3.antik.sk/live/tv_reduta/playlist.m3u8
 
 # Mestská TV Košice — Antik HTTPS alternative
 # Current extras has streaming.sk / TV Nasa candidate
-#EXTINF:-1 tvg-name="Mestská TV Košice ANTIK TEST" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská TV Košice
+#EXTINF:-1 tvg-name="Mestská TV Košice" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská TV Košice
 https://dash2.antik.sk/live/test_mtv_kosice/playlist.m3u8
 
 # TV Zemplín — Antik HTTPS alternative
 # Current extras uses old Rebit HTTP candidate
-#EXTINF:-1 tvg-name="Televízia ZEMPLÍN" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Televízia ZEMPLÍN - ANTIK TEST
+#EXTINF:-1 tvg-name="Televízia ZEMPLÍN" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Televízia ZEMPLÍN
 https://dash2.antik.sk/live/test_zemplin/playlist.m3u8
 
 # Mestská televízia Trnava — Antik HTTPS alternative
 # Current extras uses old 213.81.x.x candidate
-#EXTINF:-1 tvg-name="Mestská televízia Trnava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská televízia Trnava - ANTIK TEST
+#EXTINF:-1 tvg-name="Mestská televízia Trnava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Mestská televízia Trnava
 https://dash3.antik.sk/live/test_trnava/playlist.m3u8
 
 # JOJ Family — JOJ Group
@@ -297,47 +297,47 @@ https://app.viloud.tv/hls/channel/04e456809c83928443e59f0a2fce8610.m3u8
 
 # JOJ Šport 2 — DIRECT JOJ CDN
 # Better candidate than Antik/Rebit if it works
-#EXTINF:-1 tvg-id="JOJSport2.sk" tvg-name="JOJ Šport 2 JOJ CDN TEST" tvg-country="SK" tvg-language="Slovak" group-title="Sports",JOJ Šport 2
+#EXTINF:-1 tvg-id="JOJSport2.sk" tvg-name="JOJ Šport 2" tvg-country="SK" tvg-language="Slovak" group-title="Sports",JOJ Šport 2
 https://live.cdn.joj.sk/live/andromeda/joj_sport2-1080.m3u8
 
 # Jojko — direct JOJ broadcaster CDN, 1080p
 # Alternative to current Antik feed
-#EXTINF:-1 tvg-id="Jojko.sk" tvg-name="Jojko JOJ CDN TEST" tvg-country="SK" tvg-language="Slovak" group-title="Kids",Jojko
+#EXTINF:-1 tvg-id="Jojko.sk" tvg-name="Jojko" tvg-country="SK" tvg-language="Slovak" group-title="Kids",Jojko
 https://live.cdn.joj.sk/live/andromeda/jojko-1080.m3u8
 
 # JOJ Cinema — direct JOJ CDN
 # Alternative to current Rebit feed
-#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema JOJ CDN TEST" tvg-country="SK" group-title="Movies",JOJ Cinema
+#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema" tvg-country="SK" group-title="Movies",JOJ Cinema
 https://live.cdn.joj.sk/live/andromeda/cinema-1080.m3u8
 
 # TV NRSR — JOJ CDN alternative
 # Existing channel, NEW feed candidate
-#EXTINF:-1 tvg-id="TVNRSR.sk" tvg-name="TV NRSR JOJ CDN TEST" tvg-country="SK" tvg-language="Slovak" group-title="News",TV NRSR
+#EXTINF:-1 tvg-id="TVNRSR.sk" tvg-name="TV NRSR" tvg-country="SK" tvg-language="Slovak" group-title="News",TV NRSR
 https://live.cdn.joj.sk/live/andromeda/nrsr/live.m3u8
 
 # TV Bratislava — Panaccess HTTPS
 # Alternative to old IP and Antik candidates
-#EXTINF:-1 tvg-id="TVBratislava.sk" tvg-name="TV Bratislava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Bratislava - PANACCESS TEST
+#EXTINF:-1 tvg-id="TVBratislava.sk" tvg-name="TV Bratislava" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Bratislava
 https://cdnsk003.panaccess.com/local/Bratislava/index.m3u8
 
 # TV Sen — Panaccess HTTPS alternative
 # Existing channel
-#EXTINF:-1 tvg-id="TVSen.sk" tvg-name="TV Sen" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Sen - PANACCESS TEST
+#EXTINF:-1 tvg-id="TVSen.sk" tvg-name="TV Sen" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Sen
 https://cdnsk003.panaccess.com/local/TV_SEN_DC/index.m3u8
 
 # TV Turiec — Panaccess HTTPS
 # Alternative to existing Rebit feed
-#EXTINF:-1 tvg-name="Televízia Turiec" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Televízia Turiec - PANACCESS TEST
+#EXTINF:-1 tvg-name="Televízia Turiec" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Televízia Turiec
 https://cdnsk003.panaccess.com/local/Turiec/index.m3u8
 
 # Západoslovenská TV — broadcaster-domain candidate
 # Alternative to Antik
-#EXTINF:-1 tvg-id="ZapadoslovenskaTV.sk" tvg-name="Západoslovenská TV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Západoslovenská TV - ZSTV DIRECT TEST
+#EXTINF:-1 tvg-id="ZapadoslovenskaTV.sk" tvg-name="Západoslovenská TV" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",Západoslovenská TV
 https://live.zstv.sk/memfs/5b0f9dd2-8f77-4fe5-9527-bc11bb8b18e5.m3u8
 
 # TV Reduta — Streamlock alternative
 # Existing channel, third independent feed
-#EXTINF:-1 tvg-name="TV Reduta" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Reduta - STREAMLOCK TEST
+#EXTINF:-1 tvg-name="TV Reduta" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Reduta
 https://5ca49f2417d90.streamlock.net/live/reduta/playlist.m3u8
 
 # 360 TuneBox — OPTIONAL
@@ -348,7 +348,7 @@ https://dash2.antik.sk/live/test_360_tunebox_medium_atk/playlist.m3u8
 # TV Severka — Panaccess direct alternative
 # LOW CONFIDENCE: LOTOS currently reports HLS playlist request error
 # Test before keeping
-#EXTINF:-1 tvg-id="TVSeverka.sk" tvg-name="TV Severka" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Severka - PANACCESS TEST
+#EXTINF:-1 tvg-id="TVSeverka.sk" tvg-name="TV Severka" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Severka
 https://cdnsk003.panaccess.com/local/Severka/index.m3u8
 
 # Televízia Slovensko
@@ -363,17 +363,17 @@ http://46.36.41.106:8888/rebit/177.m3u8
 
 # TV Kežmarok — current Antik/WebTV feed
 # Old internal slot name is tv_severka
-#EXTINF:-1 tvg-name="TV Kežmarok" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Kežmarok - ANTIK TEST
+#EXTINF:-1 tvg-name="TV Kežmarok" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV Kežmarok
 https://dash2.antik.sk/live/test_severka/playlist.m3u8
 
 # TV REGION — eastern Slovakia
 # NEW CHANNEL / LEGACY DIRECT HLS
 # Old public source; test before keeping
-#EXTINF:-1 tvg-name="TV REGION" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV REGION - LEGACY TEST
+#EXTINF:-1 tvg-name="TV REGION" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",TV REGION
 http://88.212.10.27:81/streams/region.m3u8
 
 # JOJ +1
 # NEW CHANNEL — current service, legacy public Antik endpoint
 # LOW CONFIDENCE until manually tested
-#EXTINF:-1 tvg-name="JOJ +1" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",JOJ +1 - LEGACY ANTIK TEST
+#EXTINF:-1 tvg-name="JOJ +1" tvg-country="SK" tvg-language="Slovak" group-title="Slovakia Test",JOJ +1
 http://88.202.231.174:80/live/joj_plus1_medium_atk/playlist.m3u8
