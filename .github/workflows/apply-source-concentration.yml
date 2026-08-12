@@ -1,0 +1,88 @@
+name: Validate and apply source concentration report
+
+on:
+  push:
+    branches:
+      - agent/source-concentration-report
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-concentration-report
+  cancel-in-progress: true
+
+jobs:
+  apply-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/source-concentration-report
+
+      - name: Apply source concentration patch
+        run: python3 .github/source_concentration_patch.py
+
+      - name: Compile changed Python
+        run: python3 -m py_compile feed_quality.py source_concentration.py build.py tests/test_source_concentration.py
+
+      - name: Run full unit test suite
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Run strict live playlist build
+        run: python3 build.py --strict
+
+      - name: Verify generated concentration report
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('public/source-concentration.json').read_text(encoding='utf-8'))
+          report = json.loads(Path('public/report.json').read_text(encoding='utf-8'))
+          assert data['schema_version'] == 1
+          assert data['summary']['stable_channels'] == report['summary']['unique_stream_urls']
+          assert report['source_concentration']['stable_channels'] == data['summary']['stable_channels']
+          assert set(data['countries']) >= {'HU', 'SK', 'CZ'}
+
+          print('SOURCE CONCENTRATION SUMMARY')
+          print(json.dumps(data['summary'], ensure_ascii=False, indent=2))
+          for code, info in sorted(data['countries'].items()):
+              print(f'\n{code}: {info["stable_channels"]} stable channels')
+              for row in info['source_types']:
+                  print(f'  {row["source_type"]}: {row["channels"]} ({row["percent"]:.1f}%)')
+              print('  top hostnames:')
+              for row in sorted(info['hostnames'], key=lambda x: (-x['channels'], x['hostname']))[:8]:
+                  print(
+                      f'    {row["hostname"]}: {row["channels"]} '
+                      f'({row["country_percent"]:.1f}%), {row["source_type"]}, risk={row["risk"]}'
+                  )
+          print('\nFLAGS')
+          if data['flags']:
+              for flag in data['flags']:
+                  print(f'  {flag["severity"].upper()}: {flag["message"]}')
+          else:
+              print('  none')
+          PY
+
+      - name: Check formatting
+        run: git diff --check
+
+      - name: Commit validated production changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            feed_quality.py \
+            source_concentration.py \
+            build.py \
+            templates/dashboard.html \
+            static/dashboard.js \
+            tests/test_source_concentration.py \
+            docs/source-concentration.md
+          git commit -m "Add source concentration reliability report"
+          git push origin HEAD:agent/source-concentration-report
