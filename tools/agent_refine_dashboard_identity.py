@@ -29,7 +29,7 @@ replace_once(
     """    reroute_count = 0
     for a in audit_rows:
 """,
-    """    url_identity_conflicts = 0
+    '''    url_identity_conflicts = 0
     url_identities: dict[str, list[dict]] = {}
     for a in audit_rows:
         url = str(a.get("stream_url") or "").strip()
@@ -77,7 +77,7 @@ replace_once(
 
     reroute_count = 0
     for a in audit_rows:
-""",
+''',
 )
 
 replace_once(
