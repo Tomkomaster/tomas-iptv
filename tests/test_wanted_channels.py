@@ -196,7 +196,7 @@ class WantedChannelTests(unittest.TestCase):
                 )
 
             (public_dir / "index.html").write_text(
-                '<a href="audit.csv">Manual verification (CSV)</a>',
+                '    <a href="audit.csv">Manual verification (CSV)</a>',
                 encoding="utf-8",
             )
             wanted = compile_wanted_channels(
