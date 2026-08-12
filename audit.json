@@ -9146,20 +9146,23 @@
         "slk"
       ],
       "provenance": "IPTV-org Slovakia stream; manually tested",
-      "discovery": "Current IPTV-org Slovakia stream; manual playback test",
-      "tested_on": "2026-08-11",
-      "vlc": "loads",
+      "discovery": "Manual VLC + Samsung retest",
+      "tested_on": "2026-08-12",
+      "vlc": "mrl_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
+      "vlc_note": "skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
       "exclude_from_playlist": false,
-      "reason": "The latest manual test failed, but IPTV-org marks this exact TV Poprad feed Not 24/7, so failure outside its broadcast window is inconclusive.",
-      "notes": "Re-test during a confirmed TV Poprad broadcast before permanently rejecting this exact feed.",
+      "reason": "The manual test failed, but an off-air period for this Not 24/7 feed makes the result inconclusive.",
+      "notes": "IPTV-org marks this TV Poprad feed Not 24/7. Re-test during a confirmed broadcast before permanently rejecting the URL.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
         "slk"
+      ],
+      "source_flags": [
+        "Not 24/7"
       ]
     },
     {
@@ -9354,17 +9357,17 @@
       "observed_language_codes": [
         "slk"
       ],
-      "provenance": "IPTV-org Slovakia stream; manually tested",
-      "discovery": "Current IPTV-org Slovakia stream; manual playback test; TV Sen Feed 1",
-      "tested_on": "2026-08-11",
-      "vlc": "loads",
+      "provenance": "IPTV-org Slovakia legacy stream; manually tested",
+      "discovery": "Manual VLC + Samsung retest; legacy TV Sen feed",
+      "tested_on": "2026-08-12",
+      "vlc": "mrl_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
+      "vlc_note": "skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "reason": "This exact TV Sen feed failed on both tested devices.",
-      "notes": "Reject this exact URL. The Panaccess TV Sen alternative works on both VLC and Samsung.",
+      "reason": "The legacy stream failed on both devices while current TV SEN services were demonstrably on-air.",
+      "notes": "Reject this exact legacy URL. Two current TV SEN services were simultaneously confirmed working through other sources during the same test session.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
@@ -9372,7 +9375,7 @@
       ]
     },
     {
-      "channel": "TV Sen",
+      "channel": "TV SEN KULTÚRA",
       "stream_url": "https://cdnsk003.panaccess.com/local/TV_SEN_DC/index.m3u8",
       "tvg_id": "TVSen.sk",
       "protocol": "HLS",
@@ -9384,17 +9387,17 @@
       "observed_language_codes": [
         "slk"
       ],
-      "provenance": "Curated extras/sk.m3u Panaccess alternative; manually tested",
-      "discovery": "extras/sk.m3u manual playback test; TV Sen PANACCESS TEST",
-      "tested_on": "2026-08-11",
+      "provenance": "Curated extras/sk.m3u Panaccess stream; manual playback and screenshot identity review",
+      "discovery": "Manual VLC + Samsung test; simultaneous TV SEN screenshot comparison",
+      "tested_on": "2026-08-12",
       "vlc": "works",
       "samsung": "works",
-      "vlc_note": "ok",
-      "samsung_note": "ok",
+      "vlc_note": "ok; screenshot identifies the service as TV SEN KULTÚRA",
+      "samsung_note": "ok; screenshot identifies the service as TV SEN KULTÚRA",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Passed manual VLC and Samsung playback tests with the expected Slovak language.",
-      "notes": "Verified working TV Sen replacement feed. Prefer this feed over the failed original URL.",
+      "reason": "Working on both devices and manually distinguished from the simultaneous INFO TV SEN service.",
+      "notes": "Passed both playback tests. A screenshot taken at the same time as the Video Studio RIS feed shows this Panaccess service carrying the distinct TV SEN KULTÚRA presentation, so it is not merely an alternate URL for INFO TV SEN.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
@@ -9774,16 +9777,16 @@
         "Not 24/7"
       ],
       "provenance": "IPTV-org Slovak-language stream; manually tested",
-      "discovery": "Current generated Slovak playlist; TV Lux Feed 1",
-      "tested_on": "2026-08-11",
+      "discovery": "Manual VLC + Samsung retest",
+      "tested_on": "2026-08-12",
       "vlc": "mrl_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
+      "vlc_note": "skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
       "exclude_from_playlist": false,
-      "reason": "This manual test failed, but this exact TV Lux feed is marked Not 24/7, so an off-air test is inconclusive.",
-      "notes": "TV Lux Feed 1. Re-test during a confirmed TV Lux broadcast before permanently rejecting this exact URL. Feed 2 is already verified working.",
+      "reason": "The exact feed failed on both devices, but its Not 24/7 flag keeps the result inconclusive rather than permanently rejected.",
+      "notes": "This exact TV Lux feed failed again and is marked Not 24/7 upstream. Keep it for review; another TV Lux feed is already manually verified working.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
@@ -9866,17 +9869,17 @@
       "observed_language_codes": [
         "slk"
       ],
-      "provenance": "IPTV-org Slovak-language stream; manually tested",
-      "discovery": "Current generated Slovak playlist; manual playback test",
-      "tested_on": "2026-08-11",
-      "vlc": "loads",
+      "provenance": "IPTV-org Slovakia legacy stream; manually tested",
+      "discovery": "Manual VLC + Samsung retest",
+      "tested_on": "2026-08-12",
+      "vlc": "mrl_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
+      "vlc_note": "skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "reason": "This exact TV Myjava feed failed on both tested devices.",
-      "notes": "Reject this exact URL. Keep TV Myjava itself as a research target for a replacement feed.",
+      "reason": "The exact legacy stream failed on both devices while a working replacement for the same channel was confirmed.",
+      "notes": "Reject this exact legacy TV Myjava URL. The Video Studio RIS replacement feed worked on both devices during the same test session.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
@@ -10200,20 +10203,19 @@
         "slk"
       ],
       "source_flags": [
-        "Event-based",
-        "Not necessarily 24/7"
+        "Not 24/7"
       ],
-      "provenance": "Curated extras/sk.m3u Antik Web TV event stream; manually tested",
-      "discovery": "extras/sk.m3u manual playback test",
-      "tested_on": "2026-08-11",
-      "vlc": "loads",
+      "provenance": "IPTV-org Slovakia stream; manually tested",
+      "discovery": "Manual VLC + Samsung test",
+      "tested_on": "2026-08-12",
+      "vlc": "mrl_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
+      "vlc_note": "skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
       "exclude_from_playlist": false,
-      "reason": "This stream is event-based and may not broadcast continuously, so the failed test is inconclusive.",
-      "notes": "Re-test during a confirmed live dance competition before deciding whether this exact feed is unusable.",
+      "reason": "Failed at test time, but the event-driven nature of the feed makes an off-air result inconclusive.",
+      "notes": "This is an event-oriented dance-competition feed and may legitimately be offline when no competition is being carried. Re-test during a known live event.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
@@ -11191,16 +11193,16 @@
         "Not 24/7"
       ],
       "provenance": "IPTV-org Slovakia stream; manually tested",
-      "discovery": "Current IPTV-org Slovakia stream; manual playback test",
-      "tested_on": "2026-08-11",
+      "discovery": "Manual VLC + Samsung retest",
+      "tested_on": "2026-08-12",
       "vlc": "mrl_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
+      "vlc_note": "skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
       "exclude_from_playlist": false,
-      "reason": "The manual test failed, but IPTV-org marks this exact Raj TV stream Not 24/7, so an off-air test is inconclusive.",
-      "notes": "Re-test during a confirmed Raj TV broadcast before permanently rejecting this exact feed.",
+      "reason": "The manual test failed, but an off-air period for this Not 24/7 feed makes the result inconclusive.",
+      "notes": "IPTV-org marks this exact Raj TV feed Not 24/7. Re-test during a confirmed Raj TV broadcast before permanently rejecting it.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
@@ -13328,17 +13330,17 @@
       "source_flags": [
         "Not 24/7"
       ],
-      "provenance": "Current IPTV-org Slovakia stream; official parliamentary/event channel",
-      "discovery": "IPTV-org Slovakia manual VLC + Samsung test",
-      "tested_on": "2026-08-11",
+      "provenance": "IPTV-org Slovakia parliamentary feed; manually tested",
+      "discovery": "Manual VLC + Samsung retest",
+      "tested_on": "2026-08-12",
       "vlc": "works_with_warning",
       "samsung": "works_with_warning",
-      "vlc_note": "Stream opens, but displays: Vysielanie sa prerušilo z dôvodu nečinnosti, prosím obnovte znova stránku.",
-      "samsung_note": "Stream opens, but displays: Vysielanie sa prerušilo z dôvodu nečinnosti, prosím obnovte znova stránku.",
+      "vlc_note": "Stream opens, but displays an inactivity notice saying broadcasting was interrupted because of inactivity and the page should be reloaded.",
+      "samsung_note": "Stream opens, but displays an inactivity notice saying broadcasting was interrupted because of inactivity and the page should be reloaded.",
       "decision": "needs_review",
       "exclude_from_playlist": false,
-      "reason": "TV NRSR is explicitly Not 24/7, so an inactivity/interruption slate outside an active parliamentary broadcast is inconclusive.",
-      "notes": "Do not reject this exact feed yet. Re-test during a confirmed live National Council broadcast.",
+      "reason": "Playback technically opens, but there was no active parliamentary broadcast to verify normal programme playback.",
+      "notes": "Both devices can open the feed, but it was showing the broadcaster's inactivity/interruption slate. TV NRSR is event-driven, so re-test during a confirmed National Council session.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
@@ -13359,20 +13361,23 @@
         "slk"
       ],
       "provenance": "Curated extras/sk.m3u JOJ CDN alternative for TV NRSR; manually tested",
-      "discovery": "extras/sk.m3u manual playback test; TV NRSR Feed 2",
-      "tested_on": "2026-08-11",
+      "discovery": "Manual VLC + Samsung retest; TV NRSR Feed 2",
+      "tested_on": "2026-08-12",
       "vlc": "mrl_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
+      "vlc_note": "skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
       "exclude_from_playlist": false,
-      "reason": "The alternate feed failed, but TV NRSR is a non-24/7 parliamentary channel and the primary feed was showing an inactivity slate during the same test.",
-      "notes": "Failure is inconclusive because there was no confirmed live parliamentary broadcast. Re-test this feed during an active TV NRSR session before rejecting it.",
+      "reason": "Failure is inconclusive because TV NRSR was not actively broadcasting a parliamentary session at test time.",
+      "notes": "The alternate feed failed, but the primary TV NRSR source was simultaneously showing an inactivity slate rather than a live session. Re-test during an active parliamentary broadcast.",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "language_codes": [
         "slk"
+      ],
+      "source_flags": [
+        "Not 24/7"
       ]
     },
     {
@@ -16231,6 +16236,93 @@
       "discovery": "Manual VLC + Samsung test",
       "notes": "Reject this exact Play Music TV alternate endpoint. It failed on both devices while a different Play Music TV feed is already manually verified working in the audit.",
       "reason": "The exact alternate stream failed on both tested devices and a working source for the same channel is already known."
+    },
+    {
+      "channel": "Telke",
+      "stream_url": "https://tvgo02.antik.sk/live/test_telke/playlist_key_url.m3u8",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Slovak",
+      "language_code": "SK",
+      "language_codes": [
+        "slk"
+      ],
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "protocol": "HLS",
+      "decision": "needs_review",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "The feed failed on both tested devices. A temporary off-air period cannot be ruled out, so re-test during confirmed Telke programming before permanently rejecting the URL.",
+      "reason": "Manual playback failed, but there is not enough evidence yet to classify the exact stream as permanently dead."
+    },
+    {
+      "channel": "TV Myjava",
+      "stream_url": "https://videostudioris.sk/hls/tvm.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Slovak",
+      "language_code": "SK",
+      "language_codes": [
+        "slk"
+      ],
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "provenance": "User-provided Video Studio RIS stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test; replacement TV Myjava feed",
+      "notes": "Passed both manual playback tests. This is the working replacement source for TV Myjava.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "INFO TV SEN",
+      "stream_url": "https://videostudioris.sk/hls/tvsen.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok; screenshot identifies the service as INFO TV SEN",
+      "samsung_note": "ok; screenshot identifies the service as INFO TV SEN",
+      "language": "Slovak",
+      "language_code": "SK",
+      "language_codes": [
+        "slk"
+      ],
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "provenance": "Curated extras/sk.m3u Video Studio RIS stream; manual playback and screenshot identity review",
+      "discovery": "Manual VLC + Samsung test; simultaneous TV SEN screenshot comparison",
+      "notes": "Passed both playback tests. A screenshot taken at the same time as the Panaccess feed shows this service carrying INFO TV SEN while the other feed simultaneously showed TV SEN KULTÚRA, confirming two distinct live services.",
+      "reason": "Working on both devices and manually distinguished from the simultaneous TV SEN KULTÚRA service."
     }
   ]
 }
