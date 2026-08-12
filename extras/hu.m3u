@@ -658,3 +658,11 @@ https://cloudfront44.lexanetwork.com:1344/freerelay/zuglotv.sdp/playlist.m3u8
 # IMPORTANT: verify whether one of the audio tracks is Hungarian before accepting it.
 #EXTINF:-1 tvg-name="AXN White",AXN White [TEST] [HU audio check]
 https://t.freetv.fun/live/axn-white.m3u8
+
+# EBS — retained manual retest candidate; audit status needs_review
+#EXTINF:-1 tvg-id="EbS.be@SD" tvg-name="EBS",EBS
+https://streams.prd.commavservices.eu/live/ebs/index.m3u8
+
+# EBS Plus — retained manual retest candidate; audit status needs_review
+#EXTINF:-1 tvg-id="EbSPlus.be@SD" tvg-name="EBS Plus",EBS Plus
+https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8
