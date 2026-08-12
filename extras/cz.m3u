@@ -6,12 +6,6 @@ https://stream.polar.cz/prahatv/prahatvlive-1/playlist.m3u8
 #EXTINF:-1 tvg-id="SlagrPremium.cz" tvg-name="Šlágr Premium" group-title="Music",Šlágr Premium
 https://stream-15.mazana.tv/slagrpremium.m3u
 
-#EXTINF:-1 tvg-id="PrimaKrimi.cz" tvg-name="Prima Krimi" group-title="Entertainment",Prima Krimi
-https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_krimi/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
-
-#EXTINF:-1 tvg-id="PrimaMax.cz" tvg-name="Prima MAX" group-title="Entertainment",Prima MAX
-https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_max/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0
-
 #EXTINF:-1 tvg-id="JojFamily.sk" tvg-name="JOJ Family" group-title="Entertainment",JOJ Family
 https://live.cdn.joj.sk/live/hls/family-540.m3u8
 
@@ -65,3 +59,7 @@ http://88.212.7.10/live/warner_tv/index.m3u8
 # Nova Krimi - former Nova Gold; verify visually
 #EXTINF:-1 tvg-id="NovaGold.cz@SD" tvg-name="Nova Krimi" group-title="Entertainment",Nova Krimi
 http://88.212.7.10/live/nova_gold_avc_25p/playlist.m3u8
+
+# RT Ústecko - official broadcaster stream
+#EXTINF:-1 tvg-id="RTUstecko.cz" tvg-name="RT Ústecko" group-title="Regional",RT Ústecko
+https://1459594018.rsc.cdn77.org/1459594018/index.m3u8
