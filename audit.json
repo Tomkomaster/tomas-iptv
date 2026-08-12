@@ -1353,7 +1353,7 @@
       "language": "Czech",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "notes": "Supported cross-language stream. Keep this URL only once in the HU playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved HU source scope is retained only for exact-URL audit identity.",
       "tested_on": "2026-08-09",
       "language_code": "CZ",
       "provenance": "IPTV-org source (manual playback review)",
@@ -1365,7 +1365,10 @@
       "expected_language_codes": [
         "HU"
       ],
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing HU playlist scope."
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "observed_language_codes": [
+        "CZ"
+      ]
     },
     {
       "channel": "TV Eger",
@@ -3214,11 +3217,14 @@
       "tvg_id": "DisneyChannel.cz@SD",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "notes": "Supported cross-language stream. Keep this URL only once in the HU playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing HU playlist scope.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved HU source scope is retained only for exact-URL audit identity.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
       "playlist_language_code": "HU",
       "expected_language_codes": [
         "HU"
+      ],
+      "observed_language_codes": [
+        "CZ"
       ]
     },
     {
@@ -5233,8 +5239,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -5259,8 +5265,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -5285,8 +5291,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -5311,8 +5317,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -5337,8 +5343,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -5363,8 +5369,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -6879,8 +6885,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -6905,8 +6911,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -6931,8 +6937,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -6957,8 +6963,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -6983,8 +6989,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -7009,8 +7015,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -7035,8 +7041,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -7061,8 +7067,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -7985,8 +7991,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -8011,8 +8017,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -8037,8 +8043,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -8063,8 +8069,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -8089,8 +8095,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {
@@ -8115,8 +8121,8 @@
       "samsung_note": "Stream works, but playback is in Czech.",
       "decision": "auto",
       "exclude_from_playlist": false,
-      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is currently supported; keep this stream in its existing SK playlist scope.",
-      "notes": "Supported cross-language stream. Keep this URL only once in the SK playlist; do not duplicate it into another country playlist solely because it speaks CZ.",
+      "reason": "Playback verified on VLC and Samsung. Observed spoken language CZ is supported; publish this stream once in the CZ playlist.",
+      "notes": "Verified Czech-speaking stream. Publish this URL once in the CZ playlist; the saved SK source scope is retained only for exact-URL audit identity.",
       "playlist_language_code": "SK"
     },
     {

@@ -1198,8 +1198,10 @@ def configured_playlist_language_codes(cfg: dict) -> list[str]:
     Return the language codes currently enabled as published country playlists.
 
     These codes are also the spoken languages accepted by the family playlist.
-    Adding a future country output (for example RO or RU) therefore enables that
-    spoken language without changing cross-language channel placement rules.
+    A verified stream with one unambiguous observed supported language is
+    published under that language, regardless of which source bucket supplied it.
+    Adding a future country output (for example RO or RU) enables that language
+    as a valid verified destination.
     """
     country_outputs = cfg.get("country_outputs") or {}
 
@@ -1237,6 +1239,52 @@ def audit_playlist_scope_code(item: dict) -> str:
         return expected[0]
 
     return ""
+
+
+def verified_output_language_code(
+    audit_row: dict,
+    source_language_code: str,
+    supported_language_codes=None,
+) -> str:
+    # Return the one published language bucket for a verified stream.
+    # playlist_language_code remains the audit/source identity scope.
+    # Final placement follows one unambiguous observed supported language.
+    source_code = (
+        normalize_language_code(
+            str(source_language_code or "")
+        )
+        or str(source_language_code or "").strip().upper()
+    )
+
+    decision = str(
+        audit_row.get("decision") or ""
+    ).strip()
+
+    if decision not in {
+        "Verified",
+        "TV verified",
+    }:
+        return source_code
+
+    supported = set(
+        normalize_language_codes(
+            supported_language_codes
+        )
+    )
+
+    observed = normalize_language_codes(
+        audit_row.get(
+            "observed_language_codes"
+        )
+    )
+
+    if (
+        len(observed) == 1
+        and observed[0] in supported
+    ):
+        return observed[0]
+
+    return source_code
 
 
 def language_acceptance_state(
@@ -1290,10 +1338,10 @@ def calculate_audit_decision(
     """
     Playback/device status for our playlist, not a legal certification.
 
-    Playlist placement and spoken language are intentionally independent.
-    A technically working stream may remain Verified in its existing HU/SK/CZ
-    playlist bucket when the observed spoken language is another language that
-    is already supported by a published country playlist.
+    Audit/source identity and final playlist placement are intentionally
+    separate. A technically working stream can be Verified when its observed
+    spoken language is supported, and an unambiguous observed language becomes
+    the one country/language playlist where that stream is published.
 
     Unsupported observed languages still reject the stream.
     """
@@ -1388,18 +1436,15 @@ def calculate_audit_decision(
 
     if pc_good and tv_good:
         if cross_language_supported:
-            scope = (
-                audit_playlist_scope_code(item)
-                or "current"
-            )
             return (
                 "Verified",
                 (
                     "Works on both tested devices. "
                     f"Observed language(s) "
                     f"{format_language_codes(observed_codes)} "
-                    "are currently supported; keep this stream "
-                    f"in its existing {scope} playlist scope."
+                    "are currently supported. A single unambiguous "
+                    "observed language is published once under that "
+                    "language's playlist."
                 ),
             )
 
@@ -1474,12 +1519,14 @@ def exact_url_audit_matches_entry(
     entry: dict,
 ) -> bool:
     """
-    Return whether an exact-URL audit belongs to this current playlist bucket.
+    Return whether an exact-URL audit belongs to this current source identity.
 
-    Spoken language is deliberately NOT used here. A Slovak-bucket channel may
-    legitimately speak Czech and still keep its Slovak verification. The guard
-    only prevents a saved audit from jumping to another country bucket when the
-    same URL is later reused there.
+    Spoken language is deliberately NOT used for this identity guard. The saved
+    playlist_language_code records where the audited source entry came from, so
+    an SK-source verification can still match that SK source even when confirmed
+    Czech speech later publishes the stream under CZ. The guard only prevents a
+    saved audit from jumping to a different source identity when the same URL is
+    later reused there.
     """
     audit_scope = audit_playlist_scope_code(
         audit_item
@@ -2157,6 +2204,25 @@ def prepare_audit_rows(
             )
         )
 
+        output_language_code = (
+            verified_output_language_code(
+                {
+                    **item,
+                    "decision": decision,
+                    "observed_language_codes": (
+                        observed_codes
+                    ),
+                },
+                str(
+                    entry.get(
+                        "language_code"
+                    )
+                    or ""
+                ),
+                supported_language_codes,
+            )
+        )
+
         rows.append({
             "channel": str(item.get("channel") or clean_name).strip(),
             "tvg_id": str(item.get("tvg_id") or tvg_id).strip(),
@@ -2184,6 +2250,7 @@ def prepare_audit_rows(
                 )
                 or ""
             ).strip().upper(),
+            "output_language_code": output_language_code,
             "expected_language_codes": expected_codes,
             "observed_language_codes": observed_codes,
             "language_match": language_match,
@@ -2693,6 +2760,78 @@ def make_test_playlist_candidates(
     return candidates
 
 
+def route_candidates_to_verified_languages(
+    candidates: list[dict],
+    cfg: dict,
+) -> list[dict]:
+    # Route verified candidates before language-scoped stable grouping.
+    # Exact URL dedup has already happened; source_language_code keeps origin.
+    supported = set(
+        configured_playlist_language_codes(
+            cfg
+        )
+    )
+
+    routed: list[dict] = []
+
+    for entry in candidates:
+        candidate = dict(entry)
+
+        source_code = (
+            normalize_language_code(
+                str(
+                    candidate.get(
+                        "language_code"
+                    )
+                    or cfg.get(
+                        "default_language_code"
+                    )
+                    or "HU"
+                )
+            )
+            or "HU"
+        )
+
+        audit = (
+            candidate.get("_audit")
+            or {}
+        )
+
+        output_code = (
+            normalize_language_code(
+                str(
+                    audit.get(
+                        "output_language_code"
+                    )
+                    or ""
+                )
+            )
+            or source_code
+        )
+
+        if output_code not in supported:
+            output_code = source_code
+
+        candidate[
+            "source_language_code"
+        ] = source_code
+
+        candidate[
+            "language_code"
+        ] = output_code
+
+        candidate[
+            "country_name"
+        ] = country_name_for_language(
+            cfg,
+            output_code,
+        )
+
+        routed.append(candidate)
+
+    return routed
+
+
 def stable_block_reason(
     entry: dict,
     cfg: dict,
@@ -2870,9 +3009,12 @@ def select_stable_playlist_candidates(
     }
 
     all_candidates = (
-        make_test_playlist_candidates(
-            final_entries,
-            audit_rows,
+        route_candidates_to_verified_languages(
+            make_test_playlist_candidates(
+                final_entries,
+                audit_rows,
+            ),
+            cfg,
         )
     )
 
@@ -3634,6 +3776,7 @@ def make_dashboard(
               <td>{esc(a["discovery"])}</td>
               <td>{esc(a["protocol"] or "—")}</td>
               <td>{esc(a.get("playlist_language_code", "") or "—")}</td>
+              <td>{esc(a.get("output_language_code", "") or "—")}</td>
               <td>{esc(format_language_codes(a.get("expected_language_codes")))}</td>
               <td>{esc(format_language_codes(a.get("observed_language_codes")))}</td>
               <td>{language_match_badge(a.get("language_acceptance") or a.get("language_match", "unknown"))}</td>
@@ -4030,7 +4173,8 @@ details ul {{ max-height: 260px; overflow: auto; }}
           <th>Source</th>
           <th>Discovery</th>
           <th>Protocol</th>
-          <th>Playlist scope</th>
+          <th>Audit/source scope</th>
+          <th>Published under</th>
           <th>Expected language</th>
           <th>Observed language</th>
           <th>Language acceptance</th>
@@ -4731,9 +4875,12 @@ def main(strict: bool = False) -> None:
         ),
     )
     test_candidates = (
-        make_test_playlist_candidates(
-            final_entries,
-            audit_rows,
+        route_candidates_to_verified_languages(
+            make_test_playlist_candidates(
+                final_entries,
+                audit_rows,
+            ),
+            cfg,
         )
     )
 
@@ -5171,6 +5318,7 @@ def main(strict: bool = False) -> None:
             "protocol",
 
             "playlist_language_code",
+            "output_language_code",
             "expected_language_codes",
             "observed_language_codes",
             "language_match",
