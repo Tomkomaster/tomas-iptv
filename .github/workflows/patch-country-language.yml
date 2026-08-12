@@ -1,0 +1,41 @@
+name: Temporary country-language refactor
+
+on:
+  push:
+    branches:
+      - agent/country-language-separation
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-validate:
+    if: ${{ !contains(github.event.head_commit.message, '[country-language-applied]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/country-language-separation
+
+      - name: Apply refactor
+        run: python3 .tmp_country_language_refactor.py
+
+      - name: Run tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Run strict build
+        run: python3 build.py --strict
+
+      - name: Check diff
+        run: git diff --check
+
+      - name: Commit permanent changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .tmp_country_language_refactor.py
+          git add build.py country_language.py identity_overrides.py identity_overrides.json config.json dashboard.py templates/dashboard.html README.md docs/country-language-model.md tests/test_country_language_model.py
+          git commit -m "Separate country from spoken language [country-language-applied]"
+          git push origin HEAD:agent/country-language-separation
