@@ -24,7 +24,7 @@ jobs:
           ref: agent/add-language-playlists
 
       - name: Apply deterministic feature patch
-        run: python3 .github/language_playlists_patch.py
+        run: python3 .github/language_playlists_patch_v2.py
 
       - name: Compile changed Python modules
         run: python3 -m py_compile build.py country_language.py tests/test_language_playlists.py
@@ -62,7 +62,7 @@ jobs:
               assert path.is_file(), f'missing {path}'
               text = path.read_text(encoding='utf-8')
               assert text.startswith('#EXTM3U'), path
-              assert f'Playlist: Stable ' in text, path
+              assert 'Playlist: Stable ' in text, path
 
           report = json.loads(Path('public/report.json').read_text(encoding='utf-8'))
           counts = report.get('playlists', {}).get('language_stream_urls') or {}
