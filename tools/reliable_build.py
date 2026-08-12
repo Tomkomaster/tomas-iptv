@@ -6,13 +6,13 @@ import json
 from pathlib import Path
 
 import build
-from same_build_failover import (
+from tools.same_build_failover import (
     load_audit_rows,
     probe_verified_redundancy,
     settings_from_config,
     write_report,
 )
-from stable_build import install_same_build_evidence
+from tools.stable_build import install_same_build_evidence
 
 
 def main() -> None:
@@ -60,7 +60,6 @@ def main() -> None:
     )
     build.main(strict=args.strict)
 
-    # Keep a tiny machine-readable marker in stdout for Actions logs.
     print(
         json.dumps(
             {
