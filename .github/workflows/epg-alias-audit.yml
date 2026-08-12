@@ -1,0 +1,97 @@
+name: Audit explicit EPG alias candidates
+
+on:
+  push:
+    branches:
+      - agent/improve-epg-mapping
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download current EPGshare country guides
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/epg
+          curl --fail --location --retry 2 -o /tmp/epg/HU.xml.gz https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz
+          curl --fail --location --retry 2 -o /tmp/epg/SK.xml.gz https://epgshare01.online/epgshare01/epg_ripper_SK1.xml.gz
+          curl --fail --location --retry 2 -o /tmp/epg/CZ.xml.gz https://epgshare01.online/epgshare01/epg_ripper_CZ1.xml.gz
+
+      - name: Inspect audited candidate IDs
+        run: |
+          python3 - <<'PY'
+          from __future__ import annotations
+          import gzip
+          import xml.etree.ElementTree as ET
+          from collections import Counter
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          candidates = {
+              'CZ': [
+                  'Canal+.Action.cz',
+                  'CANAL.PLUS.ACTION.CZ.cz',
+                  'Filmbox+.comedy.cz',
+                  'Filmbox+.emotion.cz',
+                  'Filmbox+.hits.cz',
+                  'Filmbox+.one.cz',
+                  'ducktv.plus.cz',
+                  'HaHa.TV.cz',
+                  'LifeTV.cz',
+                  'TV.Bratislava.cz',
+                  'Televízia.Dolný.Kubín.cz',
+                  'Liptov.cz',
+                  'TV.Považie.cz',
+                  'TV.SEN.cz',
+                  'TVT.cz',
+                  'Západoslovenská.televízia.cz',
+                  'Régió.TV.cz',
+              ],
+              'SK': [
+                  'Prima.Krimi.HD.sk',
+                  'Prima.KRIMI.SK.cz',
+              ],
+          }
+
+          today = datetime.now(ZoneInfo('Europe/Bratislava')).date()
+          end = today.replace()
+
+          roots = {}
+          for code in ('HU','SK','CZ'):
+              data = gzip.decompress(Path(f'/tmp/epg/{code}.xml.gz').read_bytes())
+              roots[code] = ET.fromstring(data)
+
+          for source_code, ids in candidates.items():
+              root = roots[source_code]
+              channel_map = {str(c.get('id') or '').strip(): c for c in root.findall('channel')}
+              counts = Counter()
+              for programme in root.findall('programme'):
+                  channel = str(programme.get('channel') or '').strip()
+                  start = str(programme.get('start') or '')[:8]
+                  try:
+                      day = datetime.strptime(start, '%Y%m%d').date()
+                  except ValueError:
+                      continue
+                  if today <= day <= today.fromordinal(today.toordinal() + 7):
+                      counts[channel] += 1
+
+              print(f'\n=== {source_code} candidates ===')
+              for channel_id in ids:
+                  channel = channel_map.get(channel_id)
+                  if channel is None:
+                      print(f'MISSING | {channel_id}')
+                      continue
+                  names = [
+                      ' '.join((node.text or '').split())
+                      for node in channel.findall('display-name')
+                      if ' '.join((node.text or '').split())
+                  ]
+                  print(f'FOUND | fresh={counts[channel_id]:4d} | {channel_id} | names={names}')
+          PY
