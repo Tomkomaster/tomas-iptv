@@ -1,0 +1,93 @@
+name: Temporary feed quality integration patch
+
+on:
+  push:
+    branches:
+      - agent/feed-quality-scoring
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: ${{ !contains(github.event.head_commit.message, '[feed-quality-patched]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/feed-quality-scoring
+
+      - name: Patch build integration
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('build.py')
+          text = path.read_text(encoding='utf-8')
+
+          old = 'from dashboard import copy_dashboard_assets, render_dashboard\n'
+          new = old + 'from feed_quality import build_feed_quality_context, score_feed_quality\n'
+          if text.count(old) != 1:
+              raise SystemExit('dashboard import anchor count changed')
+          text = text.replace(old, new, 1)
+
+          old = '''    stable_cfg = (\n        cfg.get("stable_playlist")\n        or {}\n    )\n\n    allowed_decisions = {\n'''
+          new = '''    stable_cfg = (\n        cfg.get("stable_playlist")\n        or {}\n    )\n\n    quality_context = (\n        build_feed_quality_context(\n            cfg\n        )\n    )\n\n    allowed_decisions = {\n'''
+          if text.count(old) != 1:
+              raise SystemExit('stable config anchor count changed')
+          text = text.replace(old, new, 1)
+
+          old = '''    def stable_feed_rank(\n        entry: dict,\n    ) -> tuple:\n        audit = (\n            entry.get("_audit")\n            or {}\n        )\n\n        decision = entry.get(\n            "_decision",\n            "Needs review",\n        )\n\n        decision_rank = {\n            "TV verified": 1,\n            "Verified": 2,\n        }.get(\n            decision,\n            0,\n        )\n\n        vlc = normalize_test_status(\n            str(\n                audit.get("vlc")\n                or ""\n            )\n        )\n\n        samsung = (\n            normalize_test_status(\n                str(\n                    audit.get(\n                        "samsung"\n                    )\n                    or ""\n                )\n            )\n        )\n\n        vlc_rank = {\n            "works": 3,\n            "works_with_warning": 2,\n        }.get(\n            vlc,\n            0,\n        )\n\n        samsung_rank = (\n            1\n            if samsung == "works"\n            else 0\n        )\n\n        source_rank = -int(\n            entry.get(\n                "_source_order"\n            )\n            or 0\n        )\n\n        return (\n            decision_rank,\n            vlc_rank,\n            samsung_rank,\n            source_rank,\n        )\n'''
+          new = '''    def stable_feed_rank(\n        entry: dict,\n    ) -> tuple:\n        quality = score_feed_quality(\n            entry,\n            cfg,\n            context=quality_context,\n        )\n\n        entry[\n            "_feed_quality_score"\n        ] = int(\n            quality.get("score")\n            or 0\n        )\n\n        entry[\n            "_feed_quality_summary"\n        ] = str(\n            quality.get("summary")\n            or ""\n        )\n\n        source_rank = -int(\n            entry.get(\n                "_source_order"\n            )\n            or 0\n        )\n\n        return (\n            entry[\n                "_feed_quality_score"\n            ],\n            source_rank,\n        )\n'''
+          if text.count(old) != 1:
+              raise SystemExit('stable feed rank anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''        selected.append(\n            winner\n        )\n\n        for entry in group:\n            if entry is winner:\n                continue\n\n            add_excluded(\n                entry,\n                (\n                    "Another stable feed for "\n                    "this logical channel was "\n                    "ranked higher."\n                ),\n            )\n'''
+          new = '''        selected.append(\n            winner\n        )\n\n        winner_score = int(\n            winner.get(\n                "_feed_quality_score"\n            )\n            or 0\n        )\n\n        for entry in group:\n            if entry is winner:\n                continue\n\n            entry_score = int(\n                entry.get(\n                    "_feed_quality_score"\n                )\n                or 0\n            )\n\n            add_excluded(\n                entry,\n                (\n                    "Another stable feed for "\n                    "this logical channel was "\n                    "ranked higher by feed-quality "\n                    f"score (winner {winner_score}; "\n                    f"this feed {entry_score})."\n                ),\n            )\n'''
+          if text.count(old) != 1:
+              raise SystemExit('winner exclusion anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''            "tvg_id": entry.get("tvg_id", ""),\n            "sources": [],\n            "stream_count": 0,\n'''
+          new = '''            "tvg_id": entry.get("tvg_id", ""),\n            "feed_quality_score": int(\n                entry.get("_feed_quality_score") or 0\n            ),\n            "feed_quality_summary": str(\n                entry.get("_feed_quality_summary") or ""\n            ),\n            "sources": [],\n            "stream_count": 0,\n'''
+          if text.count(old) != 1:
+              raise SystemExit('channel report anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''            "test_status": e.get(\n                "test_status",\n                "Needs review",\n            ),\n            "source_flags": ", ".join(e.get("source_flags") or []),\n'''
+          new = '''            "test_status": e.get(\n                "test_status",\n                "Needs review",\n            ),\n            "feed_quality_score": int(\n                e.get("_feed_quality_score") or 0\n            ),\n            "feed_quality_summary": str(\n                e.get("_feed_quality_summary") or ""\n            ),\n            "source_flags": ", ".join(e.get("source_flags") or []),\n'''
+          if text.count(old) != 1:
+              raise SystemExit('inventory row anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '''            "test_status",\n            "source_flags",\n            "source",\n'''
+          new = '''            "test_status",\n            "feed_quality_score",\n            "feed_quality_summary",\n            "source_flags",\n            "source",\n'''
+          if text.count(old) != 1:
+              raise SystemExit('inventory CSV fields anchor changed')
+          text = text.replace(old, new, 1)
+
+          old = '        "schema_version": 19,\n'
+          new = '        "schema_version": 20,\n'
+          if text.count(old) != 1:
+              raise SystemExit('report schema anchor changed')
+          text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          git diff --check
+
+      - name: Commit integration
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No patch changes needed."
+            exit 0
+          fi
+          git config user.name "Tomkomaster"
+          git config user.email "tomkomaster@freemail.hu"
+          git add build.py
+          git commit -m "Integrate feed quality scoring [feed-quality-patched]"
+          git push origin HEAD:agent/feed-quality-scoring
