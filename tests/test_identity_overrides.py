@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 from build import channel_key, parse_entries
-from identity_overrides import IdentityRegistry, load_identity_registry
+from iptv.identity_overrides import IdentityRegistry, load_identity_registry
 
 
 class IdentityRegistryTests(unittest.TestCase):
@@ -137,10 +137,10 @@ class BuildIdentityIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(entries[0]["canonical_id"], "sk:manual")
 
-    def test_kanal1_moved_out_of_config_into_identity_file(self):
+    def test_kanal1_identity_data_lives_under_data(self):
         cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
         self.assertNotIn("stream_overrides", cfg)
-        self.assertEqual(cfg["identity_overrides_path"], "identity_overrides.json")
+        self.assertEqual(cfg["identity_overrides_path"], "data/identity_overrides.json")
 
         registry = load_identity_registry(Path(cfg["identity_overrides_path"]))
         result = registry.resolve({
