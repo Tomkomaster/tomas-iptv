@@ -20,6 +20,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+env:
+  # Pin the IPTV-org EPG repository itself; npm ci only pins its npm tree.
+  IPTV_ORG_EPG_REV: "15965406e3d950433788a085a15ab256a8e0035d"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -132,11 +136,18 @@ jobs:
             .epg-external.download \
             .epg-grab.log
 
-          git clone \
-            --depth 1 \
-            --branch master \
-            https://github.com/iptv-org/epg.git \
-            .epg-builder
+          mkdir .epg-builder
+          git -C .epg-builder init
+          git -C .epg-builder remote add origin https://github.com/iptv-org/epg.git
+          git -C .epg-builder fetch --depth 1 origin "$IPTV_ORG_EPG_REV"
+          git -C .epg-builder checkout --detach FETCH_HEAD
+
+          EPG_ACTUAL_REV="$(git -C .epg-builder rev-parse HEAD)"
+          if [ "$EPG_ACTUAL_REV" != "$IPTV_ORG_EPG_REV" ]; then
+            echo "ERROR: expected IPTV-org/epg $IPTV_ORG_EPG_REV but checked out $EPG_ACTUAL_REV" >&2
+            exit 1
+          fi
+          echo "Using pinned IPTV-org/epg revision: $EPG_ACTUAL_REV"
 
           cd .epg-builder
           npm ci
