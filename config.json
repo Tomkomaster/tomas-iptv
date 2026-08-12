@@ -78,7 +78,8 @@
         "official broadcaster",
         "current broadcaster stream",
         "direct broadcaster",
-        "broadcaster stream"
+        "broadcaster stream",
+        "broadcaster cdn"
       ],
       "broadcaster_cdn_terms": [
         "broadcaster cdn",

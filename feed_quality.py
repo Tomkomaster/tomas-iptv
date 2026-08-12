@@ -40,6 +40,7 @@ DEFAULT_OFFICIAL_SOURCE_TERMS = (
     "current broadcaster stream",
     "direct broadcaster",
     "broadcaster stream",
+    "broadcaster cdn",
 )
 
 DEFAULT_BROADCASTER_CDN_TERMS = (
@@ -398,7 +399,11 @@ def score_feed_quality(
 
     source_flags = {
         str(value).strip().casefold()
-        for value in (entry.get("source_flags") or audit.get("source_flags") or [])
+        for raw_flags in (
+            entry.get("source_flags") or [],
+            audit.get("source_flags") or [],
+        )
+        for value in raw_flags
         if str(value).strip()
     }
     event_only = (
