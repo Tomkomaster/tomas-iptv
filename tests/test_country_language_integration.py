@@ -4,6 +4,12 @@ import build
 
 
 class CountryLanguageIntegrationTests(unittest.TestCase):
+    def test_legacy_audit_language_api_maps_iso_inputs_to_historical_tokens(self):
+        self.assertEqual(
+            build.normalize_language_codes(["hun", "slk", "ces"]),
+            ["HU", "SK", "CZ"],
+        )
+
     def test_hungarian_language_does_not_move_serbian_channel_without_route(self):
         candidate = {
             "channel_name": "Vojvodina Demo",

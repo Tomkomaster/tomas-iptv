@@ -1068,11 +1068,16 @@ def is_tested_status(value: str) -> bool:
 LANGUAGE_NAME_TO_CODE = {
     "hungarian": "HU",
     "magyar": "HU",
+    "hun": "HU",
 
     "slovak": "SK",
     "slovakian": "SK",
+    "slk": "SK",
+    "slo": "SK",
 
     "czech": "CZ",
+    "ces": "CZ",
+    "cze": "CZ",
 
     "serbian": "SR",
     "serb": "SR",
@@ -1527,10 +1532,11 @@ def calculate_audit_decision(
     """
     Playback/device status for our playlist, not a legal certification.
 
-    Audit/source identity and final playlist placement are intentionally
-    separate. A technically working stream can be Verified when its observed
-    spoken language is supported, and an unambiguous observed language becomes
-    the one country/language playlist where that stream is published.
+    Audit/source identity, spoken-language acceptance, and publication
+    country are intentionally separate. A technically working stream can be
+    Verified when its observed spoken language is supported. Publication
+    country changes only through an explicit output country or configured
+    country-routing rule.
 
     Unsupported observed languages still reject the stream.
     """
@@ -1631,9 +1637,9 @@ def calculate_audit_decision(
                     "Works on both tested devices. "
                     f"Observed language(s) "
                     f"{format_language_codes(observed_codes)} "
-                    "are currently supported. A single unambiguous "
-                    "observed language is published once under that "
-                    "language's playlist."
+                    "are currently supported. Publication country "
+                    "is determined separately by explicit country-routing "
+                    "policy."
                 ),
             )
 
@@ -2979,7 +2985,7 @@ def route_candidates_to_verified_countries(
     candidates: list[dict],
     cfg: dict,
 ) -> list[dict]:
-    """Apply audit publication-country decisions without changing spoken language metadata."""
+    """Apply country routing and attach verified observed spoken-language metadata."""
     supported = set(configured_playlist_country_codes(cfg))
     routed: list[dict] = []
     for entry in candidates:
