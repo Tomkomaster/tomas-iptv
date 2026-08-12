@@ -13451,7 +13451,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "AXN Black Czech Republic",
@@ -13478,7 +13480,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "AXN CEE Czech Republic",
@@ -13505,7 +13509,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "AXN White CzechRepublic",
@@ -13532,7 +13538,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "BBC Earth Czechia",
@@ -13559,7 +13567,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "CNN Prima News",
@@ -13586,7 +13596,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "CNN Prima News Feed 2",
@@ -13613,7 +13625,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "VLC skipped to the next channel and Samsung reported NOT_SUPPORTED_FILE. Reject this exact stream URL from the shared playlist.",
-      "reason": "Failed the manual playback test on both devices."
+      "reason": "Failed the manual playback test on both devices.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "CS Mystery",
@@ -13640,34 +13654,38 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "Current Time TV",
       "stream_url": "http://stream.mcquack.net/384/index.m3u8",
-      "vlc": "works",
-      "samsung": "works",
-      "vlc_note": "ok",
-      "samsung_note": "ok",
+      "vlc": "wrong_language",
+      "samsung": "wrong_language",
+      "vlc_note": "Stream works, but the spoken language was Russian.",
+      "samsung_note": "Stream works, but the spoken language was Russian.",
       "language": "Russian",
       "language_code": "RU",
       "language_codes": [
         "rus"
       ],
       "expected_language_codes": [
-        "rus"
+        "ces"
       ],
       "observed_language_codes": [
         "rus"
       ],
       "protocol": "HLS",
-      "decision": "auto",
-      "exclude_from_playlist": false,
+      "decision": "rejected",
+      "exclude_from_playlist": true,
       "tested_on": "2026-08-12",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
-      "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "notes": "Playback works on both tested devices, but the spoken language is Russian, so this stream is not suitable for the Czech playlist.",
+      "reason": "Expected Czech, but the active stream was manually verified as Russian on both tested devices.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "DVTV Extra",
@@ -13694,7 +13712,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     },
     {
       "channel": "Elektrika TV",
@@ -13721,7 +13741,9 @@
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test",
       "notes": "Passed both manual playback tests.",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ"
     }
   ]
 }
