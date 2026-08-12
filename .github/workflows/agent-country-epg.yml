@@ -79,6 +79,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cp .github/workflows/build-and-publish.yml .github/scripts/build-and-publish.country-aware.yml.txt
           git add \
             config.json \
             extras/sk.m3u \
@@ -86,7 +87,7 @@ jobs:
             epg_policy.py \
             epg_health.py \
             build.py \
-            .github/workflows/build-and-publish.yml
+            .github/scripts/build-and-publish.country-aware.yml.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Make EPG coverage country-aware"
