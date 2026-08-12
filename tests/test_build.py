@@ -1513,6 +1513,11 @@ class AuditTests(unittest.TestCase):
             )
 
             self.assertIn(
+                "[HU] Demo News",
+                playlist,
+            )
+
+            self.assertNotIn(
                 "[HU OK] Demo News",
                 playlist,
             )

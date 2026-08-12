@@ -302,6 +302,9 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             stable = (root / "public" / "tv.m3u").read_text(
                 encoding="utf-8"
             )
+            test_playlist = (root / "public" / "test.m3u").read_text(
+                encoding="utf-8"
+            )
             sk_playlist = (root / "public" / "sk.m3u").read_text(
                 encoding="utf-8"
             )
@@ -310,8 +313,12 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             )
 
             self.assertEqual(stable.count(url), 1)
+            self.assertIn("[CZ] Cross Language TV", stable)
+            self.assertNotIn("[CZ OK] Cross Language TV", stable)
+            self.assertIn("[CZ OK] Cross Language TV", test_playlist)
             self.assertNotIn(url, sk_playlist)
-            self.assertIn("[CZ OK] Cross Language TV", cz_playlist)
+            self.assertIn(",Cross Language TV", cz_playlist)
+            self.assertNotIn("[CZ", cz_playlist)
             self.assertEqual(cz_playlist.count(url), 1)
 
             with (root / "public" / "audit.csv").open(
@@ -452,7 +459,10 @@ class LanguageScopingRegressionTests(unittest.TestCase):
                 int(sk_url in cz_playlist) + int(cz_url in cz_playlist),
                 1,
             )
-            self.assertIn("[CZ OK] Shared Czech TV", cz_playlist)
+            self.assertIn("[CZ] Shared Czech TV", stable)
+            self.assertNotIn("[CZ OK] Shared Czech TV", stable)
+            self.assertIn(",Shared Czech TV", cz_playlist)
+            self.assertNotIn("[CZ", cz_playlist)
 
     def test_unsupported_cross_language_remains_rejected(self):
         decision, _reason = build.calculate_audit_decision(
