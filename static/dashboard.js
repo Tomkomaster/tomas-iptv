@@ -313,7 +313,7 @@ fetch('health.json', { cache: 'no-store' })
   .catch(error => {
     if (healthSummary) healthSummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Health data unavailable</div></div>';
     if (healthCountrySummary) healthCountrySummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Country health unavailable</div></div>';
-    if (healthTableBody) healthTableBody.innerHTML = `<tr><td colspan="8">Automated health data could not be loaded: ${esc(error.message)}</td></tr>`;
+    if (healthTableBody) healthTableBody.innerHTML = `<tr><td colspan="8">Automated stream health data could not be loaded: ${esc(error.message)}</td></tr>`;
     if (healthVisibleCount) healthVisibleCount.textContent = 'health.json is not available yet.';
   });
 if (healthSearch) healthSearch.addEventListener('input', applyHealthFilters);
@@ -516,3 +516,129 @@ if (statusFilter) statusFilter.addEventListener('change', applyFilters);
 applyAuditFilters();
 applyFilters();
 applyStaticCountryFilters();
+
+// Top-level next-work panel ------------------------------------------------
+const nextWorkSummary = document.getElementById('nextWorkSummary');
+const nextWorkList = document.getElementById('nextWorkList');
+const nextWorkNote = document.getElementById('nextWorkNote');
+
+function shortMissingAction(row) {
+  const workType = String(row.work_type || '').trim();
+  if (workType === 'Finish compatibility') return 'finish compatibility';
+  if (workType === 'Test candidates') return 'test candidate';
+  if (workType === 'Find first candidate') return 'find first candidate';
+  if (workType === 'Hunt new source') return 'find replacement feed';
+  return String(row.next_action || 'review').trim();
+}
+
+function shortAttentionAction(signal) {
+  const category = String(signal?.category || '');
+  return ({
+    stream_manual_retest: 'manual VLC + Samsung retest',
+    stream_failure: 'check stream failure',
+    upstream_missing: 'find replacement feed',
+    epg_missing_id: 'add tvg-id',
+    epg_unmapped: 'add EPG mapping',
+    epg_mapped_empty: 'fix empty EPG mapping',
+    manual_stale: 'repeat manual playback test',
+    manual_date_missing: 'record a fresh manual test',
+  })[category] || String(signal?.action || 'review').trim();
+}
+
+function nextWorkStatusWeight(status) {
+  return ({ PARTIAL: 40, 'CANDIDATES TO TEST': 30, 'NO WORKING FEED': 20, 'NOT RESEARCHED': 10 })[status] || 0;
+}
+
+function renderNextWorkPanel() {
+  if (!nextWorkSummary || !nextWorkList) return;
+
+  Promise.all([
+    fetch('attention.json', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(`attention.json HTTP ${r.status}`); return r.json(); }),
+    fetch('health.json', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(`health.json HTTP ${r.status}`); return r.json(); }),
+    fetch('missing.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(`missing.csv HTTP ${r.status}`); return r.text(); }),
+  ]).then(([attention, health, missingText]) => {
+    const missing = parseCsv(missingText);
+    const attentionItems = Array.isArray(attention.items) ? attention.items : [];
+    const healthStreams = Array.isArray(health.streams) ? health.streams : [];
+
+    const streamFailures = healthStreams.filter(item => item.actionable_failure === true).length;
+    const p1Missing = missing.filter(row => row.priority === 'P1').length;
+    const p2Candidates = missing.filter(row =>
+      row.priority === 'P2'
+      && Number(row.current_candidates || 0) > 0
+      && ['PARTIAL', 'CANDIDATES TO TEST'].includes(String(row.status || ''))
+    ).length;
+    const expectedEpgGaps = attentionItems.filter(item =>
+      (item.signals || []).some(signal => String(signal.category || '').startsWith('epg_'))
+    ).length;
+
+    nextWorkSummary.innerHTML = `
+      <div class="card"><div class="value">${streamFailures}</div><div class="label">🔴 Stream failures</div></div>
+      <div class="card"><div class="value">${p1Missing}</div><div class="label">🟠 P1 channels missing</div></div>
+      <div class="card"><div class="value">${p2Candidates}</div><div class="label">🟡 P2 candidates</div></div>
+      <div class="card"><div class="value">${expectedEpgGaps}</div><div class="label">🟡 Expected EPG gaps</div></div>`;
+
+    const recommendations = [];
+    for (const item of attentionItems) {
+      const signals = Array.isArray(item.signals) ? item.signals : [];
+      const urgent = signals.find(signal => ['stream_manual_retest', 'upstream_missing'].includes(signal.category))
+        || signals.find(signal => signal.category === 'stream_failure');
+      if (!urgent) continue;
+      recommendations.push({
+        key: `${normalizedCountry(item.country)}\u0000${String(item.channel || '').trim().toLowerCase()}`,
+        score: 500 + Number(item.priority_score || 0),
+        country: normalizedCountry(item.country),
+        channel: item.channel || 'Unnamed channel',
+        action: shortAttentionAction(urgent),
+      });
+    }
+
+    for (const row of missing) {
+      const priority = String(row.priority || 'P3');
+      if (priority !== 'P1' && priority !== 'P2') continue;
+      recommendations.push({
+        key: candidateKey(row),
+        score: (priority === 'P1' ? 400 : 300) + nextWorkStatusWeight(row.status),
+        country: normalizedCountry(row.country),
+        channel: row.channel || 'Unnamed channel',
+        action: shortMissingAction(row),
+      });
+    }
+
+    for (const item of attentionItems) {
+      const epgSignal = (item.signals || []).find(signal => String(signal.category || '').startsWith('epg_'));
+      if (!epgSignal) continue;
+      recommendations.push({
+        key: `${normalizedCountry(item.country)}\u0000${String(item.channel || '').trim().toLowerCase()}`,
+        score: 200 + Number(item.priority_score || 0),
+        country: normalizedCountry(item.country),
+        channel: item.channel || 'Unnamed channel',
+        action: shortAttentionAction(epgSignal),
+      });
+    }
+
+    recommendations.sort((a, b) => b.score - a.score
+      || String(a.country).localeCompare(String(b.country))
+      || String(a.channel).localeCompare(String(b.channel)));
+
+    const seen = new Set();
+    const top = [];
+    for (const item of recommendations) {
+      if (seen.has(item.key)) continue;
+      seen.add(item.key);
+      top.push(item);
+      if (top.length === 8) break;
+    }
+
+    nextWorkList.innerHTML = top.length
+      ? top.map(item => `<li><strong>${esc(item.country)} ${esc(item.channel)}</strong> — ${esc(item.action)}</li>`).join('')
+      : '<li><span class="badge verified">Clear</span> No high-value next actions are currently queued.</li>';
+    if (nextWorkNote) nextWorkNote.textContent = 'Recommendations rank urgent stream problems first, then P1/P2 research work, then expected EPG gaps.';
+  }).catch(error => {
+    nextWorkSummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Priority summary unavailable</div></div>';
+    nextWorkList.innerHTML = `<li class="muted">Could not load the generated priority data: ${esc(error.message)}</li>`;
+    if (nextWorkNote) nextWorkNote.textContent = 'The detailed dashboard sections below remain available independently.';
+  });
+}
+
+renderNextWorkPanel();
