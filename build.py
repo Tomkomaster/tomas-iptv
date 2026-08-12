@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from dashboard import copy_dashboard_assets, render_dashboard
 from feed_quality import build_feed_quality_context, score_feed_quality
+from identity_overrides import IdentityRegistry, load_identity_registry
 
 ROOT = Path(__file__).resolve().parent
 
@@ -153,6 +154,7 @@ def parse_entries(text: str) -> list[dict]:
                 "tvg_name": attrs.get("tvg-name", ""),
                 "logo": attrs.get("tvg-logo", ""),
                 "group_title": attrs.get("group-title", ""),
+                "canonical_id": attrs.get("canonical-id", ""),
             }
             continue
 
@@ -344,18 +346,15 @@ def canonical_stream_url(url: str) -> str:
         "",
     ))
 
-def apply_stream_metadata_override(
+def apply_canonical_identity(
     entry: dict,
     override: dict,
 ) -> None:
-    """
-    Apply a manually curated identity override to one exact stream URL.
+    """Apply canonical channel metadata after identity resolution.
 
-    This is used when an upstream playlist has the correct playable URL
-    but incorrect channel identity, tvg metadata, or country/language.
-
-    The parsed metadata and the preserved #EXTINF line are both updated so
-    the corrected identity also reaches the generated M3U files.
+    Selector matching lives in identity_overrides.py. This function only
+    applies the already-resolved channel identity to parsed feed metadata.
+    Feed URL/source provenance and audit state remain separate.
     """
     if not isinstance(override, dict):
         return
@@ -471,10 +470,15 @@ def channel_key(entry: dict) -> str:
     Identify a logical channel.
 
     Priority:
-      1. tvg-id, with @SD/@HD-style variants collapsed
-      2. tvg-name
-      3. cleaned display name
+      1. explicit canonical channel ID from the identity layer
+      2. tvg-id, with @SD/@HD-style variants collapsed
+      3. tvg-name
+      4. cleaned display name
     """
+    canonical_id = str(entry.get("canonical_id") or "").strip().casefold()
+    if canonical_id:
+        return f"canonical:{canonical_id}"
+
     tvg_id = normalized_tvg_id(entry.get("tvg_id", ""))
     if tvg_id:
         return f"id:{tvg_id}"
@@ -3829,45 +3833,21 @@ def main(strict: bool = False) -> None:
         )
     )
 
-    raw_stream_overrides = (
-        cfg.get("stream_overrides")
-        or {}
-    )
+    raw_identity_path = str(
+        cfg.get("identity_overrides_path")
+        or ""
+    ).strip()
 
-    if not isinstance(
-        raw_stream_overrides,
-        dict,
-    ):
-        raise RuntimeError(
-            "config.json stream_overrides must be an object."
-        )
-
-    stream_overrides: dict[str, dict] = {}
-
-    for (
-        override_url,
-        override_data,
-    ) in raw_stream_overrides.items():
-        if not isinstance(
-            override_data,
-            dict,
-        ):
-            raise RuntimeError(
-                "Each stream_overrides entry must be an object."
-            )
-
-        override_key = canonical_stream_url(
-            str(override_url)
-        )
-
-        if not override_key:
-            continue
-
-        stream_overrides[
-            override_key
-        ] = dict(
-            override_data
-        )
+    if raw_identity_path:
+        identity_path = ROOT / raw_identity_path
+        identity_registry = load_identity_registry(identity_path)
+    else:
+        identity_path = None
+        identity_registry = IdentityRegistry({
+            "schema_version": 1,
+            "identities": {},
+            "selectors": [],
+        })
 
     source_items: list[dict] = []
 
@@ -3949,7 +3929,7 @@ def main(strict: bool = False) -> None:
         if spec.get("url") and not entries:
             raise RuntimeError(f"No playable entries found in remote source: {location}")
 
-        source_keys = {channel_key(e) for e in entries}
+        source_keys: set[str] = set()
         kept = 0
         new_channels = 0
 
@@ -3970,45 +3950,52 @@ def main(strict: bool = False) -> None:
             entry["source_kind"] = kind
             entry["language_code"] = language_code
 
-            stream_override = (
-                stream_overrides.get(
-                    url_key
+            identity_name = strip_display_annotations(
+                strip_internal_candidate_annotations(
+                    entry.get("tvg_name")
+                    or entry.get("display_name")
+                    or ""
                 )
             )
+            identity_match = identity_registry.resolve(
+                entry,
+                source=name,
+                normalized_name=identity_name,
+            )
 
-            if stream_override:
-                apply_stream_metadata_override(
+            entry["identity_match_type"] = ""
+            entry["identity_selector_index"] = None
+            entry["identity_note"] = ""
+
+            if identity_match:
+                canonical_identity = identity_match["identity"]
+                apply_canonical_identity(
                     entry,
-                    stream_override,
+                    canonical_identity,
                 )
+                entry["canonical_id"] = identity_match["canonical_id"]
+                entry["identity_match_type"] = identity_match["match_type"]
+                entry["identity_selector_index"] = identity_match["selector_index"]
+                entry["identity_note"] = identity_match["note"]
 
-                raw_override_language = str(
-                    stream_override.get(
-                        "language_code"
-                    )
+                raw_identity_language = str(
+                    canonical_identity.get("language_code")
                     or ""
                 ).strip()
 
-                if raw_override_language:
-                    override_language = (
-                        normalize_language_code(
-                            raw_override_language
-                        )
+                if raw_identity_language:
+                    identity_language = normalize_language_code(
+                        raw_identity_language
                     )
-
-                    if not override_language:
+                    if not identity_language:
                         raise RuntimeError(
-                            "Invalid stream override "
-                            "language_code "
-                            f"{raw_override_language!r} "
-                            f"for {url}"
+                            "Invalid canonical identity language_code "
+                            f"{raw_identity_language!r} for {url}"
                         )
-
-                    entry[
-                        "language_code"
-                    ] = override_language
+                    entry["language_code"] = identity_language
 
             key = channel_key(entry)
+            source_keys.add(key)
 
             clean_name = (
                 strip_display_annotations(
@@ -4109,6 +4096,7 @@ def main(strict: bool = False) -> None:
                     "key": logical_key,
                     "raw_key": key,
                     "name": clean_name,
+                    "canonical_id": entry.get("canonical_id", ""),
                     "first_source": name,
                     "first_source_kind": kind,
                     "language_code": (
@@ -4292,6 +4280,7 @@ def main(strict: bool = False) -> None:
             "raw_key": entry.get("channel_key", ""),
             "language_code": entry.get("language_code", ""),
             "name": entry["channel_name"],
+            "canonical_id": entry.get("canonical_id", ""),
             "tvg_id": entry.get("tvg_id", ""),
             "feed_quality_score": int(
                 entry.get("_feed_quality_score") or 0
@@ -4347,7 +4336,7 @@ def main(strict: bool = False) -> None:
         # dashboard does not report every channel as removed and re-added.
         previous_has_scoped_keys = any(
             re.fullmatch(
-                r"[A-Z]{2,3}:(?:id|name):.+",
+                r"[A-Z]{2,3}:(?:canonical|id|name):.+",
                 key,
             )
             for key in previous_by_key
@@ -4522,6 +4511,8 @@ def main(strict: bool = False) -> None:
                 "tvg_id",
                 "",
             ),
+            "canonical_id": e.get("canonical_id", ""),
+            "identity_match_type": e.get("identity_match_type", ""),
 
             "country_name": e.get(
                 "country_name",
@@ -4570,6 +4561,8 @@ def main(strict: bool = False) -> None:
             "feed_index",
             "feed_count",
             "tvg_id",
+            "canonical_id",
+            "identity_match_type",
 
             "country_name",
             "content_group",
@@ -4665,7 +4658,7 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 20,
+        "schema_version": 21,
         "generated_at": generated,
         "playlists": {
             "stable": {
@@ -4708,6 +4701,11 @@ def main(strict: bool = False) -> None:
         },
         "sources": source_stats,
         "languages": language_stats,
+        "identity": {
+            "path": raw_identity_path,
+            "canonical_identities": len(identity_registry.identities),
+            "selectors": len(identity_registry.selectors),
+        },
 
         "epg": {
             "enabled": bool(
