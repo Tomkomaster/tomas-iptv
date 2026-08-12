@@ -19,13 +19,16 @@ Canonical channel identity is intentionally separate from stream/feed identity, 
       "channel_name": "Kanal1",
       "tvg_name": "Kanal1",
       "tvg_id": "",
-      "language_code": "SK"
+      "country_code": "SK",
+      "language_codes": ["slk"]
     }
   }
 }
 ```
 
-A canonical identity describes the channel. It does not contain playback test results, source URLs, research labels, health state, EPG health, or display prefixes.
+A canonical identity describes the channel. Country geography and spoken-language metadata remain separate: `country_code` uses the two-letter country model, while `language_codes` uses ISO-639-3-style spoken-language codes.
+
+A canonical identity does not contain playback test results, source URLs, research labels, health state, EPG health, or display prefixes.
 
 `selectors` connect feed/source evidence to that identity:
 

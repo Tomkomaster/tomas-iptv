@@ -8,11 +8,9 @@ Tomas IPTV separates publication geography from spoken-language evidence.
 - `language_codes`: ISO-639-3-style spoken/content languages, e.g. `hun`, `slk`, `ces`, `deu`.
 - `playlist_country_code`: country scope to which a saved audit identity belongs.
 - `output_country_code`: country output chosen for a current audited stream.
-- `expected_language_codes` / `observed_language_codes`: spoken-language evidence.
+- `expected_language_codes` / `observed_language_codes`: spoken-language evidence using ISO-639-3-style codes.
 
-## Backward compatibility
-
-Historical `language_code`, `playlist_language_code` and `output_language_code` are still accepted. They are treated as legacy country aliases, because that is what the project historically stored in them. Old spoken-language values such as `HU`, `SK`, `CZ`, `Hungarian`, `Slovak` and `Czech` remain accepted and normalize to `hun`, `slk` and `ces`.
+New configuration, audit examples and documentation should use these fields consistently. Country values and spoken-language values are intentionally different namespaces and should not be substituted for one another.
 
 ## Routing
 
