@@ -33,6 +33,24 @@ QUALITY_SUFFIX_RE = re.compile(
 TVG_VARIANT_SUFFIX_RE = re.compile(r'@(SD|HD|FHD|UHD|4K|\d{3,4}P)$', re.IGNORECASE)
 SOURCE_FLAG_RE = re.compile(r'\[(Geo[- ]?blocked|Not\s*24/7|Offline)\]', re.IGNORECASE)
 CUSTOM_PREFIX_RE = re.compile(r'^\[[A-Z]{2,3}(?:\s+(?:OK|TV|PC|\?|X))?\]\s*', re.IGNORECASE)
+INTERNAL_PROVIDER_TEST_SUFFIX_RE = re.compile(
+    r"""
+    (?:\s*[-–—]\s*|\s+)
+    (?:
+        LEGACY(?:\s+ANTIK)?
+        | ANTIK
+        | PANACCESS
+        | KABELKO
+        | REBIT
+        | STREAMLOCK
+        | ZSTV\s+DIRECT
+        | JOJ\s+CDN
+    )
+    \s+TEST
+    \s*$
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
 
 
 def http_get_text(url: str, timeout: int = 45) -> str:
@@ -168,6 +186,21 @@ def normalize_text(value: str) -> str:
     return " ".join(value.split())
 
 
+def strip_internal_candidate_annotations(name: str) -> str:
+    """Remove provider/research TEST labels from a channel name.
+
+    Labels such as ``ANTIK TEST`` and ``PANACCESS TEST`` describe where a
+    candidate URL came from. They belong in comments/audit provenance, not in
+    the logical channel identity or the name shown to playlist users.
+    """
+    value = " ".join(str(name or "").split()).strip()
+    previous = None
+    while value and value != previous:
+        previous = value
+        value = INTERNAL_PROVIDER_TEST_SUFFIX_RE.sub("", value).strip()
+    return value or "Unnamed channel"
+
+
 def normalized_tvg_id(tvg_id: str) -> str:
     value = (tvg_id or "").strip()
 
@@ -268,11 +301,18 @@ def channel_key(entry: dict) -> str:
     if tvg_id:
         return f"id:{tvg_id}"
 
-    tvg_name = normalize_text(entry.get("tvg_name", ""))
+    tvg_name = normalize_text(
+        strip_internal_candidate_annotations(
+            entry.get("tvg_name", "")
+        )
+    )
     if tvg_name:
         return f"name:{tvg_name}"
 
-    return f"name:{normalize_text(strip_display_annotations(entry.get('display_name', '')))}"
+    display_name = strip_internal_candidate_annotations(
+        entry.get("display_name", "")
+    )
+    return f"name:{normalize_text(strip_display_annotations(display_name))}"
 
 
 
@@ -476,6 +516,27 @@ def rewrite_extinf_line(line: str, new_name: str, group_title: str) -> str:
         )
     else:
         metadata += f' group-title="{safe_group}"'
+
+    # Some source playlists put research provenance in tvg-name, e.g.
+    # "JOJ Šport 2 ANTIK TEST". Clean it as well because a number of
+    # IPTV clients prefer tvg-name over the visible text after the comma.
+    tvg_name_match = re.search(
+        r'\s+tvg-name="([^"]*)"',
+        metadata,
+        flags=re.IGNORECASE,
+    )
+    if tvg_name_match:
+        clean_tvg_name = strip_internal_candidate_annotations(
+            tvg_name_match.group(1)
+        ).replace('"', "'")
+        metadata = re.sub(
+            r'\s+tvg-name="[^"]*"',
+            f' tvg-name="{clean_tvg_name}"',
+            metadata,
+            count=1,
+            flags=re.IGNORECASE,
+        )
+
     return f"{metadata},{new_name}"
 
 
@@ -3278,6 +3339,10 @@ def prepare_published_entries(
                 candidate_name
             )
 
+            candidate_name = strip_internal_candidate_annotations(
+                candidate_name
+            )
+
             candidate_name = strip_display_annotations(
                 candidate_name
             )
@@ -3332,10 +3397,12 @@ def prepare_published_entries(
                 # Single-feed channels keep their original
                 # quality/status annotations.
                 original_display = (
-                    strip_custom_prefix(
-                        entry.get(
-                            "display_name",
-                            "",
+                    strip_internal_candidate_annotations(
+                        strip_custom_prefix(
+                            entry.get(
+                                "display_name",
+                                "",
+                            )
                         )
                     )
                 )
@@ -3694,7 +3761,11 @@ def main(strict: bool = False) -> None:
 
             url_key = canonical_stream_url(url)
             key = channel_key(entry)
-            clean_name = strip_display_annotations(entry.get("display_name", ""))
+            clean_name = strip_display_annotations(
+                strip_internal_candidate_annotations(
+                    entry.get("display_name", "")
+                )
+            )
             entry["channel_key"] = key
             entry["channel_name"] = clean_name
             entry["source"] = name
