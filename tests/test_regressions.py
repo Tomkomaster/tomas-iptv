@@ -221,7 +221,7 @@ class LanguageScopingRegressionTests(unittest.TestCase):
         self.assertEqual(stable, [])
 
 
-    def test_supported_cross_language_stays_in_first_country_bucket_once(self):
+    def test_supported_cross_language_moves_to_observed_language_bucket_once(self):
         url = "https://example.test/cross-language.m3u8"
 
         with tempfile.TemporaryDirectory() as td:
@@ -247,7 +247,7 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             )
 
             for filename, tvg_id in (
-                ("sk-source.m3u", "CrossLanguage.sk@SD"),
+                ("sk-source.m3u", "CrossLanguage.cz@SD"),
                 ("cz-source.m3u", "CrossLanguage.cz@SD"),
             ):
                 (root / filename).write_text(
@@ -310,9 +310,9 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             )
 
             self.assertEqual(stable.count(url), 1)
-            self.assertIn("[SK OK] Cross Language TV", sk_playlist)
-            self.assertIn(url, sk_playlist)
-            self.assertNotIn(url, cz_playlist)
+            self.assertNotIn(url, sk_playlist)
+            self.assertIn("[CZ OK] Cross Language TV", cz_playlist)
+            self.assertEqual(cz_playlist.count(url), 1)
 
             with (root / "public" / "audit.csv").open(
                 encoding="utf-8-sig",
@@ -326,22 +326,133 @@ class LanguageScopingRegressionTests(unittest.TestCase):
                 if row["in_playlist"] == "True"
             ]
             self.assertEqual(len(current), 1)
-            self.assertEqual(
-                current[0]["playlist_language_code"],
-                "SK",
-            )
-            self.assertEqual(
-                current[0]["observed_language_codes"],
-                "CZ",
-            )
+            self.assertEqual(current[0]["playlist_language_code"], "SK")
+            self.assertEqual(current[0]["output_language_code"], "CZ")
+            self.assertEqual(current[0]["observed_language_codes"], "CZ")
             self.assertEqual(
                 current[0]["language_acceptance"],
                 "supported_cross_language",
             )
-            self.assertEqual(
-                current[0]["decision"],
-                "Verified",
+            self.assertEqual(current[0]["decision"], "Verified")
+
+    def test_rerouted_channel_still_has_only_one_best_stable_feed(self):
+        sk_url = "https://example.test/from-sk.m3u8"
+        cz_url = "https://example.test/from-cz.m3u8"
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            (root / "audit.json").write_text(
+                json.dumps({
+                    "channels": [
+                        {
+                            "channel": "Shared Czech TV",
+                            "stream_url": sk_url,
+                            "playlist_language_code": "SK",
+                            "expected_language_codes": ["SK"],
+                            "observed_language_codes": ["CZ"],
+                            "language": "Czech",
+                            "language_code": "CZ",
+                            "vlc": "wrong_language",
+                            "samsung": "wrong_language",
+                            "decision": "auto",
+                            "exclude_from_playlist": False,
+                        },
+                        {
+                            "channel": "Shared Czech TV",
+                            "stream_url": cz_url,
+                            "playlist_language_code": "CZ",
+                            "expected_language_codes": ["CZ"],
+                            "observed_language_codes": ["CZ"],
+                            "language": "Czech",
+                            "language_code": "CZ",
+                            "vlc": "works",
+                            "samsung": "works",
+                            "decision": "auto",
+                            "exclude_from_playlist": False,
+                        },
+                    ]
+                }),
+                encoding="utf-8",
             )
+
+            (root / "sk-source.m3u").write_text(
+                "#EXTM3U\n"
+                '#EXTINF:-1 tvg-id="SharedCzechTV.cz@SD" '
+                'tvg-name="Shared Czech TV",Shared Czech TV\n'
+                f"{sk_url}\n",
+                encoding="utf-8",
+            )
+            (root / "cz-source.m3u").write_text(
+                "#EXTM3U\n"
+                '#EXTINF:-1 tvg-id="SharedCzechTV.cz@HD" '
+                'tvg-name="Shared Czech TV",Shared Czech TV\n'
+                f"{cz_url}\n",
+                encoding="utf-8",
+            )
+
+            (root / "config.json").write_text(
+                json.dumps({
+                    "site_title": "Test",
+                    "default_language_code": "SK",
+                    "country_names": {
+                        "SK": "Slovakia",
+                        "CZ": "Czechia",
+                    },
+                    "output": "public/tv.m3u",
+                    "test_output": "public/test.m3u",
+                    "country_outputs": {
+                        "SK": "public/sk.m3u",
+                        "CZ": "public/cz.m3u",
+                    },
+                    "audit_path": "audit.json",
+                    "sources": [
+                        {
+                            "name": "Slovakia",
+                            "kind": "base",
+                            "language_code": "SK",
+                            "path": "sk-source.m3u",
+                        },
+                        {
+                            "name": "Czechia",
+                            "kind": "base",
+                            "language_code": "CZ",
+                            "path": "cz-source.m3u",
+                        },
+                    ],
+                    "extras": [],
+                }),
+                encoding="utf-8",
+            )
+
+            old_root = build.ROOT
+            try:
+                build.ROOT = root
+                build.main(strict=True)
+            finally:
+                build.ROOT = old_root
+
+            stable = (root / "public" / "tv.m3u").read_text(
+                encoding="utf-8"
+            )
+            sk_playlist = (root / "public" / "sk.m3u").read_text(
+                encoding="utf-8"
+            )
+            cz_playlist = (root / "public" / "cz.m3u").read_text(
+                encoding="utf-8"
+            )
+
+            self.assertNotIn(sk_url, sk_playlist)
+            self.assertNotIn(cz_url, sk_playlist)
+            self.assertEqual(
+                int(sk_url in stable) + int(cz_url in stable),
+                1,
+            )
+            self.assertEqual(
+                int(sk_url in cz_playlist) + int(cz_url in cz_playlist),
+                1,
+            )
+            self.assertIn("[CZ OK] Shared Czech TV", cz_playlist)
 
     def test_unsupported_cross_language_remains_rejected(self):
         decision, _reason = build.calculate_audit_decision(
