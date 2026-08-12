@@ -585,7 +585,15 @@ def apply_history(
     health_policy_reason = str(entry.get("health_policy_reason") or "")
     health_policy_match = str(entry.get("health_policy_match") or "default")
     event_inactive = health_policy == "event_based" and not success
-    actionable_failure = not success and not event_inactive
+    manual_tv_probe_unavailable = (
+        health_policy == "manual_tv_verified"
+        and not success
+    )
+    actionable_failure = (
+        not success
+        and not event_inactive
+        and not manual_tv_probe_unavailable
+    )
     previous_checked_at = str((previous or {}).get("checked_at") or "")
     same_check_day = (
         len(previous_checked_at) >= 10
@@ -622,6 +630,20 @@ def apply_history(
         )
         if health_policy_reason:
             detail += f" Policy reason: {health_policy_reason}"
+    elif manual_tv_probe_unavailable:
+        status = "TV verified; PC probe unavailable"
+        raw_detail = str(
+            probe.get("detail") or "Automated PC-style probe could not verify playback."
+        ).strip()
+        detail = (
+            "Manual TV playback is currently authoritative for this exact stream. "
+            "The automated/desktop-style probe remains unsuccessful and is preserved "
+            "as diagnostic evidence, but it does not count as a channel outage or "
+            "build a manual-retest streak. "
+            f"Probe result: {probe_status}. {raw_detail}"
+        )
+        if health_policy_reason:
+            detail += f" Policy reason: {health_policy_reason}"
     else:
         status = probe_status
         detail = probe.get("detail", "")
@@ -643,6 +665,19 @@ def apply_history(
         "status": status,
         "success": success,
         "actionable_failure": actionable_failure,
+        "stream_state": (
+            "playable"
+            if success
+            else (
+                "event_inactive"
+                if event_inactive
+                else (
+                    "manual_tv_verified_probe_failure"
+                    if manual_tv_probe_unavailable
+                    else "probe_failure"
+                )
+            )
+        ),
         "attention": attention,
         "consecutive_failures": consecutive_failures,
         "manual_retest_recommended": manual_retest_recommended,
@@ -766,6 +801,12 @@ def build_report(
                 "A failed automated probe for an explicitly event_based stream is "
                 "reported as Event inactive, remains success=false, but is informational: "
                 "it does not build a failure streak or recommend a manual retest."
+            ),
+            "manual_tv_verified": (
+                "A failed automated probe for an explicitly manual_tv_verified stream "
+                "remains success=false and preserves the raw probe failure, but a recent "
+                "manual TV playback check is authoritative: the failure is informational, "
+                "does not build a streak, and does not request another retest."
             ),
             "tls_certificate_retry": (
                 "Certificate-verification failures may be retried without certificate "

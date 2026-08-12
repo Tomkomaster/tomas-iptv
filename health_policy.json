@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "default": "normal",
-  "description": "Controls how automated stream failures affect health history. normal = failures build a daily streak; event_based = offline/inactive probes are informational because the stream is not expected to broadcast continuously.",
+  "description": "Controls how automated stream failures affect health history. normal = failures build a daily streak; event_based = inactive probes are informational because the stream is not expected to broadcast continuously; manual_tv_verified = a recent manual TV playback check is authoritative when the PC-style probe cannot play the exact stream.",
   "entries": [
     {
       "name": "Országgyűlés (Plenáris)",
@@ -38,6 +38,24 @@
       "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream5/playlist/cze.m3u8",
       "health_policy": "event_based",
       "reason": "Official parliamentary committee and seminar stream is event-based and may legitimately be offline when no event is taking place."
+    },
+    {
+      "name": ":24",
+      "tvg_id": "24.sk@SD",
+      "health_policy": "manual_tv_verified",
+      "reason": "Samsung TV playback was manually verified on 2026-08-12 while VLC only loads and the automated HTTP probe receives 403; treat that PC/probe limitation as informational unless manual TV verification changes."
+    },
+    {
+      "name": ":Šport",
+      "tvg_id": "Sport.sk@SD",
+      "health_policy": "manual_tv_verified",
+      "reason": "Samsung TV playback was manually verified on 2026-08-12 while VLC only loads and the automated HTTP probe receives 403; treat that PC/probe limitation as informational unless manual TV verification changes."
+    },
+    {
+      "name": "Vásárhelyi Televízió",
+      "tvg_id": "VasarhelyiTelevizio.hu@SD",
+      "health_policy": "manual_tv_verified",
+      "reason": "Samsung TV playback was manually verified on 2026-08-12 while VLC only loads and the automated HLS segment probe cannot confirm playable media; treat that PC/probe limitation as informational unless manual TV verification changes."
     }
   ]
 }

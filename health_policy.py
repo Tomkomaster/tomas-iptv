@@ -4,7 +4,7 @@ from __future__ import annotations
 from urllib.parse import urlparse, urlunparse
 
 
-VALID_HEALTH_POLICIES = {"normal", "event_based"}
+VALID_HEALTH_POLICIES = {"normal", "event_based", "manual_tv_verified"}
 SELECTORS = ("stream_url", "tvg_id", "channel")
 
 

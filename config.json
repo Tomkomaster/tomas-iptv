@@ -114,13 +114,21 @@
         "sites": [
           "horizon.tv",
           "mujtvprogram.cz"
-        ]
+        ],
+        "external": {
+          "provider": "epgshare01.online",
+          "url": "https://epgshare01.online/epgshare01/epg_ripper_SK1.xml.gz"
+        }
       },
       "CZ": {
         "sites": [
           "horizon.tv",
           "mujtvprogram.cz"
-        ]
+        ],
+        "external": {
+          "provider": "epgshare01.online",
+          "url": "https://epgshare01.online/epgshare01/epg_ripper_CZ1.xml.gz"
+        }
       }
     },
     "future_days": 7,
@@ -185,28 +193,28 @@
       "name": "IPTV-org Hungarian language",
       "kind": "alternatives",
       "url": "https://iptv-org.github.io/iptv/languages/hun.m3u",
-      "country_code": "HU",
       "language_codes": [
         "hun"
-      ]
+      ],
+      "country_mode": "tvg_id"
     },
     {
       "name": "IPTV-org Slovak language",
       "kind": "alternatives",
       "url": "https://iptv-org.github.io/iptv/languages/slk.m3u",
-      "country_code": "SK",
       "language_codes": [
         "slk"
-      ]
+      ],
+      "country_mode": "tvg_id"
     },
     {
       "name": "IPTV-org Czech language",
       "kind": "alternatives",
       "url": "https://iptv-org.github.io/iptv/languages/ces.m3u",
-      "country_code": "CZ",
       "language_codes": [
         "ces"
-      ]
+      ],
+      "country_mode": "tvg_id"
     }
   ],
   "extras": [
