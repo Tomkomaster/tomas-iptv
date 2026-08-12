@@ -14,6 +14,16 @@
     "SK": "public/sk.m3u",
     "CZ": "public/cz.m3u"
   },
+  "language_names": {
+    "hun": "Hungarian",
+    "slk": "Slovak",
+    "ces": "Czech"
+  },
+  "language_outputs": {
+    "hun": "public/by-language/hun.m3u",
+    "slk": "public/by-language/slk.m3u",
+    "ces": "public/by-language/ces.m3u"
+  },
   "stable_playlist": {
     "allowed_decisions": [
       "Verified",

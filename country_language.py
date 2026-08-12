@@ -248,6 +248,10 @@ def configured_language_codes(cfg: dict) -> list[str]:
             if code not in result:
                 result.append(code)
 
+    language_outputs = cfg.get("language_outputs") or {}
+    if isinstance(language_outputs, dict):
+        add(list(language_outputs))
+
     for country in configured_country_codes(cfg):
         add(country_language_defaults(cfg, country))
 

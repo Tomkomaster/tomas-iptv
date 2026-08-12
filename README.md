@@ -20,6 +20,16 @@ https://tomkomaster.github.io/tomas-iptv/sk.m3u
 https://tomkomaster.github.io/tomas-iptv/cz.m3u
 ```
 
+Stable spoken-language playlists:
+
+```text
+https://tomkomaster.github.io/tomas-iptv/by-language/hun.m3u
+https://tomkomaster.github.io/tomas-iptv/by-language/slk.m3u
+https://tomkomaster.github.io/tomas-iptv/by-language/ces.m3u
+```
+
+Language playlists keep geography visible in the channel name. For example, a verified Hungarian-language Serbian station is published as `[RS] ...` inside `by-language/hun.m3u`; it is not moved into `hu.m3u` merely because it speaks Hungarian. This also means future outputs such as `deu.m3u`, `srp.m3u` or `ron.m3u` only require a configured language output plus suitable source/audit data.
+
 Testing/research playlist:
 
 ```text
@@ -97,7 +107,7 @@ The builder then:
 10. rejects manually excluded/unsupported feeds;
 11. selects the preferred feed when a stable verified feed exists;
 12. creates country/category `group-title` values;
-13. generates the shared stable, testing and per-country playlists;
+13. generates the shared stable, testing, per-country and per-language playlists;
 14. generates CSV and JSON reports;
 15. generates the HTML dashboard.
 

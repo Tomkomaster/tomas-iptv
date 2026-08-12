@@ -3667,6 +3667,66 @@ def prepare_published_entries(
     return published_entries
 
 
+def build_language_catalog_entries(
+    country_entries: list[dict],
+    language_only_entries: list[dict],
+) -> list[dict]:
+    """Build a URL-unique catalog for spoken-language playlists.
+
+    Existing country entries are inserted first and therefore keep authority
+    for an exact URL already published by the country build. A language-only
+    duplicate may still add additional spoken-language metadata, but it cannot
+    steal or rewrite the established country identity.
+    """
+    result: list[dict] = []
+    by_url: dict[str, dict] = {}
+
+    for entry in [*country_entries, *language_only_entries]:
+        url = str(entry.get("url") or "").strip()
+        url_key = canonical_stream_url(url)
+        if not url_key:
+            continue
+
+        languages = normalize_spoken_language_codes(
+            entry.get("language_codes")
+        )
+
+        current = by_url.get(url_key)
+        if current is not None:
+            current["language_codes"] = normalize_spoken_language_codes(
+                [
+                    *(current.get("language_codes") or []),
+                    *languages,
+                ]
+            )
+            continue
+
+        candidate = dict(entry)
+        candidate["language_codes"] = languages
+        by_url[url_key] = candidate
+        result.append(candidate)
+
+    return result
+
+
+def entries_for_spoken_language(
+    entries: list[dict],
+    language_code: str,
+) -> list[dict]:
+    """Return entries explicitly carrying one normalized spoken language."""
+    code = normalize_spoken_language_code(language_code)
+    if not code:
+        raise ValueError(f"Unsupported spoken language code: {language_code!r}")
+
+    return [
+        entry
+        for entry in entries
+        if code in normalize_spoken_language_codes(
+            entry.get("language_codes")
+        )
+    ]
+
+
 def write_m3u_playlist(
     path: Path,
     cfg: dict,
@@ -3859,6 +3919,11 @@ def main(strict: bool = False) -> None:
         raise RuntimeError("config.json contains no sources or extras.")
 
     final_entries: list[dict] = []
+    # Country-neutral language sources may contain verified channels from
+    # countries that do not have a country playlist yet. Keep those entries
+    # isolated so they can feed by-language outputs without changing the
+    # existing tv.m3u/test.m3u/per-country publication universe.
+    language_only_entries: list[dict] = []
     duplicate_rows: list[dict] = []
     source_stats: list[dict] = []
 
@@ -4005,12 +4070,12 @@ def main(strict: bool = False) -> None:
             entry["country_code"] = final_entry_country
             entry["language_code"] = final_entry_country
 
-            if (
+            language_only_country_entry = (
                 country_mode == "tvg_id"
                 and final_entry_country not in supported_country_codes
-            ):
+            )
+            if language_only_country_entry:
                 out_of_scope_country_entries += 1
-                continue
 
             key = channel_key(entry)
             source_keys.add(key)
@@ -4080,6 +4145,18 @@ def main(strict: bool = False) -> None:
                     "",
                 )
             )
+
+            if language_only_country_entry:
+                # Preserve this candidate only for language-centric outputs.
+                # Do not put it into seen_urls/seen_channels: doing so would
+                # change which existing HU/SK/CZ source wins duplicate URL
+                # precedence later in the normal country build.
+                entry["classification"] = "Language-only channel"
+                entry["country_output_enabled"] = False
+                language_only_entries.append(dict(entry))
+                continue
+
+            entry["country_output_enabled"] = True
 
             if url_key in seen_urls:
                 duplicate_urls += 1
@@ -4193,6 +4270,20 @@ def main(strict: bool = False) -> None:
         ),
         cfg=cfg,
     )
+
+    language_catalog_entries = build_language_catalog_entries(
+        final_entries,
+        language_only_entries,
+    )
+    language_audit_rows = prepare_audit_rows(
+        audit_items,
+        language_catalog_entries,
+        supported_language_codes=(
+            supported_language_codes
+        ),
+        cfg=cfg,
+    )
+
     test_candidates = (
         route_candidates_to_verified_countries(
             make_test_playlist_candidates(
@@ -4214,6 +4305,15 @@ def main(strict: bool = False) -> None:
         )
     )
 
+    (
+        language_stable_candidates,
+        _language_excluded_rows,
+    ) = select_stable_playlist_candidates(
+        language_catalog_entries,
+        language_audit_rows,
+        cfg,
+    )
+
     test_entries = (
         prepare_published_entries(
             test_candidates,
@@ -4228,6 +4328,11 @@ def main(strict: bool = False) -> None:
             stable_candidates,
             cfg,
         )
+    )
+
+    language_published_entries = prepare_published_entries(
+        language_stable_candidates,
+        cfg,
     )
 
     stable_urls = {
@@ -4518,6 +4623,56 @@ def main(strict: bool = False) -> None:
             country_entries
         )
 
+    # Stable per-spoken-language playlists. These are independent of enabled
+    # country outputs: a verified RS/hun entry can therefore live in hun.m3u
+    # even when there is no public rs.m3u yet. Country prefixes remain visible
+    # inside language playlists so geography is never lost.
+    language_outputs = cfg.get("language_outputs") or {}
+    if not isinstance(language_outputs, dict):
+        raise RuntimeError("language_outputs must be a JSON object.")
+
+    language_names = cfg.get("language_names") or {}
+    if not isinstance(language_names, dict):
+        raise RuntimeError("language_names must be a JSON object.")
+
+    language_playlist_counts: dict[str, int] = {}
+
+    for raw_language_code, relative_path in language_outputs.items():
+        language_code = normalize_spoken_language_code(
+            str(raw_language_code)
+        )
+        if not language_code:
+            raise RuntimeError(
+                f"Invalid language_outputs key: {raw_language_code!r}"
+            )
+
+        raw_path = str(relative_path or "").strip()
+        if not raw_path:
+            raise RuntimeError(
+                f"language_outputs[{raw_language_code!r}] requires a path."
+            )
+
+        language_entries = entries_for_spoken_language(
+            language_published_entries,
+            language_code,
+        )
+
+        language_name = str(
+            language_names.get(language_code)
+            or language_code
+        ).strip()
+
+        write_m3u_playlist(
+            ROOT / raw_path,
+            cfg,
+            language_entries,
+            generated,
+            f"Stable {language_name} spoken-language playlist",
+            name_style="country",
+        )
+
+        language_playlist_counts[language_code] = len(language_entries)
+
     inventory_rows = [
         {
             "playlist_name": e.get("published_name", e["channel_name"]),
@@ -4685,7 +4840,7 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 22,
+        "schema_version": 23,
         "generated_at": generated,
         "playlists": {
             "stable": {
@@ -4712,6 +4867,9 @@ def main(strict: bool = False) -> None:
             },
             "country_stream_urls": (
                 country_playlist_counts
+            ),
+            "language_stream_urls": (
+                language_playlist_counts
             ),
         },		
         "summary": {
