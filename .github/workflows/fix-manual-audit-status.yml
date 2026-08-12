@@ -1,0 +1,58 @@
+name: Fix manual audit Samsung status
+
+on:
+  push:
+    branches:
+      - agent/manual-audit-132-channels
+    paths:
+      - .github/workflows/fix-manual-audit-status.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Normalize legacy broken Samsung results
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('audit.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          rows = data.get('channels', [])
+
+          changed = []
+          for row in rows:
+              if row.get('samsung') == 'broken':
+                  changed.append((row.get('channel'), row.get('stream_url')))
+                  row['samsung'] = 'generic_error'
+
+          if len(changed) != 5:
+              raise SystemExit(f'Expected exactly 5 legacy broken statuses, found {len(changed)}: {changed!r}')
+
+          expected_channels = {'Mňau TV', 'Óčko', 'Óčko Expres', 'Óčko Gold'}
+          actual_channels = {str(name or '') for name, _ in changed}
+          if actual_channels != expected_channels:
+              raise SystemExit(f'Unexpected affected channels: {actual_channels!r}')
+
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('Normalized:', *changed, sep='\n- ')
+          PY
+
+      - name: Commit normalized audit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git commit -m "Normalize Samsung manual audit statuses"
+          git push
