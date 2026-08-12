@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Decode and apply cross-language changes
+      - name: Decode and inspect migration section
         shell: bash
         run: |
           set -euo pipefail
@@ -31,37 +31,8 @@ jobs:
           encoded = Path(
               ".github/scripts/apply_cross_language.py.gz.b64"
           ).read_text(encoding="utf-8").strip()
-
-          source = gzip.decompress(
-              base64.b64decode(encoded)
-          )
-
-          target = Path("/tmp/apply_cross_language.py")
-          target.write_bytes(source)
+          source = gzip.decompress(base64.b64decode(encoded))
+          Path("/tmp/apply_cross_language.py").write_bytes(source)
           PY
-          python3 /tmp/apply_cross_language.py
-
-      - name: Stage source and audit changes
-        shell: bash
-        run: |
-          set -euo pipefail
-          git add build.py tests/test_regressions.py audit.json
-          git diff --cached --check
-          git status --short
-
-      - name: Run unit tests
-        run: python3 -m unittest discover -s tests -v
-
-      - name: Run final strict production build
-        run: python3 build.py --strict
-
-      - name: Commit validated changes
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Support verified cross-language channels"
-
-      - name: Push validated commit
-        run: git push origin HEAD:agent/support-cross-language-channels
+          nl -ba /tmp/apply_cross_language.py | sed -n '440,530p'
+          exit 1
