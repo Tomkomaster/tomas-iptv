@@ -1,0 +1,63 @@
+name: Test mujtvprogram EPG provider
+
+on:
+  push:
+    branches:
+      - fix/healthy-sk-cz-epg-provider
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Test focused live EPG grab
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .epg-builder
+          git clone --depth 1 --branch master https://github.com/iptv-org/epg.git .epg-builder
+          cd .epg-builder
+          npm ci >/dev/null
+          cd "$GITHUB_WORKSPACE"
+          cat > .channels.xml <<'EOF'
+          <channels>
+            <channel site="mujtvprogram.cz" site_id="344" lang="sk" xmltv_id="ArenaSport1.sk@SD">Arena Sport 1</channel>
+            <channel site="mujtvprogram.cz" site_id="379" lang="sk" xmltv_id="ArenaSport2.sk@SD">Arena Sport 2</channel>
+            <channel site="mujtvprogram.cz" site_id="728" lang="cs" xmltv_id="LalaTV.sk">LALA TV</channel>
+            <channel site="mujtvprogram.cz" site_id="19" lang="cs" xmltv_id="Ocko.cz@SD">ÓČKO</channel>
+            <channel site="mujtvprogram.cz" site_id="30" lang="cs" xmltv_id="SpektrumHome.cz@SD">Spektrum Home</channel>
+          </channels>
+          EOF
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.guide.xml" \
+            --maxConnections=2
+          cd "$GITHUB_WORKSPACE"
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from collections import Counter
+          root = ET.parse('.guide.xml').getroot()
+          counts = Counter(
+              (p.get('channel') or '').strip()
+              for p in root.findall('programme')
+          )
+          expected = [
+              'ArenaSport1.sk@SD',
+              'ArenaSport2.sk@SD',
+              'LalaTV.sk',
+              'Ocko.cz@SD',
+              'SpektrumHome.cz@SD',
+          ]
+          for tvg_id in expected:
+              print(f'{tvg_id}: {counts[tvg_id]} programmes')
+              if counts[tvg_id] <= 0:
+                  raise SystemExit(f'{tvg_id} produced no programmes')
+          PY
