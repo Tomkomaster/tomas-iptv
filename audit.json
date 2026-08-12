@@ -14801,6 +14801,412 @@
       "discovery": "Manual VLC + Samsung test",
       "notes": "The feed failed on both tested devices, but it may have been off-air at test time. Re-test during a confirmed Praha TV broadcast before permanently rejecting this exact URL.",
       "reason": "Manual playback failed, but possible non-24/7 availability makes this test inconclusive."
+    },
+    {
+      "channel": "Prima",
+      "stream_url": "http://88.212.15.19/live/prima_avc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Prima",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_family/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact URL while retaining other working Prima sources.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Prima Cool",
+      "stream_url": "http://88.212.15.19/live/prima_cool_cz_avc/index.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Prima Cool",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_cool/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact URL while retaining other working Prima Cool sources.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Prima Krimi",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_krimi/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact stream URL.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Prima Love",
+      "stream_url": "http://88.212.15.19/live/prima_love_cz_avc/index.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Prima Love",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_love/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact URL while retaining other working Prima Love sources.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Prima MAX",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_max/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact stream URL.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Prima Show",
+      "stream_url": "http://88.212.15.19/live/test_prima_show_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Prima Show",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_show/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact URL while retaining other working Prima Show sources.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Prima Star",
+      "stream_url": "http://88.212.15.19/live/test_prima_star_hevc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Prima Star",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_star/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact URL while retaining other working Prima Star sources.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Prima Zoom",
+      "stream_url": "http://88.212.15.19/live/prima_zoom_avc_25p/playlist.m3u8",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "auto",
+      "exclude_from_playlist": false,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "Passed both manual playback tests.",
+      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test."
+    },
+    {
+      "channel": "Prima Zoom",
+      "stream_url": "https://prima-ott-live.ssl.cdn.cra.cz/channels/prima_zoom/playlist/cze/live_hd.m3u8?offsetSeconds=0&url=0",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "vlc_note": "skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "language": "Czech",
+      "language_code": "CZ",
+      "language_codes": [
+        "ces"
+      ],
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "protocol": "HLS",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-12",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test",
+      "notes": "This Prima CDN feed failed on both tested devices. Reject this exact URL while retaining other working Prima Zoom sources.",
+      "reason": "VLC skipped the feed and Samsung reported NOT_SUPPORTED_FILE."
     }
   ]
 }
