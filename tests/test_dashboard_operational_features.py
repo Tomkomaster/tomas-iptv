@@ -84,6 +84,7 @@ class DashboardOperationalFeatureTests(unittest.TestCase):
         self.assertIn('data-country-tab="HU"', page)
         self.assertIn('data-country="HU"', page)
         self.assertIn("Conflicting identities", page)
+        self.assertIn("Same-URL identity conflicts", page)
         self.assertIn("Candidate streams to test", page)
         self.assertIn("Health by country", page)
         self.assertIn("Source contribution and yield", page)

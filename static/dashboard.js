@@ -1,4 +1,6 @@
-const SUPPORTED_COUNTRIES = ['HU', 'SK', 'CZ'];
+const SUPPORTED_COUNTRIES = Array.from(document.querySelectorAll('[data-country-tab]'))
+  .map(button => String(button.dataset.countryTab || '').toUpperCase())
+  .filter(code => code && code !== 'ALL');
 let selectedCountry = 'ALL';
 
 function esc(value) {
@@ -352,7 +354,7 @@ function csvTruthy(value) {
   return ['1', 'true', 'yes', 'y', 'on'].includes(String(value || '').trim().toLowerCase());
 }
 
-const testedStatuses = new Set(['works', 'works_with_warning', 'loads', 'mrl_error', 'format_error', 'generic_error', 'wrong_language', 'needs_review']);
+const testedStatuses = new Set(['works', 'works_with_warning', 'loads', 'mrl_error', 'format_error', 'generic_error', 'wrong_language']);
 function normalizedTestStatus(value) { return String(value || '').trim().toLowerCase().replaceAll(' ', '_').replaceAll('-', '_'); }
 function candidateNeedsTest(row) {
   if (!csvTruthy(row.current_candidate) || csvTruthy(row.stable_feed)) return false;
