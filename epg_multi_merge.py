@@ -10,6 +10,10 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
+from epg_cross_country_alias import (
+    apply_cross_country_aliases,
+    load_cross_country_aliases,
+)
 from epg_merge import load_external_aliases, merge_guides
 
 
@@ -62,6 +66,12 @@ def merge_country_guides(
         raise RuntimeError("epg.countries must contain at least one country.")
     if not isinstance(country_outputs, dict):
         raise RuntimeError("country_outputs must be a JSON object.")
+
+    (
+        cross_alias_provider,
+        cross_country_aliases,
+    ) = load_cross_country_aliases(aliases_path)
+    cross_country_external_cache: dict[str, dict] = {}
 
     combined_root = ET.Element(
         "tv",
@@ -144,6 +154,20 @@ def merge_country_guides(
             country_root = country_tree.getroot()
             if country_root.tag != "tv":
                 raise RuntimeError(f"Invalid country EPG root for {code}: {country_root.tag!r}")
+
+            apply_cross_country_aliases(
+                country_code=code,
+                playlist_path=playlist_path,
+                country_root=country_root,
+                country_report=country_report,
+                aliases=cross_country_aliases,
+                alias_provider=cross_alias_provider,
+                countries_cfg=countries_cfg,
+                external_dir=external_dir,
+                external_cache=cross_country_external_cache,
+                reference_date=reference_date,
+                future_days=max(future_days, 0),
+            )
 
             for channel in country_root.findall("channel"):
                 channel_id = str(channel.get("id") or "").strip()
@@ -259,6 +283,18 @@ def merge_country_guides(
         or [0]
     )
 
+    cross_country_aliases_used: list[dict] = []
+    cross_country_aliases_skipped: list[dict] = []
+    for code, info in external_countries.items():
+        for raw_item in info.get("cross_country_aliases_used") or []:
+            item = dict(raw_item) if isinstance(raw_item, dict) else {"value": raw_item}
+            item.setdefault("country_code", code)
+            cross_country_aliases_used.append(item)
+        for raw_item in info.get("cross_country_aliases_skipped") or []:
+            item = dict(raw_item) if isinstance(raw_item, dict) else {"value": raw_item}
+            item.setdefault("country_code", code)
+            cross_country_aliases_skipped.append(item)
+
     report = {
         "playlist_tvg_ids": total,
         "matched_tvg_ids": mapped_total,
@@ -288,6 +324,9 @@ def merge_country_guides(
                 for info in external_countries.values()
             ),
             "explicit_aliases_configured": explicit_aliases_configured,
+            "cross_country_aliases_configured": len(cross_country_aliases),
+            "cross_country_aliases_used": cross_country_aliases_used,
+            "cross_country_aliases_skipped": cross_country_aliases_skipped,
             "ambiguous": ambiguous,
             "countries": external_countries,
         },

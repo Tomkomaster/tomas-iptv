@@ -18,3 +18,11 @@ public/epg-coverage.json
 ```
 
 The coverage report keeps the previous aggregate `external` fields and adds `external.countries` so HU/SK/CZ availability, freshness and mapping diagnostics can be inspected separately.
+
+## Explicit alias policy
+
+Automatic external matching remains country-scoped: HU playlist entries are inferred only against the HU external guide, SK only against SK, and CZ only against CZ. Runtime fuzzy matching is intentionally not used.
+
+`epg_aliases.json` is the audited exception layer. Normal `aliases` map an exact playlist `tvg-id` to an exact XMLTV ID in the same country's EPGshare guide. `cross_country_aliases` additionally declare both the playlist country and the external guide country. This is useful when EPGshare carries a station in a neighboring country's package but not in its geographic guide. Cross-country aliases are applied only when the declared external XMLTV ID has current/future programme data; stale or empty mappings remain unmatched rather than inflating coverage.
+
+This keeps identification improvements deterministic and reviewable while leaving provider scraping unchanged.
