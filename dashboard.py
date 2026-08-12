@@ -100,6 +100,40 @@ def render_dashboard(
     def esc(v) -> str:
         return html.escape(str(v or ""))
 
+    def normalized_country_code(value) -> str:
+        code = str(value or "").strip().upper()
+        return code if 2 <= len(code) <= 3 and code.isalpha() else "UNKNOWN"
+
+    def audit_country_code(row: dict) -> str:
+        output = normalized_country_code(row.get("output_language_code"))
+        if output != "UNKNOWN":
+            return output
+        scope = normalized_country_code(row.get("playlist_language_code"))
+        if scope != "UNKNOWN":
+            return scope
+        expected = row.get("expected_language_codes") or []
+        if isinstance(expected, str):
+            expected = [part.strip() for part in expected.split(",") if part.strip()]
+        if expected:
+            return normalized_country_code(expected[0])
+        return "UNKNOWN"
+
+    country_outputs = cfg.get("country_outputs") or {}
+    if isinstance(country_outputs, dict) and country_outputs:
+        country_codes = [normalized_country_code(code) for code in country_outputs]
+        country_codes = [code for code in country_codes if code != "UNKNOWN"]
+    else:
+        country_codes = ["HU", "SK", "CZ"]
+
+    country_tabs = [
+        '<button type="button" class="country-tab active" data-country-tab="ALL" aria-pressed="true">All</button>'
+    ]
+    country_tabs.extend(
+        f'<button type="button" class="country-tab" data-country-tab="{esc(code)}" aria-pressed="false">{esc(code)}</button>'
+        for code in country_codes
+    )
+    country_tabs_html = "".join(country_tabs)
+
     audit_warning_html = ""
 
     if audit_ambiguity_warnings:
@@ -131,7 +165,7 @@ def render_dashboard(
 
     language_rows = "\n".join(
         f"""
-        <tr>
+        <tr data-country="{esc(normalized_country_code(s["language_code"]))}">
           <td><strong>{esc(s["language_code"])}</strong></td>
           <td>{s["source_count"]}</td>
           <td>{s["base_source_count"]}</td>
@@ -145,26 +179,37 @@ def render_dashboard(
         for s in language_stats
     )
 	
-    source_rows = "\n".join(
-        f"""
-        <tr>
+    source_row_parts = []
+    for s in source_stats:
+        raw_entries = int(s.get("raw_entries") or 0)
+        kept_stream_urls = int(s.get("kept_stream_urls") or 0)
+        yield_percent = (
+            (100.0 * kept_stream_urls / raw_entries)
+            if raw_entries
+            else 0.0
+        )
+        source_row_parts.append(
+            f"""
+        <tr data-country="{esc(normalized_country_code(s.get("language_code")))}">
           <td>{esc(s["name"])}</td>
           <td>{esc(s["language_code"])}</td>
           <td>{esc(s["kind"])}</td>
-          <td>{s["raw_entries"]}</td>
+          <td>{raw_entries}</td>
           <td>{s["unique_channels_in_source"]}</td>
-          <td>{s["kept_stream_urls"]}</td>
+          <td>{kept_stream_urls}</td>
+          <td><strong>{yield_percent:.1f}%</strong><div class="detail">{kept_stream_urls}/{raw_entries} raw entries kept</div></td>
           <td>{s["base_channels_contributed"]}</td>
           <td>{s["added_channels_contributed"]}</td>
           <td>{s["alternative_streams"]}</td>
           <td>{s["duplicate_urls_ignored"]}</td>
         </tr>
         """
-        for s in source_stats
-    )
+        )
+    source_rows = "\n".join(source_row_parts)
 
     channel_rows = []
     for e in final_entries:
+        entry_country = normalized_country_code(e.get("language_code"))
         classification = e["classification"]
         badge_class = {
             "Base channel": "base",
@@ -174,7 +219,7 @@ def render_dashboard(
 
         channel_rows.append(
             f"""
-            <tr data-source="{esc(e["source"])}" data-status="{esc(classification)}">
+            <tr data-country="{esc(entry_country)}" data-source="{esc(e["source"])}" data-status="{esc(classification)}">
               <td class="channel">{esc(e["channel_name"])}</td>
               <td>{esc(e.get("tvg_id", ""))}</td>
               <td>{esc(e.get("group_title", ""))}</td>
@@ -248,6 +293,7 @@ def render_dashboard(
 		
     audit_table_rows = []
     for a in audit_rows:
+        audit_country = audit_country_code(a)
         decision_css = {
             "Verified": "verified",
             "TV verified": "tv",
@@ -290,7 +336,7 @@ def render_dashboard(
 
         audit_table_rows.append(
             f"""
-            <tr data-audit-decision="{esc(a["decision"])}" data-audit-vlc="{esc(a["vlc"])}" data-audit-samsung="{esc(a["samsung"])}">
+            <tr data-country="{esc(audit_country)}" data-audit-decision="{esc(a["decision"])}" data-audit-vlc="{esc(a["vlc"])}" data-audit-samsung="{esc(a["samsung"])}">
               <td class="channel">{esc(a["channel"])}</td>
               <td>{esc(a.get("feed_label", "Single"))}</td>
               <td>{esc(a.get("tvg_id", "") or "—")}</td>
@@ -311,6 +357,92 @@ def render_dashboard(
               <td>{in_stable_playlist}</td>
               <td>{esc(reason_notes or "—")}</td>
               <td class="url">{stream_link}</td>
+            </tr>
+            """
+        )
+
+    identity_rows = []
+    for message in audit_ambiguity_warnings:
+        identity_rows.append(
+            f"""
+            <tr data-country="ALL">
+              <td><span class="badge rejected">Unresolved</span></td>
+              <td class="channel">Audit identity warning</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><div class="detail">{esc(message)}</div></td>
+            </tr>
+            """
+        )
+
+    url_identity_conflicts = 0
+    url_identities: dict[str, list[dict]] = {}
+    for a in audit_rows:
+        url = str(a.get("stream_url") or "").strip()
+        if url:
+            url_identities.setdefault(url, []).append(a)
+
+    for url, rows_for_url in url_identities.items():
+        identities = {
+            (
+                str(row.get("channel") or "").strip().casefold(),
+                normalized_country_code(row.get("playlist_language_code")),
+            )
+            for row in rows_for_url
+        }
+        if len(identities) <= 1:
+            continue
+
+        url_identity_conflicts += 1
+        channels = sorted({
+            str(row.get("channel") or "Unnamed channel").strip()
+            for row in rows_for_url
+        }, key=str.casefold)
+        source_scopes = sorted({
+            normalized_country_code(row.get("playlist_language_code"))
+            for row in rows_for_url
+            if normalized_country_code(row.get("playlist_language_code")) != "UNKNOWN"
+        })
+        output_scopes = sorted({
+            normalized_country_code(row.get("output_language_code"))
+            for row in rows_for_url
+            if normalized_country_code(row.get("output_language_code")) != "UNKNOWN"
+        })
+        identity_rows.append(
+            f"""
+            <tr data-country="ALL">
+              <td><span class="badge rejected">URL conflict</span></td>
+              <td class="channel">{esc(" / ".join(channels))}</td>
+              <td>{esc(", ".join(source_scopes) or "—")}</td>
+              <td>{esc(", ".join(output_scopes) or "—")}</td>
+              <td>—</td>
+              <td><div class="detail">The same saved stream URL appears under multiple channel/source-scope identities. Verification is not transferred automatically. <a href="{esc(url)}" target="_blank" rel="noopener">stream</a></div></td>
+            </tr>
+            """
+        )
+
+    reroute_count = 0
+    for a in audit_rows:
+        source_scope = normalized_country_code(a.get("playlist_language_code"))
+        output_scope = normalized_country_code(a.get("output_language_code"))
+        if (
+            not a.get("in_playlist")
+            or source_scope == "UNKNOWN"
+            or output_scope == "UNKNOWN"
+            or source_scope == output_scope
+        ):
+            continue
+        reroute_count += 1
+        identity_rows.append(
+            f"""
+            <tr data-country="{esc(output_scope)}">
+              <td><span class="badge tv">Resolved routing</span></td>
+              <td class="channel">{esc(a.get("channel") or "Unnamed channel")}</td>
+              <td>{esc(source_scope)}</td>
+              <td>{esc(output_scope)}</td>
+              <td>{esc(format_language_codes(a.get("observed_language_codes")))}</td>
+              <td><div class="detail">Verified spoken language routes this stream to {esc(output_scope)} while the saved audit/source identity remains {esc(source_scope)}.</div></td>
             </tr>
             """
         )
@@ -362,6 +494,11 @@ def render_dashboard(
         "TOTAL_ALTERNATIVES": str(total_alternatives),
         "TOTAL_DUPLICATES": str(total_duplicates),
         "AUDIT_WARNINGS": str(audit_warning_html),
+        "COUNTRY_TABS": str(country_tabs_html),
+        "IDENTITY_UNRESOLVED": str(len(audit_ambiguity_warnings)),
+        "IDENTITY_URL_CONFLICTS": str(url_identity_conflicts),
+        "IDENTITY_REROUTED": str(reroute_count),
+        "IDENTITY_ROWS": str("".join(identity_rows)),
         "AUDIT_CURRENT_COUNT": str(len(audit_current)),
         "AUDIT_BOTH_TESTED": str(audit_both_tested),
         "AUDIT_VLC_PENDING": str(audit_vlc_pending),
