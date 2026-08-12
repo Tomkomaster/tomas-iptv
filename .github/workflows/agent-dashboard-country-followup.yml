@@ -31,7 +31,9 @@ jobs:
           replace_once(
               "static/dashboard.js",
               "const SUPPORTED_COUNTRIES = ['HU', 'SK', 'CZ'];",
-              "const SUPPORTED_COUNTRIES = Array.from(document.querySelectorAll('[data-country-tab]'))\\n  .map(button => String(button.dataset.countryTab || '').toUpperCase())\\n  .filter(code => code && code !== 'ALL');",
+              '''const SUPPORTED_COUNTRIES = Array.from(document.querySelectorAll('[data-country-tab]'))
+  .map(button => String(button.dataset.countryTab || '').toUpperCase())
+  .filter(code => code && code !== 'ALL');''',
           )
           replace_once(
               "static/dashboard.js",
