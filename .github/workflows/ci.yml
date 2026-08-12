@@ -36,3 +36,10 @@ jobs:
 
       - name: Run strict playlist build
         run: python3 build.py --strict
+
+      - name: Validate research exports
+        run: >-
+          python3 research_exports.py
+          --public-dir public
+          --priority-policy research_priority.json
+          --wanted-channels wanted_channels.json
