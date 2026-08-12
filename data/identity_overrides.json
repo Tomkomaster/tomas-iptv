@@ -10,6 +10,36 @@
         "slk"
       ],
       "language_code": "SK"
+    },
+    "sk:tv-sen-kultura": {
+      "channel_name": "TV SEN KULTÚRA",
+      "tvg_name": "TV SEN KULTÚRA",
+      "tvg_id": "",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ],
+      "language_code": "SK"
+    },
+    "sk:info-tv-sen": {
+      "channel_name": "INFO TV SEN",
+      "tvg_name": "INFO TV SEN",
+      "tvg_id": "",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ],
+      "language_code": "SK"
+    },
+    "sk:godzone-tv": {
+      "channel_name": "Godzone TV",
+      "tvg_name": "Godzone TV",
+      "tvg_id": "",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ],
+      "language_code": "SK"
     }
   },
   "selectors": [
@@ -19,6 +49,27 @@
       },
       "canonical_id": "sk:kanal1",
       "note": "Upstream URL is usable but its supplied channel identity is incorrect."
+    },
+    {
+      "match": {
+        "url": "https://cdnsk003.panaccess.com/local/TV_SEN_DC/index.m3u8"
+      },
+      "canonical_id": "sk:tv-sen-kultura",
+      "note": "Manual screenshots taken at the same time as the Video Studio RIS TV Sen feed show this Panaccess stream is the distinct TV SEN KULTÚRA service."
+    },
+    {
+      "match": {
+        "url": "https://videostudioris.sk/hls/tvsen.m3u8"
+      },
+      "canonical_id": "sk:info-tv-sen",
+      "note": "Manual screenshots taken at the same time as the Panaccess TV Sen feed show this Video Studio RIS stream is the distinct INFO TV SEN service."
+    },
+    {
+      "match": {
+        "url": "http://46.36.41.106:8888/rebit/177.m3u8"
+      },
+      "canonical_id": "sk:godzone-tv",
+      "note": "The REBIT IDENTIFY text is research provenance, not the published channel name."
     }
   ]
 }
