@@ -88,12 +88,12 @@ The builder then:
 1. downloads remote playlists;
 2. reads the HU/SK/CZ local extras;
 3. parses all M3U entries;
-4. assigns every entry to its source/audit country scope;
+4. assigns every entry an explicit source/audit `country_code` and independent spoken `language_codes`;
 5. identifies logical channels;
 6. removes duplicate stream URLs globally;
 7. keeps genuinely different feeds as alternatives;
 8. applies manual results from `audit.json`;
-9. uses confirmed spoken language to route verified streams to HU, SK or CZ when the result is unambiguous;
+9. evaluates confirmed spoken language independently, then applies only explicitly configured country-routing rules;
 10. rejects manually excluded/unsupported feeds;
 11. selects the preferred feed when a stable verified feed exists;
 12. creates country/category `group-title` values;
@@ -486,42 +486,45 @@ If an old channel-level audit becomes ambiguous because several current feeds ex
 
 ---
 
-# Language verification
+# Country and language metadata
 
-The audit separately tracks the source/audit identity and the language actually heard during playback.
+Country, spoken language and publication destination are separate concepts.
 
-Important fields include:
+Modern source/channel metadata uses:
+
+```json
+{
+  "country_code": "AT",
+  "language_codes": ["deu"]
+}
+```
+
+`country_code` is the publication/audit geography (ISO-3166-style two-letter code). `language_codes` contains spoken/content languages using ISO-639-3-style codes such as `hun`, `slk`, `ces`, `deu`, `srp` or `ron`.
+
+Manual audit rows additionally expose:
 
 ```text
-playlist_language_code
+playlist_country_code
+output_country_code
 expected_language_codes
 observed_language_codes
 ```
 
-For a normal Czech candidate sourced from the Czech extras file:
+The first two are countries. The latter two are spoken-language evidence. Existing audit values such as `["HU"]`, `["SK"]` and `["CZ"]` remain accepted and normalize to `hun`, `slk` and `ces`. Historical fields `language_code`, `playlist_language_code` and `output_language_code` remain supported as compatibility aliases for the old country bucket.
 
-```json
-"playlist_language_code": "CZ",
-"expected_language_codes": ["CZ"],
-"observed_language_codes": ["CZ"]
-```
+Verified streams are **not** generically routed by language. Current HU/SK/CZ cross-routing is explicitly configured in `verified_country_routes`, for example `SK + ces -> CZ`. That preserves today's useful behavior without creating a future rule that would incorrectly force every German stream into Germany or every Hungarian stream into Hungary.
 
-`playlist_language_code` is the saved **audit/source scope**. It protects exact-URL audit identity when the same URL appears under unrelated channel identities or countries.
-
-`observed_language_codes` records what was actually heard during the manual playback test.
-
-For a verified stream with one unambiguous supported observed language, the confirmed spoken language determines its final published country. For example, if a stream was discovered in a Slovak source but manual playback confirms Czech speech, it is published once under `CZ`, not duplicated under `SK` and `CZ`.
-
-Multilingual or ambiguous cases are not blindly duplicated across country outputs. Unsupported observed languages remain rejected until that country/language is actually supported.
-
-Legacy fields such as:
+This allows models such as:
 
 ```text
-language
-language_code
+Austria      -> country AT, language deu
+Germany      -> country DE, language deu
+Serbia       -> country RS, languages srp/hun
+Romania      -> country RO, languages ron/hun
+Switzerland  -> country CH, languages deu/fra/ita
 ```
 
-are still understood for compatibility with older audit entries.
+Multilingual or ambiguous language results are not blindly duplicated across country outputs. Country placement changes only when source geography, canonical identity, a manual output country, or an explicit verified routing rule says it should.
 
 ---
 
@@ -584,7 +587,8 @@ https://example.cz/live/playlist.m3u8
 `extras/cz.m3u` is configured with:
 
 ```json
-"language_code": "CZ"
+"country_code": "CZ",
+"language_codes": ["ces"]
 ```
 
 A new unresolved candidate normally appears as:

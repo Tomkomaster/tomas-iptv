@@ -1892,43 +1892,42 @@ class AuditTests(unittest.TestCase):
                 )
             )
 
+            country_stats = {
+                row["country_code"]: row
+                for row in report["countries"]
+            }
             language_stats = {
                 row["language_code"]: row
                 for row in report["languages"]
             }
 
             self.assertEqual(
-                language_stats["HU"][
-                    "unique_channels"
-                ],
+                country_stats["HU"]["unique_channels"],
                 2,
             )
-
             self.assertEqual(
-                language_stats["HU"][
-                    "base_channels"
-                ],
+                country_stats["HU"]["base_channels"],
+                1,
+            )
+            self.assertEqual(
+                country_stats["HU"]["added_channels"],
+                1,
+            )
+            self.assertEqual(
+                country_stats["SK"]["unique_channels"],
+                1,
+            )
+            self.assertEqual(
+                country_stats["SK"]["base_channels"],
                 1,
             )
 
             self.assertEqual(
-                language_stats["HU"][
-                    "added_channels"
-                ],
-                1,
+                language_stats["hun"]["unique_channels"],
+                2,
             )
-
             self.assertEqual(
-                language_stats["SK"][
-                    "unique_channels"
-                ],
-                1,
-            )
-
-            self.assertEqual(
-                language_stats["SK"][
-                    "base_channels"
-                ],
+                language_stats["slk"]["unique_channels"],
                 1,
             )
 

@@ -14,6 +14,17 @@ from pathlib import Path
 from dashboard import copy_dashboard_assets, render_dashboard
 from feed_quality import build_feed_quality_context, score_feed_quality
 from identity_overrides import IdentityRegistry, load_identity_registry
+from country_language import (
+    configured_country_codes,
+    configured_language_codes,
+    legacy_country_scope_from_language_token,
+    normalize_country_code,
+    normalize_language_code as normalize_spoken_language_code,
+    normalize_language_codes as normalize_spoken_language_codes,
+    source_country_code,
+    source_language_codes,
+    verified_country_route,
+)
 
 ROOT = Path(__file__).resolve().parent
 
@@ -155,6 +166,8 @@ def parse_entries(text: str) -> list[dict]:
                 "logo": attrs.get("tvg-logo", ""),
                 "group_title": attrs.get("group-title", ""),
                 "canonical_id": attrs.get("canonical-id", ""),
+                "country_code": attrs.get("country-code", ""),
+                "language_codes": attrs.get("language-codes", ""),
             }
             continue
 
@@ -516,38 +529,26 @@ def extract_source_flags(name: str) -> list[str]:
 def strip_custom_prefix(name: str) -> str:
     return CUSTOM_PREFIX_RE.sub("", (name or "").strip()).strip()
 
+def country_name_for_code(
+    cfg: dict,
+    country_code: str,
+) -> str:
+    """Return the human-readable name for one publication country."""
+    code = normalize_country_code(country_code) or str(country_code or "").strip().upper()
+    country_names = cfg.get("country_names") or {}
+    if isinstance(country_names, dict):
+        country = str(country_names.get(code) or "").strip()
+        if country:
+            return country
+    return code or "Other"
+
+
 def country_name_for_language(
     cfg: dict,
     language_code: str,
 ) -> str:
-    """
-    Return the human-readable country/group prefix for a playlist language.
-
-    Examples:
-      HU -> Hungary
-      SK -> Slovakia
-      CZ -> Czechia
-
-    Unknown codes safely fall back to the code itself.
-    """
-    code = str(
-        language_code or ""
-    ).strip().upper()
-
-    country_names = cfg.get(
-        "country_names"
-    ) or {}
-
-    if isinstance(country_names, dict):
-        country = str(
-            country_names.get(code) or ""
-        ).strip()
-
-        if country:
-            return country
-
-    return code or "Other"
-
+    """Legacy compatibility alias: historical language_code stored country scope."""
+    return country_name_for_code(cfg, language_code)
 
 def normalize_content_group(
     group_title: str,
@@ -856,141 +857,113 @@ def source_spec(
         f"{item!r}"
     )
 
+def summarize_country_stats(
+    entries: list[dict],
+    source_stats: list[dict],
+) -> list[dict]:
+    """Summarize final publication by country, independently of language."""
+    country_codes: set[str] = set()
+    for entry in entries:
+        code = normalize_country_code(
+            str(entry.get("country_code") or entry.get("language_code") or "")
+        )
+        if code:
+            country_codes.add(code)
+    for source in source_stats:
+        code = normalize_country_code(
+            str(source.get("country_code") or source.get("language_code") or "")
+        )
+        if code:
+            country_codes.add(code)
+
+    result: list[dict] = []
+    for code in sorted(country_codes):
+        country_entries = [
+            entry for entry in entries
+            if normalize_country_code(
+                str(entry.get("country_code") or entry.get("language_code") or "")
+            ) == code
+        ]
+        country_sources = [
+            source for source in source_stats
+            if normalize_country_code(
+                str(source.get("country_code") or source.get("language_code") or "")
+            ) == code
+        ]
+        unique_channel_keys = {
+            entry.get("channel_key") for entry in country_entries if entry.get("channel_key")
+        }
+        base_channel_keys = {
+            entry.get("channel_key") for entry in country_entries
+            if entry.get("channel_key") and entry.get("classification") == "Base channel"
+        }
+        added_channel_keys = {
+            entry.get("channel_key") for entry in country_entries
+            if entry.get("channel_key") and entry.get("classification") == "Added channel"
+        }
+        result.append({
+            "country_code": code,
+            "source_count": len(country_sources),
+            "base_source_count": sum(1 for source in country_sources if source.get("kind") == "base"),
+            "unique_channels": len(unique_channel_keys),
+            "stream_urls": len(country_entries),
+            "base_channels": len(base_channel_keys),
+            "added_channels": len(added_channel_keys),
+            "alternative_streams": sum(
+                1 for entry in country_entries
+                if entry.get("classification") == "Alternative stream"
+            ),
+        })
+    return result
+
+
 def summarize_language_stats(
     entries: list[dict],
     source_stats: list[dict],
 ) -> list[dict]:
-    """
-    Summarize the final published playlist by language.
-
-    Channel counts are logical-channel counts.
-    Stream counts are actual published stream URLs.
-    """
+    """Summarize actual spoken-language metadata using ISO-639-3 codes."""
     language_codes: set[str] = set()
-
     for entry in entries:
-        code = normalize_language_code(
-            str(
-                entry.get(
-                    "language_code"
-                )
-                or ""
-            )
-        )
-
-        if code:
-            language_codes.add(code)
-
+        language_codes.update(normalize_spoken_language_codes(entry.get("language_codes")))
     for source in source_stats:
-        code = normalize_language_code(
-            str(
-                source.get(
-                    "language_code"
-                )
-                or ""
-            )
-        )
-
-        if code:
-            language_codes.add(code)
+        language_codes.update(normalize_spoken_language_codes(source.get("language_codes")))
 
     result: list[dict] = []
-
     for code in sorted(language_codes):
         language_entries = [
-            entry
-            for entry in entries
-            if normalize_language_code(
-                str(
-                    entry.get(
-                        "language_code"
-                    )
-                    or ""
-                )
-            ) == code
+            entry for entry in entries
+            if code in normalize_spoken_language_codes(entry.get("language_codes"))
         ]
-
         language_sources = [
-            source
-            for source in source_stats
-            if normalize_language_code(
-                str(
-                    source.get(
-                        "language_code"
-                    )
-                    or ""
-                )
-            ) == code
+            source for source in source_stats
+            if code in normalize_spoken_language_codes(source.get("language_codes"))
         ]
-
         unique_channel_keys = {
-            entry.get("channel_key")
-            for entry in language_entries
-            if entry.get("channel_key")
+            entry.get("channel_key") for entry in language_entries if entry.get("channel_key")
         }
-
         base_channel_keys = {
-            entry.get("channel_key")
-            for entry in language_entries
-            if (
-                entry.get("channel_key")
-                and entry.get(
-                    "classification"
-                ) == "Base channel"
-            )
+            entry.get("channel_key") for entry in language_entries
+            if entry.get("channel_key") and entry.get("classification") == "Base channel"
         }
-
         added_channel_keys = {
-            entry.get("channel_key")
-            for entry in language_entries
-            if (
-                entry.get("channel_key")
-                and entry.get(
-                    "classification"
-                ) == "Added channel"
-            )
+            entry.get("channel_key") for entry in language_entries
+            if entry.get("channel_key") and entry.get("classification") == "Added channel"
         }
-
         result.append({
             "language_code": code,
-
-            "source_count": len(
-                language_sources
-            ),
-
-            "base_source_count": sum(
-                1
-                for source in language_sources
-                if source.get("kind") == "base"
-            ),
-
-            "unique_channels": len(
-                unique_channel_keys
-            ),
-
-            "stream_urls": len(
-                language_entries
-            ),
-
-            "base_channels": len(
-                base_channel_keys
-            ),
-
-            "added_channels": len(
-                added_channel_keys
-            ),
-
+            "source_count": len(language_sources),
+            "base_source_count": sum(1 for source in language_sources if source.get("kind") == "base"),
+            "unique_channels": len(unique_channel_keys),
+            "stream_urls": len(language_entries),
+            "base_channels": len(base_channel_keys),
+            "added_channels": len(added_channel_keys),
             "alternative_streams": sum(
-                1
-                for entry in language_entries
-                if entry.get(
-                    "classification"
-                ) == "Alternative stream"
+                1 for entry in language_entries
+                if entry.get("classification") == "Alternative stream"
             ),
         })
-
     return result
-	
+
 def load_previous_report(url: str | None) -> dict | None:
     if not url:
         return None
@@ -1095,11 +1068,16 @@ def is_tested_status(value: str) -> bool:
 LANGUAGE_NAME_TO_CODE = {
     "hungarian": "HU",
     "magyar": "HU",
+    "hun": "HU",
 
     "slovak": "SK",
     "slovakian": "SK",
+    "slk": "SK",
+    "slo": "SK",
 
     "czech": "CZ",
+    "ces": "CZ",
+    "cze": "CZ",
 
     "serbian": "SR",
     "serb": "SR",
@@ -1146,46 +1124,23 @@ def normalize_language_code(value: str) -> str:
 
 
 def logical_channel_key(entry: dict) -> str:
-    """
-    Identify a logical channel inside one language/country playlist.
-
-    channel_key() intentionally remains language-agnostic so SD/HD variants
-    and equivalent source metadata still collapse. This helper adds the
-    playlist language only where cross-source grouping needs it.
-    """
-    language_code = (
-        normalize_language_code(
-            str(entry.get("language_code") or "")
+    """Identify one logical channel inside one publication country."""
+    country_code = (
+        normalize_country_code(
+            str(entry.get("country_code") or entry.get("language_code") or "")
         )
         or "UNKNOWN"
     )
-
-    raw_key = str(
-        entry.get("channel_key")
-        or channel_key(entry)
-    )
-
-    prefix = f"{language_code}:"
+    raw_key = str(entry.get("channel_key") or channel_key(entry))
+    prefix = f"{country_code}:"
     if raw_key.startswith(prefix):
         return raw_key
-
     return f"{prefix}{raw_key}"
 
-
 def normalize_language_codes(value) -> list[str]:
-    """
-    Normalize a language-code list while preserving order and removing
-    duplicates.
-
-    New audit data should use JSON lists, for example:
-      ["HU"]
-      ["HU", "SR"]
-
-    Strings are also accepted to make migration and legacy data easier.
-    """
+    """Normalize legacy audit-language values while preserving their API."""
     if value is None:
         return []
-
     if isinstance(value, str):
         values = [
             part.strip()
@@ -1196,17 +1151,12 @@ def normalize_language_codes(value) -> list[str]:
         values = list(value)
     else:
         values = [value]
-
     result: list[str] = []
-
     for raw in values:
         code = normalize_language_code(str(raw or ""))
-
         if code and code not in result:
             result.append(code)
-
     return result
-
 
 def normalize_language_match(value: str) -> str:
     """
@@ -1303,8 +1253,8 @@ def derive_language_match(
     if not expected_codes or not observed_codes:
         return "unknown"
 
-    expected = set(expected_codes)
-    observed = set(observed_codes)
+    expected = set(normalize_spoken_language_codes(expected_codes))
+    observed = set(normalize_spoken_language_codes(observed_codes))
 
     if not expected.intersection(observed):
         return "no"
@@ -1437,52 +1387,74 @@ def language_mismatch_reason(
         "playlist language."
     )
 	
+def configured_playlist_country_codes(cfg: dict) -> list[str]:
+    """Return publication-country codes enabled by country_outputs."""
+    return configured_country_codes(cfg)
+
+
 def configured_playlist_language_codes(cfg: dict) -> list[str]:
-    """
-    Return the language codes currently enabled as published country playlists.
+    """Legacy API alias for the old country-as-language configuration."""
+    return configured_playlist_country_codes(cfg)
 
-    These codes are also the spoken languages accepted by the family playlist.
-    A verified stream with one unambiguous observed supported language is
-    published under that language, regardless of which source bucket supplied it.
-    Adding a future country output (for example RO or RU) enables that language
-    as a valid verified destination.
-    """
-    country_outputs = cfg.get("country_outputs") or {}
 
-    if isinstance(country_outputs, dict):
-        codes = normalize_language_codes(
-            list(country_outputs.keys())
-        )
-        if codes:
-            return codes
+def configured_spoken_language_codes(cfg: dict) -> list[str]:
+    """Return supported spoken languages independently of country outputs."""
+    return configured_language_codes(cfg)
 
-    fallback = normalize_language_codes(
-        cfg.get("default_language_code")
-    )
-    return fallback or ["HU"]
+def audit_playlist_country_code(item: dict) -> str:
+    """Return the country bucket to which a saved audit identity belongs."""
+    for field in ("playlist_country_code", "playlist_language_code", "country_code"):
+        code = normalize_country_code(str(item.get(field) or ""))
+        if code:
+            return code
+
+    # Compatibility for old rows whose only scope hint was ["HU"]/["SK"]/["CZ"].
+    raw_expected = item.get("expected_language_codes")
+    if isinstance(raw_expected, list) and len(raw_expected) == 1:
+        legacy = legacy_country_scope_from_language_token(raw_expected[0])
+        if legacy:
+            return legacy
+    return ""
 
 
 def audit_playlist_scope_code(item: dict) -> str:
-    """
-    Return the country/language bucket this saved audit belongs to.
+    """Legacy compatibility alias."""
+    return audit_playlist_country_code(item)
 
-    playlist_language_code is the explicit modern field. For older audit rows,
-    one expected_language_codes value is also a safe scope hint because that
-    field historically doubled as the playlist-country expectation.
-    """
-    explicit = normalize_language_code(
-        str(item.get("playlist_language_code") or "")
+def verified_output_country_code(
+    audit_row: dict,
+    source_country_code: str,
+    cfg: dict,
+) -> str:
+    """Choose publication country without assuming language and country are equivalent."""
+    source_code = normalize_country_code(source_country_code) or "HU"
+    configured = set(configured_playlist_country_codes(cfg))
+
+    explicit = normalize_country_code(
+        str(audit_row.get("output_country_code") or audit_row.get("output_language_code") or "")
     )
-    if explicit:
+    if explicit and (not configured or explicit in configured):
         return explicit
 
-    expected = normalize_language_codes(
-        item.get("expected_language_codes")
-    )
-    if len(expected) == 1:
-        return expected[0]
+    decision = str(audit_row.get("decision") or "").strip()
+    if decision not in {"Verified", "TV verified"}:
+        return source_code
 
-    return ""
+    if "verified_country_routes" not in cfg:
+        return verified_output_language_code(
+            audit_row,
+            source_code,
+            configured_playlist_country_codes(cfg),
+        )
+
+    routed = verified_country_route(
+        cfg,
+        source_code,
+        audit_row.get("observed_language_codes"),
+    )
+    if routed and (not configured or routed in configured):
+        return routed
+    return source_code
 
 
 def verified_output_language_code(
@@ -1490,46 +1462,23 @@ def verified_output_language_code(
     source_language_code: str,
     supported_language_codes=None,
 ) -> str:
-    # Return the one published language bucket for a verified stream.
-    # playlist_language_code remains the audit/source identity scope.
-    # Final placement follows one unambiguous observed supported language.
-    source_code = (
-        normalize_language_code(
-            str(source_language_code or "")
-        )
-        or str(source_language_code or "").strip().upper()
-    )
-
-    decision = str(
-        audit_row.get("decision") or ""
-    ).strip()
-
-    if decision not in {
-        "Verified",
-        "TV verified",
-    }:
+    """Legacy helper preserving old HU/SK/CZ one-to-one behavior for callers/tests."""
+    source_code = normalize_country_code(source_language_code) or "HU"
+    decision = str(audit_row.get("decision") or "").strip()
+    if decision not in {"Verified", "TV verified"}:
         return source_code
-
-    supported = set(
-        normalize_language_codes(
-            supported_language_codes
-        )
-    )
-
-    observed = normalize_language_codes(
-        audit_row.get(
-            "observed_language_codes"
-        )
-    )
-
-    if (
-        len(observed) == 1
-        and observed[0] in supported
-    ):
-        return observed[0]
-
+    observed = normalize_spoken_language_codes(audit_row.get("observed_language_codes"))
+    if len(observed) != 1:
+        return source_code
+    destination_by_language = {"hun": "HU", "slk": "SK", "ces": "CZ"}
+    destination = destination_by_language.get(observed[0], "")
+    supported_countries = {
+        normalize_country_code(str(value or ""))
+        for value in (supported_language_codes or [])
+    }
+    if destination and destination in supported_countries:
+        return destination
     return source_code
-
 
 def language_acceptance_state(
     item: dict,
@@ -1550,9 +1499,10 @@ def language_acceptance_state(
         language_match,
     ) = resolve_language_info(item)
 
-    supported = normalize_language_codes(
+    supported = normalize_spoken_language_codes(
         supported_language_codes
     )
+    observed_supported = normalize_spoken_language_codes(observed_codes)
 
     if language_match in {
         "yes",
@@ -1564,7 +1514,7 @@ def language_acceptance_state(
         if (
             observed_codes
             and supported
-            and set(observed_codes).intersection(
+            and set(observed_supported).intersection(
                 supported
             )
         ):
@@ -1582,10 +1532,11 @@ def calculate_audit_decision(
     """
     Playback/device status for our playlist, not a legal certification.
 
-    Audit/source identity and final playlist placement are intentionally
-    separate. A technically working stream can be Verified when its observed
-    spoken language is supported, and an unambiguous observed language becomes
-    the one country/language playlist where that stream is published.
+    Audit/source identity, spoken-language acceptance, and publication
+    country are intentionally separate. A technically working stream can be
+    Verified when its observed spoken language is supported. Publication
+    country changes only through an explicit output country or configured
+    country-routing rule.
 
     Unsupported observed languages still reject the stream.
     """
@@ -1686,9 +1637,9 @@ def calculate_audit_decision(
                     "Works on both tested devices. "
                     f"Observed language(s) "
                     f"{format_language_codes(observed_codes)} "
-                    "are currently supported. A single unambiguous "
-                    "observed language is published once under that "
-                    "language's playlist."
+                    "are currently supported. Publication country "
+                    "is determined separately by explicit country-routing "
+                    "policy."
                 ),
             )
 
@@ -1762,30 +1713,15 @@ def exact_url_audit_matches_entry(
     audit_item: dict,
     entry: dict,
 ) -> bool:
-    """
-    Return whether an exact-URL audit belongs to this current source identity.
-
-    Spoken language is deliberately NOT used for this identity guard. The saved
-    playlist_language_code records where the audited source entry came from, so
-    an SK-source verification can still match that SK source even when confirmed
-    Czech speech later publishes the stream under CZ. The guard only prevents a
-    saved audit from jumping to a different source identity when the same URL is
-    later reused there.
-    """
-    audit_scope = audit_playlist_scope_code(
-        audit_item
-    )
-
+    """Guard exact-URL audit history by source country, not spoken language."""
+    audit_scope = audit_playlist_country_code(audit_item)
     if not audit_scope:
         return True
-
-    entry_scope = normalize_language_code(
-        str(entry.get("language_code") or "")
+    entry_scope = normalize_country_code(
+        str(entry.get("country_code") or entry.get("language_code") or "")
     )
-
     if not entry_scope:
         return True
-
     return audit_scope == entry_scope
 
 def validate_audit_items(
@@ -1828,6 +1764,7 @@ def validate_audit_items(
     current_expected_by_url: dict[str, set[str]] = {}
     current_expected_by_tvg: dict[str, set[str]] = {}
     current_expected_by_name: dict[str, set[str]] = {}
+    current_country_by_url: dict[str, set[str]] = {}
 
     for entry in final_entries:
         url = str(
@@ -1841,8 +1778,14 @@ def validate_audit_items(
 
         expected_codes = normalize_language_codes(
             entry.get("expected_language_codes")
+            or entry.get("language_codes")
             or entry.get("language_code")
         )
+        entry_country = normalize_country_code(
+            str(entry.get("country_code") or entry.get("language_code") or "")
+        )
+        if entry_country:
+            current_country_by_url.setdefault(url_key, set()).add(entry_country)
 
         if expected_codes:
             current_expected_by_url.setdefault(
@@ -2038,15 +1981,9 @@ def validate_audit_items(
             )
         )
 
-        current_url_expected = (
-            sorted(
-                current_expected_by_url.get(
-                    url_key,
-                    set(),
-                )
-            )
-            if url_key
-            else []
+        current_url_countries = (
+            sorted(current_country_by_url.get(url_key, set()))
+            if url_key else []
         )
 
         saved_playlist_scope = (
@@ -2058,13 +1995,13 @@ def validate_audit_items(
         if (
             url_key
             and saved_playlist_scope
-            and current_url_expected
+            and current_url_countries
             and saved_playlist_scope
-            not in current_url_expected
+            not in current_url_countries
         ):
             warnings.append(
                 f"{label}: exact stream URL is currently scoped to "
-                f"{', '.join(current_url_expected)}, but the saved audit "
+                f"{', '.join(current_url_countries)}, but the saved audit "
                 f"belongs to {saved_playlist_scope} playlist scope. "
                 "The saved result will be kept as historical evidence and "
                 "will not be applied to this current entry."
@@ -2231,6 +2168,7 @@ def prepare_audit_rows(
     audit_items: list[dict],
     final_entries: list[dict],
     supported_language_codes=None,
+    cfg: dict | None = None,
 ) -> list[dict]:
     """
     Create one audit row PER STREAM URL.
@@ -2336,16 +2274,31 @@ def prepare_audit_rows(
             # New country-independent language model.
             "expected_language_codes": (
                 normalize_language_codes(
-                    entry.get("language_code") or "HU"
+                    entry.get("language_codes")
+                    or entry.get("language_code")
+                    or "HU"
                 )
             ),
+            "country_code": (
+                normalize_country_code(
+                    str(entry.get("country_code") or entry.get("language_code") or "HU")
+                )
+                or "HU"
+            ),
+            "language_codes": normalize_language_codes(
+                entry.get("language_codes") or entry.get("language_code") or "HU"
+            ),
             "observed_language_codes": [],
+            "playlist_country_code": (
+                normalize_country_code(
+                    str(entry.get("country_code") or entry.get("language_code") or "HU")
+                )
+                or "HU"
+            ),
+            # Legacy alias: this field historically stored country scope.
             "playlist_language_code": (
-                normalize_language_code(
-                    str(
-                        entry.get("language_code")
-                        or "HU"
-                    )
+                normalize_country_code(
+                    str(entry.get("country_code") or entry.get("language_code") or "HU")
                 )
                 or "HU"
             ),
@@ -2396,7 +2349,8 @@ def prepare_audit_rows(
         ) = resolve_language_info(
             item,
             default_expected=(
-                entry.get("language_code")
+                entry.get("language_codes")
+                or entry.get("language_code")
                 or "HU"
             ),
         )
@@ -2413,22 +2367,20 @@ def prepare_audit_rows(
             "language_match"
         ] = language_match
 
-        item[
-            "playlist_language_code"
-        ] = (
-            normalize_language_code(
+        playlist_country_code = (
+            normalize_country_code(
                 str(
-                    item.get(
-                        "playlist_language_code"
-                    )
-                    or entry.get(
-                        "language_code"
-                    )
+                    item.get("playlist_country_code")
+                    or item.get("playlist_language_code")
+                    or entry.get("country_code")
+                    or entry.get("language_code")
                     or "HU"
                 )
             )
             or "HU"
         )
+        item["playlist_country_code"] = playlist_country_code
+        item["playlist_language_code"] = playlist_country_code
 
         language_acceptance = (
             language_acceptance_state(
@@ -2448,24 +2400,24 @@ def prepare_audit_rows(
             )
         )
 
-        output_language_code = (
-            verified_output_language_code(
-                {
-                    **item,
-                    "decision": decision,
-                    "observed_language_codes": (
-                        observed_codes
-                    ),
-                },
-                str(
-                    entry.get(
-                        "language_code"
-                    )
-                    or ""
-                ),
-                supported_language_codes,
+        route_probe = {
+            **item,
+            "decision": decision,
+            "observed_language_codes": observed_codes,
+        }
+        if cfg is not None:
+            output_country_code = verified_output_country_code(
+                route_probe,
+                str(entry.get("country_code") or entry.get("language_code") or ""),
+                cfg,
             )
-        )
+        else:
+            output_country_code = verified_output_language_code(
+                route_probe,
+                str(entry.get("country_code") or entry.get("language_code") or ""),
+                configured_country_codes({"country_outputs": {code: "" for code in ("HU", "SK", "CZ")}}),
+            )
+        output_language_code = output_country_code
 
         rows.append({
             "channel": str(item.get("channel") or clean_name).strip(),
@@ -2484,7 +2436,16 @@ def prepare_audit_rows(
                 or "HU"
             ).strip().upper(),
 
-            # New language model.
+            # Country scope and publication destination.
+            "playlist_country_code": str(
+                item.get("playlist_country_code")
+                or item.get("playlist_language_code")
+                or entry.get("country_code")
+                or entry.get("language_code")
+                or ""
+            ).strip().upper(),
+            "output_country_code": output_country_code,
+            # Legacy aliases retained for old exports/tools.
             "playlist_language_code": str(
                 item.get(
                     "playlist_language_code"
@@ -2495,6 +2456,9 @@ def prepare_audit_rows(
                 or ""
             ).strip().upper(),
             "output_language_code": output_language_code,
+            "language_codes": normalize_spoken_language_codes(
+                entry.get("language_codes") or expected_codes
+            ),
             "expected_language_codes": expected_codes,
             "observed_language_codes": observed_codes,
             "language_match": language_match,
@@ -2528,6 +2492,7 @@ def prepare_audit_rows(
     current_by_tvg: dict[str, set[str]] = {}
     current_by_name: dict[str, set[str]] = {}
     current_expected_by_url: dict[str, set[str]] = {}
+    current_country_by_url: dict[str, set[str]] = {}
 
     for entry in final_entries:
         current_url = str(
@@ -2544,9 +2509,15 @@ def prepare_audit_rows(
         current_urls.add(current_url_key)
 
         expected_codes = normalize_language_codes(
-            entry.get("language_code")
+            entry.get("language_codes")
+            or entry.get("language_code")
             or "HU"
         )
+        current_country = normalize_country_code(
+            str(entry.get("country_code") or entry.get("language_code") or "")
+        )
+        if current_country:
+            current_country_by_url.setdefault(current_url_key, set()).add(current_country)
 
         if expected_codes:
             current_expected_by_url.setdefault(
@@ -2694,24 +2665,21 @@ def prepare_audit_rows(
                     item
                 )
             )
-            current_expected = sorted(
-                current_expected_by_url.get(
-                    url_key,
-                    set(),
-                )
+            current_countries = sorted(
+                current_country_by_url.get(url_key, set())
             )
 
             if (
                 saved_scope
-                and current_expected
+                and current_countries
                 and saved_scope
-                not in current_expected
+                not in current_countries
             ):
                 identity_note = (
                     "Historical exact-URL audit only. Saved playlist "
                     f"scope {saved_scope} does not match the current "
                     "entry scope "
-                    f"{format_language_codes(current_expected)}, so this "
+                    f"{', '.join(current_countries)}, so this "
                     "verification was not transferred."
                 )
 
@@ -2756,11 +2724,20 @@ def prepare_audit_rows(
                 item.get("language_code") or ""
             ).strip().upper(),
 
-            # New language model.
+            # Modern country model plus legacy alias.
+            "playlist_country_code": str(
+                item.get("playlist_country_code")
+                or item.get("playlist_language_code")
+                or ""
+            ).strip().upper(),
+            "output_country_code": str(
+                item.get("output_country_code")
+                or item.get("output_language_code")
+                or ""
+            ).strip().upper(),
             "playlist_language_code": str(
-                item.get(
-                    "playlist_language_code"
-                )
+                item.get("playlist_country_code")
+                or item.get("playlist_language_code")
                 or ""
             ).strip().upper(),
             "expected_language_codes": expected_codes,
@@ -3004,77 +2981,63 @@ def make_test_playlist_candidates(
     return candidates
 
 
-def route_candidates_to_verified_languages(
+def route_candidates_to_verified_countries(
     candidates: list[dict],
     cfg: dict,
 ) -> list[dict]:
-    # Route verified candidates before language-scoped stable grouping.
-    # Exact URL dedup has already happened; source_language_code keeps origin.
-    supported = set(
-        configured_playlist_language_codes(
-            cfg
-        )
-    )
-
+    """Apply country routing and attach verified observed spoken-language metadata."""
+    supported = set(configured_playlist_country_codes(cfg))
     routed: list[dict] = []
-
     for entry in candidates:
         candidate = dict(entry)
-
         source_code = (
-            normalize_language_code(
+            normalize_country_code(
                 str(
-                    candidate.get(
-                        "language_code"
-                    )
-                    or cfg.get(
-                        "default_language_code"
-                    )
+                    candidate.get("country_code")
+                    or candidate.get("language_code")
+                    or cfg.get("default_country_code")
+                    or cfg.get("default_language_code")
                     or "HU"
                 )
             )
             or "HU"
         )
-
-        audit = (
-            candidate.get("_audit")
-            or {}
+        audit = candidate.get("_audit") or {}
+        decision = str(candidate.get("_decision") or audit.get("decision") or "").strip()
+        observed_languages = normalize_spoken_language_codes(
+            audit.get("observed_language_codes")
         )
-
-        output_code = (
-            normalize_language_code(
-                str(
-                    audit.get(
-                        "output_language_code"
-                    )
-                    or ""
-                )
+        if decision in {"Verified", "TV verified"} and observed_languages:
+            candidate["language_codes"] = observed_languages
+        else:
+            candidate["language_codes"] = normalize_spoken_language_codes(
+                candidate.get("language_codes")
             )
-            or source_code
-        )
 
+        output_code = normalize_country_code(
+            str(audit.get("output_country_code") or audit.get("output_language_code") or "")
+        ) or verified_output_country_code(
+            audit,
+            source_code,
+            cfg,
+        )
         if output_code not in supported:
             output_code = source_code
-
-        candidate[
-            "source_language_code"
-        ] = source_code
-
-        candidate[
-            "language_code"
-        ] = output_code
-
-        candidate[
-            "country_name"
-        ] = country_name_for_language(
-            cfg,
-            output_code,
-        )
-
+        candidate["source_country_code"] = source_code
+        candidate["country_code"] = output_code
+        # Legacy entry alias retained so older report/dashboard code keeps working.
+        candidate["language_code"] = output_code
+        candidate["country_name"] = country_name_for_code(cfg, output_code)
         routed.append(candidate)
-
     return routed
 
+
+def route_candidates_to_verified_languages(
+    candidates: list[dict],
+    cfg: dict,
+) -> list[dict]:
+    """Legacy compatibility alias."""
+    return route_candidates_to_verified_countries(candidates, cfg)
 
 def stable_block_reason(
     entry: dict,
@@ -3259,7 +3222,7 @@ def select_stable_playlist_candidates(
     }
 
     all_candidates = (
-        route_candidates_to_verified_languages(
+        route_candidates_to_verified_countries(
             make_test_playlist_candidates(
                 final_entries,
                 audit_rows,
@@ -3540,15 +3503,18 @@ def prepare_published_entries(
                 "Needs review",
             )
 
-            lang = str(
-                entry.get(
-                    "language_code"
-                )
-                or cfg.get(
-                    "default_language_code"
+            country_code = (
+                normalize_country_code(
+                    str(
+                        entry.get("country_code")
+                        or entry.get("language_code")
+                        or cfg.get("default_country_code")
+                        or cfg.get("default_language_code")
+                        or "HU"
+                    )
                 )
                 or "HU"
-            ).upper()
+            )
 
             suffix = (
                 playlist_status_suffix(
@@ -3577,7 +3543,7 @@ def prepare_published_entries(
                 )
 
             published_name = (
-                f"[{lang} {suffix}] "
+                f"[{country_code} {suffix}] "
                 f"{original_display}"
             )
 
@@ -3585,9 +3551,9 @@ def prepare_published_entries(
                 entry.get(
                     "country_name"
                 )
-                or country_name_for_language(
+                or country_name_for_code(
                     cfg,
-                    lang,
+                    country_code,
                 )
             ).strip()
 
@@ -3606,7 +3572,7 @@ def prepare_published_entries(
                     country_name=(
                         country_name
                     ),
-                    language_code=lang,
+                    language_code=country_code,
                     default_group=(
                         "General"
                     ),
@@ -3634,6 +3600,8 @@ def prepare_published_entries(
                 "group_title"
             ] = group_title
 
+            published["country_code"] = country_code
+            published["language_code"] = country_code  # legacy alias
             published[
                 "country_name"
             ] = country_name
@@ -3710,7 +3678,8 @@ def write_m3u_playlist(
 
     name_style controls only the visible channel-name prefix:
       status   -> [HU OK] / [SK ?] / [CZ TV] (testing playlist)
-      language -> [HU] / [SK] / [CZ] (shared stable playlist)
+      country  -> [HU] / [SK] / [CZ] (shared stable playlist)
+      language -> legacy alias for country
       plain    -> no generated prefix (single-country playlists)
     """
     path.parent.mkdir(
@@ -3738,6 +3707,7 @@ def write_m3u_playlist(
     valid_name_styles = {
         "status",
         "language",
+        "country",
         "plain",
     }
 
@@ -3758,16 +3728,20 @@ def write_m3u_playlist(
                 )
             )
 
-            if name_style == "language":
-                language_code = str(
-                    entry.get("language_code")
-                    or cfg.get("default_language_code")
+            if name_style in {"language", "country"}:
+                country_code = (
+                    normalize_country_code(
+                        str(
+                            entry.get("country_code")
+                            or entry.get("language_code")
+                            or cfg.get("default_country_code")
+                            or cfg.get("default_language_code")
+                            or "HU"
+                        )
+                    )
                     or "HU"
-                ).strip().upper()
-
-                output_name = (
-                    f"[{language_code}] {original_display}"
                 )
+                output_name = f"[{country_code}] {original_display}"
             else:
                 output_name = original_display
 
@@ -3804,14 +3778,18 @@ def make_dashboard(
     changes: dict,
     audit_rows: list[dict],
     audit_ambiguity_warnings: list[str],
+    country_stats: list[dict] | None = None,
 ) -> str:
     """Render the dashboard through the standalone presentation layer."""
+    if country_stats is None:
+        country_stats = summarize_country_stats(final_entries, source_stats)
     return render_dashboard(
         cfg=cfg,
         generated=generated,
         final_entries=final_entries,
         unique_channels=unique_channels,
         source_stats=source_stats,
+        country_stats=country_stats,
         language_stats=language_stats,
         duplicate_rows=duplicate_rows,
         changes=changes,
@@ -3827,11 +3805,8 @@ def make_dashboard(
 def main(strict: bool = False) -> None:
     cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
     audit_items = load_audit(cfg.get("audit_path", "audit.json"))
-    supported_language_codes = (
-        configured_playlist_language_codes(
-            cfg
-        )
-    )
+    supported_language_codes = configured_spoken_language_codes(cfg)
+    supported_country_codes = configured_playlist_country_codes(cfg)
 
     raw_identity_path = str(
         cfg.get("identity_overrides_path")
@@ -3901,18 +3876,10 @@ def main(strict: bool = False) -> None:
             default="source",
         )
 
-        language_code = (
-            normalize_language_code(
-                str(
-                    spec.get("language_code")
-                    or cfg.get(
-                        "default_language_code"
-                    )
-                    or "HU"
-                )
-            )
-            or "HU"
-        )
+        country_code = source_country_code(spec, cfg)
+        language_codes = source_language_codes(spec, cfg, country_code)
+        # Historical config/build code called this country bucket language_code.
+        language_code = country_code
 
         if spec.get("url"):
             location = str(spec["url"])
@@ -3948,7 +3915,17 @@ def main(strict: bool = False) -> None:
 
             entry["source"] = name
             entry["source_kind"] = kind
-            entry["language_code"] = language_code
+            entry_country = (
+                normalize_country_code(str(entry.get("country_code") or ""))
+                or country_code
+            )
+            entry_languages = (
+                normalize_spoken_language_codes(entry.get("language_codes"))
+                or list(language_codes)
+            )
+            entry["country_code"] = entry_country
+            entry["language_codes"] = entry_languages
+            entry["language_code"] = entry_country  # legacy country alias
 
             identity_name = strip_display_annotations(
                 strip_internal_candidate_annotations(
@@ -3978,21 +3955,30 @@ def main(strict: bool = False) -> None:
                 entry["identity_selector_index"] = identity_match["selector_index"]
                 entry["identity_note"] = identity_match["note"]
 
-                raw_identity_language = str(
-                    canonical_identity.get("language_code")
+                raw_identity_country = str(
+                    canonical_identity.get("country_code")
+                    or canonical_identity.get("language_code")
                     or ""
                 ).strip()
-
-                if raw_identity_language:
-                    identity_language = normalize_language_code(
-                        raw_identity_language
-                    )
-                    if not identity_language:
+                if raw_identity_country:
+                    identity_country = normalize_country_code(raw_identity_country)
+                    if not identity_country:
                         raise RuntimeError(
-                            "Invalid canonical identity language_code "
-                            f"{raw_identity_language!r} for {url}"
+                            "Invalid canonical identity country_code "
+                            f"{raw_identity_country!r} for {url}"
                         )
-                    entry["language_code"] = identity_language
+                    entry["country_code"] = identity_country
+                    entry["language_code"] = identity_country
+
+                raw_identity_languages = canonical_identity.get("language_codes")
+                if raw_identity_languages:
+                    identity_languages = normalize_spoken_language_codes(raw_identity_languages)
+                    if not identity_languages:
+                        raise RuntimeError(
+                            "Invalid canonical identity language_codes "
+                            f"{raw_identity_languages!r} for {url}"
+                        )
+                    entry["language_codes"] = identity_languages
 
             key = channel_key(entry)
             source_keys.add(key)
@@ -4019,9 +4005,9 @@ def main(strict: bool = False) -> None:
 
             country_name = str(
                 spec.get("country_name")
-                or country_name_for_language(
+                or country_name_for_code(
                     cfg,
-                    entry["language_code"],
+                    entry["country_code"],
                 )
             ).strip()
 
@@ -4045,7 +4031,7 @@ def main(strict: bool = False) -> None:
             ] = normalize_content_group(
                 source_group_title,
                 country_name=country_name,
-                language_code=entry["language_code"],
+                language_code=entry["country_code"],
                 default_group=str(
                     spec.get(
                         "default_group_title"
@@ -4119,7 +4105,9 @@ def main(strict: bool = False) -> None:
         source_stats.append({
             "name": name,
             "kind": kind,
-            "language_code": language_code,
+            "country_code": country_code,
+            "language_codes": list(language_codes),
+            "language_code": country_code,  # legacy country alias
             "location": location,
 
             "raw_entries": len(entries),
@@ -4164,9 +4152,10 @@ def main(strict: bool = False) -> None:
         supported_language_codes=(
             supported_language_codes
         ),
+        cfg=cfg,
     )
     test_candidates = (
-        route_candidates_to_verified_languages(
+        route_candidates_to_verified_countries(
             make_test_playlist_candidates(
                 final_entries,
                 audit_rows,
@@ -4278,7 +4267,9 @@ def main(strict: bool = False) -> None:
         record = by_channel.setdefault(key, {
             "key": key,
             "raw_key": entry.get("channel_key", ""),
-            "language_code": entry.get("language_code", ""),
+            "country_code": entry.get("country_code", entry.get("language_code", "")),
+            "language_codes": list(entry.get("language_codes") or []),
+            "language_code": entry.get("country_code", entry.get("language_code", "")),
             "name": entry["channel_name"],
             "canonical_id": entry.get("canonical_id", ""),
             "tvg_id": entry.get("tvg_id", ""),
@@ -4300,12 +4291,8 @@ def main(strict: bool = False) -> None:
         key=lambda x: normalize_text(x["name"])
     )
 
-    language_stats = (
-        summarize_language_stats(
-            published_entries,
-            source_stats,
-        )
-    )
+    country_stats = summarize_country_stats(published_entries, source_stats)
+    language_stats = summarize_language_stats(published_entries, source_stats)
 	
     previous_report = load_previous_report(cfg.get("previous_report_url"))
     changes = {
@@ -4390,7 +4377,7 @@ def main(strict: bool = False) -> None:
         published_entries,
         generated,
         "Stable family playlist",
-        name_style="language",
+        name_style="country",
     )
 
     # Full testing/research playlist.
@@ -4438,18 +4425,12 @@ def main(strict: bool = False) -> None:
     ] = {}
 
     for (
-        raw_language_code,
+        raw_country_code,
         relative_path,
     ) in country_outputs.items():
-        language_code = (
-            normalize_language_code(
-                str(
-                    raw_language_code
-                )
-            )
-            or str(
-                raw_language_code
-            ).strip().upper()
+        country_code = (
+            normalize_country_code(str(raw_country_code))
+            or str(raw_country_code).strip().upper()
         )
 
         country_entries = [
@@ -4458,11 +4439,12 @@ def main(strict: bool = False) -> None:
             in published_entries
             if str(
                 entry.get(
-                    "language_code"
+                    "country_code"
                 )
+                or entry.get("language_code")
                 or ""
             ).upper()
-            == language_code
+            == country_code
         ]
 
         country_path = (
@@ -4473,9 +4455,9 @@ def main(strict: bool = False) -> None:
         )
 
         country_name = (
-            country_name_for_language(
+            country_name_for_code(
                 cfg,
-                language_code,
+                country_code,
             )
         )
 
@@ -4492,7 +4474,7 @@ def main(strict: bool = False) -> None:
         )
 
         country_playlist_counts[
-            language_code
+            country_code
         ] = len(
             country_entries
         )
@@ -4514,6 +4496,8 @@ def main(strict: bool = False) -> None:
             "canonical_id": e.get("canonical_id", ""),
             "identity_match_type": e.get("identity_match_type", ""),
 
+            "country_code": e.get("country_code", e.get("language_code", "")),
+            "language_codes": ", ".join(e.get("language_codes") or []),
             "country_name": e.get(
                 "country_name",
                 "",
@@ -4564,6 +4548,8 @@ def main(strict: bool = False) -> None:
             "canonical_id",
             "identity_match_type",
 
+            "country_code",
+            "language_codes",
             "country_name",
             "content_group",
             "source_group_title",
@@ -4629,6 +4615,8 @@ def main(strict: bool = False) -> None:
             "stream_url",
             "protocol",
 
+            "playlist_country_code",
+            "output_country_code",
             "playlist_language_code",
             "output_language_code",
             "expected_language_codes",
@@ -4658,7 +4646,7 @@ def main(strict: bool = False) -> None:
     )
 
     report = {
-        "schema_version": 21,
+        "schema_version": 22,
         "generated_at": generated,
         "playlists": {
             "stable": {
@@ -4700,7 +4688,18 @@ def main(strict: bool = False) -> None:
             "duplicate_urls_ignored": len(duplicate_rows),
         },
         "sources": source_stats,
+        "countries": country_stats,
         "languages": language_stats,
+        "geography_language_model": {
+            "country_field": "country_code",
+            "language_field": "language_codes",
+            "language_standard": "ISO-639-3",
+            "legacy_country_alias_fields": [
+                "language_code",
+                "playlist_language_code",
+                "output_language_code"
+            ],
+        },
         "identity": {
             "path": raw_identity_path,
             "canonical_identities": len(identity_registry.identities),
@@ -4787,6 +4786,7 @@ def main(strict: bool = False) -> None:
             final_entries=published_entries,
             unique_channels=unique_channels,
             source_stats=source_stats,
+            country_stats=country_stats,
             language_stats=language_stats,
             duplicate_rows=duplicate_rows,
             changes=changes,
@@ -4827,14 +4827,14 @@ def main(strict: bool = False) -> None:
     )
 
     for (
-        language_code,
+        country_code,
         stream_count,
     ) in sorted(
         country_playlist_counts.items()
     ):
         print(
-            f"Stable {language_code}:"
-            f"{' ' * max(1, 15 - len(language_code))}"
+            f"Stable {country_code}:"
+            f"{' ' * max(1, 15 - len(country_code))}"
             f"{stream_count} streams"
         )
     print(
@@ -4847,7 +4847,7 @@ def main(strict: bool = False) -> None:
     )
     for stats in source_stats:
         print(
-            f"- [{stats['language_code']}] "
+            f"- [{stats['country_code']}] "
             f"{stats['name']} "
             f"({stats['kind']}): "
             f"{stats['raw_entries']} raw, "
@@ -4857,9 +4857,22 @@ def main(strict: bool = False) -> None:
             f"{stats['duplicate_urls_ignored']} duplicate URLs ignored"
         )
 
+    if country_stats:
+        print()
+        print("Country summary:")
+        for stats in country_stats:
+            print(
+                f"- {stats['country_code']}: "
+                f"{stats['unique_channels']} channels, "
+                f"{stats['stream_urls']} streams, "
+                f"{stats['base_channels']} base, "
+                f"{stats['added_channels']} added, "
+                f"{stats['alternative_streams']} alternatives"
+            )
+
     if language_stats:
         print()
-        print("Language summary:")
+        print("Spoken language summary:")
 
         for stats in language_stats:
             print(

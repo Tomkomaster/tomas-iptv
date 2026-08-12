@@ -130,76 +130,159 @@
     {
       "name": "IPTV-org Hungary",
       "kind": "base",
-      "language_code": "HU",
-      "url": "https://iptv-org.github.io/iptv/countries/hu.m3u"
+      "url": "https://iptv-org.github.io/iptv/countries/hu.m3u",
+      "country_code": "HU",
+      "language_codes": [
+        "hun"
+      ]
     },
     {
       "name": "IPTV-org Hungary raw alternatives",
       "kind": "alternatives",
-      "language_code": "HU",
-      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hu.m3u"
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hu.m3u",
+      "country_code": "HU",
+      "language_codes": [
+        "hun"
+      ]
     },
     {
       "name": "IPTV-org Slovakia",
       "kind": "base",
-      "language_code": "SK",
-      "url": "https://iptv-org.github.io/iptv/countries/sk.m3u"
+      "url": "https://iptv-org.github.io/iptv/countries/sk.m3u",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ]
     },
     {
       "name": "IPTV-org Slovakia raw alternatives",
       "kind": "alternatives",
-      "language_code": "SK",
-      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sk.m3u"
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/sk.m3u",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ]
     },
     {
       "name": "IPTV-org Czechia",
       "kind": "base",
-      "language_code": "CZ",
-      "url": "https://iptv-org.github.io/iptv/countries/cz.m3u"
+      "url": "https://iptv-org.github.io/iptv/countries/cz.m3u",
+      "country_code": "CZ",
+      "language_codes": [
+        "ces"
+      ]
     },
     {
       "name": "IPTV-org Czechia raw alternatives",
       "kind": "alternatives",
-      "language_code": "CZ",
-      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cz.m3u"
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cz.m3u",
+      "country_code": "CZ",
+      "language_codes": [
+        "ces"
+      ]
     },
     {
       "name": "IPTV-org Hungarian language",
       "kind": "alternatives",
-      "language_code": "HU",
-      "url": "https://iptv-org.github.io/iptv/languages/hun.m3u"
+      "url": "https://iptv-org.github.io/iptv/languages/hun.m3u",
+      "country_code": "HU",
+      "language_codes": [
+        "hun"
+      ]
     },
     {
       "name": "IPTV-org Slovak language",
       "kind": "alternatives",
-      "language_code": "SK",
-      "url": "https://iptv-org.github.io/iptv/languages/slk.m3u"
+      "url": "https://iptv-org.github.io/iptv/languages/slk.m3u",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ]
     },
     {
       "name": "IPTV-org Czech language",
       "kind": "alternatives",
-      "language_code": "CZ",
-      "url": "https://iptv-org.github.io/iptv/languages/ces.m3u"
+      "url": "https://iptv-org.github.io/iptv/languages/ces.m3u",
+      "country_code": "CZ",
+      "language_codes": [
+        "ces"
+      ]
     }
   ],
   "extras": [
     {
       "name": "Our Hungarian test/verified extras",
       "kind": "extras",
-      "language_code": "HU",
-      "path": "extras/hu.m3u"
+      "path": "extras/hu.m3u",
+      "country_code": "HU",
+      "language_codes": [
+        "hun"
+      ]
     },
     {
       "name": "Our Slovak test/verified extras",
       "kind": "extras",
-      "language_code": "SK",
-      "path": "extras/sk.m3u"
+      "path": "extras/sk.m3u",
+      "country_code": "SK",
+      "language_codes": [
+        "slk"
+      ]
     },
     {
       "name": "Our Czech test/verified extras",
       "kind": "extras",
-      "language_code": "CZ",
-      "path": "extras/cz.m3u"
+      "path": "extras/cz.m3u",
+      "country_code": "CZ",
+      "language_codes": [
+        "ces"
+      ]
+    }
+  ],
+  "default_country_code": "HU",
+  "default_language_codes": [
+    "hun"
+  ],
+  "country_language_defaults": {
+    "HU": [
+      "hun"
+    ],
+    "SK": [
+      "slk"
+    ],
+    "CZ": [
+      "ces"
+    ]
+  },
+  "verified_country_routes": [
+    {
+      "source_country_code": "HU",
+      "observed_language_code": "slk",
+      "output_country_code": "SK"
+    },
+    {
+      "source_country_code": "HU",
+      "observed_language_code": "ces",
+      "output_country_code": "CZ"
+    },
+    {
+      "source_country_code": "SK",
+      "observed_language_code": "hun",
+      "output_country_code": "HU"
+    },
+    {
+      "source_country_code": "SK",
+      "observed_language_code": "ces",
+      "output_country_code": "CZ"
+    },
+    {
+      "source_country_code": "CZ",
+      "observed_language_code": "hun",
+      "output_country_code": "HU"
+    },
+    {
+      "source_country_code": "CZ",
+      "observed_language_code": "slk",
+      "output_country_code": "SK"
     }
   ]
 }

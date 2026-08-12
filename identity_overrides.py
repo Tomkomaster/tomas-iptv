@@ -79,7 +79,9 @@ class IdentityRegistry:
         "channel_name",
         "tvg_name",
         "tvg_id",
-        "language_code",
+        "language_code",  # legacy country alias
+        "country_code",
+        "language_codes",
     }
 
     def __init__(self, data: dict):
@@ -117,11 +119,30 @@ class IdentityRegistry:
                     + ", ".join(sorted(unknown))
                 )
 
-            identity = {
-                key: str(raw_identity.get(key) or "").strip()
-                for key in self._IDENTITY_FIELDS
-                if key in raw_identity
-            }
+            identity: dict = {}
+            for key in self._IDENTITY_FIELDS:
+                if key not in raw_identity:
+                    continue
+                if key == "language_codes":
+                    raw_codes = raw_identity.get(key)
+                    if not isinstance(raw_codes, list):
+                        raise RuntimeError(
+                            f"Canonical identity {canonical_id!r} language_codes "
+                            "must be a JSON list."
+                        )
+                    codes = [
+                        str(value or "").strip()
+                        for value in raw_codes
+                        if str(value or "").strip()
+                    ]
+                    if not codes:
+                        raise RuntimeError(
+                            f"Canonical identity {canonical_id!r} language_codes "
+                            "must not be empty when supplied."
+                        )
+                    identity[key] = codes
+                else:
+                    identity[key] = str(raw_identity.get(key) or "").strip()
 
             if not identity.get("channel_name"):
                 raise RuntimeError(
