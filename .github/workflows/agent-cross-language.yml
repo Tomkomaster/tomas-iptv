@@ -39,6 +39,16 @@ jobs:
               raise RuntimeError("Could not narrow the migration replacement helper")
           source = source.replace(old, new, 1)
 
+          import_marker = "import build as build_module"
+          import_fix = (
+              "import sys\n"
+              "sys.path.insert(0, str(Path.cwd()))\n"
+              "import build as build_module"
+          )
+          if source.count(import_marker) != 1:
+              raise RuntimeError("Could not locate migration build import")
+          source = source.replace(import_marker, import_fix, 1)
+
           Path("/tmp/apply_cross_language.py").write_text(
               source,
               encoding="utf-8",
