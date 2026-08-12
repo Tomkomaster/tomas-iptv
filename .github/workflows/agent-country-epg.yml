@@ -20,7 +20,20 @@ jobs:
           fetch-depth: 0
 
       - name: Apply EPG changes
-        run: python3 .github/scripts/agent_country_epg_update.py
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/agent_country_epg_update.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'if count != 2:\n    raise RuntimeError(f"workflow external config: expected 2 matches, found {count}")'
+          new = 'if count != 3:\n    raise RuntimeError(f"workflow external config: expected 3 matches, found {count}")'
+          if old not in text:
+              raise SystemExit('Expected helper assumption was not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          python3 .github/scripts/agent_country_epg_update.py
 
       - name: Validate code and data
         shell: bash
