@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@@V000@@</title>
+<link rel="stylesheet" href="static/dashboard.css">
+</head>
+<body>
+<main>
+  <h1>@@V000@@</h1>
+  <p class="muted">Generated automatically: @@V001@@</p>
+
+  <div class="links">
+    <a href="tv.m3u">Stable family playlist (tv.m3u)</a>
+    <a href="test.m3u">Testing playlist (test.m3u)</a>
+    <a href="hu.m3u">Stable Hungary (hu.m3u)</a>
+    <a href="sk.m3u">Stable Slovakia (sk.m3u)</a>
+    @@V002@@
+    <a href="channels.csv">Channel inventory (CSV)</a>
+    <a href="duplicates.csv">Ignored duplicate URLs (CSV)</a>
+    <a href="excluded.csv">Excluded from playlist (CSV)</a>
+    <a href="audit.csv">Manual verification (CSV)</a>
+    <a href="attention.json">Needs attention (JSON)</a>
+    <a href="health.json">Automated stream health (JSON)</a>
+    <a href="report.json">Machine report (JSON)</a>
+  </div>
+
+  <div class="cards">
+    <div class="card"><div class="value">@@V003@@</div><div class="label">Unique channels</div></div>
+    <div class="card"><div class="value">@@V004@@</div><div class="label">Unique stream URLs</div></div>
+    <div class="card"><div class="value">@@V005@@</div><div class="label">Channels added beyond base</div></div>
+    <div class="card"><div class="value">@@V006@@</div><div class="label">Alternative streams kept</div></div>
+    <div class="card"><div class="value">@@V007@@</div><div class="label">Duplicate URLs ignored</div></div>
+  </div>
+
+  @@V008@@
+
+  <h2>EPG coverage by country</h2>
+  <p class="muted">
+    Programme-guide coverage is shown separately for HU, SK and CZ so growth in
+    one country does not hide gaps in another. Percentages use stable channels
+    that currently have a tvg-id. Missing tvg-id values remain visible in Needs attention.
+  </p>
+  <div id="epgCountrySummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading EPG coverage</div></div>
+  </div>
+
+  <h2>Needs attention</h2>
+  <p class="muted">
+    One prioritized advisory queue combining automated stream failures, old manual
+    VLC + Samsung tests, EPG gaps, and previously TV-safe streams that disappeared
+    from all current source inputs. A channel appears once even when several reasons
+    apply. Automated results remain advisory and never change audit.json or stable
+    playlist membership by themselves.
+  </p>
+
+  <div id="attentionSummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading attention queue</div></div>
+  </div>
+
+  <div class="controls">
+    <input id="attentionSearch" type="search" placeholder="Search needs attention...">
+    <select id="attentionSeverityFilter">
+      <option value="">All priorities</option>
+      <option value="critical">Critical</option>
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <select id="attentionCategoryFilter">
+      <option value="">All reasons</option>
+      <option value="stream">Stream health</option>
+      <option value="manual">Manual testing</option>
+      <option value="epg">EPG</option>
+      <option value="upstream_missing">Upstream disappeared</option>
+    </select>
+  </div>
+  <p id="attentionVisibleCount" class="muted">Loading attention.json…</p>
+
+  <div class="table-wrap">
+    <table id="attentionTable">
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Channel</th>
+          <th>Why</th>
+          <th>Recommended action</th>
+          <th>Manual</th>
+          <th>Auto health</th>
+          <th>EPG</th>
+          <th>Last manual</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="9" class="muted">Loading prioritized attention queue…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Automated stream health</h2>
+  <p class="muted">
+    Advisory network checks for the stable family playlist. For HLS streams the checker
+    loads the manifest, resolves a media playlist, and requests bytes from a real media
+    segment. This never changes manual VLC + Samsung verification, audit.json, or stable
+    playlist membership automatically. Three consecutive automated failures on normal 24/7
+    streams only recommend a manual retest. Explicit event-based streams may be reported as
+    informationally inactive outside broadcast hours without building a failure streak.
+  </p>
+
+  <div id="healthSummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading stream health</div></div>
+  </div>
+
+  <div class="controls">
+    <input id="healthSearch" type="search" placeholder="Search automated health...">
+    <select id="healthStatusFilter">
+      <option value="">All automated statuses</option>
+      <option value="playable">Playable</option>
+      <option value="failed">Actionable failures</option>
+      <option value="Event inactive">Event inactive</option>
+      <option value="needs_manual_retest">Needs manual retest</option>
+      <option value="Online">Online</option>
+      <option value="Redirected">Redirected</option>
+      <option value="Slow startup">Slow startup</option>
+      <option value="HTTP error">HTTP error</option>
+      <option value="Manifest unavailable">Manifest unavailable</option>
+      <option value="No playable segments">No playable segments</option>
+      <option value="Timeout">Timeout</option>
+    </select>
+  </div>
+  <p id="healthVisibleCount" class="muted">Loading health.json…</p>
+
+  <div class="table-wrap">
+    <table id="healthTable">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Manual</th>
+          <th>Auto health</th>
+          <th>Failure streak</th>
+          <th>Startup</th>
+          <th>Last checked</th>
+          <th>Detail</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="8" class="muted">Loading automated stream health…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Manual verification</h2>
+  <p class="muted">
+    This is our persistent playback test log. “Verified” means it worked in both VLC
+    and the Samsung test. “TV verified” means Samsung worked even if VLC did not;
+    “PC only” means VLC worked but Samsung did not. Provenance is tracked separately,
+    so these labels are not legal certifications.
+  </p>
+
+  <div class="audit-summary">
+    <div class="card"><div class="value">@@V009@@</div><div class="label">Channels/streams in testing queue</div></div>
+    <div class="card"><div class="value">@@V010@@</div><div class="label">Tested on both devices</div></div>
+    <div class="card"><div class="value">@@V011@@</div><div class="label">VLC tests remaining</div></div>
+    <div class="card"><div class="value">@@V012@@</div><div class="label">Samsung tests remaining</div></div>
+    <div class="card"><div class="value">@@V013@@</div><div class="label">✓ Verified both</div></div>
+    <div class="card"><div class="value">@@V014@@</div><div class="label">TV verified</div></div>
+    <div class="card"><div class="value">@@V015@@</div><div class="label">PC only</div></div>
+    <div class="card"><div class="value">@@V016@@</div><div class="label">? Needs review</div></div>
+    <div class="card"><div class="value">@@V017@@</div><div class="label">Supported cross-language</div></div>
+    <div class="card"><div class="value">@@V018@@</div><div class="label">✕ Rejected</div></div>
+  </div>
+
+  <div class="controls">
+    <input id="auditSearch" type="search" placeholder="Search manual tests...">
+    <select id="auditDecisionFilter">
+      <option value="">All manual decisions</option>
+      <option value="Verified">Verified</option>
+      <option value="TV verified">TV verified</option>
+      <option value="PC only">PC only</option>
+      <option value="Needs review">Needs review</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+    <select id="auditVlcFilter">
+      <option value="">All VLC statuses</option>
+      <option value="works">VLC works</option>
+      <option value="works_with_warning">VLC works with warning</option>
+      <option value="loads">VLC keeps loading</option>
+      <option value="mrl_error">VLC MRL error</option>
+      <option value="wrong_language">VLC wrong language</option>
+      <option value="not_tested">VLC not tested</option>
+    </select>
+    <select id="auditSamsungFilter">
+      <option value="">All Samsung statuses</option>
+      <option value="works">Samsung works</option>
+      <option value="format_error">Samsung unsupported format</option>
+      <option value="generic_error">Samsung generic error</option>
+      <option value="loads">Samsung keeps loading</option>
+      <option value="wrong_language">Samsung wrong language</option>
+      <option value="not_tested">Samsung not tested</option>
+    </select>
+  </div>
+  <p id="auditVisibleCount" class="muted"></p>
+
+  <div class="table-wrap">
+    <table id="auditTable">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Feed</th>
+          <th>TVG ID</th>
+          <th>Source</th>
+          <th>Discovery</th>
+          <th>Protocol</th>
+          <th>Audit/source scope</th>
+          <th>Published under</th>
+          <th>Expected language</th>
+          <th>Observed language</th>
+          <th>Language acceptance</th>
+          <th>Provenance</th>
+          <th>Source flag</th>
+          <th>VLC</th>
+          <th>Samsung</th>
+          <th>Decision</th>
+          <th>In test playlist</th>
+          <th>In stable family playlist</th>
+          <th>Reason / notes</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>@@V019@@</tbody>
+    </table>
+  </div>
+
+  <h2>Language summary</h2>
+
+  <p class="muted">
+    Counts are based on the final published playlist.
+    Base channels come from sources whose kind is "base".
+    Added channels were first discovered by non-base sources.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Language</th>
+          <th>Sources</th>
+          <th>Base sources</th>
+          <th>Unique channels</th>
+          <th>Stream URLs</th>
+          <th>Base channels</th>
+          <th>Added channels</th>
+          <th>Alternative streams</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @@V020@@
+      </tbody>
+    </table>
+  </div>
+  
+  <h2>Source contribution</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Language</th>
+          <th>Kind</th>
+          <th>Raw entries</th>
+          <th>Unique channels in source</th>
+          <th>Stream URLs kept</th>
+          <th>Base channels</th>
+          <th>Added channels</th>
+          <th>Alternative streams</th>
+          <th>Duplicate URLs ignored</th>
+        </tr>
+      </thead>
+      <tbody>@@V021@@</tbody>
+    </table>
+  </div>
+
+  <h2>Changes since previous build</h2>
+  @@V022@@
+
+  <h2>Channel inventory</h2>
+  <p class="muted">
+    “Base channel” means the channel was first introduced by a source
+    whose kind is "base".
+    “Added channel” means it was first introduced by a non-base source,
+    such as alternatives or extras.
+    “Alternative stream” means the logical channel already existed and
+    another source supplied a different stream URL.
+  </p>
+
+  <div class="controls">
+    <input id="search" type="search" placeholder="Search channel, TVG ID, group or URL...">
+    <select id="sourceFilter">
+      <option value="">All sources</option>
+      @@V023@@
+    </select>
+    <select id="statusFilter">
+      <option value="">All classifications</option>
+      <option value="Base channel">Base channel</option>
+      <option value="Added channel">Added channel</option>
+      <option value="Alternative stream">Alternative stream</option>
+    </select>
+  </div>
+
+  <p id="visibleCount" class="muted"></p>
+
+  <div class="table-wrap">
+    <table id="channels">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>TVG ID</th>
+          <th>Group</th>
+          <th>Source</th>
+          <th>Result</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        @@V024@@
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<script src="static/dashboard.js" defer></script>
+</body>
+</html>

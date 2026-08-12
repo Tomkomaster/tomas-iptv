@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 from build import make_dashboard
 
@@ -27,7 +28,8 @@ class DashboardAttentionTests(unittest.TestCase):
         self.assertIn("attentionTable", page)
         self.assertIn("attentionSeverityFilter", page)
         self.assertIn("attentionCategoryFilter", page)
-        self.assertIn("fetch('attention.json'", page)
+        script = Path("static/dashboard.js").read_text(encoding="utf-8")
+        self.assertIn("fetch('attention.json'", script)
         self.assertIn("Automated results remain advisory", page)
 
 
