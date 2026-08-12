@@ -3,16 +3,18 @@ import unittest
 from pathlib import Path
 
 import build
-from dashboard import copy_dashboard_assets
+from iptv.dashboard import copy_dashboard_assets
 
 
 class DashboardPresentationTests(unittest.TestCase):
-    def test_dashboard_presentation_is_outside_build(self):
+    def test_dashboard_presentation_is_outside_build_entrypoint(self):
         source = Path("build.py").read_text(encoding="utf-8")
         self.assertNotIn("<!doctype html>", source.lower())
         self.assertNotIn("<style>", source.lower())
         self.assertNotIn("function renderEpgCountryCoverage", source)
-        self.assertIn("from dashboard import copy_dashboard_assets, render_dashboard", source)
+        self.assertIn("from iptv import dashboard as _dashboard", source)
+        self.assertTrue(Path("iptv/dashboard.py").is_file())
+        self.assertLess(Path("build.py").stat().st_size, 10_000)
 
     def test_dashboard_template_references_external_assets(self):
         template = Path("templates/dashboard.html").read_text(encoding="utf-8")

@@ -4,8 +4,8 @@ Canonical channel identity is intentionally separate from stream/feed identity, 
 
 ## Files
 
-- `identity_overrides.json` contains manually curated canonical identities and selector rules.
-- `identity_overrides.py` validates the file and resolves one current feed to at most one canonical identity.
+- `data/identity_overrides.json` contains manually curated canonical identities and selector rules.
+- `iptv/identity_overrides.py` validates the file and resolves one current feed to at most one canonical identity.
 - `config.json` only points to the identity data file through `identity_overrides_path`.
 
 ## Data model
@@ -82,7 +82,7 @@ Published prefixes, feed numbering, quality suffixes, and country/content groups
 
 ## Adding a new identity correction
 
-1. Add or reuse a stable ID in `identities`.
+1. Add or reuse a stable ID in `data/identity_overrides.json`.
 2. Add the strongest safe selector available.
 3. Prefer exact URL when the problem is unique to one feed.
 4. Prefer source + `tvg-id` when URLs rotate but the provider metadata is stable.
