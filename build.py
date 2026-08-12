@@ -1334,6 +1334,42 @@ def audit_excluded(item: dict) -> bool:
     return item.get("exclude_from_playlist") is True
 
 
+def exact_url_audit_matches_entry(
+    audit_item: dict,
+    entry: dict,
+) -> bool:
+    """
+    Return whether an exact-URL audit is safe to attach to this entry.
+
+    Exact URLs remain the primary feed identity, but a saved audit that
+    explicitly names its expected playlist language/country must never jump
+    to a current entry scoped to a disjoint language/country. This protects
+    against upstream metadata reusing the same URL for a differently
+    identified channel, while legacy URL-specific audits without explicit
+    expected_language_codes keep their existing behavior.
+    """
+    audit_expected = normalize_language_codes(
+        audit_item.get("expected_language_codes")
+    )
+
+    if not audit_expected:
+        return True
+
+    entry_expected = normalize_language_codes(
+        entry.get("expected_language_codes")
+        or entry.get("language_code")
+    )
+
+    if not entry_expected:
+        return True
+
+    return bool(
+        set(audit_expected).intersection(
+            entry_expected
+        )
+    )
+
+
 def validate_audit_items(
     audit_items: list[dict],
     final_entries: list[dict],
@@ -1584,6 +1620,35 @@ def validate_audit_items(
             )
         )
 
+        current_url_expected = (
+            sorted(
+                current_expected_by_url.get(
+                    url_key,
+                    set(),
+                )
+            )
+            if url_key
+            else []
+        )
+
+        if (
+            url_key
+            and expected_for_validation
+            and current_url_expected
+            and not set(
+                expected_for_validation
+            ).intersection(
+                current_url_expected
+            )
+        ):
+            warnings.append(
+                f"{label}: exact stream URL is currently scoped to "
+                f"{', '.join(current_url_expected)}, but the saved audit "
+                f"explicitly expects {', '.join(expected_for_validation)}. "
+                "The saved result will be kept as historical evidence and "
+                "will not be applied to this current entry."
+            )
+
         # If the audit does not explicitly say what language was expected,
         # derive it from the current source/playlist entry.
         if not expected_for_validation:
@@ -1803,11 +1868,19 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         manual = None
         manual_key = None
 
-        # URL-specific audit is always authoritative. Canonically equivalent
-        # URL spellings identify the same stream.
+        # URL-specific audit is authoritative only when any explicitly
+        # recorded expected language/country is compatible with this current
+        # entry. Canonically equivalent URL spellings still identify the same
+        # stream inside that identity scope.
         if url_key and url_key in manual_by_url:
-            manual = manual_by_url[url_key]
-            manual_key = ("url", url_key)
+            candidate_manual = manual_by_url[url_key]
+
+            if exact_url_audit_matches_entry(
+                candidate_manual,
+                entry,
+            ):
+                manual = candidate_manual
+                manual_key = ("url", url_key)
 
         # Legacy channel-level results are safe only for a single-feed channel.
         elif feed_count == 1:
@@ -2027,9 +2100,9 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         if manual_key in used_manual_keys:
             continue
 
-        if url_key and url_key in current_urls:
-            continue
-
+        # An exact URL can still need to remain as historical evidence when
+        # its saved expected language/country conflicts with the current entry.
+        # Do not discard it merely because that URL exists in current inputs.
         legacy_ambiguous = False
         legacy_matching_urls: set[str] = set()
 
@@ -2092,6 +2165,41 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         history_notes = str(
             item.get("notes") or ""
         ).strip()
+
+        if url_key and url_key in current_expected_by_url:
+            saved_expected = normalize_language_codes(
+                item.get("expected_language_codes")
+            )
+            current_expected = sorted(
+                current_expected_by_url.get(
+                    url_key,
+                    set(),
+                )
+            )
+
+            if (
+                saved_expected
+                and current_expected
+                and not set(saved_expected).intersection(
+                    current_expected
+                )
+            ):
+                identity_note = (
+                    "Historical exact-URL audit only. Saved expected "
+                    f"language/country {format_language_codes(saved_expected)} "
+                    "does not match the current entry scope "
+                    f"{format_language_codes(current_expected)}, so this "
+                    "verification was not transferred."
+                )
+
+                history_notes = " — ".join(
+                    part
+                    for part in (
+                        history_notes,
+                        identity_note,
+                    )
+                    if part
+                )
 
         if legacy_ambiguous:
             ambiguity_note = (
@@ -2186,19 +2294,9 @@ def select_playlist_candidates(
     URL-specific prepared row. Unmatched channel-level history is never used
     here as a fallback.
     """
-    audit_by_url: dict[str, dict] = {}
-
-    for row in audit_rows:
-        url = str(row.get("stream_url") or "").strip()
-        if not url:
-            continue
-
-        url_key = canonical_stream_url(url)
-
-        if url_key in audit_by_url:
-            raise RuntimeError(f"Duplicate prepared audit URL: {url}")
-
-        audit_by_url[url_key] = row
+    audit_by_url = audit_rows_by_stream_url(
+        audit_rows
+    )
 
     candidate_entries: list[dict] = []
     excluded_rows: list[dict] = []
@@ -2284,6 +2382,12 @@ def audit_rows_by_stream_url(
     result: dict[str, dict] = {}
 
     for row in audit_rows:
+        # Historical rows may intentionally retain the same URL as a current
+        # entry after an identity-scope conflict. They must never drive current
+        # playlist selection.
+        if row.get("in_playlist") is False:
+            continue
+
         url = str(
             row.get("stream_url") or ""
         ).strip()
@@ -4451,6 +4555,13 @@ def main(strict: bool = False) -> None:
                 row_url
             )
         )
+
+        # prepare_audit_rows deliberately marks historical-only rows false.
+        # Preserve that authority even when a different current identity uses
+        # the same URL.
+        if row.get("in_playlist") is False:
+            row["in_stable_playlist"] = False
+            continue
 
         # "in_playlist" now means the stream is a current candidate
         # and is therefore present in test.m3u.
