@@ -37,11 +37,109 @@ jobs:
               raise SystemExit('replace_region helper anchor changed')
           text = text.replace(old_region, new_region, 1)
 
+          # Do not rename the legacy wrapper function itself when changing calls.
+          text = text.replace(
+              'text = text.replace("route_candidates_to_verified_languages(\\n", "route_candidates_to_verified_countries(\\n")',
+              'text = text.replace("    route_candidates_to_verified_languages(\\n", "    route_candidates_to_verified_countries(\\n")',
+          )
+
           path.write_text(text, encoding='utf-8')
           PY
 
       - name: Apply refactor
         run: python3 .tmp_country_language_refactor.py
+
+      - name: Preserve compatibility edges
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('build.py')
+          text = path.read_text(encoding='utf-8')
+
+          # The existing audit helper API keeps HU/SK/CZ-style values. The new
+          # authoritative language_codes field uses ISO-639-3 separately.
+          old = '''def normalize_language_codes(value) -> list[str]:\n    """Normalize spoken-language lists to ISO-639-3 while accepting legacy values."""\n    return normalize_spoken_language_codes(value)\n'''
+          new = '''def normalize_language_codes(value) -> list[str]:\n    """Normalize legacy audit-language values while preserving their API."""\n    if value is None:\n        return []\n    if isinstance(value, str):\n        values = [\n            part.strip()\n            for part in re.split(r"[,;/+]", value)\n            if part.strip()\n        ]\n    elif isinstance(value, (list, tuple, set)):\n        values = list(value)\n    else:\n        values = [value]\n    result: list[str] = []\n    for raw in values:\n        code = normalize_language_code(str(raw or ""))\n        if code and code not in result:\n            result.append(code)\n    return result\n'''
+          if text.count(old) != 1:
+              raise SystemExit('legacy normalize_language_codes anchor changed')
+          text = text.replace(old, new, 1)
+
+          # Modern language_codes are always normalized through the ISO layer.
+          text = text.replace(
+              'normalize_language_codes(entry.get("language_codes"))',
+              'normalize_spoken_language_codes(entry.get("language_codes"))',
+          )
+          text = text.replace(
+              'normalize_language_codes(source.get("language_codes"))',
+              'normalize_spoken_language_codes(source.get("language_codes"))',
+          )
+          text = text.replace(
+              'identity_languages = normalize_language_codes(raw_identity_languages)',
+              'identity_languages = normalize_spoken_language_codes(raw_identity_languages)',
+          )
+          text = text.replace(
+              '"language_codes": normalize_language_codes(\n                entry.get("language_codes") or expected_codes\n            ),',
+              '"language_codes": normalize_spoken_language_codes(\n                entry.get("language_codes") or expected_codes\n            ),',
+          )
+          text = text.replace(
+              'legacy_code = normalize_spoken_language_code(\n                str(item.get("language_code") or "")\n            )',
+              'legacy_code = normalize_language_code(\n                str(item.get("language_code") or "")\n            )',
+          )
+
+          old_derive = '''    expected = set(expected_codes)\n    observed = set(observed_codes)\n\n    if not expected.intersection(observed):\n'''
+          new_derive = '''    expected = set(normalize_spoken_language_codes(expected_codes))\n    observed = set(normalize_spoken_language_codes(observed_codes))\n\n    if not expected.intersection(observed):\n'''
+          if text.count(old_derive) != 1:
+              raise SystemExit('derive_language_match anchor changed')
+          text = text.replace(old_derive, new_derive, 1)
+
+          old_accept = '''    supported = normalize_language_codes(\n        supported_language_codes\n    )\n\n    if language_match in {\n'''
+          new_accept = '''    supported = normalize_spoken_language_codes(\n        supported_language_codes\n    )\n    observed_supported = normalize_spoken_language_codes(observed_codes)\n\n    if language_match in {\n'''
+          if text.count(old_accept) != 1:
+              raise SystemExit('language acceptance supported anchor changed')
+          text = text.replace(old_accept, new_accept, 1)
+          text = text.replace(
+              'and set(observed_codes).intersection(\n                supported\n            )',
+              'and set(observed_supported).intersection(\n                supported\n            )',
+              1,
+          )
+
+          # Old isolated configs (without the new route table) retain the
+          # historical HU/SK/CZ routing behavior. New configs use explicit rules.
+          old_route = '''    routed = verified_country_route(\n        cfg,\n        source_code,\n        audit_row.get("observed_language_codes"),\n    )\n'''
+          new_route = '''    if "verified_country_routes" not in cfg:\n        return verified_output_language_code(\n            audit_row,\n            source_code,\n            configured_playlist_country_codes(cfg),\n        )\n\n    routed = verified_country_route(\n        cfg,\n        source_code,\n        audit_row.get("observed_language_codes"),\n    )\n'''
+          if text.count(old_route) != 1:
+              raise SystemExit('verified country route anchor changed')
+          text = text.replace(old_route, new_route, 1)
+          text = text.replace(
+              'observed = normalize_language_codes(audit_row.get("observed_language_codes"))',
+              'observed = normalize_spoken_language_codes(audit_row.get("observed_language_codes"))',
+              1,
+          )
+
+          # Preserve the old make_dashboard call signature; country_stats is an
+          # optional new parameter and is derived when old callers omit it.
+          old_sig = '''    source_stats: list[dict],\n    country_stats: list[dict],\n    language_stats: list[dict],\n    duplicate_rows: list[dict],\n    changes: dict,\n    audit_rows: list[dict],\n    audit_ambiguity_warnings: list[str],\n) -> str:\n    """Render the dashboard through the standalone presentation layer."""\n    return render_dashboard(\n'''
+          new_sig = '''    source_stats: list[dict],\n    language_stats: list[dict],\n    duplicate_rows: list[dict],\n    changes: dict,\n    audit_rows: list[dict],\n    audit_ambiguity_warnings: list[str],\n    country_stats: list[dict] | None = None,\n) -> str:\n    """Render the dashboard through the standalone presentation layer."""\n    if country_stats is None:\n        country_stats = summarize_country_stats(final_entries, source_stats)\n    return render_dashboard(\n'''
+          if text.count(old_sig) != 1:
+              raise SystemExit('make_dashboard compatibility signature anchor changed')
+          text = text.replace(old_sig, new_sig, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+          # Keep the canonical identity legacy alias readable while making
+          # country_code/language_codes authoritative.
+          identity_path = Path('identity_overrides.json')
+          identity_data = json.loads(identity_path.read_text(encoding='utf-8'))
+          for identity in (identity_data.get('identities') or {}).values():
+              if isinstance(identity, dict) and identity.get('country_code') and not identity.get('language_code'):
+                  identity['language_code'] = identity['country_code']
+          identity_path.write_text(
+              json.dumps(identity_data, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          PY
 
       - name: Run tests
         run: python3 -m unittest discover -s tests -v
@@ -59,6 +157,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm .tmp_country_language_refactor.py
-          git add build.py country_language.py identity_overrides.py identity_overrides.json config.json dashboard.py templates/dashboard.html README.md docs/country-language-model.md tests/test_country_language_model.py
+          git add build.py country_language.py identity_overrides.py identity_overrides.json config.json dashboard.py templates/dashboard.html README.md docs/country-language-model.md tests
           git commit -m "Separate country from spoken language [country-language-applied]"
           git push origin HEAD:agent/country-language-separation
