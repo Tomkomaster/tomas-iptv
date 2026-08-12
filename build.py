@@ -17,11 +17,13 @@ from identity_overrides import IdentityRegistry, load_identity_registry
 from country_language import (
     configured_country_codes,
     configured_language_codes,
+    country_code_from_tvg_id,
     legacy_country_scope_from_language_token,
     normalize_country_code,
     normalize_language_code as normalize_spoken_language_code,
     normalize_language_codes as normalize_spoken_language_codes,
     source_country_code,
+    source_country_mode,
     source_language_codes,
     verified_country_route,
 )
@@ -3876,6 +3878,7 @@ def main(strict: bool = False) -> None:
             default="source",
         )
 
+        country_mode = source_country_mode(spec)
         country_code = source_country_code(spec, cfg)
         language_codes = source_language_codes(spec, cfg, country_code)
         # Historical config/build code called this country bucket language_code.
@@ -3905,6 +3908,8 @@ def main(strict: bool = False) -> None:
         alternatives = 0
 
         duplicate_urls = 0
+        country_derivation_failures = 0
+        out_of_scope_country_entries = 0
 
         for entry in entries:
             url = (entry.get("url") or "").strip()
@@ -3915,10 +3920,15 @@ def main(strict: bool = False) -> None:
 
             entry["source"] = name
             entry["source_kind"] = kind
-            entry_country = (
-                normalize_country_code(str(entry.get("country_code") or ""))
-                or country_code
+            entry_country = normalize_country_code(
+                str(entry.get("country_code") or "")
             )
+            if not entry_country and country_mode == "tvg_id":
+                entry_country = country_code_from_tvg_id(
+                    str(entry.get("tvg_id") or "")
+                )
+            if not entry_country:
+                entry_country = country_code
             entry_languages = (
                 normalize_spoken_language_codes(entry.get("language_codes"))
                 or list(language_codes)
@@ -3979,6 +3989,28 @@ def main(strict: bool = False) -> None:
                             f"{raw_identity_languages!r} for {url}"
                         )
                     entry["language_codes"] = identity_languages
+
+            final_entry_country = normalize_country_code(
+                str(entry.get("country_code") or entry.get("language_code") or "")
+            )
+            if not final_entry_country:
+                country_derivation_failures += 1
+                print(
+                    "WARNING: skipping source entry whose country could not be "
+                    f"derived from tvg-id {entry.get('tvg_id')!r}: {url}",
+                    file=sys.stderr,
+                )
+                continue
+
+            entry["country_code"] = final_entry_country
+            entry["language_code"] = final_entry_country
+
+            if (
+                country_mode == "tvg_id"
+                and final_entry_country not in supported_country_codes
+            ):
+                out_of_scope_country_entries += 1
+                continue
 
             key = channel_key(entry)
             source_keys.add(key)
@@ -4105,6 +4137,7 @@ def main(strict: bool = False) -> None:
         source_stats.append({
             "name": name,
             "kind": kind,
+            "country_mode": country_mode,
             "country_code": country_code,
             "language_codes": list(language_codes),
             "language_code": country_code,  # legacy country alias
@@ -4131,6 +4164,12 @@ def main(strict: bool = False) -> None:
 
             "duplicate_urls_ignored": (
                 duplicate_urls
+            ),
+            "country_derivation_failures": (
+                country_derivation_failures
+            ),
+            "out_of_scope_country_entries": (
+                out_of_scope_country_entries
             ),
         })
 
