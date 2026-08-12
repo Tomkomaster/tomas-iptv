@@ -2,14 +2,28 @@
 
 Automatic IPTV playlist builder and manual stream-verification system for family and friends.
 
-The project combines public IPTV sources with manually researched Hungarian and Slovak channels, removes duplicate stream URLs, tracks playback testing, selects the best available feed for each channel, and publishes the result through GitHub Pages.
+The project combines public IPTV sources with manually researched Hungarian, Slovak and Czech channels, removes duplicate stream URLs, tracks playback testing, selects the best available feed for each channel, and publishes the result through GitHub Pages.
 
-## Public playlist
+## Public playlists
 
-Main playlist:
+Main family/friends playlist:
 
 ```text
 https://tomkomaster.github.io/tomas-iptv/tv.m3u
+```
+
+Stable country playlists:
+
+```text
+https://tomkomaster.github.io/tomas-iptv/hu.m3u
+https://tomkomaster.github.io/tomas-iptv/sk.m3u
+https://tomkomaster.github.io/tomas-iptv/cz.m3u
+```
+
+Testing/research playlist:
+
+```text
+https://tomkomaster.github.io/tomas-iptv/test.m3u
 ```
 
 Dashboard:
@@ -18,20 +32,21 @@ Dashboard:
 https://tomkomaster.github.io/tomas-iptv/
 ```
 
-The playlist URL is intended to stay stable even as sources, channels, countries and feeds are changed behind it.
+The public URLs are intended to stay stable even as sources, channels and feeds change behind them.
 
-It can be used in IPTV applications, VLC, televisions, phones, tablets and other players that support M3U playlists.
+The playlists can be used in IPTV applications, VLC, televisions, phones, tablets and other players that support M3U playlists.
 
 ---
 
 ## Currently supported countries
 
-The project currently builds channels for:
+The project currently treats all three countries as first-class outputs:
 
 * 🇭🇺 Hungary (`HU`)
 * 🇸🇰 Slovakia (`SK`)
+* 🇨🇿 Czechia (`CZ`)
 
-Czechia (`CZ`) is already known by the builder and is a planned future expansion, but Czech sources are not currently enabled in `config.json`.
+Each country has enabled upstream sources, a local extras file and its own generated stable playlist.
 
 ---
 
@@ -47,33 +62,42 @@ Current source layers are:
 
 ### Hungary
 
-1. IPTV-org Hungary country playlist
+1. IPTV-org Hungary country playlist (base)
 2. IPTV-org raw Hungarian alternative streams
-3. Our manually curated `extras/hu.m3u`
+3. IPTV-org Hungarian-language playlist
+4. Our manually curated `extras/hu.m3u`
 
 ### Slovakia
 
-1. IPTV-org Slovakia country playlist
+1. IPTV-org Slovakia country playlist (base)
 2. IPTV-org raw Slovak alternative streams
-3. Our manually curated `extras/sk.m3u`
+3. IPTV-org Slovak-language playlist
+4. Our manually curated `extras/sk.m3u`
+
+### Czechia
+
+1. IPTV-org Czechia country playlist (base)
+2. IPTV-org raw Czech alternative streams
+3. IPTV-org Czech-language playlist
+4. Our manually curated `extras/cz.m3u`
 
 The sources are processed in configuration order.
 
 The builder then:
 
 1. downloads remote playlists;
-2. reads our local extras;
+2. reads the HU/SK/CZ local extras;
 3. parses all M3U entries;
-4. assigns every entry to a country/language;
+4. assigns every entry to its source/audit country scope;
 5. identifies logical channels;
-6. removes duplicate stream URLs;
+6. removes duplicate stream URLs globally;
 7. keeps genuinely different feeds as alternatives;
 8. applies manual results from `audit.json`;
-9. rejects manually excluded feeds;
-10. selects the preferred feed when a fully verified feed exists;
-11. adds verification prefixes to channel names;
+9. uses confirmed spoken language to route verified streams to HU, SK or CZ when the result is unambiguous;
+10. rejects manually excluded/unsupported feeds;
+11. selects the preferred feed when a stable verified feed exists;
 12. creates country/category `group-title` values;
-13. generates the public playlist;
+13. generates the shared stable, testing and per-country playlists;
 14. generates CSV and JSON reports;
 15. generates the HTML dashboard.
 
@@ -100,6 +124,7 @@ Current examples:
 ```text
 IPTV-org Hungary
 IPTV-org Slovakia
+IPTV-org Czechia
 ```
 
 If a channel first appears in a base source, the dashboard classifies it as:
@@ -144,6 +169,7 @@ Current files:
 ```text
 extras/hu.m3u
 extras/sk.m3u
+extras/cz.m3u
 ```
 
 These contain streams we researched or added ourselves, including:
@@ -230,28 +256,30 @@ This allows us to research several streams without permanently exposing unnecess
 
 # Channel prefixes
 
-Published channel names contain a country code and manual verification status.
+Naming depends on which generated playlist is being used.
 
-Examples:
+## Testing/research playlist: `test.m3u`
+
+The testing playlist keeps both country and verification state because those labels are useful during manual research:
 
 ```text
 [HU OK] Duna
-[HU TV] Example TV
-[HU PC] Example TV
 [HU ?] Example TV
-[SK OK] Example TV
+[SK TV] Example TV
 [SK ?] Example TV
+[CZ OK] Example Czech TV
+[CZ ?] Example Czech TV
 ```
 
-The first part identifies the playlist/country:
+Country codes are:
 
-| Prefix | Country                     |
-| ------ | --------------------------- |
-| `HU`   | Hungary                     |
-| `SK`   | Slovakia                    |
-| `CZ`   | Czechia, when enabled later |
+| Prefix | Country |
+| ------ | ------- |
+| `HU` | Hungary |
+| `SK` | Slovakia |
+| `CZ` | Czechia |
 
-The second part describes playback testing:
+Verification states are:
 
 | Prefix | Status       | Meaning                                                                   |
 | ------ | ------------ | ------------------------------------------------------------------------- |
@@ -261,19 +289,37 @@ The second part describes playback testing:
 | `?`    | Needs review | Not fully tested or the result still needs investigation                  |
 | `X`    | Rejected     | Feed has been rejected/excluded                                           |
 
-Normally rejected feeds do not appear in the published playlist, so `[HU X]` / `[SK X]` mainly exists as an understood internal status.
+Rejected feeds do not enter the stable family/country playlists, but they can remain visible in the testing/research workflow.
 
-These are **playback verification labels**, not statements about broadcasting licences, copyright status or legal availability.
+## Shared stable playlist: `tv.m3u`
+
+The family/friends playlist contains only stable channels, so the status suffix is redundant. It keeps only the country code:
+
+```text
+[HU] Duna
+[SK] JOJ
+[CZ] Prima
+```
+
+## Per-country stable playlists
+
+The country itself is already defined by the file, so generated country/status prefixes are omitted entirely:
+
+```text
+hu.m3u -> Duna
+sk.m3u -> JOJ
+cz.m3u -> Prima
+```
+
+These labels describe playlist organization and playback verification, not broadcasting licences, copyright status or legal availability.
 
 ---
 
 # Channel groups
 
-Verification status is kept in the channel prefix.
+The M3U `group-title` is used for content organization rather than playback status.
 
-The M3U `group-title` is instead used for actual content organization.
-
-Generated groups follow this structure:
+Generated groups follow the same model for all supported countries:
 
 ```text
 Hungary | General
@@ -284,6 +330,11 @@ Hungary | Sports
 Slovakia | General
 Slovakia | Music
 Slovakia | News
+
+Czechia | General
+Czechia | Music
+Czechia | News
+Czechia | Sports
 ```
 
 Where useful, categories supplied by upstream sources are preserved.
@@ -353,7 +404,7 @@ VLC works + Samsung works
         ↓
 Verified
         ↓
-[HU OK] / [SK OK]
+[HU OK] / [SK OK] / [CZ OK] in `test.m3u`
 ```
 
 ---
@@ -437,25 +488,31 @@ If an old channel-level audit becomes ambiguous because several current feeds ex
 
 # Language verification
 
-The audit can separately track:
+The audit separately tracks the source/audit identity and the language actually heard during playback.
+
+Important fields include:
 
 ```text
+playlist_language_code
 expected_language_codes
 observed_language_codes
 ```
 
-Example:
+For a normal Czech candidate sourced from the Czech extras file:
 
 ```json
-"expected_language_codes": ["HU"],
-"observed_language_codes": ["HU"]
+"playlist_language_code": "CZ",
+"expected_language_codes": ["CZ"],
+"observed_language_codes": ["CZ"]
 ```
 
-Multilingual streams are supported.
+`playlist_language_code` is the saved **audit/source scope**. It protects exact-URL audit identity when the same URL appears under unrelated channel identities or countries.
 
-If the expected language is among the observed languages, the stream can still be considered a language match.
+`observed_language_codes` records what was actually heard during the manual playback test.
 
-A confirmed wrong-language stream can be rejected from that country's playlist.
+For a verified stream with one unambiguous supported observed language, the confirmed spoken language determines its final published country. For example, if a stream was discovered in a Slovak source but manual playback confirms Czech speech, it is published once under `CZ`, not duplicated under `SK` and `CZ`.
+
+Multilingual or ambiguous cases are not blindly duplicated across country outputs. Unsupported observed languages remain rejected until that country/language is actually supported.
 
 Legacy fields such as:
 
@@ -468,7 +525,11 @@ are still understood for compatibility with older audit entries.
 
 ---
 
-# Adding a Hungarian channel
+# Adding channels
+
+Use the extras file for the country where the candidate belongs. Do **not** manually add `[HU ...]`, `[SK ...]` or `[CZ ...]` prefixes to source names; the builder formats generated playlists automatically.
+
+## Adding a Hungarian channel
 
 Edit:
 
@@ -476,7 +537,7 @@ Edit:
 extras/hu.m3u
 ```
 
-Add a normal M3U entry:
+Example:
 
 ```text
 # Example TV — direct official HLS candidate
@@ -484,30 +545,9 @@ Add a normal M3U entry:
 https://example.com/live/playlist.m3u8
 ```
 
-Do **not** manually add:
+A new unresolved candidate normally appears as `[HU ?] Example TV` in `test.m3u`. Once stable, it appears as `[HU] Example TV` in `tv.m3u` and plain `Example TV` in `hu.m3u`.
 
-```text
-[HU OK]
-[HU ?]
-```
-
-to the name.
-
-The builder creates the country/status prefix automatically from the audit information.
-
-After committing the change, GitHub Actions rebuilds the playlist.
-
-The new feed will normally begin as:
-
-```text
-[HU ?]
-```
-
-until it has enough manual verification information.
-
----
-
-# Adding a Slovak channel
+## Adding a Slovak channel
 
 Edit:
 
@@ -523,44 +563,82 @@ Example:
 https://example.sk/live/playlist.m3u8
 ```
 
-The builder assigns it to Slovakia because `extras/sk.m3u` is configured with:
+A new unresolved candidate normally appears as `[SK ?] Example TV` in `test.m3u`. Once stable, it appears as `[SK] Example TV` in `tv.m3u` and plain `Example TV` in `sk.m3u`.
 
-```json
-"language_code": "SK"
-```
+## Adding a Czech channel
 
-Its generated prefix will therefore use:
+Edit:
 
 ```text
-[SK ?]
+extras/cz.m3u
 ```
 
-until testing changes its status.
+Example:
+
+```text
+# Example Czech TV — direct official HLS candidate
+#EXTINF:-1 tvg-id="ExampleTV.cz" tvg-name="Example Czech TV" group-title="General",Example Czech TV
+https://example.cz/live/playlist.m3u8
+```
+
+`extras/cz.m3u` is configured with:
+
+```json
+"language_code": "CZ"
+```
+
+A new unresolved candidate normally appears as:
+
+```text
+[CZ ?] Example Czech TV
+```
+
+in `test.m3u`. After successful VLC/Samsung and language verification, the stable outputs are:
+
+```text
+tv.m3u -> [CZ] Example Czech TV
+cz.m3u -> Example Czech TV
+```
 
 ---
 
 # Testing a new channel
 
-Our normal manual process is:
+The same manual workflow applies to Hungarian, Slovak and Czech candidates:
 
-1. add the candidate stream to the appropriate extras file;
+1. add the exact candidate URL to `extras/hu.m3u`, `extras/sk.m3u` or `extras/cz.m3u` as appropriate;
 2. let the playlist rebuild;
-3. test the exact stream/feed in VLC;
-4. test the exact stream/feed on the Samsung IPTV application;
-5. verify the actual language/content;
-6. add or update its entry in `audit.json`;
-7. rebuild;
-8. confirm the resulting status on the dashboard.
+3. find the candidate in `test.m3u` (`[HU ?]`, `[SK ?]` or `[CZ ?]` initially);
+4. test that exact stream/feed in VLC;
+5. test that exact stream/feed on the Samsung IPTV application;
+6. verify the actual channel identity and spoken language/content;
+7. add or update the exact-URL entry in `audit.json`;
+8. rebuild and confirm the resulting status on the dashboard;
+9. for a stable Czech result, confirm it is `[CZ]` in `tv.m3u` and plain-named in `cz.m3u`.
 
-Where a channel has multiple URLs, test each feed separately.
+A typical Czech audit record can look like:
 
-A successful result on one URL must not be assumed to apply to another URL.
+```json
+{
+  "channel": "Example Czech TV",
+  "stream_url": "https://example.cz/live/playlist.m3u8",
+  "playlist_language_code": "CZ",
+  "expected_language_codes": ["CZ"],
+  "observed_language_codes": ["CZ"],
+  "vlc": "works",
+  "samsung": "works",
+  "decision": "auto",
+  "exclude_from_playlist": false
+}
+```
+
+Where a channel has multiple URLs, test each feed separately. A successful result on one URL must not be assumed to apply to another URL.
 
 ---
 
 # Generated files
 
-The build writes its public output into:
+The build writes public output into:
 
 ```text
 public/
@@ -568,16 +646,28 @@ public/
 
 ## `tv.m3u`
 
-```text
-public/tv.m3u
-```
-
-The main generated IPTV playlist.
-
-Public URL:
+Shared stable family/friends playlist containing HU, SK and CZ channels. Stable names use language-only prefixes such as `[HU]`, `[SK]` and `[CZ]`.
 
 ```text
 https://tomkomaster.github.io/tomas-iptv/tv.m3u
+```
+
+## `test.m3u`
+
+Testing/research playlist. This is where diagnostic status prefixes such as `[HU OK]`, `[SK ?]` and `[CZ ?]` remain visible.
+
+```text
+https://tomkomaster.github.io/tomas-iptv/test.m3u
+```
+
+## Country playlists
+
+Stable country-specific outputs use plain channel names because the country is already implied by the playlist:
+
+```text
+public/hu.m3u -> https://tomkomaster.github.io/tomas-iptv/hu.m3u
+public/sk.m3u -> https://tomkomaster.github.io/tomas-iptv/sk.m3u
+public/cz.m3u -> https://tomkomaster.github.io/tomas-iptv/cz.m3u
 ```
 
 ---
@@ -866,81 +956,33 @@ Local sources use:
 
 ---
 
-# Adding another country
+# Current country configuration
 
-To add another country, for example Czechia:
-
-## 1. Add the country name
-
-`config.json` already contains:
+HU, SK and CZ are already fully enabled. `config.json` defines all three country names and generated country outputs:
 
 ```json
-"CZ": "Czechia"
-```
-
-for future use.
-
-## 2. Add a base source
-
-Example:
-
-```json
-{
-  "name": "IPTV-org Czechia",
-  "kind": "base",
-  "language_code": "CZ",
-  "url": "https://iptv-org.github.io/iptv/countries/cz.m3u"
+"country_names": {
+  "HU": "Hungary",
+  "SK": "Slovakia",
+  "CZ": "Czechia"
+},
+"country_outputs": {
+  "HU": "public/hu.m3u",
+  "SK": "public/sk.m3u",
+  "CZ": "public/cz.m3u"
 }
 ```
 
-## 3. Optionally add raw alternatives
-
-For example:
-
-```json
-{
-  "name": "IPTV-org Czechia raw alternatives",
-  "kind": "alternatives",
-  "language_code": "CZ",
-  "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cz.m3u"
-}
-```
-
-## 4. Create a local extras file
+Czechia also has all normal source layers enabled, including the base country playlist, raw alternatives, Czech-language playlist and local extras:
 
 ```text
+IPTV-org Czechia
+IPTV-org Czechia raw alternatives
+IPTV-org Czech language
 extras/cz.m3u
 ```
 
-Then register it:
-
-```json
-{
-  "name": "Our Czech test/verified extras",
-  "kind": "extras",
-  "language_code": "CZ",
-  "path": "extras/cz.m3u"
-}
-```
-
-The builder will then automatically use prefixes such as:
-
-```text
-[CZ OK]
-[CZ TV]
-[CZ PC]
-[CZ ?]
-```
-
-and groups such as:
-
-```text
-Czechia | General
-Czechia | News
-Czechia | Music
-```
-
-No separate playlist-building program is required for each country.
+There is no separate Czech builder: Czech entries go through the same deduplication, audit, stable-selection, language-routing, reporting and publication pipeline as HU and SK.
 
 ---
 
@@ -984,38 +1026,46 @@ tomas-iptv/
 │
 ├── extras/
 │   ├── hu.m3u
-│   └── sk.m3u
+│   ├── sk.m3u
+│   └── cz.m3u
 │
 ├── tests/
-│   └── test_build.py
+│   ├── test_build.py
+│   └── test_regressions.py
 │
 ├── .github/
 │   └── workflows/
+│       ├── ci.yml
 │       └── build-and-publish.yml
 │
 └── public/                 # generated during the build
     ├── tv.m3u
+    ├── test.m3u
+    ├── hu.m3u
+    ├── sk.m3u
+    ├── cz.m3u
     ├── index.html
     ├── channels.csv
     ├── duplicates.csv
     ├── excluded.csv
     ├── audit.csv
     ├── report.json
-    ├── guide.xml           # only when EPG is enabled
+    ├── guide.xml
     └── .nojekyll
 ```
 
 The `public/` directory is generated output rather than the main source of truth.
 
-The important editable source files are primarily:
+The important editable source files include:
 
 ```text
 config.json
 audit.json
 extras/hu.m3u
 extras/sk.m3u
+extras/cz.m3u
 build.py
-tests/test_build.py
+tests/
 ```
 
 ---
@@ -1024,24 +1074,13 @@ tests/test_build.py
 
 Possible next steps include:
 
-* separate stable and experimental/test playlists;
-* country-specific generated playlists;
-* Czech channel support;
-* expanded XMLTV/EPG support;
+* broader country-aware XMLTV/EPG coverage, especially Czech and Slovak providers;
 * additional native HLS source research;
-* automated stream-health reporting;
-* further dashboard/report improvements.
+* continued stream-health and event-stream policy improvements;
+* further dashboard/report improvements;
+* continued refactoring of the builder as the project grows.
 
-A future stable/test split could provide:
-
-```text
-tv.m3u
-test.m3u
-```
-
-where `tv.m3u` is intended for normal family/friend use and `test.m3u` contains unresolved experimental candidates.
-
-This split is **not implemented yet** and should not be treated as a currently available public URL.
+The stable/test split, per-country HU/SK/CZ playlists and Czech channel support are already implemented and are no longer future roadmap items.
 
 ---
 
