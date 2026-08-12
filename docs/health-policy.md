@@ -8,8 +8,9 @@ Manual VLC + Samsung verification remains authoritative. The health policy only 
 
 - `normal` — default for ordinary 24/7 channels. Automated failures remain warnings, build a daily failure streak, and recommend a manual retest after three failed days.
 - `event_based` — for streams that legitimately exist only while an event is being broadcast. A failed automated probe is reported as `Event inactive`, remains visible in `health.json`, and is informational rather than actionable.
+- `manual_tv_verified` — for an exact stream that was recently confirmed working on the family/Samsung TV but cannot be validated by VLC or the automated PC-style probe. The raw probe failure stays visible, but it is informational and does not create a false outage/retest loop.
 
-For an `event_based` inactive result:
+For an `event_based` inactive or `manual_tv_verified` probe-failure result:
 
 - `success` remains `false` because the stream was not playable at check time;
 - `actionable_failure` is `false`;
@@ -18,7 +19,7 @@ For an `event_based` inactive result:
 - the unified Needs Attention queue does not create a stream-failure signal;
 - the raw probe result is preserved in `probe_status` and `detail`.
 
-This avoids pretending that an inactive event stream is playable while also avoiding a false dead-channel alarm.
+This avoids pretending that an inactive/event stream or a PC-incompatible stream passed the automated probe while also avoiding a false dead-channel alarm. `manual_tv_verified` should only be used after a dated manual TV check and should be removed if that manual evidence becomes stale or playback stops working on the TV.
 
 ## Matching
 
