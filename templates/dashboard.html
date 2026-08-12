@@ -35,6 +35,22 @@
     <div class="card"><div class="value">@@TOTAL_DUPLICATES@@</div><div class="label">Duplicate URLs ignored</div></div>
   </div>
 
+  <section id="nextWorkPanel" class="panel" aria-labelledby="nextWorkHeading">
+    <h2 id="nextWorkHeading" style="margin-top:0">What should I work on next?</h2>
+    <p class="muted">
+      A compact live priority view built from automated stream health, the research
+      work queue, candidate feeds and expected EPG gaps. It is advisory only.
+    </p>
+    <div id="nextWorkSummary" class="audit-summary">
+      <div class="card"><div class="value">…</div><div class="label">Loading priorities</div></div>
+    </div>
+    <h3>Recommended next</h3>
+    <ol id="nextWorkList">
+      <li class="muted">Loading current recommendations…</li>
+    </ol>
+    <p id="nextWorkNote" class="muted"></p>
+  </section>
+
   <nav id="countryTabs" class="country-tabs" aria-label="Dashboard country filter">
     @@COUNTRY_TABS@@
   </nav>
@@ -393,5 +409,179 @@
 </main>
 
 <script src="static/dashboard.js" defer></script>
+<script>
+(() => {
+  const summary = document.getElementById('nextWorkSummary');
+  const list = document.getElementById('nextWorkList');
+  const note = document.getElementById('nextWorkNote');
+  if (!summary || !list) return;
+
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function parseCsv(text) {
+    const matrix = [];
+    let row = [];
+    let field = '';
+    let quoted = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (quoted) {
+        if (ch === '"' && text[i + 1] === '"') { field += '"'; i++; }
+        else if (ch === '"') quoted = false;
+        else field += ch;
+      } else if (ch === '"') quoted = true;
+      else if (ch === ',') { row.push(field); field = ''; }
+      else if (ch === '\n') { row.push(field.replace(/\r$/, '')); matrix.push(row); row = []; field = ''; }
+      else field += ch;
+    }
+    if (field || row.length) { row.push(field.replace(/\r$/, '')); matrix.push(row); }
+    if (!matrix.length) return [];
+    const headers = matrix.shift().map((value, index) => index === 0 ? value.replace(/^\uFEFF/, '') : value);
+    return matrix
+      .filter(values => values.some(value => value !== ''))
+      .map(values => Object.fromEntries(headers.map((key, index) => [key, values[index] ?? ''])));
+  }
+
+  function truthy(value) {
+    return ['1', 'true', 'yes', 'y', 'on'].includes(String(value || '').trim().toLowerCase());
+  }
+
+  const tested = new Set(['works', 'works_with_warning', 'loads', 'mrl_error', 'format_error', 'generic_error', 'wrong_language']);
+  const testStatus = value => String(value || '').trim().toLowerCase().replaceAll(' ', '_').replaceAll('-', '_');
+  const channelKey = row => `${String(row.country || '').trim().toUpperCase()}\u0000${String(row.channel || '').trim().toLowerCase()}`;
+  const candidateNeedsTest = row => {
+    if (!truthy(row.current_candidate) || truthy(row.stable_feed)) return false;
+    return row.feed_status === 'Needs review'
+      || !tested.has(testStatus(row.vlc))
+      || !tested.has(testStatus(row.samsung));
+  };
+
+  function shortMissingAction(row) {
+    const workType = String(row.work_type || '').trim();
+    if (workType === 'Finish compatibility') return 'finish compatibility';
+    if (workType === 'Test candidates') return 'test candidate';
+    if (workType === 'Find first candidate') return 'find first candidate';
+    if (workType === 'Hunt new source') return 'find replacement feed';
+    return String(row.next_action || 'review').trim();
+  }
+
+  function shortAttentionAction(signal) {
+    const category = String(signal?.category || '');
+    return ({
+      stream_manual_retest: 'manual VLC + Samsung retest',
+      stream_failure: 'check stream failure',
+      upstream_missing: 'find replacement feed',
+      epg_missing_id: 'add tvg-id',
+      epg_unmapped: 'add EPG mapping',
+      epg_mapped_empty: 'fix empty EPG mapping',
+      manual_stale: 'repeat manual playback test',
+      manual_date_missing: 'record a fresh manual test',
+    })[category] || String(signal?.action || 'review').trim();
+  }
+
+  function statusWeight(status) {
+    return ({ PARTIAL: 40, 'CANDIDATES TO TEST': 30, 'NO WORKING FEED': 20, 'NOT RESEARCHED': 10 })[status] || 0;
+  }
+
+  Promise.all([
+    fetch('attention.json', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(`attention.json HTTP ${r.status}`); return r.json(); }),
+    fetch('health.json', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(`health.json HTTP ${r.status}`); return r.json(); }),
+    fetch('missing.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(`missing.csv HTTP ${r.status}`); return r.text(); }),
+    fetch('research.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(`research.csv HTTP ${r.status}`); return r.text(); }),
+  ]).then(([attention, health, missingText, researchText]) => {
+    const missing = parseCsv(missingText);
+    const research = parseCsv(researchText);
+    const attentionItems = Array.isArray(attention.items) ? attention.items : [];
+    const healthStreams = Array.isArray(health.streams) ? health.streams : [];
+    const missingByChannel = new Map(missing.map(row => [channelKey(row), row]));
+
+    const streamFailures = healthStreams.filter(item => item.actionable_failure === true).length;
+    const p1Missing = missing.filter(row => row.priority === 'P1').length;
+    const p2CandidateChannels = new Set(
+      research
+        .filter(candidateNeedsTest)
+        .filter(row => (missingByChannel.get(channelKey(row)) || {}).priority === 'P2')
+        .map(channelKey)
+    ).size;
+    const expectedEpgGaps = attentionItems.filter(item =>
+      (item.signals || []).some(signal => String(signal.category || '').startsWith('epg_'))
+    ).length;
+
+    summary.innerHTML = `
+      <div class="card"><div class="value">${streamFailures}</div><div class="label">🔴 Stream failures</div></div>
+      <div class="card"><div class="value">${p1Missing}</div><div class="label">🟠 P1 channels missing</div></div>
+      <div class="card"><div class="value">${p2CandidateChannels}</div><div class="label">🟡 P2 candidates</div></div>
+      <div class="card"><div class="value">${expectedEpgGaps}</div><div class="label">🟡 Expected EPG gaps</div></div>`;
+
+    const recommendations = [];
+    for (const item of attentionItems) {
+      const signals = Array.isArray(item.signals) ? item.signals : [];
+      const urgent = signals.find(signal => ['stream_manual_retest', 'upstream_missing'].includes(signal.category))
+        || signals.find(signal => signal.category === 'stream_failure');
+      if (!urgent) continue;
+      recommendations.push({
+        key: `${item.country || ''}\u0000${String(item.channel || '').toLowerCase()}`,
+        score: 500 + Number(item.priority_score || 0),
+        country: item.country || '??',
+        channel: item.channel || 'Unnamed channel',
+        action: shortAttentionAction(urgent),
+      });
+    }
+
+    for (const row of missing) {
+      const priority = String(row.priority || 'P3');
+      if (priority !== 'P1' && priority !== 'P2') continue;
+      recommendations.push({
+        key: channelKey(row),
+        score: (priority === 'P1' ? 400 : 300) + statusWeight(row.status),
+        country: row.country || '??',
+        channel: row.channel || 'Unnamed channel',
+        action: shortMissingAction(row),
+      });
+    }
+
+    for (const item of attentionItems) {
+      const epgSignal = (item.signals || []).find(signal => String(signal.category || '').startsWith('epg_'));
+      if (!epgSignal) continue;
+      recommendations.push({
+        key: `${item.country || ''}\u0000${String(item.channel || '').toLowerCase()}`,
+        score: 200 + Number(item.priority_score || 0),
+        country: item.country || '??',
+        channel: item.channel || 'Unnamed channel',
+        action: shortAttentionAction(epgSignal),
+      });
+    }
+
+    recommendations.sort((a, b) => b.score - a.score
+      || String(a.country).localeCompare(String(b.country))
+      || String(a.channel).localeCompare(String(b.channel)));
+
+    const seen = new Set();
+    const top = [];
+    for (const item of recommendations) {
+      if (seen.has(item.key)) continue;
+      seen.add(item.key);
+      top.push(item);
+      if (top.length === 8) break;
+    }
+
+    list.innerHTML = top.length
+      ? top.map(item => `<li><strong>${escapeHtml(item.country)} ${escapeHtml(item.channel)}</strong> — ${escapeHtml(item.action)}</li>`).join('')
+      : '<li><span class="badge verified">Clear</span> No high-value next actions are currently queued.</li>';
+    if (note) note.textContent = 'Recommendations rank urgent stream problems first, then P1/P2 research work, then expected EPG gaps.';
+  }).catch(error => {
+    summary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Priority summary unavailable</div></div>';
+    list.innerHTML = `<li class="muted">Could not load the generated priority data: ${escapeHtml(error.message)}</li>`;
+    if (note) note.textContent = 'The detailed dashboard sections below remain available independently.';
+  });
+})();
+</script>
 </body>
 </html>
