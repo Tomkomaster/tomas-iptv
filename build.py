@@ -10,12 +10,30 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from iptv import build_core as _core
+from iptv import dashboard as _dashboard
+from iptv import identity_overrides as _identity_overrides
 from iptv import playlist_writer as _playlist_writer
 from iptv import source_loader as _source_loader
+from iptv import source_concentration as _source_concentration
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
+
+# The packaged dashboard still reads repository-level templates/static assets.
+_dashboard.MODULE_ROOT = PROJECT_ROOT
+_dashboard.DASHBOARD_TEMPLATE = PROJECT_ROOT / "templates" / "dashboard.html"
+_dashboard.DASHBOARD_STATIC = PROJECT_ROOT / "static"
+
+# build_core still uses the historical absolute module names internally. Alias
+# the relocated helpers before importing it; other entrypoints can migrate to
+# package imports independently as they are touched.
+sys.modules["dashboard"] = _dashboard
+sys.modules["identity_overrides"] = _identity_overrides
+sys.modules["source_concentration"] = _source_concentration
+
+from iptv import build_core as _core  # noqa: E402  (aliases must exist first)
+
+
 _core.ROOT = PROJECT_ROOT
 
 # Source loading/parsing has moved out of the build core. Re-export the helpers
