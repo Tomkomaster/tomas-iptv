@@ -50,7 +50,9 @@ _core.source_spec = _source_loader.source_spec
 
 
 def _read_local(path: str) -> str:
-    return _source_loader.read_local(PROJECT_ROOT, path)
+    # Tests and callers historically override build.ROOT for isolated builds.
+    # Follow the live core value rather than closing over PROJECT_ROOT.
+    return _source_loader.read_local(_core.ROOT, path)
 
 
 _core.read_local = _read_local
