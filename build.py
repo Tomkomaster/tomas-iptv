@@ -1193,15 +1193,109 @@ def language_mismatch_reason(
         "playlist language."
     )
 	
-def calculate_audit_decision(item: dict) -> tuple[str, str]:
+def configured_playlist_language_codes(cfg: dict) -> list[str]:
+    """
+    Return the language codes currently enabled as published country playlists.
+
+    These codes are also the spoken languages accepted by the family playlist.
+    Adding a future country output (for example RO or RU) therefore enables that
+    spoken language without changing cross-language channel placement rules.
+    """
+    country_outputs = cfg.get("country_outputs") or {}
+
+    if isinstance(country_outputs, dict):
+        codes = normalize_language_codes(
+            list(country_outputs.keys())
+        )
+        if codes:
+            return codes
+
+    fallback = normalize_language_codes(
+        cfg.get("default_language_code")
+    )
+    return fallback or ["HU"]
+
+
+def audit_playlist_scope_code(item: dict) -> str:
+    """
+    Return the country/language bucket this saved audit belongs to.
+
+    playlist_language_code is the explicit modern field. For older audit rows,
+    one expected_language_codes value is also a safe scope hint because that
+    field historically doubled as the playlist-country expectation.
+    """
+    explicit = normalize_language_code(
+        str(item.get("playlist_language_code") or "")
+    )
+    if explicit:
+        return explicit
+
+    expected = normalize_language_codes(
+        item.get("expected_language_codes")
+    )
+    if len(expected) == 1:
+        return expected[0]
+
+    return ""
+
+
+def language_acceptance_state(
+    item: dict,
+    supported_language_codes=None,
+) -> str:
+    """
+    Separate spoken-language acceptance from playlist placement.
+
+    match                    expected spoken language is present
+    supported_cross_language observed language differs, but is one of the
+                             currently published HU/SK/CZ-style languages
+    unsupported              observed language is outside current support
+    unknown                  language has not been confirmed
+    """
+    (
+        expected_codes,
+        observed_codes,
+        language_match,
+    ) = resolve_language_info(item)
+
+    supported = normalize_language_codes(
+        supported_language_codes
+    )
+
+    if language_match in {
+        "yes",
+        "multilingual",
+    }:
+        return "match"
+
+    if language_match == "no":
+        if (
+            observed_codes
+            and supported
+            and set(observed_codes).intersection(
+                supported
+            )
+        ):
+            return "supported_cross_language"
+
+        return "unsupported"
+
+    return "unknown"
+
+
+def calculate_audit_decision(
+    item: dict,
+    supported_language_codes=None,
+) -> tuple[str, str]:
     """
     Playback/device status for our playlist, not a legal certification.
 
-    Language matching is country-agnostic:
-      yes          -> acceptable
-      multilingual -> acceptable because the expected language is present
-      no           -> rejected
-      unknown      -> language alone does not decide the result
+    Playlist placement and spoken language are intentionally independent.
+    A technically working stream may remain Verified in its existing HU/SK/CZ
+    playlist bucket when the observed spoken language is another language that
+    is already supported by a published country playlist.
+
+    Unsupported observed languages still reject the stream.
     """
     explicit = (
         item.get("decision") or "auto"
@@ -1232,7 +1326,7 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
             "Rejected",
             str(
                 item.get("reason")
-                or "Excluded from this language playlist."
+                or "Excluded from this playlist."
             ).strip(),
         )
 
@@ -1250,7 +1344,12 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
         language_match,
     ) = resolve_language_info(item)
 
-    if language_match == "no":
+    acceptance = language_acceptance_state(
+        item,
+        supported_language_codes,
+    )
+
+    if acceptance == "unsupported":
         return (
             "Rejected",
             language_mismatch_reason(
@@ -1259,14 +1358,51 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
             ),
         )
 
-    pc_good = vlc in {
-        "works",
-        "works_with_warning",
-    }
+    cross_language_supported = (
+        acceptance
+        == "supported_cross_language"
+    )
 
-    tv_good = samsung == "works"
+    # Old manual tests used wrong_language to mean "the stream played, but
+    # the speech was not the old expected language". Once that observed
+    # language is supported, the same result is technically a successful
+    # playback test.
+    pc_good = (
+        vlc in {
+            "works",
+            "works_with_warning",
+        }
+        or (
+            cross_language_supported
+            and vlc == "wrong_language"
+        )
+    )
+
+    tv_good = (
+        samsung == "works"
+        or (
+            cross_language_supported
+            and samsung == "wrong_language"
+        )
+    )
 
     if pc_good and tv_good:
+        if cross_language_supported:
+            scope = (
+                audit_playlist_scope_code(item)
+                or "current"
+            )
+            return (
+                "Verified",
+                (
+                    "Works on both tested devices. "
+                    f"Observed language(s) "
+                    f"{format_language_codes(observed_codes)} "
+                    "are currently supported; keep this stream "
+                    f"in its existing {scope} playlist scope."
+                ),
+            )
+
         return "Verified", ""
 
     if tv_good and not pc_good:
@@ -1292,7 +1428,6 @@ def calculate_audit_decision(item: dict) -> tuple[str, str]:
         "Needs review",
         str(item.get("reason") or "").strip(),
     )
-
 
 def infer_protocol(url: str) -> str:
     value = (url or "").strip().lower()
@@ -1339,36 +1474,28 @@ def exact_url_audit_matches_entry(
     entry: dict,
 ) -> bool:
     """
-    Return whether an exact-URL audit is safe to attach to this entry.
+    Return whether an exact-URL audit belongs to this current playlist bucket.
 
-    Exact URLs remain the primary feed identity, but a saved audit that
-    explicitly names its expected playlist language/country must never jump
-    to a current entry scoped to a disjoint language/country. This protects
-    against upstream metadata reusing the same URL for a differently
-    identified channel, while legacy URL-specific audits without explicit
-    expected_language_codes keep their existing behavior.
+    Spoken language is deliberately NOT used here. A Slovak-bucket channel may
+    legitimately speak Czech and still keep its Slovak verification. The guard
+    only prevents a saved audit from jumping to another country bucket when the
+    same URL is later reused there.
     """
-    audit_expected = normalize_language_codes(
-        audit_item.get("expected_language_codes")
+    audit_scope = audit_playlist_scope_code(
+        audit_item
     )
 
-    if not audit_expected:
+    if not audit_scope:
         return True
 
-    entry_expected = normalize_language_codes(
-        entry.get("expected_language_codes")
-        or entry.get("language_code")
+    entry_scope = normalize_language_code(
+        str(entry.get("language_code") or "")
     )
 
-    if not entry_expected:
+    if not entry_scope:
         return True
 
-    return bool(
-        set(audit_expected).intersection(
-            entry_expected
-        )
-    )
-
+    return audit_scope == entry_scope
 
 def validate_audit_items(
     audit_items: list[dict],
@@ -1631,20 +1758,23 @@ def validate_audit_items(
             else []
         )
 
+        saved_playlist_scope = (
+            audit_playlist_scope_code(
+                item
+            )
+        )
+
         if (
             url_key
-            and expected_for_validation
+            and saved_playlist_scope
             and current_url_expected
-            and not set(
-                expected_for_validation
-            ).intersection(
-                current_url_expected
-            )
+            and saved_playlist_scope
+            not in current_url_expected
         ):
             warnings.append(
                 f"{label}: exact stream URL is currently scoped to "
                 f"{', '.join(current_url_expected)}, but the saved audit "
-                f"explicitly expects {', '.join(expected_for_validation)}. "
+                f"belongs to {saved_playlist_scope} playlist scope. "
                 "The saved result will be kept as historical evidence and "
                 "will not be applied to this current entry."
             )
@@ -1806,7 +1936,11 @@ def audit_match_key(item: dict) -> tuple[str, str]:
     return ("name", name)
 
 
-def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> list[dict]:
+def prepare_audit_rows(
+    audit_items: list[dict],
+    final_entries: list[dict],
+    supported_language_codes=None,
+) -> list[dict]:
     """
     Create one audit row PER STREAM URL.
 
@@ -1915,6 +2049,15 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
                 )
             ),
             "observed_language_codes": [],
+            "playlist_language_code": (
+                normalize_language_code(
+                    str(
+                        entry.get("language_code")
+                        or "HU"
+                    )
+                )
+                or "HU"
+            ),
 
             "provenance": (
                 "Our curated/test extra"
@@ -1979,8 +2122,39 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "language_match"
         ] = language_match
 
+        item[
+            "playlist_language_code"
+        ] = (
+            normalize_language_code(
+                str(
+                    item.get(
+                        "playlist_language_code"
+                    )
+                    or entry.get(
+                        "language_code"
+                    )
+                    or "HU"
+                )
+            )
+            or "HU"
+        )
+
+        language_acceptance = (
+            language_acceptance_state(
+                item,
+                supported_language_codes,
+            )
+        )
+
+        item[
+            "language_acceptance"
+        ] = language_acceptance
+
         decision, auto_reason = (
-            calculate_audit_decision(item)
+            calculate_audit_decision(
+                item,
+                supported_language_codes,
+            )
         )
 
         rows.append({
@@ -2001,9 +2175,21 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             ).strip().upper(),
 
             # New language model.
+            "playlist_language_code": str(
+                item.get(
+                    "playlist_language_code"
+                )
+                or entry.get(
+                    "language_code"
+                )
+                or ""
+            ).strip().upper(),
             "expected_language_codes": expected_codes,
             "observed_language_codes": observed_codes,
             "language_match": language_match,
+            "language_acceptance": (
+                language_acceptance
+            ),
 
             "provenance": str(
                 item.get("provenance") or ""
@@ -2158,8 +2344,33 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             "language_match"
         ] = language_match
 
+        historical_scope = (
+            audit_playlist_scope_code(
+                item
+            )
+        )
+
+        if historical_scope:
+            item[
+                "playlist_language_code"
+            ] = historical_scope
+
+        language_acceptance = (
+            language_acceptance_state(
+                item,
+                supported_language_codes,
+            )
+        )
+
+        item[
+            "language_acceptance"
+        ] = language_acceptance
+
         decision, auto_reason = (
-            calculate_audit_decision(item)
+            calculate_audit_decision(
+                item,
+                supported_language_codes,
+            )
         )
 
         history_notes = str(
@@ -2167,8 +2378,10 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
         ).strip()
 
         if url_key and url_key in current_expected_by_url:
-            saved_expected = normalize_language_codes(
-                item.get("expected_language_codes")
+            saved_scope = (
+                audit_playlist_scope_code(
+                    item
+                )
             )
             current_expected = sorted(
                 current_expected_by_url.get(
@@ -2178,16 +2391,15 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             )
 
             if (
-                saved_expected
+                saved_scope
                 and current_expected
-                and not set(saved_expected).intersection(
-                    current_expected
-                )
+                and saved_scope
+                not in current_expected
             ):
                 identity_note = (
-                    "Historical exact-URL audit only. Saved expected "
-                    f"language/country {format_language_codes(saved_expected)} "
-                    "does not match the current entry scope "
+                    "Historical exact-URL audit only. Saved playlist "
+                    f"scope {saved_scope} does not match the current "
+                    "entry scope "
                     f"{format_language_codes(current_expected)}, so this "
                     "verification was not transferred."
                 )
@@ -2234,9 +2446,18 @@ def prepare_audit_rows(audit_items: list[dict], final_entries: list[dict]) -> li
             ).strip().upper(),
 
             # New language model.
+            "playlist_language_code": str(
+                item.get(
+                    "playlist_language_code"
+                )
+                or ""
+            ).strip().upper(),
             "expected_language_codes": expected_codes,
             "observed_language_codes": observed_codes,
             "language_match": language_match,
+            "language_acceptance": (
+                language_acceptance
+            ),
 
             "provenance": str(
                 item.get("provenance") or "Unknown"
@@ -3190,6 +3411,14 @@ def make_dashboard(
     audit_pc_only = sum(1 for e in audit_rows if e["decision"] == "PC only")
     audit_review = sum(1 for e in audit_rows if e["decision"] == "Needs review")
     audit_rejected = sum(1 for e in audit_rows if e["decision"] == "Rejected")
+    audit_cross_language = sum(
+        1
+        for e in audit_rows
+        if e.get(
+            "language_acceptance"
+        )
+        == "supported_cross_language"
+    )
     audit_current = [e for e in audit_rows if e["in_playlist"]]
     audit_both_tested = sum(
         1 for e in audit_current
@@ -3326,6 +3555,18 @@ def make_dashboard(
                 "? Unknown",
                 "review",
             ),
+            "match": (
+                "✓ Match",
+                "verified",
+            ),
+            "supported_cross_language": (
+                "✓ Supported cross-language",
+                "tv",
+            ),
+            "unsupported": (
+                "Unsupported language",
+                "rejected",
+            ),
         }
 
         label, css = labels.get(
@@ -3392,9 +3633,10 @@ def make_dashboard(
               <td>{esc(a.get("source", "") or "—")}</td>
               <td>{esc(a["discovery"])}</td>
               <td>{esc(a["protocol"] or "—")}</td>
+              <td>{esc(a.get("playlist_language_code", "") or "—")}</td>
               <td>{esc(format_language_codes(a.get("expected_language_codes")))}</td>
               <td>{esc(format_language_codes(a.get("observed_language_codes")))}</td>
-              <td>{language_match_badge(a.get("language_match", "unknown"))}</td>
+              <td>{language_match_badge(a.get("language_acceptance") or a.get("language_match", "unknown"))}</td>
               <td>{esc(a["provenance"])}</td>
               <td>{esc(", ".join(a.get("source_flags") or []) or "—")}</td>
               <td>{test_badge(a["vlc"])}<div class="detail">{esc(a.get("vlc_note", ""))}</div></td>
@@ -3743,6 +3985,7 @@ details ul {{ max-height: 260px; overflow: auto; }}
     <div class="card"><div class="value">{audit_tv_verified}</div><div class="label">TV verified</div></div>
     <div class="card"><div class="value">{audit_pc_only}</div><div class="label">PC only</div></div>
     <div class="card"><div class="value">{audit_review}</div><div class="label">? Needs review</div></div>
+    <div class="card"><div class="value">{audit_cross_language}</div><div class="label">Supported cross-language</div></div>
     <div class="card"><div class="value">{audit_rejected}</div><div class="label">✕ Rejected</div></div>
   </div>
 
@@ -3787,9 +4030,10 @@ details ul {{ max-height: 260px; overflow: auto; }}
           <th>Source</th>
           <th>Discovery</th>
           <th>Protocol</th>
+          <th>Playlist scope</th>
           <th>Expected language</th>
           <th>Observed language</th>
-          <th>Language match</th>
+          <th>Language acceptance</th>
           <th>Provenance</th>
           <th>Source flag</th>
           <th>VLC</th>
@@ -4228,6 +4472,11 @@ applyFilters();
 def main(strict: bool = False) -> None:
     cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
     audit_items = load_audit(cfg.get("audit_path", "audit.json"))
+    supported_language_codes = (
+        configured_playlist_language_codes(
+            cfg
+        )
+    )
 
     source_items: list[dict] = []
 
@@ -4474,7 +4723,13 @@ def main(strict: bool = False) -> None:
             file=sys.stderr,
         )
 
-    audit_rows = prepare_audit_rows(audit_items, final_entries)
+    audit_rows = prepare_audit_rows(
+        audit_items,
+        final_entries,
+        supported_language_codes=(
+            supported_language_codes
+        ),
+    )
     test_candidates = (
         make_test_playlist_candidates(
             final_entries,
@@ -4915,9 +5170,11 @@ def main(strict: bool = False) -> None:
             "stream_url",
             "protocol",
 
+            "playlist_language_code",
             "expected_language_codes",
             "observed_language_codes",
             "language_match",
+            "language_acceptance",
 
             # Legacy fields retained during migration.
             "language",
