@@ -6,6 +6,8 @@ The research pipeline previously knew only about channels that had already appea
 
 The wanted catalog fixes that gap.
 
+The initial catalog is deliberately seeded with the current P1 core targets rather than automatically copying every encountered channel. Add targets intentionally as the desired family-playlist coverage expands.
+
 ## Schema
 
 ```json
