@@ -140,10 +140,6 @@ class FeedQualityScoringTests(unittest.TestCase):
                 "blocked_hosts": [],
                 "blocked_name_terms": [],
                 "blocked_source_flags": ["Offline"],
-                "feed_quality": {
-                    "official_source_terms": ["never-match-this-test"],
-                    "provider_relay_terms": ["never-match-this-test"],
-                },
             },
         }
 
