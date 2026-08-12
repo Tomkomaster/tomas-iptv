@@ -1,0 +1,140 @@
+name: Clean stable playlist names
+
+on:
+  push:
+    branches:
+      - agent/clean-playlist-names
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Apply playlist naming rules
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f"{label}: expected exactly one match, found {count}")
+              return text.replace(old, new, 1)
+
+          path = Path("build.py")
+          text = path.read_text(encoding="utf-8")
+
+          text = replace_once(
+              text,
+              '''def write_m3u_playlist(\n    path: Path,\n    cfg: dict,\n    entries: list[dict],\n    generated: str,\n    playlist_label: str,\n) -> None:\n    \"\"\"\n    Write one generated M3U playlist.\n    \"\"\"''',
+              '''def write_m3u_playlist(\n    path: Path,\n    cfg: dict,\n    entries: list[dict],\n    generated: str,\n    playlist_label: str,\n    name_style: str = \"status\",\n) -> None:\n    \"\"\"\n    Write one generated M3U playlist.\n\n    name_style controls only the visible channel-name prefix:\n      status   -> [HU OK] / [SK ?] / [CZ TV] (testing playlist)\n      language -> [HU] / [SK] / [CZ] (shared stable playlist)\n      plain    -> no generated prefix (single-country playlists)\n    \"\"\"''',
+              "write_m3u_playlist signature",
+          )
+
+          text = replace_once(
+              text,
+              '''    for entry in entries:\n        out_lines.extend(\n            entry[\"lines\"]\n        )\n\n        out_lines.append(\n            \"\"\n        )''',
+              '''    valid_name_styles = {\n        \"status\",\n        \"language\",\n        \"plain\",\n    }\n\n    if name_style not in valid_name_styles:\n        raise ValueError(\n            f\"Unsupported playlist name_style: {name_style!r}\"\n        )\n\n    for entry in entries:\n        entry_lines = entry[\"lines\"]\n\n        if name_style != \"status\":\n            original_display = strip_custom_prefix(\n                str(\n                    entry.get(\"published_name\")\n                    or entry.get(\"display_name\")\n                    or \"Unnamed channel\"\n                )\n            )\n\n            if name_style == \"language\":\n                language_code = str(\n                    entry.get(\"language_code\")\n                    or cfg.get(\"default_language_code\")\n                    or \"HU\"\n                ).strip().upper()\n\n                output_name = (\n                    f\"[{language_code}] {original_display}\"\n                )\n            else:\n                output_name = original_display\n\n            entry_lines = rewrite_entry_lines(\n                entry_lines,\n                output_name,\n                str(entry.get(\"group_title\") or \"\"),\n            )\n\n        out_lines.extend(\n            entry_lines\n        )\n\n        out_lines.append(\n            \"\"\n        )''',
+              "write_m3u_playlist loop",
+          )
+
+          text = replace_once(
+              text,
+              '''    write_m3u_playlist(\n        out_path,\n        cfg,\n        published_entries,\n        generated,\n        \"Stable family playlist\",\n    )''',
+              '''    write_m3u_playlist(\n        out_path,\n        cfg,\n        published_entries,\n        generated,\n        \"Stable family playlist\",\n        name_style=\"language\",\n    )''',
+              "stable family playlist call",
+          )
+
+          text = replace_once(
+              text,
+              '''        write_m3u_playlist(\n            country_path,\n            cfg,\n            country_entries,\n            generated,\n            (\n                f\"Stable {country_name} \"\n                \"playlist\"\n            ),\n        )''',
+              '''        write_m3u_playlist(\n            country_path,\n            cfg,\n            country_entries,\n            generated,\n            (\n                f\"Stable {country_name} \"\n                \"playlist\"\n            ),\n            name_style=\"plain\",\n        )''',
+              "country playlist call",
+          )
+
+          path.write_text(text, encoding="utf-8")
+
+          path = Path("tests/test_regressions.py")
+          text = path.read_text(encoding="utf-8")
+
+          text = replace_once(
+              text,
+              '''            stable = (root / \"public\" / \"tv.m3u\").read_text(\n                encoding=\"utf-8\"\n            )\n            sk_playlist = (root / \"public\" / \"sk.m3u\").read_text(\n                encoding=\"utf-8\"\n            )\n            cz_playlist = (root / \"public\" / \"cz.m3u\").read_text(\n                encoding=\"utf-8\"\n            )\n\n            self.assertEqual(stable.count(url), 1)\n            self.assertNotIn(url, sk_playlist)\n            self.assertIn(\"[CZ OK] Cross Language TV\", cz_playlist)\n            self.assertEqual(cz_playlist.count(url), 1)''',
+              '''            stable = (root / \"public\" / \"tv.m3u\").read_text(\n                encoding=\"utf-8\"\n            )\n            test_playlist = (root / \"public\" / \"test.m3u\").read_text(\n                encoding=\"utf-8\"\n            )\n            sk_playlist = (root / \"public\" / \"sk.m3u\").read_text(\n                encoding=\"utf-8\"\n            )\n            cz_playlist = (root / \"public\" / \"cz.m3u\").read_text(\n                encoding=\"utf-8\"\n            )\n\n            self.assertEqual(stable.count(url), 1)\n            self.assertIn(\"[CZ] Cross Language TV\", stable)\n            self.assertNotIn(\"[CZ OK] Cross Language TV\", stable)\n            self.assertIn(\"[CZ OK] Cross Language TV\", test_playlist)\n            self.assertNotIn(url, sk_playlist)\n            self.assertIn(\",Cross Language TV\", cz_playlist)\n            self.assertNotIn(\"[CZ\", cz_playlist)\n            self.assertEqual(cz_playlist.count(url), 1)''',
+              "cross-language naming regression",
+          )
+
+          text = replace_once(
+              text,
+              '''            self.assertIn(\"[CZ OK] Shared Czech TV\", cz_playlist)''',
+              '''            self.assertIn(\"[CZ] Shared Czech TV\", stable)\n            self.assertNotIn(\"[CZ OK] Shared Czech TV\", stable)\n            self.assertIn(\",Shared Czech TV\", cz_playlist)\n            self.assertNotIn(\"[CZ\", cz_playlist)''',
+              "rerouted naming regression",
+          )
+
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Validate changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          python3 -m unittest discover -s tests -v
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from health_policy import compile_health_policy
+          compile_health_policy(json.loads(Path("health_policy.json").read_text(encoding="utf-8")))
+          print("Health policy valid.")
+          PY
+          python3 build.py --strict
+
+      - name: Verify production naming formats
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          tv = Path("public/tv.m3u").read_text(encoding="utf-8")
+          test = Path("public/test.m3u").read_text(encoding="utf-8")
+
+          status_prefix = re.compile(r",\[(?:HU|SK|CZ) (?:OK|TV|PC|\?|X)\] ")
+          language_prefix = re.compile(r",\[(?:HU|SK|CZ)\] ")
+
+          if status_prefix.search(tv):
+              raise RuntimeError("Stable tv.m3u still contains status prefixes")
+          if not language_prefix.search(tv):
+              raise RuntimeError("Stable tv.m3u does not contain language-only prefixes")
+          if not status_prefix.search(test):
+              raise RuntimeError("test.m3u lost status prefixes")
+
+          for code in ("HU", "SK", "CZ"):
+              text = Path(f"public/{code.lower()}.m3u").read_text(encoding="utf-8")
+              if re.search(r",\[(?:HU|SK|CZ)(?: (?:OK|TV|PC|\?|X))?\] ", text):
+                  raise RuntimeError(f"{code} country playlist still contains generated prefixes")
+
+          print("Verified: test=status, tv=language only, country playlists=plain names.")
+          PY
+
+      - name: Commit validated change
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add build.py tests/test_regressions.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Simplify stable playlist channel names"
+          git push origin HEAD:agent/clean-playlist-names
