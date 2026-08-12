@@ -34,14 +34,12 @@ jobs:
       - name: Run strict playlist build
         run: python3 build.py --strict
 
-      - name: Commit validated patch and remove temporary automation
+      - name: Commit validated build patch
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add build.py .github/workflows/build-and-publish.yml
-          git rm .github/remaining_generalization_patch.py
-          git rm .github/workflows/generalize-country-epg-apply.yml
-          git commit -m "Generalize country attribution and external EPG"
+          git add build.py
+          git commit -m "Generalize language-source country attribution"
           git push origin HEAD:agent/generalize-country-language-external-epg
