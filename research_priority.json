@@ -34,6 +34,48 @@
       "reason": "Major mainstream general-entertainment channel for Slovakia."
     },
     {
+      "country": "CZ",
+      "channel": "ČT 1",
+      "priority": "P1",
+      "reason": "Flagship Czech public-service general channel; core family-playlist target."
+    },
+    {
+      "country": "CZ",
+      "channel": "ČT 2",
+      "priority": "P1",
+      "reason": "Major Czech public-service general, culture and documentary channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "ČT24",
+      "priority": "P1",
+      "reason": "Major Czech national news channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "ČT Sport",
+      "priority": "P1",
+      "reason": "Major Czech public-service sports channel and high-value family-playlist target."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nova",
+      "priority": "P1",
+      "reason": "Major Czech national commercial general-entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima",
+      "priority": "P1",
+      "reason": "Major Czech national commercial general-entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "CNN Prima News",
+      "priority": "P1",
+      "reason": "Major Czech national news channel."
+    },
+    {
       "country": "SK",
       "channel": "Retro Music Television",
       "priority": "P2",
@@ -44,6 +86,186 @@
       "channel": "Film+",
       "priority": "P2",
       "reason": "Major movie/entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "ČT:D/ČT art",
+      "priority": "P2",
+      "reason": "Public-service kids and culture service with strong family-playlist value."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nova Action",
+      "priority": "P2",
+      "reason": "Major Nova thematic entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nova Cinema",
+      "priority": "P2",
+      "reason": "Major Czech movie channel from the Nova family."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nova Fun",
+      "priority": "P2",
+      "reason": "Major Nova thematic entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nova Krimi",
+      "priority": "P2",
+      "reason": "Major Nova crime and entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nova Lady",
+      "priority": "P2",
+      "reason": "Major Nova lifestyle and entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima Cool",
+      "priority": "P2",
+      "reason": "Major Prima entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima Krimi",
+      "priority": "P2",
+      "reason": "Major Prima crime and entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima Love",
+      "priority": "P2",
+      "reason": "Major Prima entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima MAX",
+      "priority": "P2",
+      "reason": "Major Prima movie and entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima Show",
+      "priority": "P2",
+      "reason": "Prima thematic entertainment channel worth testing before generic P3 channels."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima Star",
+      "priority": "P2",
+      "reason": "Prima thematic entertainment channel worth testing before generic P3 channels."
+    },
+    {
+      "country": "CZ",
+      "channel": "Prima Zoom",
+      "priority": "P2",
+      "reason": "Major Czech documentary channel from the Prima family."
+    },
+    {
+      "country": "CZ",
+      "channel": "Televize Seznam",
+      "priority": "P2",
+      "reason": "Established Czech national general, news and entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "TV Barrandov",
+      "priority": "P2",
+      "reason": "Established Czech national general-entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "A11",
+      "priority": "P2",
+      "reason": "National Czech general-interest channel; higher value than regional/local P3 services."
+    },
+    {
+      "country": "CZ",
+      "channel": "Warner TV",
+      "priority": "P2",
+      "reason": "Major movie and entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "BBC Earth Czechia",
+      "priority": "P2",
+      "reason": "Major documentary channel with Czech-market relevance."
+    },
+    {
+      "country": "CZ",
+      "channel": "History",
+      "priority": "P2",
+      "reason": "Major documentary/history channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "History2",
+      "priority": "P2",
+      "reason": "Major documentary/history channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nickelodeon",
+      "priority": "P2",
+      "reason": "Major kids channel with strong family-playlist value."
+    },
+    {
+      "country": "CZ",
+      "channel": "Nicktoons",
+      "priority": "P2",
+      "reason": "Major kids channel with strong family-playlist value."
+    },
+    {
+      "country": "CZ",
+      "channel": "JOJ Family",
+      "priority": "P2",
+      "reason": "Mainstream family entertainment channel relevant to the Czech playlist."
+    },
+    {
+      "country": "CZ",
+      "channel": "AXN CEE Czech Republic",
+      "priority": "P2",
+      "reason": "Major entertainment channel with a Czech-market feed."
+    },
+    {
+      "country": "CZ",
+      "channel": "AXN Black Czech Republic",
+      "priority": "P2",
+      "reason": "Major thematic entertainment channel with a Czech-market feed."
+    },
+    {
+      "country": "CZ",
+      "channel": "AXN White CzechRepublic",
+      "priority": "P2",
+      "reason": "Major thematic entertainment channel with a Czech-market feed."
+    },
+    {
+      "country": "CZ",
+      "channel": "Viasat Epic Drama",
+      "priority": "P2",
+      "reason": "Major drama and entertainment channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "Sporty TV",
+      "priority": "P2",
+      "reason": "Czech sports channel worth testing ahead of generic P3 services."
+    },
+    {
+      "country": "CZ",
+      "channel": "Golf Channel",
+      "priority": "P2",
+      "reason": "Established sports channel."
+    },
+    {
+      "country": "CZ",
+      "channel": "CS Mystery",
+      "priority": "P2",
+      "reason": "Established Czech thematic documentary and mystery channel."
     },
     {
       "country": "HU",
