@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "channels": [
+    {
+      "country_code": "HU",
+      "channel": "Hir TV",
+      "priority": "P1",
+      "reason": "Major national news channel."
+    },
+    {
+      "country_code": "SK",
+      "channel": "TA3",
+      "tvg_id": "TA3.sk",
+      "priority": "P1",
+      "reason": "Major national news channel."
+    },
+    {
+      "country_code": "SK",
+      "channel": "TV JOJ",
+      "priority": "P1",
+      "reason": "Major national general-entertainment channel."
+    },
+    {
+      "country_code": "SK",
+      "channel": "Prima SK",
+      "priority": "P1",
+      "reason": "Major mainstream general-entertainment channel for Slovakia."
+    },
+    {
+      "country_code": "CZ",
+      "channel": "ČT 1",
+      "priority": "P1",
+      "reason": "Flagship Czech public-service general channel."
+    },
+    {
+      "country_code": "CZ",
+      "channel": "ČT 2",
+      "priority": "P1",
+      "reason": "Major Czech public-service general, culture and documentary channel."
+    },
+    {
+      "country_code": "CZ",
+      "channel": "ČT24",
+      "priority": "P1",
+      "reason": "Major Czech national news channel."
+    },
+    {
+      "country_code": "CZ",
+      "channel": "ČT Sport",
+      "priority": "P1",
+      "reason": "Major Czech public-service sports channel."
+    },
+    {
+      "country_code": "CZ",
+      "channel": "Nova",
+      "tvg_id": "Nova.cz",
+      "priority": "P1",
+      "reason": "Major Czech national commercial general-entertainment channel."
+    },
+    {
+      "country_code": "CZ",
+      "channel": "Prima",
+      "priority": "P1",
+      "reason": "Major Czech national commercial general-entertainment channel."
+    },
+    {
+      "country_code": "CZ",
+      "channel": "CNN Prima News",
+      "priority": "P1",
+      "reason": "Major Czech national news channel."
+    }
+  ]
+}
