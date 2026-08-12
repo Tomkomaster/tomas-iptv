@@ -126,6 +126,100 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             self.assertEqual(report["summary"]["unique_channels"], 2)
 
 
+    def test_exact_url_audit_does_not_cross_explicit_language_scope(self):
+        url = "https://dash.antik.sk/live/test_upnetwork/playlist.m3u8"
+
+        entry = {
+            "lines": [
+                '#EXTINF:-1 tvg-id="UpNetwork.cz@SD" tvg-name="Up Network",Up Network',
+                url,
+            ],
+            "url": url,
+            "display_name": "Up Network",
+            "tvg_id": "UpNetwork.cz@SD",
+            "tvg_name": "Up Network",
+            "logo": "",
+            "group_title": "",
+            "channel_name": "Up Network",
+            "source": "IPTV-org Czechia",
+            "source_kind": "base",
+            "language_code": "CZ",
+            "source_flags": [],
+            "classification": "Base channel",
+        }
+        entry["channel_key"] = build.channel_key(entry)
+
+        audit = [{
+            "channel": "Kanal1",
+            "stream_url": url,
+            "vlc": "works",
+            "samsung": "works",
+            "decision": "auto",
+            "expected_language_codes": ["SK"],
+            "observed_language_codes": ["SK"],
+            "language": "Slovak",
+            "language_code": "SK",
+        }]
+
+        warnings, ambiguity_warnings = build.validate_audit_items(
+            audit,
+            [entry],
+            strict=True,
+        )
+
+        self.assertEqual(ambiguity_warnings, [])
+        self.assertTrue(
+            any(
+                "saved audit explicitly expects SK" in warning
+                for warning in warnings
+            )
+        )
+
+        rows = build.prepare_audit_rows(audit, [entry])
+        current = [row for row in rows if row["in_playlist"]]
+        historical = [row for row in rows if not row["in_playlist"]]
+
+        self.assertEqual(len(current), 1)
+        self.assertEqual(current[0]["channel"], "Up Network")
+        self.assertEqual(current[0]["expected_language_codes"], ["CZ"])
+        self.assertEqual(current[0]["decision"], "Needs review")
+        self.assertEqual(current[0]["vlc"], "not_tested")
+        self.assertEqual(current[0]["samsung"], "not_tested")
+
+        self.assertEqual(len(historical), 1)
+        self.assertEqual(historical[0]["channel"], "Kanal1")
+        self.assertEqual(historical[0]["expected_language_codes"], ["SK"])
+        self.assertEqual(historical[0]["decision"], "Verified")
+        self.assertIn(
+            "Historical exact-URL audit only",
+            historical[0]["notes"],
+        )
+
+        test_candidates = build.make_test_playlist_candidates(
+            [entry],
+            rows,
+        )
+        self.assertEqual(len(test_candidates), 1)
+        self.assertEqual(
+            test_candidates[0]["_decision"],
+            "Needs review",
+        )
+
+        stable, _excluded = build.select_stable_playlist_candidates(
+            [entry],
+            rows,
+            {
+                "stable_playlist": {
+                    "allowed_decisions": [
+                        "Verified",
+                        "TV verified",
+                    ]
+                }
+            },
+        )
+        self.assertEqual(stable, [])
+
+
 class AuditBooleanRegressionTests(unittest.TestCase):
     def test_string_false_exclude_is_rejected(self):
         audit = [{

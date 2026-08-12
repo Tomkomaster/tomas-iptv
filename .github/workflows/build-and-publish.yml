@@ -32,7 +32,7 @@ jobs:
         run: python3 -m unittest discover -s tests -v
 
       - name: Build IPTV playlist
-        run: python3 build.py
+        run: python3 build.py --strict
 
       - name: Generate research exports
         run: python3 research_exports.py
