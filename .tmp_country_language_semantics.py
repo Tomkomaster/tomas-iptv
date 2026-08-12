@@ -33,6 +33,22 @@ text = replace_once(
 ''',
     "verified observed language metadata",
 )
+text = replace_once(
+    text,
+    '''        output_code = normalize_country_code(
+            str(audit.get("output_country_code") or audit.get("output_language_code") or "")
+        ) or source_code
+''',
+    '''        output_code = normalize_country_code(
+            str(audit.get("output_country_code") or audit.get("output_language_code") or "")
+        ) or verified_output_country_code(
+            audit,
+            source_code,
+            cfg,
+        )
+''',
+    "self-contained country route resolution",
+)
 path.write_text(text, encoding="utf-8")
 
 # Build-level regressions for the exact expansion problem this refactor solves.
