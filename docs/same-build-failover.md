@@ -28,7 +28,7 @@ A feed is eligible for same-build failover only when all of these are true:
 7. publish the final stable winner for each logical channel;
 8. run the ordinary post-build `healthcheck.py` against the final stable playlist as before.
 
-Nothing from the first pass is published separately; the second pass overwrites the generated playlist/report files before GitHub Pages upload.
+Nothing from the first pass is published separately; the second pass overwrites the generated playlist/report files before GitHub Pages upload. Production and pull-request validation both invoke `reliable_build.py --strict`, so the same selection path is exercised before deployment.
 
 ## Selection rule
 
