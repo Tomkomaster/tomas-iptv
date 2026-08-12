@@ -183,8 +183,9 @@ class Non247HealthTests(unittest.TestCase):
             audit_ambiguity_warnings=[],
         )
         self.assertIn('value="Event inactive"', page)
-        self.assertIn("Event-based inactive", page)
-        self.assertIn("data-health-actionable", page)
+        script = Path("static/dashboard.js").read_text(encoding="utf-8")
+        self.assertIn("Event-based inactive", script)
+        self.assertIn("data-health-actionable", script)
 
 
 if __name__ == "__main__":

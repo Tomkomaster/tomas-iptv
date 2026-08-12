@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 from build import make_dashboard
 
@@ -26,7 +27,8 @@ class DashboardHealthTests(unittest.TestCase):
         self.assertIn("health.json", page)
         self.assertIn("never changes manual VLC + Samsung verification", page)
         self.assertIn("healthTable", page)
-        self.assertIn("fetch('health.json'", page)
+        script = Path("static/dashboard.js").read_text(encoding="utf-8")
+        self.assertIn("fetch('health.json'", script)
 
 
 if __name__ == "__main__":
