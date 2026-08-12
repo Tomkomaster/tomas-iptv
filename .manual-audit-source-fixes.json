@@ -12,5 +12,17 @@
       "extinf": "#EXTINF:-1 tvg-id=\"EbSPlus.be@SD\" tvg-name=\"EBS Plus\",EBS Plus",
       "url": "https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8"
     }
+  ],
+  "text_replacements": [
+    {
+      "path": "iptv/build_core.py",
+      "old": "        # Pick one clean, canonical channel name for all feeds.\n        canonical_name = \"\"\n\n        for candidate in group:\n            candidate_name = str(\n                candidate.get(\"channel_name\")\n                or candidate.get(\"tvg_name\")\n                or candidate.get(\"display_name\")\n                or \"\"\n            ).strip()\n",
+      "new": "        # Pick one clean, canonical channel name for all feeds.\n        # A URL-specific manual audit name is authoritative: manual playback\n        # often resolves shortened or research-only upstream display names.\n        canonical_name = \"\"\n\n        for candidate in group:\n            audit_name = str(\n                (candidate.get(\"_audit\") or {}).get(\"channel\")\n                or \"\"\n            ).strip()\n            # Feed numbering is presentation metadata and is added below.\n            # Do not let an old audit label such as \"Channel Feed 2\" become\n            # the logical base channel name.\n            audit_name = re.sub(\n                r\"\\s+Feed\\s+\\d+\\s*$\",\n                \"\",\n                audit_name,\n                flags=re.IGNORECASE,\n            ).strip()\n\n            candidate_name = (\n                audit_name\n                or str(\n                    candidate.get(\"channel_name\")\n                    or candidate.get(\"tvg_name\")\n                    or candidate.get(\"display_name\")\n                    or \"\"\n                ).strip()\n            )\n"
+    },
+    {
+      "path": "iptv/build_core.py",
+      "old": "        | JOJ\\s+CDN\n    )\n    \\s+\n    TEST\n    \\s*$",
+      "new": "        | JOJ\\s+CDN\n    )\n    \\s+\n    (?:TEST|IDENTIFY)\n    \\s*$"
+    }
   ]
 }
