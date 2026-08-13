@@ -15379,6 +15379,7 @@
     {
       "channel": "RTM Plus",
       "stream_url": "http://www.rtmplus.cz/live/1-playlist.m3u8",
+	  "tvg_id": "RTMPlus.cz@SD",
       "vlc": "loads",
       "samsung": "format_error",
       "vlc_note": "just loads",
