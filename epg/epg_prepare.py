@@ -326,7 +326,7 @@ def prepare_epg_channels(
             ),
         })
 
-    if not matched:
+    if not matched and playlist_ids:
         raise RuntimeError(
             "No playlist tvg-id values "
             "matched the configured EPG sites."
