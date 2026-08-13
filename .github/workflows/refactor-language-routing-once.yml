@@ -1,0 +1,46 @@
+name: One-off extract language routing
+
+on:
+  push:
+    branches:
+      - agent/extract-language-routing
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout refactor branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/extract-language-routing
+          fetch-depth: 0
+
+      - name: Extract language routing subsystem
+        run: python3 tools/_extract_language_routing_once.py
+
+      - name: Compile extracted modules
+        run: python3 -m py_compile iptv/language_routing.py iptv/build_core.py build.py
+
+      - name: Run full unittest suite
+        run: python3 run_tests.py
+
+      - name: Remove one-off refactor helpers
+        run: |
+          rm tools/_extract_language_routing_once.py
+          rm .github/workflows/refactor-language-routing-once.yml
+
+      - name: Commit extracted subsystem
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No refactor changes were produced." >&2
+            exit 1
+          fi
+          git diff --cached --stat
+          git commit -m "Extract language routing from build core"
+          git push origin HEAD:agent/extract-language-routing
