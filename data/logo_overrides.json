@@ -99,6 +99,96 @@
       "logo": "https://spiintl.com/data/files/kcfinderUploadDir/images/filmboxplus/filmbox%2Bone.png",
       "source": "SPI International official FILMBOX+ channel asset",
       "note": "P2; broadcaster-owned asset; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "CNNPrimaNews.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/CNN_Prima_News_SVG_Logo.svg/960px-CNN_Prima_News_SVG_Logo.svg.png",
+      "source": "CNN Prima NEWS official site; Wikimedia Commons mirror lists cnn.iprima.cz as source and CNN Prima News as author",
+      "note": "P1; replaces an Imgur source fallback with reviewed canonical artwork; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "A11.cz@SD"
+      },
+      "logo": "https://www.a11.cz/wp-content/uploads/2025/07/A11TELEVIZE_logo.png",
+      "source": "A11 official Pro média logo download page",
+      "note": "P2; broadcaster-owned PNG; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "NovaAction.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Nova_Action_logo_2021.png",
+      "source": "TV Nova official program page; Wikimedia Commons mirror lists tv.nova.cz/program as source and TV Nova as author",
+      "note": "P2; current Nova Action identity confirmed on TV Nova; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "NovaFun.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_Nova_FUN.png",
+      "source": "TV Nova official identity; Wikimedia Commons mirror credits TV Nova as both source and author",
+      "note": "P2; current Nova Fun identity confirmed on TV Nova; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "NovaGold.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Logo_Nova_Krimi.png",
+      "source": "TV Nova official Nova Krimi page; Wikimedia Commons mirror lists tv.nova.cz/krimi as source and TV Nova s.r.o. as author",
+      "note": "P2; playlist still uses legacy NovaGold tvg-id after the Nova Krimi rebrand; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "NovaLady.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Logo_Nova_Lady_2021.png",
+      "source": "TV Nova current Nova Lady page confirms the identity; Wikimedia Commons mirror credits TV Nova as author",
+      "note": "P2; PNG chosen for TV-client compatibility; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "channel": "Warner TV"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Warner_TV_logo.svg/960px-Warner_TV_logo.svg.png",
+      "source": "Warner TV official identity; Wikimedia Commons mirror lists warnerchannel.com as source and Warner TV as author",
+      "note": "P2; channel selector used because the stable row has no tvg-id; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "SK",
+        "channel": "JOJ Šport 2"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Logo_JOJ_%C5%A0port_2.png",
+      "source": "JOJ Group official site; Wikimedia Commons mirror lists joj.sk as source and JOJ Group as author",
+      "note": "P2; channel selector used because the stable row has no tvg-id; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "SK",
+        "tvg_id": "Jojko.sk"
+      },
+      "logo": "https://img.joj.sk/rx/63bd046e-a2e3-41a4-a35b-cf25807b68ee.png",
+      "source": "JOJ-owned img.joj.sk channel asset; Wikimedia Commons metadata credits Slovenská produkčná, a.s.",
+      "note": "P2; broadcaster-owned PNG; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "CSMystery.cz@SD"
+      },
+      "logo": "https://www.jojgroup.sk/wp-content/uploads/CS-mistery.png",
+      "source": "JOJ Group official CS Mystery brand page visual material",
+      "note": "P2; direct broadcaster-owned PNG; fills a previously missing stable logo; manually reviewed 2026-08-13"
     }
   ]
 }
