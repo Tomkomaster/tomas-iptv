@@ -9,11 +9,35 @@ import xml.etree.ElementTree as ET
 from collections import Counter
 from pathlib import Path
 
-from epg_prepare import prepare_epg_channels
+from epg_prepare import prepare_epg_channels, read_playlist_tvg_ids
+
+
+NO_IPTV_MATCH_ERROR = "No playlist tvg-id values matched the configured EPG sites."
 
 
 def _percent(part: int, total: int) -> float:
     return round(part / total * 100.0, 1) if total else 0.0
+
+
+def _external_epg_configured(country_cfg: dict) -> bool:
+    external = country_cfg.get("external") or {}
+    return (
+        isinstance(external, dict)
+        and bool(str(external.get("url") or "").strip())
+    )
+
+
+def _empty_country_report(playlist_path: Path) -> dict:
+    playlist_ids = read_playlist_tvg_ids(playlist_path)
+    return {
+        "playlist_tvg_ids": len(playlist_ids),
+        "matched_tvg_ids": 0,
+        "unmatched_tvg_ids_count": len(playlist_ids),
+        "mapping_coverage_percent": 0.0,
+        "providers": {},
+        "matched": [],
+        "unmatched_tvg_ids": playlist_ids,
+    }
 
 
 def prepare_country_epg(
@@ -27,6 +51,10 @@ def prepare_country_epg(
     The existing epg_prepare matcher remains authoritative. This function only
     scopes provider priority to each country playlist and then combines the
     resulting channel XML/report into the single guide input used downstream.
+
+    A country with a configured external XMLTV source may legitimately have
+    zero IPTV-org matches. In that case we preserve zero-match coverage and let
+    the downstream external merge provide programme data for that country.
     """
     config_path = config_path.resolve()
     cfg = json.loads(config_path.read_text(encoding="utf-8"))
@@ -84,13 +112,36 @@ def prepare_country_epg(
             country_xml = tmp_root / f"{code}.channels.xml"
             country_report_path = tmp_root / f"{code}.coverage.json"
 
-            report = prepare_epg_channels(
-                playlist_path=playlist_path,
-                epg_root=epg_root,
-                sites=sites,
-                output_path=country_xml,
-                report_path=country_report_path,
-            )
+            try:
+                report = prepare_epg_channels(
+                    playlist_path=playlist_path,
+                    epg_root=epg_root,
+                    sites=sites,
+                    output_path=country_xml,
+                    report_path=country_report_path,
+                )
+            except RuntimeError as exc:
+                if (
+                    str(exc) != NO_IPTV_MATCH_ERROR
+                    or not _external_epg_configured(country_cfg)
+                ):
+                    raise
+
+                report = _empty_country_report(playlist_path)
+                empty_root = ET.Element("channels")
+                ET.ElementTree(empty_root).write(
+                    country_xml,
+                    encoding="utf-8",
+                    xml_declaration=True,
+                )
+                country_report_path.write_text(
+                    json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8",
+                )
+                print(
+                    f"WARNING: {code} has no IPTV-org EPG mappings; "
+                    "continuing with its configured external EPG source."
+                )
 
             country_tree = ET.parse(country_xml)
             for channel in country_tree.getroot().findall("channel"):
