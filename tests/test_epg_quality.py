@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from epg.epg_policy import compile_epg_policy, resolve_epg_policy
+from tools.attention import write_epg_quality_side_reports
 from epg.epg_quality import (
     QUALITY_ALIAS,
     QUALITY_EXACT,
@@ -162,10 +163,37 @@ class EpgQualityTests(unittest.TestCase):
             self.assertIn("Shared.hu", (root / "collisions.csv").read_text(encoding="utf-8-sig"))
             self.assertIn("One", (root / "verified.csv").read_text(encoding="utf-8-sig"))
 
+    def test_attention_step_writes_epg_quality_side_reports(self):
+        report = {
+            "channels": [
+                {"key": "HU:name:one", "name": "One", "country_code": "HU", "tvg_id": "One.hu"},
+            ],
+            "audit": {"channels": [
+                {"channel": "One", "country_code": "HU", "tvg_id": "One.hu", "decision": "Verified", "in_stable_playlist": True},
+            ]},
+        }
+        coverage = {"matched": [
+            {"tvg_id": "One.hu", "match_type": "exact"},
+        ]}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            quality = write_epg_quality_side_reports(
+                report=report,
+                epg_coverage=coverage,
+                epg_health={"mapped_without_programmes": []},
+                epg_policy={"default": "expected"},
+                config={"epg": {"enabled": True}},
+                output_dir=root,
+            )
+            self.assertIsNotNone(quality)
+            self.assertTrue((root / "epg-quality.json").is_file())
+            self.assertTrue((root / "tvg-id-collisions.csv").is_file())
+            self.assertTrue((root / "verified-without-epg.csv").is_file())
+
     def test_dashboard_exposes_quality_categories_and_reports(self):
         template = (ROOT / "templates" / "dashboard.html").read_text(encoding="utf-8")
         script = (ROOT / "static" / "dashboard.js").read_text(encoding="utf-8")
-        workflow = (ROOT / ".github" / "workflows" / "build-and-publish.yml").read_text(encoding="utf-8")
+        attention = (ROOT / "tools" / "attention.py").read_text(encoding="utf-8")
         for label in (
             "Exact tvg-id", "Alias", "Guessed", "Missing", "EPG unavailable",
         ):
@@ -173,7 +201,8 @@ class EpgQualityTests(unittest.TestCase):
         self.assertIn("epg-quality.json", script)
         self.assertIn("tvg-id collisions", template.casefold())
         self.assertIn("Verified channels without EPG mapping", template)
-        self.assertIn("python3 -m epg.epg_quality", workflow)
+        self.assertIn("write_epg_quality_side_reports", attention)
+        self.assertIn("epg-quality.json", attention)
 
 
 if __name__ == "__main__":

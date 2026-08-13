@@ -14,6 +14,7 @@ from country_language import (
 )
 from healthcheck import canonical_stream_url
 from epg_policy import compile_epg_policy, resolve_epg_policy
+from epg.epg_quality import build_epg_quality, write_epg_quality_outputs
 from research_priority import normalize_name, normalize_tvg_id
 
 
@@ -736,6 +737,36 @@ def build_attention(
     }
 
 
+def write_epg_quality_side_reports(
+    *,
+    report: dict,
+    epg_coverage: dict,
+    epg_health: dict,
+    epg_policy: dict,
+    config: dict,
+    output_dir: Path,
+) -> dict | None:
+    """Write EPG identity-quality reports beside attention.json when EPG is enabled."""
+    if not bool((config.get("epg") or {}).get("enabled")):
+        return None
+    if not epg_coverage:
+        return None
+
+    quality = build_epg_quality(
+        report,
+        epg_coverage,
+        health=epg_health,
+        policy_payload=epg_policy,
+    )
+    write_epg_quality_outputs(
+        quality,
+        output_path=output_dir / "epg-quality.json",
+        collisions_csv_path=output_dir / "tvg-id-collisions.csv",
+        verified_missing_csv_path=output_dir / "verified-without-epg.csv",
+    )
+    return quality
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
@@ -760,14 +791,49 @@ def main() -> None:
     if not args.report.is_file():
         raise SystemExit(f"Attention report requires {args.report}.")
 
+    report = load_json(args.report)
+    health = load_json(args.health)
+    epg_coverage = load_json(args.epg_coverage)
+    epg_health = load_json(args.epg_health)
+    epg_policy = load_json(args.epg_policy)
+    source_concentration = load_json(args.source_concentration)
+    config = load_json(args.config)
+
+    quality = write_epg_quality_side_reports(
+        report=report,
+        epg_coverage=epg_coverage,
+        epg_health=epg_health,
+        epg_policy=epg_policy,
+        config=config,
+        output_dir=args.output.parent,
+    )
+    if quality is not None:
+        summary = quality.get("summary") or {}
+        print(
+            "EPG quality: "
+            f"{summary.get('epg_expected_with_programmes', 0)}/"
+            f"{summary.get('epg_expected_channels', 0)} expected logical channels complete "
+            f"({float(summary.get('epg_completeness_percent') or 0):.1f}%)."
+        )
+        print(
+            "tvg-id quality: "
+            f"{summary.get('exact_tvg_id', 0)} exact, "
+            f"{summary.get('alias', 0)} alias, "
+            f"{summary.get('guessed', 0)} guessed, "
+            f"{summary.get('missing', 0)} missing, "
+            f"{summary.get('epg_unavailable', 0)} EPG unavailable; "
+            f"{summary.get('tvg_id_collision_count', 0)} collisions, "
+            f"{summary.get('verified_without_epg_mapping_count', 0)} verified without mapping."
+        )
+
     result = build_attention(
-        load_json(args.report),
-        health=load_json(args.health),
-        epg_coverage=load_json(args.epg_coverage),
-        epg_health=load_json(args.epg_health),
-        epg_policy=load_json(args.epg_policy),
-        source_concentration=load_json(args.source_concentration),
-        config=load_json(args.config),
+        report,
+        health=health,
+        epg_coverage=epg_coverage,
+        epg_health=epg_health,
+        epg_policy=epg_policy,
+        source_concentration=source_concentration,
+        config=config,
     )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
