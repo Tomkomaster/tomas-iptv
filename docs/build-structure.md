@@ -58,6 +58,7 @@ The core implementation package contains:
 - `channel_identity.py` — logical channel identity, canonical stream URLs and safe display-name normalization
 - `source_loader.py` — source definitions, remote/local loading and M3U parsing; `build_core.py` no longer carries duplicate parser/downloader implementations
 - `playlist_writer.py` — generated M3U headers and playlist writing
+- `publication.py` — published names, content groups and EXTINF metadata rewriting
 - `reports.py` — country/language build summaries and CSV export helpers
 - `playback_status.py` — shared VLC/Samsung manual-test status normalization
 - `language_routing.py` — spoken-language interpretation, publication-country routing, country naming and language-catalog assembly
