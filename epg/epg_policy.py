@@ -123,7 +123,10 @@ def resolve_epg_policy(
             return dict(match)
 
     country_code = str(
-        row.get("output_language_code")
+        row.get("output_country_code")
+        or row.get("playlist_country_code")
+        or row.get("country_code")
+        or row.get("output_language_code")
         or row.get("language_code")
         or row.get("playlist_language_code")
         or ""
