@@ -50,6 +50,9 @@ jobs:
           print('EPG quality dashboard/workflow contract OK.')
           PY
 
+      - name: Restore production workflow for connector handoff
+        run: git checkout origin/main -- .github/workflows/build-and-publish.yml
+
       - name: Remove one-off helpers
         run: |
           rm tools/_epg_quality_refactor_once.py
