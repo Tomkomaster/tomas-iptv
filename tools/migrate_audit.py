@@ -15,6 +15,7 @@ from country_language import (
     normalize_country_code,
     normalize_language_codes,
 )
+from iptv.audit_storage import compact_manual_audit_payload
 
 
 QUALITY_SUFFIX_RE = re.compile(
@@ -310,12 +311,6 @@ def modernize_audit_item(
             playlist_country,
         )
 
-    language_codes = normalize_language_codes(
-        item.get("language_codes")
-    )
-    if not language_codes or scope_changed_to_current:
-        language_codes = list(observed or expected)
-
     candidate_output_country = _first_country(
         candidate.get("output_country_code"),
         candidate.get("output_language_code"),
@@ -342,7 +337,6 @@ def modernize_audit_item(
     modern = {
         "playlist_country_code": playlist_country,
         "output_country_code": output_country,
-        "language_codes": language_codes,
         "expected_language_codes": expected,
         "observed_language_codes": observed,
     }
@@ -480,15 +474,10 @@ def migrate(
             ):
                 item["tvg_id"] = candidate["tvg_id"].strip()
 
-            if (
-                not str(item.get("protocol") or "").strip()
-                and str(candidate.get("protocol") or "").strip()
-            ):
-                item["protocol"] = candidate["protocol"].strip()
-
         migrated += 1
 
-    if write and (migrated or modernized):
+    if write:
+        payload = compact_manual_audit_payload(payload)
         audit_path.write_text(
             json.dumps(
                 payload,

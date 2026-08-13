@@ -105,7 +105,7 @@ class ModernAuditMigrationTests(unittest.TestCase):
             writer.writeheader()
             writer.writerows(rows)
 
-    def test_modernize_only_adds_iso_fields_and_keeps_legacy_aliases(self):
+    def test_modernize_only_adds_iso_fields_and_compacts_legacy_aliases(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             audit = root / "audit.json"
@@ -129,10 +129,10 @@ class ModernAuditMigrationTests(unittest.TestCase):
                 modernize_only=True,
             )
             item = json.loads(audit.read_text(encoding="utf-8"))["channels"][0]
-            self.assertEqual(item["language_code"], "SK")
+            self.assertNotIn("language_code", item)
             self.assertEqual(item["playlist_country_code"], "SK")
             self.assertEqual(item["output_country_code"], "SK")
-            self.assertEqual(item["language_codes"], ["slk"])
+            self.assertNotIn("language_codes", item)
             self.assertEqual(item["expected_language_codes"], ["slk"])
             self.assertEqual(item["observed_language_codes"], ["slk"])
             self.assertEqual(summary["modernized"], 1)
@@ -161,7 +161,7 @@ class ModernAuditMigrationTests(unittest.TestCase):
             migrate(audit, current, write=True, modernize_only=True)
             item = json.loads(audit.read_text(encoding="utf-8"))["channels"][0]
             self.assertEqual(item["playlist_country_code"], "SK")
-            self.assertEqual(item["output_country_code"], "")
+            self.assertEqual(item.get("output_country_code", ""), "")
             self.assertEqual(item["expected_language_codes"], ["slk"])
             self.assertEqual(item["observed_language_codes"], ["ces"])
 
@@ -202,12 +202,12 @@ class ModernAuditMigrationTests(unittest.TestCase):
             migrate(audit, current, write=True, modernize_only=True)
             item = json.loads(audit.read_text(encoding="utf-8"))["channels"][0]
 
-            self.assertEqual(item["language_code"], "DE")
+            self.assertNotIn("language_code", item)
             self.assertEqual(item["playlist_country_code"], "HU")
             self.assertEqual(item["output_country_code"], "HU")
             self.assertEqual(item["expected_language_codes"], ["hun"])
             self.assertEqual(item["observed_language_codes"], ["deu"])
-            self.assertEqual(item["language_codes"], ["deu"])
+            self.assertNotIn("language_codes", item)
 
     def test_current_exact_row_beats_historical_duplicate_for_same_url(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -263,14 +263,14 @@ class ModernAuditMigrationTests(unittest.TestCase):
         ]
         self.assertEqual(len(rows), 1)
         item = rows[0]
-        self.assertEqual(item["language_code"], "CZ")
+        self.assertNotIn("language_code", item)
         self.assertEqual(item["playlist_country_code"], "CZ")
         self.assertEqual(item["output_country_code"], "CZ")
         self.assertEqual(item["expected_language_codes"], ["ces"])
         self.assertEqual(item["observed_language_codes"], ["ces"])
         self.assertEqual(item["vlc"], "works")
         self.assertEqual(item["samsung"], "works")
-        self.assertFalse(item["exclude_from_playlist"])
+        self.assertFalse(item.get("exclude_from_playlist", False))
 
 
 if __name__ == "__main__":

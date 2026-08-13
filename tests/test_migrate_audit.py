@@ -74,10 +74,7 @@ class AuditMigrationTests(unittest.TestCase):
                 item["tvg_id"],
                 "Duna.hu@SD",
             )
-            self.assertEqual(
-                item["protocol"],
-                "HLS",
-            )
+            self.assertNotIn("protocol", item)
             self.assertEqual(
                 summary["migrated"],
                 1,

@@ -37,6 +37,7 @@ from iptv.language_routing import (
     verified_output_language_code,
 )
 from iptv.playback_status import normalize_test_status
+from iptv.audit_storage import machine_telemetry_fields
 from iptv.source_loader import SOURCE_FLAG_RE
 
 def calculate_audit_decision(
@@ -351,6 +352,14 @@ def validate_audit_items(
         label = f"audit item #{index}"
         if channel:
             label += f" ({channel})"
+
+        telemetry_fields = machine_telemetry_fields(item)
+        if telemetry_fields:
+            errors.append(
+                f"{label}: Machine telemetry fields do not belong in audit.json: "
+                f"{', '.join(telemetry_fields)}. Keep automated probe/health/EPG "
+                "observations in generated Pages JSON instead."
+            )
 
         if not channel:
             errors.append(f"{label}: missing channel name.")
