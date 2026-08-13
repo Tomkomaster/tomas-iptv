@@ -148,15 +148,461 @@
     },
     {
       "country_code": "HU",
-      "channel": "M4 Sport+",
+      "channel": "M4 Sport Plus",
       "priority": "P2",
-      "reason": "Hungarian public-service sports service carried in the Duna World weekend programme slot; research whether a usable direct feed can be tracked separately."
+      "reason": "Hungarian public-service M4 Sport+ service carried in the Duna World weekend programme slot; research whether a usable direct feed can be tracked separately."
     },
     {
       "country_code": "HU",
       "channel": "Match4",
       "priority": "P2",
       "reason": "Major Hungarian sports channel from Network4; no working source is currently tracked."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Budapest Európa Televízió",
+      "tvg_id": "BudapestEuropaTelevizio.hu",
+      "priority": "P3",
+      "reason": "Local/regional Hungarian broadcaster; all known direct candidates failed manual VLC and Samsung playback, so a replacement source is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Fehérvár TV",
+      "tvg_id": "FehervarTV.hu",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; multiple tested feeds failed on both target devices and a replacement source is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Kiskőrös TV",
+      "tvg_id": "KiskorosTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; tested direct/replacement feeds failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Miskolc TV",
+      "priority": "P3",
+      "reason": "Active local broadcaster; the broadcaster-associated HLS repeatedly failed and a different current direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Hegyvidék TV",
+      "tvg_id": "HegyvidekTV.hu",
+      "priority": "P3",
+      "reason": "Budapest local broadcaster; several carrier, broadcaster-domain and legacy feeds failed on the tested devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Neshama TV",
+      "priority": "P4",
+      "reason": "Active successor to Hatoscsatorna; no stable public direct stream suitable for the shared playlist has been verified."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Daru TV",
+      "tvg_id": "DaruTV.hu",
+      "priority": "P3",
+      "reason": "Hungarian broadcaster with multiple tested candidates, all rejected; replacement source needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Soltvadkerti Televízió",
+      "tvg_id": "SoltvadkertiTelevizio.hu",
+      "priority": "P3",
+      "reason": "Local broadcaster; multiple tested candidates failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Gran TV",
+      "tvg_id": "GranTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; multiple tested candidates failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Alföld TV",
+      "tvg_id": "AlfoldTV.hu",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; current tested feed repeatedly failed and a replacement is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Berente TV",
+      "tvg_id": "BerenteTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Bábolnai TV",
+      "tvg_id": "BTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "DSTV",
+      "tvg_id": "DSTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Első Kerület TV",
+      "tvg_id": "EgykerTV.hu",
+      "priority": "P3",
+      "reason": "Budapest District I local television; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Globo TV",
+      "tvg_id": "GloboTV.hu",
+      "priority": "P3",
+      "reason": "Hungarian local broadcaster; known source is geo-blocked/unusable from the intended playlist location."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Gólya TV",
+      "tvg_id": "GolyaTV.hu",
+      "priority": "P3",
+      "reason": "Hungarian local broadcaster; known source is geo-blocked/unusable from the intended playlist location."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Hangulat TV",
+      "tvg_id": "HangulatTV.hu",
+      "priority": "P4",
+      "reason": "Hungarian niche television channel; current tested source repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Jászsági Térségi TV",
+      "tvg_id": "JaszsagiTersegiTV.hu",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Komáromi Televízió",
+      "tvg_id": "KomaromiTelevizio.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Mezőkövesdi Televízió",
+      "tvg_id": "MezokovesdiTelevizio.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; the current tested feed failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Putnok Városi TV",
+      "tvg_id": "PVTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Rákosmente TV",
+      "tvg_id": "RakosmenteTV.hu",
+      "priority": "P3",
+      "reason": "Budapest local broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "RégióPlusz TV",
+      "tvg_id": "RegioPluszTV.hu",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; known source is geo-blocked/unusable from the intended playlist location."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Szécsény TV",
+      "tvg_id": "SzecsenyTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Tatai TV",
+      "tvg_id": "TataiTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Trimedio TV",
+      "tvg_id": "TrimedioTV.hu",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; known source is geo-blocked/unusable from the intended playlist location."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TV Szentendre",
+      "tvg_id": "TVSzentendre.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; known source is geo-blocked/unusable from the intended playlist location."
+    },
+    {
+      "country_code": "HU",
+      "channel": "VTV Mór",
+      "tvg_id": "VTVMor.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; no stable TV-safe feed is currently known."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Völgyhíd TV",
+      "tvg_id": "VolgyhidTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Williams TV",
+      "tvg_id": "WilliamsTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; both the original and alternate tested feeds failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "XV TV",
+      "tvg_id": "XVTV.hu",
+      "priority": "P3",
+      "reason": "Budapest District XV local television; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Zugló TV",
+      "tvg_id": "ZugloTV.hu",
+      "priority": "P3",
+      "reason": "Budapest District XIV local television; current tested feed repeatedly failed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Óbuda TV",
+      "tvg_id": "ObudaTV.hu",
+      "priority": "P3",
+      "reason": "Budapest District III local television; current tested feed failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Komlós TV",
+      "tvg_id": "KomlosTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; latest test failed but the source is Not 24/7, so it still needs an on-air retest or replacement."
+    },
+    {
+      "country_code": "HU",
+      "channel": "VTV Füzesabony",
+      "tvg_id": "VTVFuzesabony.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; both known HLS candidates failed and no usable replacement is currently known."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Bicskei Városi Televízió",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; the tested OnlineStream/LexaNetwork feed failed on both target devices, so a replacement source is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Bátor Televízió",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; only a YouTube-resolver candidate was tested and rejected, so a stable direct non-YouTube stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Főnix TV",
+      "priority": "P3",
+      "reason": "Hungarian local broadcaster; both known direct feed candidates failed on the target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Győr+ TV",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; the tested feed failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Hatvan TV",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; the tested feed failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Orosházi Városi Televízió",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; both known feed candidates failed on the target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Rábaközi Televízió",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; both known feed candidates failed on the target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Szeged TV",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; both known direct feed candidates failed on the target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Szombathelyi Televízió",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; legacy direct and YouTube-resolver candidates were rejected, so a stable direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Tatabányai Televízió",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; the tested feed failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TV10 Kőbánya",
+      "priority": "P3",
+      "reason": "Budapest District X local television; the tested feed failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Lengyeltóti Városi TV",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; only a YouTube-resolver candidate was available and rejected, so a stable direct non-YouTube stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "HTB TV",
+      "priority": "P3",
+      "reason": "Hungarian local broadcaster; the tested EuroCable candidate failed on both target devices."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Kalocsa TV",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; only an official YouTube-resolver candidate was available and rejected, so a direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Kecel Városi TV",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; only an official YouTube-resolver candidate was available and rejected, so a direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "KisDuna TV Dunaharaszti",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; legacy Flynet candidate failed and a current replacement stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "KolorTV Kazincbarcika",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; only an official YouTube-resolver candidate was available and rejected, so a direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Pannon TV Pécs",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; tokenless ConnectMedia candidate failed and the official player appears to require a token."
+    },
+    {
+      "country_code": "HU",
+      "channel": "PilisTV",
+      "tvg_id": "PilisTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; known source is geo-blocked/unusable and repeatedly failed from the intended playlist location."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Pápai Médiacentrum",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; only an official YouTube-resolver candidate was available and rejected, so a stable direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Pécs TV",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; only an official YouTube-resolver candidate was available and rejected, so a stable direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Sopron TV",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; the tested OnlineStream redirect failed on both target devices, so a stable direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Szarvasi Televízió",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; YouTube-resolver candidate was rejected, so only a stable direct non-YouTube stream should be reconsidered."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Tisza TV",
+      "tvg_id": "TiszaTV.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; latest test failed but the source is Not 24/7, so an on-air retest or replacement is still needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Tolnatáj TV",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; tokenless ConnectMedia candidate failed and the official player appears to require a token."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TV Budakalász",
+      "tvg_id": "TVBudakalasz.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; latest test failed but the source is Not 24/7, so an on-air retest or replacement is still needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Veszprém TV",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; only an official YouTube-resolver candidate was available and rejected, so a stable direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Újbuda TV",
+      "priority": "P3",
+      "reason": "Budapest District XI local television; only an official YouTube-resolver candidate was available and rejected, so a direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Újpest TV",
+      "priority": "P3",
+      "reason": "Budapest District IV local television; only an official YouTube-resolver candidate was available and rejected, so a direct stream is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TelePaks",
+      "tvg_id": "TelePaks.hu",
+      "priority": "P3",
+      "reason": "Local Hungarian broadcaster; the current tested stream failed on both target devices and a replacement source is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Kapos TV",
+      "tvg_id": "KaposTV.hu",
+      "priority": "P3",
+      "reason": "Regional Hungarian broadcaster; current feed works in VLC but not on Samsung, so a TV-safe replacement or compatible alternate is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Total Dance TV",
+      "priority": "P4",
+      "reason": "Hungarian music television service; the tested direct feed failed on both target devices, so a replacement source is needed."
+    },
+    {
+      "country_code": "HU",
+      "channel": "PAX TV",
+      "priority": "P4",
+      "reason": "Hungarian religious television service; legacy public feed failed and the current official online service is access-controlled, so research only a stable public direct stream."
     },
     {
       "country_code": "SK",
