@@ -156,8 +156,35 @@ def normalize_content_group(
 
     return ";".join(categories)
 
-def rewrite_extinf_line(line: str, new_name: str, group_title: str) -> str:
+def rewrite_extinf_line(
+    line: str,
+    new_name: str,
+    group_title: str,
+    logo: str | None = None,
+) -> str:
     metadata, _old_name = split_extinf(line)
+    if logo is not None:
+        safe_logo = str(logo or "").replace('"', "%22").strip()
+        if re.search(r'\s+tvg-logo="[^"]*"', metadata, flags=re.IGNORECASE):
+            if safe_logo:
+                metadata = re.sub(
+                    r'\s+tvg-logo="[^"]*"',
+                    f' tvg-logo="{safe_logo}"',
+                    metadata,
+                    count=1,
+                    flags=re.IGNORECASE,
+                )
+            else:
+                metadata = re.sub(
+                    r'\s+tvg-logo="[^"]*"',
+                    "",
+                    metadata,
+                    count=1,
+                    flags=re.IGNORECASE,
+                )
+        elif safe_logo:
+            metadata += f' tvg-logo="{safe_logo}"'
+
     safe_group = (group_title or "").replace('"', "'")
     if re.search(r'\s+group-title="[^"]*"', metadata, flags=re.IGNORECASE):
         metadata = re.sub(
@@ -192,11 +219,16 @@ def rewrite_extinf_line(line: str, new_name: str, group_title: str) -> str:
 
     return f"{metadata},{new_name}"
 
-def rewrite_entry_lines(lines: list[str], new_name: str, group_title: str) -> list[str]:
+def rewrite_entry_lines(
+    lines: list[str],
+    new_name: str,
+    group_title: str,
+    logo: str | None = None,
+) -> list[str]:
     updated = list(lines)
     for i, line in enumerate(updated):
         if line.strip().startswith("#EXTINF:"):
-            updated[i] = rewrite_extinf_line(line, new_name, group_title)
+            updated[i] = rewrite_extinf_line(line, new_name, group_title, logo)
             break
     return updated
 
@@ -440,6 +472,7 @@ def prepare_published_entries(
                     entry["lines"],
                     published_name,
                     group_title,
+                    str(published.get("logo") or ""),
                 )
             )
 
