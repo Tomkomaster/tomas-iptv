@@ -1,0 +1,68 @@
+name: One-off audit inventory
+
+on:
+  push:
+    branches: [agent/split-audit-telemetry]
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/split-audit-telemetry
+      - name: Inventory audit fields and consumers
+        run: |
+          python3 - <<'PY'
+          import json
+          from collections import Counter, defaultdict
+          from pathlib import Path
+
+          path = Path('audit.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          rows = data.get('channels', [])
+          print(f'audit.json bytes: {path.stat().st_size:,}')
+          print(f'rows: {len(rows):,}')
+
+          counts = Counter()
+          payload_bytes = Counter()
+          nonempty = Counter()
+          samples = defaultdict(list)
+          for row in rows:
+              for key, value in row.items():
+                  counts[key] += 1
+                  payload_bytes[key] += len(json.dumps({key: value}, ensure_ascii=False, separators=(',', ':')).encode())
+                  if value not in ('', None, [], {}, False):
+                      nonempty[key] += 1
+                      if len(samples[key]) < 3:
+                          samples[key].append(value)
+
+          print('\nFIELD INVENTORY')
+          for key in sorted(counts, key=lambda k: (-payload_bytes[k], k)):
+              print(f'{key:28} rows={counts[key]:4} nonempty={nonempty[key]:4} approx_bytes={payload_bytes[key]:7}')
+
+          print('\nLIKELY MACHINE/DERIVED FIELDS')
+          candidates = [
+              'source','protocol','playlist_country_code','output_country_code',
+              'playlist_language_code','output_language_code','language_codes',
+              'expected_language_codes','language_match','language_acceptance',
+              'source_flags','country_code'
+          ]
+          for key in candidates:
+              print(f'{key:28} rows={counts[key]:4} nonempty={nonempty[key]:4} approx_bytes={payload_bytes[key]:7}')
+
+          print('\nPOTENTIAL TELEMETRY-LIKE KEYS')
+          terms = ('http','latency','probe','health','epg','failure','status','timestamp','checked','response','error','history')
+          for key in sorted(counts):
+              if any(term in key.casefold() for term in terms):
+                  print(key, counts[key], nonempty[key], samples[key])
+          PY
+
+          echo '\nAUDIT WRITERS / DIRECT CONSUMERS'
+          git grep -n 'audit.json' -- '*.py' '*.yml' '*.yaml' ':!audit.json' || true
+
+          echo '\nHEALTH / GENERATED OBSERVATION OUTPUTS'
+          git grep -n -E 'health\.json|epg-health\.json|probe' -- '*.py' '*.yml' '*.yaml' | head -n 240 || true
