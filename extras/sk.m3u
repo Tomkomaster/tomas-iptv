@@ -56,7 +56,7 @@ http://79.120.178.90:1935/dstv/dstvlive/playlist.m3u8
 http://s1.media-planet.sk:80/live/pezinok/BratuMarian.m3u8
 
 # Ľubovnianska televízia — Stará Ľubovňa local television; experimental Neting variant-specific HLS candidate
-#EXTINF:-1 tvg-name="Ľubovnianska televízia",Ľubovnianska televízia
+#EXTINF:-1 tvg-id="LubovnianskaTV.sk" tvg-name="Ľubovnianska televízia",Ľubovnianska televízia
 https://stream1.neting.sk/lms/ltv/chunklist_w827147849.m3u8
 
 # TV DOKTOR — Slovak health/information television; direct broadcaster HLS
@@ -222,7 +222,7 @@ http://46.36.41.106:8888/rebit/102.m3u8
 http://46.36.41.106:8888/rebit/94.m3u8
 
 # JOJ Cinema — JOJ Group; Czech/Slovak market
-#EXTINF:-1 tvg-name="JOJ Cinema" group-title="Movies",JOJ Cinema
+#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema" group-title="Movies",JOJ Cinema
 http://46.36.41.106:8888/rebit/8.m3u8
 
 # RVTV — Rožňavská televízia
