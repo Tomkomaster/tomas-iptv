@@ -30,7 +30,7 @@ class CountryLanguageModelTests(unittest.TestCase):
 
     def test_legacy_source_config_maps_to_country_and_spoken_language(self):
         cfg = {
-            "default_language_code": "HU",
+            "default_country_code": "HU",
             "country_outputs": {"HU": "hu.m3u", "SK": "sk.m3u"},
         }
         spec = {"language_code": "SK"}

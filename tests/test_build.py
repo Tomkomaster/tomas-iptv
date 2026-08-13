@@ -1389,7 +1389,7 @@ class AuditTests(unittest.TestCase):
             (root / "config.json").write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "HU",
+                    "default_country_code": "HU",
                     "output": "public/tv.m3u",
                     "audit_path": "audit.json",
                     "sources": [
@@ -1461,7 +1461,7 @@ class AuditTests(unittest.TestCase):
             ).write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "HU",
+                    "default_country_code": "HU",
 
                     "country_names": {
                         "HU": "Hungary",
@@ -1605,7 +1605,7 @@ class AuditTests(unittest.TestCase):
             ).write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "HU",
+                    "default_country_code": "HU",
 
                     "country_names": {
                         "HU": "Hungary",
@@ -1678,7 +1678,7 @@ class AuditTests(unittest.TestCase):
             (root / "config.json").write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "HU",
+                    "default_country_code": "HU",
                     "output": "public/tv.m3u",
                     "audit_path": "audit.json",
                     "sources": [
@@ -1798,7 +1798,7 @@ class AuditTests(unittest.TestCase):
             ).write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "HU",
+                    "default_country_code": "HU",
 
                     "country_names": {
                         "HU": "Hungary",
@@ -2006,7 +2006,7 @@ class AuditTests(unittest.TestCase):
             ).write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "HU",
+                    "default_country_code": "HU",
                     "output": "public/tv.m3u",
                     "audit_path": "audit.json",
 

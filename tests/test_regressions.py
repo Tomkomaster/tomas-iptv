@@ -56,7 +56,7 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             (root / "config.json").write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "HU",
+                    "default_country_code": "HU",
                     "country_names": {
                         "HU": "Hungary",
                         "SK": "Slovakia",
@@ -261,7 +261,7 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             (root / "config.json").write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "SK",
+                    "default_country_code": "SK",
                     "country_names": {
                         "SK": "Slovakia",
                         "CZ": "Czechia",
@@ -401,7 +401,7 @@ class LanguageScopingRegressionTests(unittest.TestCase):
             (root / "config.json").write_text(
                 json.dumps({
                     "site_title": "Test",
-                    "default_language_code": "SK",
+                    "default_country_code": "SK",
                     "country_names": {
                         "SK": "Slovakia",
                         "CZ": "Czechia",

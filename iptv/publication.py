@@ -317,7 +317,7 @@ def prepare_published_entries(
                         entry.get("country_code")
                         or entry.get("language_code")
                         or cfg.get("default_country_code")
-                        or cfg.get("default_language_code")
+                        
                         or "HU"
                     )
                 )

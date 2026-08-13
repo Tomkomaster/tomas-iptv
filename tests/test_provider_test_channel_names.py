@@ -54,7 +54,7 @@ class ProviderTestChannelNameTests(unittest.TestCase):
 
         published = build.prepare_published_entries(
             [source],
-            {"default_language_code": "HU", "country_names": {"SK": "Slovakia"}},
+            {"default_country_code": "HU", "country_names": {"SK": "Slovakia"}},
         )
         self.assertEqual(len(published), 1)
         self.assertEqual(published[0]["published_name"], "[SK OK] TV Sen")
@@ -65,7 +65,7 @@ class ProviderTestChannelNameTests(unittest.TestCase):
             path = Path(tmp) / "tv.m3u"
             build.write_m3u_playlist(
                 path,
-                {"default_language_code": "HU", "country_names": {"SK": "Slovakia"}},
+                {"default_country_code": "HU", "country_names": {"SK": "Slovakia"}},
                 published,
                 "2026-08-12 00:00:00 UTC",
                 "test",

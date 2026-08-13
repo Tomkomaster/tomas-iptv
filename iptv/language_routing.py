@@ -491,7 +491,7 @@ def route_candidates_to_verified_countries(
                     candidate.get("country_code")
                     or candidate.get("language_code")
                     or cfg.get("default_country_code")
-                    or cfg.get("default_language_code")
+                    
                     or "HU"
                 )
             )
