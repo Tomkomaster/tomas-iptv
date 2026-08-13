@@ -5212,23 +5212,26 @@
     },
     {
       "channel": "Televízia Nové Zámky [SK/HU] [Legacy alternate]",
-      "stream_url": "http://s1.media-planet.sk:80/live/novezamky/BratuMarian.m3u8",
+      "stream_url": "http://s1.media-planet.sk/live/novezamky/BratuMarian.m3u8",
       "playlist_country_code": "SK",
       "output_country_code": "SK",
       "expected_language_codes": [
         "slk"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "just loads",
+      "vlc_note": "Immediately skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
-      "tested_on": "2026-08-10",
-      "reason": "This exact feed failed the manual VLC + Samsung test.",
-      "notes": "Reject this exact stream URL from the shared playlist. The channel itself can still remain a research target for a replacement feed.",
+      "decision": "needs_review",
+      "tested_on": "2026-08-13",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE. Needs review.",
       "provenance": "Curated extras/hu.m3u candidate (manual playback review)",
-      "discovery": "extras/hu.m3u manual candidate test"
+      "discovery": "extras/hu.m3u manual candidate test",
+      "tvg_id": "NZTV.sk@SD",
+      "source_flags": [
+        "Not 24/7"
+      ]
     },
     {
       "channel": "Tokod [Időkép Webcam] (2560x1440)",
@@ -6542,14 +6545,13 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "NOT_SUPPORTED_FILE",
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
       "decision": "needs_review",
       "tested_on": "2026-08-13",
-      "reason": "Failed at test time, but the known non-continuous broadcast schedule means the exact stream should be retested during a confirmed TV Severka broadcast.",
-      "notes": "VLC only kept loading and Samsung reported NOT_SUPPORTED_FILE. This feed is known as Not 24/7, so an off-air test remains inconclusive.",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: not tested. Needs review.",
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -6568,14 +6570,13 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "mrl_error",
-      "samsung": "format_error",
-      "vlc_note": "skips to the next channel",
-      "samsung_note": "NOT_SUPPORTED_FILE",
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
       "decision": "needs_review",
       "tested_on": "2026-08-13",
-      "reason": "The alternate failed again, but a confirmed off-air period cannot be separated from a permanent feed failure yet.",
-      "notes": "VLC skipped this Panaccess alternative and Samsung reported NOT_SUPPORTED_FILE. TV Severka is known as Not 24/7, so keep the URL for a broadcast-time retest rather than permanently rejecting it.",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: not tested. Needs review.",
       "provenance": "Curated extras/sk.m3u Panaccess alternative; manually tested",
       "discovery": "Manual VLC + Samsung retest; TV Severka Feed 2",
       "source_flags": [
@@ -6642,14 +6643,13 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "loads",
-      "samsung": "format_error",
-      "vlc_note": "just loads",
-      "samsung_note": "NOT_SUPPORTED_FILE",
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
       "decision": "needs_review",
       "tested_on": "2026-08-13",
-      "reason": "The failed test may have occurred outside the feed's broadcast window and is therefore inconclusive.",
-      "notes": "VLC only kept loading and Samsung reported NOT_SUPPORTED_FILE. This exact feed is known as Not 24/7, so re-test it during a confirmed TV Vega broadcast.",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: not tested. Needs review.",
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -6822,14 +6822,13 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "mrl_error",
-      "samsung": "format_error",
-      "vlc_note": "skips to the next channel",
-      "samsung_note": "NOT_SUPPORTED_FILE",
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
       "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "The manual test failed, but an off-air period for this Not 24/7 feed makes the result inconclusive.",
-      "notes": "IPTV-org marks this TV Poprad feed Not 24/7. Re-test during a confirmed broadcast before permanently rejecting the URL.",
+      "tested_on": "2026-08-13",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: not tested. Needs review.",
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -7303,14 +7302,13 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "mrl_error",
-      "samsung": "format_error",
-      "vlc_note": "skips to the next channel",
-      "samsung_note": "NOT_SUPPORTED_FILE",
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
       "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "The exact feed failed on both devices, but its Not 24/7 flag keeps the result inconclusive rather than permanently rejected.",
-      "notes": "This exact TV Lux feed failed again and is marked Not 24/7 upstream. Keep it for review; another TV Lux feed is already manually verified working.",
+      "tested_on": "2026-08-13",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: not tested. Needs review.",
       "provenance": "IPTV-org Slovak-language stream; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -7492,13 +7490,13 @@
       ],
       "vlc": "loads",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
+      "vlc_note": "just loads",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-11",
-      "reason": "This exact TV Brezová feed failed on both tested devices.",
-      "notes": "Reject this exact URL. Keep TV Brezová itself as a research target for another usable stream.",
+      "tested_on": "2026-08-13",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-13 manual test.",
+      "notes": "Failed both manual playback tests. VLC: just loads. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Current IPTV-org Slovakia stream; manual playback test"
     },
@@ -7629,14 +7627,14 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "skips to the next channel",
+      "vlc_note": "Immediately skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Failed at test time, but the event-driven nature of the feed makes an off-air result inconclusive.",
-      "notes": "This is an event-oriented dance-competition feed and may legitimately be offline when no competition is being carried. Re-test during a known live event.",
+      "tested_on": "2026-08-13",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE. Needs review.",
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Manual VLC + Samsung test",
       "source_flags": [
@@ -8357,14 +8355,14 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "skips to the next channel",
+      "vlc_note": "Immediately skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "The manual test failed, but an off-air period for this Not 24/7 feed makes the result inconclusive.",
-      "notes": "IPTV-org marks this exact Raj TV feed Not 24/7. Re-test during a confirmed Raj TV broadcast before permanently rejecting it.",
+      "tested_on": "2026-08-13",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE. Needs review.",
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -9736,68 +9734,65 @@
       "channel": "TVR Cluj",
       "stream_url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8",
       "tvg_id": "TVRCluj.ro@SD",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
       "expected_language_codes": [
-        "hun"
+        "ron"
       ],
       "observed_language_codes": [
         "ron"
       ],
-      "vlc": "works_with_warning",
-      "samsung": "works_with_warning",
-      "vlc_note": "Playback works, but the spoken language during this test was Romanian.",
-      "samsung_note": "Playback works, but the spoken language during this test was Romanian.",
-      "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Playback is technically good, but Hungarian-language programming was not observed during the manual test.",
-      "notes": "The regional channel carries Hungarian programming, but this test again encountered Romanian spoken programming. Keep it as a scheduled Hungarian-programming candidate and re-test during a known Hungarian-language block.",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests.",
       "provenance": "Hungarian-language regional candidate; manual playback review",
       "discovery": "Manual VLC + Samsung retest"
     },
     {
-      "channel": "TVR Timișoara",
+      "channel": "TVR Timisoara",
       "stream_url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8",
       "tvg_id": "TVRTimisoara.ro@SD",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
       "expected_language_codes": [
-        "hun"
+        "ron"
       ],
       "observed_language_codes": [
         "ron"
       ],
-      "vlc": "works_with_warning",
-      "samsung": "works_with_warning",
-      "vlc_note": "Playback works, but the spoken language during this test was Romanian.",
-      "samsung_note": "Playback works, but the spoken language during this test was Romanian.",
-      "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Playback is technically good, but Hungarian-language programming was not observed during the manual test.",
-      "notes": "The regional channel has dedicated Hungarian programming, but this test again encountered Romanian spoken programming. Keep it as a scheduled Hungarian-programming candidate and re-test during its Hungarian-language minority programme.",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests.",
       "provenance": "Hungarian-language regional candidate; manual playback review",
       "discovery": "Manual VLC + Samsung retest"
     },
     {
-      "channel": "TVR Târgu Mureș",
+      "channel": "TVR Targu-Mures",
       "stream_url": "https://tvr-tgmures.lg.mncdn.com/tvrtgmures/smil:tvrtgmures.smil/playlist.m3u8",
       "tvg_id": "TVRTarguMures.ro@SD",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
       "expected_language_codes": [
-        "hun"
+        "ron"
       ],
       "observed_language_codes": [
         "ron"
       ],
-      "vlc": "works_with_warning",
-      "samsung": "works_with_warning",
-      "vlc_note": "Playback works, but the spoken language during this test was Romanian.",
-      "samsung_note": "Playback works, but the spoken language during this test was Romanian.",
-      "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Playback is technically good, but Hungarian-language programming was not observed during the manual test.",
-      "notes": "The regional channel carries substantial Hungarian programming, but this test again encountered Romanian spoken programming. Keep it as a scheduled Hungarian-programming candidate and re-test during a known Hungarian-language broadcast block.",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests.",
       "provenance": "Hungarian-language regional candidate; manual playback review",
       "discovery": "Manual VLC + Samsung retest"
     },
@@ -9979,13 +9974,12 @@
         "slk"
       ],
       "vlc": "works_with_warning",
-      "samsung": "works_with_warning",
-      "vlc_note": "Stream opens, but displays an inactivity notice saying broadcasting was interrupted because of inactivity and the page should be reloaded.",
-      "samsung_note": "Stream opens, but displays an inactivity notice saying broadcasting was interrupted because of inactivity and the page should be reloaded.",
+      "vlc_note": "ok, but it says vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu",
+      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
       "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Playback technically opens, but there was no active parliamentary broadcast to verify normal programme playback.",
-      "notes": "Both devices can open the feed, but it was showing the broadcaster's inactivity/interruption slate. TV NRSR is event-driven, so re-test during a confirmed National Council session.",
+      "tested_on": "2026-08-13",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: ok, but it says vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu. Samsung: not tested. Needs review.",
       "provenance": "IPTV-org Slovakia parliamentary feed; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -10004,14 +9998,13 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "mrl_error",
-      "samsung": "format_error",
-      "vlc_note": "skips to the next channel",
-      "samsung_note": "NOT_SUPPORTED_FILE",
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
       "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Failure is inconclusive because TV NRSR was not actively broadcasting a parliamentary session at test time.",
-      "notes": "The alternate feed failed, but the primary TV NRSR source was simultaneously showing an inactivity slate rather than a live session. Re-test during an active parliamentary broadcast.",
+      "tested_on": "2026-08-13",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: not tested. Needs review.",
       "provenance": "Curated extras/sk.m3u JOJ CDN alternative for TV NRSR; manually tested",
       "discovery": "Manual VLC + Samsung retest; TV NRSR Feed 2",
       "source_flags": [
@@ -12162,14 +12155,14 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "mrl_error",
+      "vlc": "works",
       "samsung": "format_error",
-      "vlc_note": "skips to the next channel",
+      "vlc_note": "ok",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Manual playback failed, but there is not enough evidence yet to classify the exact stream as permanently dead.",
-      "notes": "The feed failed on both tested devices. A temporary off-air period cannot be ruled out, so re-test during confirmed Telke programming before permanently rejecting the URL.",
+      "tested_on": "2026-08-13",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review.",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test"
     },
@@ -12304,6 +12297,2003 @@
       "notes": "Reject this exact alternate URL. It failed on both devices, matching the failure of the other currently tested Ľubovnianska televízia candidate.",
       "provenance": "User-provided alternate stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test; Ľubovnianska televízia alternate"
+    },
+    {
+      "channel": "A7TV",
+      "stream_url": "https://a7tvlive.ro/A7TV/A7TV/playlist.m3u8",
+      "tvg_id": "A7TV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Agro TV",
+      "stream_url": "https://agrotv.streamnet.ro/mobile_tv/agrotv.m3u8",
+      "tvg_id": "AgroTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Aleph Business (1280p)",
+      "stream_url": "https://streamw.m.ro/Aleph/ngrp:Alephbiz.stream_all/playlist.m3u8",
+      "tvg_id": "AlephBusiness.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Aleph News",
+      "stream_url": "https://stream-aleph.m.ro/Aleph/ngrp:Alephnewsmain.stream_all/playlist.m3u8",
+      "tvg_id": "AlephNews.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Alfa Omega TV",
+      "stream_url": "https://aom-live.maghost.ro/aomTV/streams/OOztu5o9Fx6dh9mD1711027803849.m3u8",
+      "tvg_id": "AlfaOmegaTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Alfa Omega TV",
+      "stream_url": "http://s5.alfaomega.tv:1935/alfaomega/smil:alfaomegatv/playlist.m3u8",
+      "tvg_id": "AlfaOmegaTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "decision": "needs_review",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Angelus TV",
+      "stream_url": "https://video.angelustv.ro/hls/angelustv.m3u8",
+      "tvg_id": "AngelusTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Antena International",
+      "stream_url": "https://stream1.antenaplay.ro/as/asrolive1/playlist.m3u8",
+      "tvg_id": "AntenaInternational.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Antena Monden",
+      "stream_url": "https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8",
+      "tvg_id": "AntenaMonden.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Atomic Academy TV",
+      "stream_url": "https://atomic.streamnet.ro/academia.m3u8",
+      "tvg_id": "AtomicAcademyTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Atomic TV",
+      "stream_url": "https://atomic.streamnet.ro/atomictv.m3u8",
+      "tvg_id": "AtomicTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "AXN Black Romania",
+      "stream_url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6952/index.m3u8",
+      "tvg_id": "AXNBlack.us@Romania",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Bollywood HD",
+      "stream_url": "http://103.213.31.109:90/BollywoodHD/playlist.m3u8",
+      "tvg_id": "BollywoodHD.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-13 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Bollywood HD Russia",
+      "stream_url": "https://xykt-fix.github.io/cinerama_edge01/hls/BOLLYWOOD_RU/Movie009.m3u8",
+      "tvg_id": "BollywoodHD.ro@Russia",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Boom TV",
+      "stream_url": "https://tvboom.ro/live-tv/live.m3u8",
+      "tvg_id": "BoomTV.ro@HD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Bucovina TV (576i)",
+      "stream_url": "https://www.bucovinatv.ro/proxy/video/playlist.m3u8",
+      "tvg_id": "BucovinaTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Columna TV",
+      "stream_url": "https://cdn.streamnet.pro/columnatv/live/playlist.m3u8",
+      "tvg_id": "ColumnaTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Credo TV",
+      "stream_url": "http://cdn.credonet.tv:1935/ctv/livecredo/playlist.m3u8",
+      "tvg_id": "CredoTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Credo TV",
+      "stream_url": "https://5bb3298db4821.streamlock.net/ctv/livecredo/playlist.m3u8",
+      "tvg_id": "CredoTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "decision": "needs_review",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Credo TV",
+      "stream_url": "https://651c69fa2ff4e.streamlock.net/ctv/_definst_/livecredo/playlist.m3u8",
+      "tvg_id": "CredoTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Digi 24",
+      "stream_url": "https://edge-ar.rcs-rds.ro/digi24ar/index.m3u8",
+      "tvg_id": "Digi24.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Digi Sport 1",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/79/index.m3u8",
+      "tvg_id": "DigiSport1.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "works_with_warning",
+      "vlc_note": "ok, but no audio",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok, but no audio. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Disney Channel",
+      "stream_url": "http://213.91.179.28:8000/play/a059",
+      "tvg_id": "DisneyChannel.bg@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Dotto TV",
+      "stream_url": "https://live.dottotv.ro/index.m3u8",
+      "tvg_id": "DottoTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "EMI TV",
+      "stream_url": "https://astra.emitv.ro/hls/emi/index.m3u8",
+      "tvg_id": "EMITV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Exploris",
+      "stream_url": "http://89.38.8.130:39419",
+      "tvg_id": "TVSE.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "HD365 TV",
+      "stream_url": "https://s2.netstreaming.eu/hd365.m3u8",
+      "tvg_id": "HD365TV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Hello Taste",
+      "stream_url": "https://stream1.antenaplay.ro/live/HelloTaste/playlist.m3u8",
+      "tvg_id": "HelloTaste.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Hunedoara 1",
+      "stream_url": "https://netstreaming.eu/hd1.m3u8",
+      "tvg_id": "Hunedoara1.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "IasiTV Life",
+      "stream_url": "https://tv.streambox.ro/hls/itv/index.m3u8",
+      "tvg_id": "IasiTVLife.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Impact TV",
+      "stream_url": "https://live.tvimpact.ro:8088/hevc/index.m3u8",
+      "tvg_id": "ImpactTV.ro@HD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Impact TV Dance",
+      "stream_url": "https://online.tvimpact.live/hls/dancetv.m3u8",
+      "tvg_id": "ImpactTVDance.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Impact TV Manele",
+      "stream_url": "https://online.tvimpact.live/hls/impact_tv.m3u8",
+      "tvg_id": "ImpactTVManele.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Informatia TV",
+      "stream_url": "https://informatia.streamnet.ro/mobile_tv/informatiatv.m3u8",
+      "tvg_id": "InformatiaTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "JOB TV",
+      "stream_url": "https://jobtvserver.eu/hls/stream.m3u8",
+      "tvg_id": "JOBTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Kanal D",
+      "stream_url": "https://stream1.kanald.ro/iphone/knd-live.m3u8",
+      "tvg_id": "KanalD.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Kanal D2",
+      "stream_url": "https://aes.m3u8simplu.workers.dev/kanald2/index.m3u8",
+      "tvg_id": "KanalD2.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-13 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "Kanal D2 (1080i)",
+      "stream_url": "https://stream2.kanald.ro/iphone/knd2-live.m3u8",
+      "tvg_id": "KanalD2.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Kapital TV",
+      "stream_url": "https://1a-1791.com/live/qt9k24wa/live-hls/41w5-c26y/chunklist_i1_DVR.m3u8",
+      "tvg_id": "KapitalTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Kiss TV",
+      "stream_url": "https://tv.broadcasting.ro/kisstv/a629c031-2170-4ee9-a36d-87a891aa3131.m3u8",
+      "tvg_id": "KissTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Light Channel",
+      "stream_url": "http://streamer1.streamhost.org:1935/salive/GMIlcbgM/playlist.m3u8",
+      "tvg_id": "LightChannel.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "LiraTV",
+      "stream_url": "https://cloud2.streaminglivehd.com:1936/liratv/liratv/playlist.m3u8",
+      "tvg_id": "LiraTV.es@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Magic TV",
+      "stream_url": "https://tv.broadcasting.ro/magictv/925f90db-5c88-4190-a53d-5163cdffe6f4.m3u8",
+      "tvg_id": "MagicTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Metropola TV",
+      "stream_url": "https://www.livemetropolatv.ro/MetropolaTV/Metro/playlist.m3u8",
+      "tvg_id": "MetropolaTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Mireasa",
+      "stream_url": "https://stream1.antenaplay.ro/live/MireasaExtra/playlist.m3u8",
+      "tvg_id": "Mireasa.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "MISA TV",
+      "stream_url": "https://vidl.misatv.ro:5050/MSTV/romanian_720p_baseline/playlist.m3u8",
+      "tvg_id": "MISATV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Moldova TV",
+      "stream_url": "https://moldovatv.ro/live-tv/live.m3u8",
+      "tvg_id": "MoldovaTV.md@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Muscel TV",
+      "stream_url": "https://cdn.streamnet.pro/musceltv/live/playlist.m3u8",
+      "tvg_id": "MuscelTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Nasul TV",
+      "stream_url": "https://live.nasul.tv/live/stream.m3u8",
+      "tvg_id": "NasulTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Nova TV Brasov",
+      "stream_url": "http://novapress.ro:2022/live/nova/playlist.m3u8",
+      "tvg_id": "NovaTVBrasov.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Observator News",
+      "stream_url": "https://live77cdn2.antenaplay.ro/live_ObservatorNews/live_ObservatorNews.m3u8",
+      "tvg_id": "ObservatorNews.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Pro TV News",
+      "stream_url": "https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-ro-voyo-news/playlist.m3u8?offsetSeconds=0&url=0",
+      "tvg_id": "PROTVNews.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "PROFI 24 TV",
+      "stream_url": "https://live.ro24tv.ro/hls/stream.m3u8",
+      "tvg_id": "PROFI24TV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works_with_warning",
+      "vlc_note": "ok, but no audio",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Samsung passed; VLC played with warning: ok, but no audio"
+    },
+    {
+      "channel": "Qub TV",
+      "stream_url": "https://live.djemba.ro/memfs/474f9942-f72b-4130-817a-435cd54b2c36.m3u8",
+      "tvg_id": "QubTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Radio Fx Net",
+      "stream_url": "https://streamlov.alsolnet.com/radiofxnet/live/playlist.m3u8",
+      "tvg_id": "RadioFxNet.ro@HD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Radio Romania Antena Satelor",
+      "stream_url": "https://stream3.srr.ro/live/AntenaSatelor/playlist.m3u8",
+      "tvg_id": "RadioRomaniaAntenaSatelor.ro@720p",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Realitatea Plus",
+      "stream_url": "https://stream.realitatea.net/realitatea/plus_md/ts:playlist.m3u8",
+      "tvg_id": "RealitateaPlus.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Realitatea Sportiva",
+      "stream_url": "https://stream.realitatea.net/realitatea/sportiva_md/ts:playlist.m3u8",
+      "tvg_id": "RealitateaSportiva.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Realitatea Star (576i)",
+      "stream_url": "https://stream.realitatea.net/realitatea/star_md/ts:playlist.m3u8",
+      "tvg_id": "RealitateaStar.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Rock TV",
+      "stream_url": "https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8",
+      "tvg_id": "RockTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "ROTV Valencia",
+      "stream_url": "https://rotv.romediavalencia.com:3839/live/rotvlive.m3u8",
+      "tvg_id": "ROTVValencia.es@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "SperantaTV",
+      "stream_url": "https://jstre.am/live/jsl:2gNjpghXRLE.m3u8",
+      "tvg_id": "SperantaTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Super TV",
+      "stream_url": "http://iptv.supertv.ro:8000/play/a001/index.m3u8",
+      "tvg_id": "SuperTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Super TV (1080i)",
+      "stream_url": "https://live.supertv.ro/live/supertv/playlist.m3u8",
+      "tvg_id": "SuperTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
+      "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review."
+    },
+    {
+      "channel": "Tele7ABC HD",
+      "stream_url": "https://live.tele7abc.ro/hls/stream/index.m3u8",
+      "tvg_id": "Tele7ABCHD.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TeleM Botosani",
+      "stream_url": "http://89.137.197.15:8080/testing/pl5/playlist/ram/playlist.m3u8",
+      "tvg_id": "TeleMBotosani.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TeleMoldova +",
+      "stream_url": "https://vdo.ssl-stream.com:3247/stream/play.m3u8",
+      "tvg_id": "TeleMoldovaPlus.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Geo-blocked"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Telestar1",
+      "stream_url": "https://dvb.tennet.ro/mobile_tv/telestar.m3u8",
+      "tvg_id": "Telestar1.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "Traditional TV",
+      "stream_url": "http://83.103.149.75:8085/udp/239.30.0.9:4000",
+      "tvg_id": "TraditionalTV.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TV Buzau",
+      "stream_url": "http://78.96.33.89:8080",
+      "tvg_id": "TVBuzau.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "loads",
+      "samsung_note": "just loads",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "needs_review",
+      "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
+      "notes": "VLC: ok. Samsung: just loads. Needs review."
+    },
+    {
+      "channel": "TV SUD",
+      "stream_url": "https://stream2.live-stream.ro/WebRTCApp/streams/118334672595255049029831.m3u8",
+      "tvg_id": "TVSUD.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Geo-blocked"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-13 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "TVPlus Suceava",
+      "stream_url": "http://85.186.22.140/testing/pl5/playlist/ram/playlist.m3u8",
+      "tvg_id": "TVPlusSuceava.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVPlus Suceava",
+      "stream_url": "http://85.186.146.34:8080",
+      "tvg_id": "TVPlusSuceava.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR 1",
+      "stream_url": "https://tvr-1.lg.mncdn.com/tvr1/smil:tvr1.smil/playlist.m3u8",
+      "tvg_id": "TVR1.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on Samsung",
+      "notes": "Samsung passed; VLC still needs investigation."
+    },
+    {
+      "channel": "TVR 2",
+      "stream_url": "https://tvr-2.lg.mncdn.com/tvr2/smil:tvr2.smil/playlist.m3u8",
+      "tvg_id": "TVR2.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR 3",
+      "stream_url": "https://tvr-3.lg.mncdn.com/tvr3/smil:tvr3.smil/playlist.m3u8",
+      "tvg_id": "TVR3.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on Samsung",
+      "notes": "Samsung passed; VLC still needs investigation."
+    },
+    {
+      "channel": "TVR Craiova",
+      "stream_url": "https://tvr-craiova.lg.mncdn.com/tvrcraiova/smil:tvrcraiova.smil/playlist.m3u8",
+      "tvg_id": "TVRCraiova.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR Cultural",
+      "stream_url": "https://tvr-cultural.lg.mncdn.com/tvrcultural/smil:tvrcultural.smil/playlist.m3u8",
+      "tvg_id": "TVRCultural.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR Folclor",
+      "stream_url": "https://tvr-folclor.lg.mncdn.com/tvrfolclor/smil:tvrfolclor.smil/playlist.m3u8",
+      "tvg_id": "TVRFolclor.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR Iasi",
+      "stream_url": "http://82.208.141.70:8778/1.m3u8",
+      "tvg_id": "TVRIasi.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR Iasi",
+      "stream_url": "https://tvr-tvriasi.cdn.zitec.com/live/tvriasi/main.m3u8",
+      "tvg_id": "TVRIasi.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Geo-blocked"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-13 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
+    },
+    {
+      "channel": "TVR Iasi",
+      "stream_url": "https://tvr-iasi.lg.mncdn.com/tvriasi/smil:tvriasi.smil/playlist.m3u8",
+      "tvg_id": "TVRIasi.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania raw alternatives",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR Info",
+      "stream_url": "https://tvr-info.lg.mncdn.com/tvrinfo/smil:tvrinfo.smil/playlist.m3u8",
+      "tvg_id": "TVRInfo.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR International",
+      "stream_url": "https://tvr-international.lg.mncdn.com/tvrinternational/smil:tvrinternational.smil/playlist.m3u8",
+      "tvg_id": "TVRInternational.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVR Sport",
+      "stream_url": "https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8",
+      "tvg_id": "TVRSport.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TVSat",
+      "stream_url": "http://89.38.8.130:39443",
+      "tvg_id": "TVSat.ro@SD",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "source_flags": [
+        "Not 24/7"
+      ],
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Romania",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TV Brezová",
+      "stream_url": "https://videostudioris.sk/hls/tvb.m3u8",
+      "tvg_id": "TVBrezova.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "Our curated/test extra",
+      "discovery": "Our Slovak test/verified extras",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
+    },
+    {
+      "channel": "TV Nové Zámky",
+      "stream_url": "https://livestream.lznet.work/hls/nztv-playout/index.m3u8",
+      "tvg_id": "NZTV.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "vlc": "works",
+      "vlc_note": "ok",
+      "samsung": "works",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-13",
+      "provenance": "Our curated/test extra",
+      "discovery": "Our Slovak test/verified extras",
+      "reason": "Working on both VLC and Samsung in the 2026-08-13 manual test.",
+      "notes": "Passed both manual playback tests."
     }
   ]
 }
