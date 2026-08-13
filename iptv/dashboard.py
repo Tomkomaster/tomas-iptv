@@ -47,7 +47,7 @@ def render_dashboard(
     title = str(cfg.get("site_title") or "Tomas IPTV")
     epg_cfg = cfg.get("epg") or {}
 
-    epg_link_html = ""
+    epg_link_html = '<a href="ro.m3u">Stable Romania (ro.m3u)</a>'
 
     if (
         isinstance(epg_cfg, dict)
@@ -56,7 +56,8 @@ def render_dashboard(
             epg_cfg.get("public_url") or ""
         ).strip()
     ):
-        epg_link_html = (
+        epg_link_html += (
+            ' · '
             '<a href="guide.xml">'
             'EPG programme guide (guide.xml)'
             '</a>'
