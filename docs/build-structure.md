@@ -58,6 +58,7 @@ The core implementation package contains:
 - `channel_identity.py` — logical channel identity, canonical stream URLs and safe display-name normalization
 - `source_loader.py` — source definitions, remote/local loading and M3U parsing
 - `playlist_writer.py` — generated M3U headers and playlist writing
+- `reports.py` — country/language build summaries and CSV export helpers
 - `dashboard.py` — dashboard rendering/publishing helpers
 - `identity_overrides.py` — canonical channel identity resolution
 - `source_concentration.py` — stable-source concentration reporting
