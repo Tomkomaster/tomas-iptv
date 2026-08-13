@@ -1,0 +1,62 @@
+name: One-off canonical logo quality refactor
+
+on:
+  push:
+    branches:
+      - agent/canonical-logo-quality
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/canonical-logo-quality
+          fetch-depth: 0
+
+      - name: Apply canonical logo quality refactor
+        run: python3 tools/_logo_quality_refactor_once.py
+
+      - name: Compile affected Python
+        run: |
+          python3 -m py_compile \
+            iptv/logo_quality.py \
+            iptv/publication.py \
+            iptv/build_core.py \
+            iptv/reports.py \
+            tests/test_logo_quality.py
+
+      - name: Run full unittest suite
+        run: python3 run_tests.py
+
+      - name: Verify logo quality contract
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path('config.json').read_text(encoding='utf-8'))
+          assert cfg['logo_overrides_path'] == 'data/logo_overrides.json'
+          assert Path('data/logo_overrides.json').is_file()
+          assert 'logo-quality.json' in Path('static/dashboard.js').read_text(encoding='utf-8')
+          assert 'missing-logos.csv' in Path('templates/dashboard.html').read_text(encoding='utf-8')
+          assert 'apply_channel_logos' in Path('iptv/build_core.py').read_text(encoding='utf-8')
+          assert Path('iptv/build_core.py').stat().st_size < 20000
+          print('Canonical logo quality contract OK.')
+          PY
+
+      - name: Remove one-off helpers
+        run: |
+          rm tools/_logo_quality_refactor_once.py
+          rm .github/workflows/logo-quality-refactor-once.yml
+
+      - name: Commit tested logo quality implementation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "Add canonical channel logo quality reporting"
+          git push origin HEAD:agent/canonical-logo-quality
