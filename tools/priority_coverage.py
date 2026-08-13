@@ -33,6 +33,7 @@ FLAG_BY_COUNTRY = {
     "HU": "🇭🇺",
     "SK": "🇸🇰",
     "CZ": "🇨🇿",
+    "RO": "🇷🇴",
 }
 STYLE_START = "<!-- priority-coverage:style:start -->"
 STYLE_END = "<!-- priority-coverage:style:end -->"
@@ -405,11 +406,13 @@ def render_priority_coverage_html(coverage: dict) -> str:
 
     return f"""{SECTION_START}
   <section id="priorityCoverage" class="panel priority-coverage" aria-labelledby="priorityCoverageHeading">
-    <h2 id="priorityCoverageHeading">P1 / P2 completeness</h2>
-    <p class="muted">
-      A channel counts as found only when it has a stable family feed. Open a missing
-      count to see exactly which priority channels still need work.
-    </p>
+    <div class="priority-coverage-title-row">
+      <div>
+        <h2 id="priorityCoverageHeading">P1 / P2 channel coverage</h2>
+        <p class="muted">Major missing channels remain visible even when no source has ever been found.</p>
+      </div>
+      <a href="priority-coverage.json">Machine-readable coverage</a>
+    </div>
     <div class="priority-coverage-grid">
       {''.join(cards)}
     </div>
@@ -419,85 +422,179 @@ def render_priority_coverage_html(coverage: dict) -> str:
 
 def priority_coverage_style() -> str:
     return f"""{STYLE_START}
-<style id="priorityCoverageStyles">
-.priority-coverage {{ margin: 24px 0; border-left: 4px solid var(--accent); }}
-.priority-coverage h2 {{ margin-top: 0; }}
-.priority-coverage-grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }}
-.priority-coverage-country {{ border:1px solid var(--border); border-radius:10px; padding:14px; background:var(--bg); }}
-.priority-coverage-country-head {{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }}
-.priority-coverage-country-head h3 {{ margin:0; font-size:1.08rem; }}
-.priority-coverage-tier + .priority-coverage-tier {{ margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }}
-.priority-coverage-tier-head {{ display:flex; align-items:center; gap:8px; }}
-.priority-coverage-tier-head strong {{ font-size:1.3rem; }}
-.priority-coverage-bar {{ height:7px; margin:8px 0; overflow:hidden; border-radius:999px; background:var(--border); }}
-.priority-coverage-bar span {{ display:block; height:100%; border-radius:inherit; background:var(--good); }}
-.priority-coverage-missing summary {{ width:max-content; cursor:pointer; color:var(--accent); font-weight:700; }}
-.priority-coverage-missing ul {{ margin:8px 0 0; padding-left:20px; max-height:220px; overflow:auto; }}
-.priority-coverage-missing li {{ margin:6px 0; }}
-.priority-coverage-missing li span {{ display:block; color:var(--muted); font-size:.78rem; }}
-.priority-coverage-complete {{ color:var(--good); font-weight:700; }}
-.priority-coverage-empty {{ color:var(--muted); font-size:.9rem; }}
+<style>
+.priority-coverage-title-row {{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}}
+.priority-coverage-title-row h2 {{
+  margin:0 0 4px 0;
+}}
+.priority-coverage-grid {{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:12px;
+  margin-top:12px;
+}}
+.priority-coverage-country {{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  background:var(--panel);
+}}
+.priority-coverage-country-head {{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}}
+.priority-coverage-country-head h3 {{
+  margin:0;
+}}
+.priority-coverage-tier {{
+  padding:10px 0;
+  border-top:1px solid var(--line);
+}}
+.priority-coverage-tier:first-of-type {{
+  border-top:0;
+  padding-top:0;
+}}
+.priority-coverage-tier-head {{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}}
+.priority-coverage-tier-head .muted {{
+  margin-left:auto;
+}}
+.priority-coverage-bar {{
+  height:8px;
+  background:var(--line);
+  border-radius:999px;
+  overflow:hidden;
+  margin:8px 0;
+}}
+.priority-coverage-bar span {{
+  display:block;
+  height:100%;
+  background:var(--good);
+}}
+.priority-coverage-missing summary {{
+  cursor:pointer;
+  font-weight:600;
+}}
+.priority-coverage-missing ul {{
+  margin:8px 0 0 18px;
+  padding:0;
+}}
+.priority-coverage-missing li {{
+  margin:4px 0;
+}}
+.priority-coverage-missing li span {{
+  display:block;
+  color:var(--muted);
+  font-size:.88rem;
+}}
+.priority-coverage-complete {{
+  color:var(--good);
+  font-weight:700;
+  font-size:.9rem;
+}}
+.priority-coverage-empty {{
+  color:var(--muted);
+  font-size:.9rem;
+}}
 </style>
 {STYLE_END}"""
 
 
-def _replace_block(text: str, start: str, end: str, replacement: str) -> str:
-    if start not in text:
-        return text
-    start_index = text.index(start)
-    end_index = text.index(end, start_index) + len(end)
-    return text[:start_index] + replacement + text[end_index:]
+def replace_marked_block(text: str, start: str, end: str, replacement: str) -> str:
+    pattern = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
+    if pattern.search(text):
+        return pattern.sub(replacement, text, count=1)
+    return text
 
 
-def inject_priority_coverage(index_path: Path, coverage: dict) -> None:
-    if not index_path.is_file():
-        raise RuntimeError(f"Dashboard does not exist: {index_path}")
-
-    text = index_path.read_text(encoding="utf-8")
-    style = priority_coverage_style()
+def inject_priority_coverage(html_text: str, coverage: dict) -> str:
+    html_text = replace_marked_block(
+        html_text,
+        STYLE_START,
+        STYLE_END,
+        priority_coverage_style(),
+    )
     section = render_priority_coverage_html(coverage)
+    html_text = replace_marked_block(
+        html_text,
+        SECTION_START,
+        SECTION_END,
+        section,
+    )
+    if SECTION_START in html_text:
+        return html_text
 
-    if STYLE_START in text:
-        text = _replace_block(text, STYLE_START, STYLE_END, style)
-    else:
-        marker = "</head>"
-        if marker not in text:
-            raise RuntimeError("Dashboard </head> marker not found for priority coverage styles.")
-        text = text.replace(marker, style + "\n" + marker, 1)
-
-    if SECTION_START in text:
-        text = _replace_block(text, SECTION_START, SECTION_END, section)
-    else:
-        marker = '  <section id="nextWorkPanel"'
-        if marker not in text:
-            raise RuntimeError("Dashboard next-work marker not found for priority coverage scorecard.")
-        text = text.replace(marker, section + "\n\n" + marker, 1)
-
-    index_path.write_text(text, encoding="utf-8")
+    marker = '<nav id="countryTabs"'
+    index = html_text.find(marker)
+    if index < 0:
+        raise ValueError("Dashboard country-tab marker not found for priority coverage injection.")
+    return html_text[:index] + section + "\n\n  " + html_text[index:]
 
 
-def generate_priority_coverage(
-    *,
-    audit_path: Path = Path("public/audit.csv"),
-    index_path: Path = Path("public/index.html"),
-    output_path: Path = Path("public/priority-coverage.json"),
-    config_path: Path = Path("config.json"),
-    priority_policy_path: Path = Path("data/research_priority.json"),
-    wanted_channels_path: Path = Path("data/wanted_channels.json"),
-    logo_quality_path: Path = Path("public/logo-quality.json"),
-) -> dict:
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Build P1/P2 channel coverage for the dashboard.")
+    parser.add_argument("--audit", default="public/audit.csv")
+    parser.add_argument("--config", default="config.json")
+    parser.add_argument("--priority", default="data/research_priority.json")
+    parser.add_argument("--wanted", default="data/wanted_channels.json")
+    parser.add_argument("--logo-quality", default="public/logo-quality.json")
+    parser.add_argument("--output", default="public/priority-coverage.json")
+    parser.add_argument("--dashboard", default="public/index.html")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    audit_path = Path(args.audit)
+    config_path = Path(args.config)
+    priority_path = Path(args.priority)
+    wanted_path = Path(args.wanted)
+    logo_quality_path = Path(args.logo_quality)
+    output_path = Path(args.output)
+    dashboard_path = Path(args.dashboard)
+
+    audit_rows = load_audit_rows(audit_path)
+    config = _load_json(config_path)
+    priority_policy = _load_json(priority_path)
+    wanted_channels = load_wanted_channels(wanted_path)
     logo_quality = _load_json(logo_quality_path) if logo_quality_path.is_file() else {}
+
     coverage = build_priority_coverage(
-        load_audit_rows(audit_path),
-        config=_load_json(config_path),
-        priority_policy=_load_json(priority_policy_path),
-        wanted_channels=load_wanted_channels(wanted_channels_path),
+        audit_rows,
+        config=config,
+        priority_policy=priority_policy,
+        wanted_channels=wanted_channels,
         logo_quality=logo_quality,
     )
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
-        json.dumps(coverage, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    inject_priority_coverage(index_path, coverage)
-    return coverage
+    output_path.write_text(json.dumps(coverage, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    if dashboard_path.is_file():
+        current = dashboard_path.read_text(encoding="utf-8")
+        dashboard_path.write_text(
+            inject_priority_coverage(current, coverage),
+            encoding="utf-8",
+        )
+
+    print(f"Priority coverage written: {output_path}")
+    for code, country in coverage["countries"].items():
+        p1 = country["priorities"]["P1"]
+        p2 = country["priorities"]["P2"]
+        print(f"  {code}: P1 {p1['found']}/{p1['total']} · P2 {p2['found']}/{p2['total']}")
+
+
+if __name__ == "__main__":
+    main()
