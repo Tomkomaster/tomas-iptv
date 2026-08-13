@@ -98,6 +98,22 @@ def load_wanted_channels(path: Path | None) -> list[dict[str, str]]:
                     f"Unsupported wanted channel schema_version in {extra_path.name}: "
                     f"{schema_version}."
                 )
+
+            raw_replace_country = str(extra_payload.get("replace_country") or "").strip()
+            replace_country = normalize_country_code(raw_replace_country)
+            if raw_replace_country and not replace_country:
+                raise ValueError(
+                    f"Wanted channel catalog {extra_path.name} has invalid "
+                    f"replace_country {raw_replace_country!r}."
+                )
+            if replace_country:
+                merged_channels = [
+                    raw
+                    for raw in merged_channels
+                    if normalize_country_code(str(raw.get("country_code") or ""))
+                    != replace_country
+                ]
+
             extra_channels = extra_payload.get("channels") or []
             if not isinstance(extra_channels, list):
                 raise ValueError(
