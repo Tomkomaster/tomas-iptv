@@ -17,7 +17,9 @@ jobs:
           fetch-depth: 0
 
       - name: Apply audit storage refactor
-        run: python3 tools/_refactor_audit_storage_once.py
+        run: |
+          python3 tools/_refactor_audit_storage_once.py
+          python3 tools/_fix_audit_storage_tests_once.py
 
       - name: Compile affected Python
         run: |
@@ -62,6 +64,7 @@ jobs:
       - name: Remove one-off refactor helpers
         run: |
           rm tools/_refactor_audit_storage_once.py
+          rm tools/_fix_audit_storage_tests_once.py
           rm .github/workflows/audit-inventory-once.yml
           rm .github/workflows/audit-storage-refactor-once.yml
 
