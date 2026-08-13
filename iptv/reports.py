@@ -230,6 +230,10 @@ def build_report_context(
             "name": entry["channel_name"],
             "canonical_id": entry.get("canonical_id", ""),
             "tvg_id": entry.get("tvg_id", ""),
+            "logo": entry.get("logo", ""),
+            "logo_quality": entry.get("logo_quality", ""),
+            "logo_match_type": entry.get("logo_match_type", ""),
+            "logo_provenance": entry.get("logo_provenance", ""),
             "feed_quality_score": int(
                 entry.get("_feed_quality_score") or 0
             ),
@@ -371,6 +375,9 @@ def write_build_csv_exports(
             "classification": e["classification"],
             "stream_url": e["url"],
             "logo": e.get("logo", ""),
+            "logo_quality": e.get("logo_quality", ""),
+            "logo_match_type": e.get("logo_match_type", ""),
+            "logo_provenance": e.get("logo_provenance", ""),
         }
         for e in published_entries
     ]
@@ -401,6 +408,9 @@ def write_build_csv_exports(
             "classification",
             "stream_url",
             "logo",
+            "logo_quality",
+            "logo_match_type",
+            "logo_provenance",
         ],
         inventory_rows,
     )

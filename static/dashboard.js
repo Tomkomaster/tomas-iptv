@@ -39,6 +39,8 @@ function setCountry(country) {
   }
   renderEpgQuality();
   applyEpgQualityFilters();
+  renderLogoQuality();
+  applyLogoQualityFilters();
   renderAttentionSummary();
   applyAttentionFilters();
   renderHealthSummary();
@@ -200,6 +202,117 @@ fetch('epg-quality.json', { cache: 'no-store' })
   });
 if (epgQualitySearch) epgQualitySearch.addEventListener('input', applyEpgQualityFilters);
 if (epgQualityFilter) epgQualityFilter.addEventListener('change', applyEpgQualityFilters);
+
+const logoQualitySummary = document.getElementById('logoQualitySummary');
+const logoCountrySummary = document.getElementById('logoCountrySummary');
+const logoQualitySearch = document.getElementById('logoQualitySearch');
+const logoQualityFilter = document.getElementById('logoQualityFilter');
+const logoQualityVisibleCount = document.getElementById('logoQualityVisibleCount');
+const logoQualityTableBody = document.querySelector('#logoQualityTable tbody');
+let logoQualityData = null;
+let logoQualityRows = [];
+
+function logoBadgeClass(category) {
+  if (category === 'Canonical') return 'verified';
+  if (category === 'Source fallback') return 'tv';
+  if (category === 'Missing') return 'rejected';
+  return 'base';
+}
+
+function logoSummaryForRows(rows) {
+  const canonical = rows.filter(row => row.quality_category === 'Canonical').length;
+  const source = rows.filter(row => row.quality_category === 'Source fallback').length;
+  const missing = rows.filter(row => row.quality_category === 'Missing').length;
+  const total = rows.length;
+  return {
+    total,
+    canonical,
+    source,
+    missing,
+    available: canonical + source,
+    availability: total ? 100 * (canonical + source) / total : 0,
+    canonicalCoverage: total ? 100 * canonical / total : 0,
+  };
+}
+
+function renderLogoQuality() {
+  if (!logoQualityData) return;
+  const channels = Array.isArray(logoQualityData.channels) ? logoQualityData.channels : [];
+  const rows = channels.filter(row => countryMatches(row.country_code));
+  const summary = logoSummaryForRows(rows);
+  if (logoQualitySummary) {
+    logoQualitySummary.innerHTML = `
+      <div class="card"><div class="value">${summary.availability.toFixed(1)}%</div><div class="label">Logo availability (${summary.available}/${summary.total})</div></div>
+      <div class="card"><div class="value">${summary.canonicalCoverage.toFixed(1)}%</div><div class="label">Canonical logo coverage (${summary.canonical}/${summary.total})</div></div>
+      <div class="card"><div class="value">${summary.canonical}</div><div class="label">Canonical</div></div>
+      <div class="card"><div class="value">${summary.source}</div><div class="label">Source fallback</div></div>
+      <div class="card"><div class="value">${summary.missing}</div><div class="label">Missing logos</div></div>`;
+  }
+  if (logoCountrySummary) {
+    const countries = logoQualityData.countries || {};
+    const codes = SUPPORTED_COUNTRIES.filter(code => countries[code]).filter(countryMatches);
+    logoCountrySummary.innerHTML = codes.length ? codes.map(code => {
+      const info = countries[code] || {};
+      return `<div class="card" data-country="${esc(code)}">
+        <div class="value">${Number(info.logo_availability_percent || 0).toFixed(1)}%</div>
+        <div class="label">${esc(code)} logo availability (${Number(info.with_logo || 0)}/${Number(info.stable_logical_channels || 0)})</div>
+        <div class="detail">Canonical ${Number(info.canonical_logo || 0)} · Source fallback ${Number(info.source_fallback || 0)} · Missing ${Number(info.missing_logo || 0)} · Canonical coverage ${Number(info.canonical_logo_coverage_percent || 0).toFixed(1)}%</div>
+      </div>`;
+    }).join('') : '<div class="card"><div class="value">—</div><div class="label">Country logo coverage unavailable</div></div>';
+  }
+}
+
+function renderLogoQualityTable() {
+  if (!logoQualityTableBody || !logoQualityData) return;
+  const channels = Array.isArray(logoQualityData.channels) ? logoQualityData.channels : [];
+  logoQualityTableBody.innerHTML = channels.length ? channels.map(row => {
+    const logo = String(row.logo || '').trim();
+    const preview = logo.startsWith('https://')
+      ? `<img src="${esc(logo)}" alt="" loading="lazy" style="max-width:80px;max-height:38px;object-fit:contain;vertical-align:middle">`
+      : '';
+    const link = logo ? `<div><a href="${esc(logo)}" target="_blank" rel="noopener">logo URL</a></div>` : '—';
+    return `<tr data-country="${esc(row.country_code || 'UNKNOWN')}" data-logo-quality="${esc(row.quality_category || '')}">
+      <td>${esc(row.country_code || 'UNKNOWN')}</td><td class="channel">${esc(row.channel || 'Unnamed')}</td>
+      <td><span class="badge ${logoBadgeClass(row.quality_category)}">${esc(row.quality_category || 'Unknown')}</span></td>
+      <td>${preview}${link}</td><td>${esc(row.match_type || '—')}<div class="detail">${esc(row.tvg_id || row.canonical_id || '')}</div></td>
+      <td>${esc(row.provenance || '—')}<div class="detail">${esc(row.note || '')}</div></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="6">No stable logical channels were reported.</td></tr>';
+  logoQualityRows = Array.from(document.querySelectorAll('#logoQualityTable tbody tr[data-logo-quality]'));
+  applyLogoQualityFilters();
+}
+
+function applyLogoQualityFilters() {
+  if (!logoQualitySearch || !logoQualityFilter) return;
+  const query = logoQualitySearch.value.trim().toLowerCase();
+  const category = logoQualityFilter.value;
+  let shown = 0;
+  for (const row of logoQualityRows) {
+    const matchesText = !query || row.innerText.toLowerCase().includes(query);
+    const matchesCategory = !category || row.dataset.logoQuality === category;
+    const show = countryMatches(row.dataset.country) && matchesText && matchesCategory;
+    row.style.display = show ? '' : 'none';
+    if (show) shown++;
+  }
+  if (logoQualityVisibleCount) {
+    logoQualityVisibleCount.textContent = `Showing ${shown} of ${logoQualityRows.length} stable logical channels`;
+  }
+}
+
+fetch('logo-quality.json', { cache: 'no-store' })
+  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
+  .then(data => {
+    logoQualityData = data;
+    renderLogoQuality();
+    renderLogoQualityTable();
+  })
+  .catch(error => {
+    if (logoQualitySummary) logoQualitySummary.innerHTML = `<div class="card"><div class="value">—</div><div class="label">Logo quality unavailable: ${esc(error.message)}</div></div>`;
+    if (logoCountrySummary) logoCountrySummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Country logo coverage unavailable</div></div>';
+    if (logoQualityTableBody) logoQualityTableBody.innerHTML = `<tr><td colspan="6">logo-quality.json could not be loaded: ${esc(error.message)}</td></tr>`;
+  });
+if (logoQualitySearch) logoQualitySearch.addEventListener('input', applyLogoQualityFilters);
+if (logoQualityFilter) logoQualityFilter.addEventListener('change', applyLogoQualityFilters);
 
 function manualBadgeClass(status) {
   if (status === 'Verified' || status === 'Samsung + VLC') return 'verified';

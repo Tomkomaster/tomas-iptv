@@ -91,6 +91,13 @@ from iptv.reports import (
     write_csv,
 )
 from iptv.channel_identity import logical_channel_key
+from iptv.logo_quality import (
+    LogoRegistry,
+    load_logo_registry,
+    apply_channel_logos,
+    build_logo_quality,
+    write_logo_quality_outputs,
+)
 from iptv.channel_identity import (
     QUALITY_SUFFIX_RE,
     TVG_VARIANT_SUFFIX_RE,
@@ -388,6 +395,12 @@ def main(strict: bool = False) -> None:
             "selectors": [],
         })
 
+    raw_logo_path = str(cfg.get("logo_overrides_path") or "").strip()
+    if raw_logo_path:
+        logo_registry = load_logo_registry(ROOT / raw_logo_path)
+    else:
+        logo_registry = LogoRegistry()
+
     final_entries, language_only_entries, duplicate_rows, source_stats = collect_source_entries(
         cfg,
         identity_registry,
@@ -460,6 +473,12 @@ def main(strict: bool = False) -> None:
         cfg,
     )
 
+    test_candidates = apply_channel_logos(test_candidates, logo_registry)
+    stable_candidates = apply_channel_logos(stable_candidates, logo_registry)
+    language_stable_candidates = apply_channel_logos(
+        language_stable_candidates, logo_registry
+    )
+
     test_entries = (
         prepare_published_entries(
             test_candidates,
@@ -508,6 +527,27 @@ def main(strict: bool = False) -> None:
         timezone.utc
     ).strftime(
         "%Y-%m-%d %H:%M:%S UTC"
+    )
+
+    logo_quality = build_logo_quality(
+        published_entries,
+        generated_at=generated,
+        registry_path=raw_logo_path,
+    )
+    write_logo_quality_outputs(
+        logo_quality,
+        output_path=public_dir / "logo-quality.json",
+        missing_csv_path=public_dir / "missing-logos.csv",
+    )
+    logo_summary = logo_quality.get("summary") or {}
+    print(
+        "Logo coverage: "
+        f"{logo_summary.get('with_logo', 0)}/"
+        f"{logo_summary.get('stable_logical_channels', 0)} available "
+        f"({float(logo_summary.get('logo_availability_percent') or 0):.1f}%); "
+        f"{logo_summary.get('canonical_logo', 0)} canonical, "
+        f"{logo_summary.get('source_fallback', 0)} source fallback, "
+        f"{logo_summary.get('missing_logo', 0)} missing."
     )
 
     source_concentration = build_source_concentration(

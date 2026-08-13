@@ -25,6 +25,8 @@
     <a href="attention.json">Needs attention (JSON)</a>
     <a href="health.json">Automated stream health (JSON)</a>
     <a href="source-concentration.json">Source concentration reliability (JSON)</a>
+    <a href="logo-quality.json">Channel logo quality (JSON)</a>
+    <a href="missing-logos.csv">Missing channel logos (CSV)</a>
     <a href="report.json">Machine report (JSON)</a>
   </div>
 
@@ -139,6 +141,38 @@
       <tbody><tr><td colspan="6" class="muted">Loading verified EPG gaps…</td></tr></tbody>
     </table>
   </div>
+
+  <h2>Channel logo quality</h2>
+  <p class="muted">
+    Logos are measured per stable logical channel, not per stream URL. Canonical
+    logos come only from the reviewed data/logo_overrides.json registry. Existing
+    upstream tvg-logo metadata remains a Source fallback until reviewed; the build
+    never scrapes or auto-promotes random images.
+  </p>
+  <div id="logoQualitySummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading logo coverage</div></div>
+  </div>
+  <h3>Logo coverage by country</h3>
+  <div id="logoCountrySummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading country logo coverage</div></div>
+  </div>
+  <div class="controls">
+    <input id="logoQualitySearch" type="search" placeholder="Search channel logos...">
+    <select id="logoQualityFilter">
+      <option value="">All logo states</option>
+      <option value="Canonical">Canonical</option>
+      <option value="Source fallback">Source fallback</option>
+      <option value="Missing">Missing</option>
+    </select>
+  </div>
+  <p id="logoQualityVisibleCount" class="muted">Loading logo-quality.json…</p>
+  <div class="table-wrap">
+    <table id="logoQualityTable">
+      <thead><tr><th>Country</th><th>Channel</th><th>Status</th><th>Logo</th><th>Mapping</th><th>Provenance</th></tr></thead>
+      <tbody><tr><td colspan="6" class="muted">Loading channel logo quality…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="muted">Canonical logo coverage is the stricter quality score. Overall availability also includes source fallbacks. Missing channels are exported in <a href="missing-logos.csv">missing-logos.csv</a>.</p>
 
   <h2>Candidate streams to test</h2>
   <p class="muted">

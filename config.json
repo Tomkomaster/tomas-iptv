@@ -6,6 +6,7 @@
     "CZ": "Czechia"
   },
   "identity_overrides_path": "data/identity_overrides.json",
+  "logo_overrides_path": "data/logo_overrides.json",
   "output": "public/tv.m3u",
   "test_output": "public/test.m3u",
   "country_outputs": {
