@@ -67,17 +67,21 @@ class RomaniaCountryTests(unittest.TestCase):
         wanted = load_wanted_channels(Path("data/wanted_channels.json"))
         romanian = [row for row in wanted if row["country_code"] == "RO"]
 
-        self.assertGreaterEqual(len(romanian), 50)
-        self.assertLess(len(romanian), 100)
+        # The Romania catalog now mirrors the active Wikipedia list after
+        # removing channels already present/tested in the project, plus two
+        # explicit replacement-research targets.
+        self.assertGreaterEqual(len(romanian), 160)
+        self.assertLess(len(romanian), 220)
 
         by_name = {row["channel"]: row for row in romanian}
 
         # Missing major stations remain research targets.
-        self.assertEqual(by_name["Pro TV"]["priority"], "P1")
+        self.assertEqual(by_name["PRO TV"]["priority"], "P1")
         self.assertEqual(by_name["Antena 1"]["priority"], "P1")
+        self.assertEqual(by_name["Euronews Romania"]["priority"], "P1")
         self.assertEqual(by_name["Erdély TV"]["priority"], "P3")
 
-        # Stations already supplied by the configured IPTV-org Romanian sources
+        # Stations already supplied/tested by the configured Romanian sources
         # must not clutter the wanted/research catalog.
         for supplied in (
             "TVR 1",
@@ -86,6 +90,7 @@ class RomaniaCountryTests(unittest.TestCase):
             "TVR Info",
             "TVR Sport",
             "Digi 24",
+            "Digi Sport 1",
             "Kanal D",
             "Kanal D2",
             "Realitatea Plus",
@@ -94,12 +99,27 @@ class RomaniaCountryTests(unittest.TestCase):
             "Rock TV",
             "Aleph News",
             "Aleph Business",
+            "Disney Channel",
+            "TeleMoldova Plus",
         ):
             self.assertNotIn(supplied, by_name)
 
-        # A source may still be wanted if the only upstream candidate is
-        # explicitly unusable for normal access.
-        self.assertIn("geo-blocked", by_name["TeleMoldova Plus"]["reason"])
+        # Closed/replaced channels from the article's historical section are
+        # not research targets.
+        for closed in (
+            "Profit News",
+            "FilmBox Premium",
+            "FilmBox Family",
+            "FilmBox Stars",
+            "TV1000",
+        ):
+            self.assertNotIn(closed, by_name)
+
+        # Current replacement branding should be tracked instead.
+        self.assertEqual(by_name["FilmBox+ One"]["priority"], "P3")
+
+        # A channel may remain wanted if the only tested candidate is unusable
+        # and we still need a functioning replacement stream.
         self.assertIn("geo-blocked", by_name["TV SUD"]["reason"])
 
 
