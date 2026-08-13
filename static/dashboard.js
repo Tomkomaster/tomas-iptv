@@ -40,6 +40,7 @@ function setCountry(country) {
   renderEpgQuality();
   applyEpgQualityFilters();
   renderLogoQuality();
+  renderPriorityLogoSummary();
   applyLogoQualityFilters();
   renderAttentionSummary();
   applyAttentionFilters();
@@ -204,12 +205,14 @@ if (epgQualitySearch) epgQualitySearch.addEventListener('input', applyEpgQuality
 if (epgQualityFilter) epgQualityFilter.addEventListener('change', applyEpgQualityFilters);
 
 const logoQualitySummary = document.getElementById('logoQualitySummary');
+const priorityLogoSummary = document.getElementById('priorityLogoSummary');
 const logoCountrySummary = document.getElementById('logoCountrySummary');
 const logoQualitySearch = document.getElementById('logoQualitySearch');
 const logoQualityFilter = document.getElementById('logoQualityFilter');
 const logoQualityVisibleCount = document.getElementById('logoQualityVisibleCount');
 const logoQualityTableBody = document.querySelector('#logoQualityTable tbody');
 let logoQualityData = null;
+let priorityCoverageData = null;
 let logoQualityRows = [];
 
 function logoBadgeClass(category) {
@@ -233,6 +236,52 @@ function logoSummaryForRows(rows) {
     availability: total ? 100 * (canonical + source) / total : 0,
     canonicalCoverage: total ? 100 * canonical / total : 0,
   };
+}
+
+function mergePriorityLogoCoverage(parts) {
+  const summary = { stableTargets: 0, withLogo: 0, canonical: 0, source: 0, missing: 0 };
+  for (const part of parts.filter(Boolean)) {
+    summary.stableTargets += Number(part.stable_targets || 0);
+    summary.withLogo += Number(part.with_logo || 0);
+    summary.canonical += Number(part.canonical_logo || 0);
+    summary.source += Number(part.source_fallback || 0);
+    summary.missing += Number(part.missing_logo || 0);
+  }
+  summary.availability = summary.stableTargets ? 100 * summary.withLogo / summary.stableTargets : 0;
+  summary.canonicalCoverage = summary.stableTargets ? 100 * summary.canonical / summary.stableTargets : 0;
+  return summary;
+}
+
+function priorityLogoCoverage(priority) {
+  if (!priorityCoverageData) return mergePriorityLogoCoverage([]);
+  const countries = priorityCoverageData.countries || {};
+  const parts = Object.entries(countries)
+    .filter(([code]) => countryMatches(code))
+    .map(([, country]) => country?.priorities?.[priority]?.logo_coverage);
+  return mergePriorityLogoCoverage(parts);
+}
+
+function renderPriorityLogoSummary() {
+  if (!priorityLogoSummary || !priorityCoverageData) return;
+  const p1 = priorityLogoCoverage('P1');
+  const p2 = priorityLogoCoverage('P2');
+  const total = mergePriorityLogoCoverage([
+    {
+      stable_targets: p1.stableTargets, with_logo: p1.withLogo, canonical_logo: p1.canonical,
+      source_fallback: p1.source, missing_logo: p1.missing,
+    },
+    {
+      stable_targets: p2.stableTargets, with_logo: p2.withLogo, canonical_logo: p2.canonical,
+      source_fallback: p2.source, missing_logo: p2.missing,
+    },
+  ]);
+  priorityLogoSummary.innerHTML = `
+    <div class="card"><div class="value">${total.availability.toFixed(1)}%</div><div class="label">P1/P2 logo availability (${total.withLogo}/${total.stableTargets} stable)</div></div>
+    <div class="card"><div class="value">${total.canonicalCoverage.toFixed(1)}%</div><div class="label">P1/P2 canonical coverage (${total.canonical}/${total.stableTargets})</div></div>
+    <div class="card"><div class="value">${p1.canonical}/${p1.stableTargets}</div><div class="label">P1 canonical</div><div class="detail">${p1.canonicalCoverage.toFixed(1)}% reviewed</div></div>
+    <div class="card"><div class="value">${p2.canonical}/${p2.stableTargets}</div><div class="label">P2 canonical</div><div class="detail">${p2.canonicalCoverage.toFixed(1)}% reviewed</div></div>
+    <div class="card"><div class="value">${total.source}</div><div class="label">P1/P2 source fallbacks remaining</div></div>
+    <div class="card"><div class="value">${total.missing}</div><div class="label">P1/P2 stable channels missing logos</div></div>`;
 }
 
 function renderLogoQuality() {
@@ -310,6 +359,15 @@ fetch('logo-quality.json', { cache: 'no-store' })
     if (logoQualitySummary) logoQualitySummary.innerHTML = `<div class="card"><div class="value">—</div><div class="label">Logo quality unavailable: ${esc(error.message)}</div></div>`;
     if (logoCountrySummary) logoCountrySummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Country logo coverage unavailable</div></div>';
     if (logoQualityTableBody) logoQualityTableBody.innerHTML = `<tr><td colspan="6">logo-quality.json could not be loaded: ${esc(error.message)}</td></tr>`;
+  });
+fetch('priority-coverage.json', { cache: 'no-store' })
+  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
+  .then(data => {
+    priorityCoverageData = data;
+    renderPriorityLogoSummary();
+  })
+  .catch(error => {
+    if (priorityLogoSummary) priorityLogoSummary.innerHTML = `<div class="card"><div class="value">—</div><div class="label">P1/P2 logo completeness unavailable: ${esc(error.message)}</div></div>`;
   });
 if (logoQualitySearch) logoQualitySearch.addEventListener('input', applyLogoQualityFilters);
 if (logoQualityFilter) logoQualityFilter.addEventListener('change', applyLogoQualityFilters);

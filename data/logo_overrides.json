@@ -198,6 +198,114 @@
       "logo": "https://cdn.administrace.tv/2023/06/16/hd/8f877162949d74adb19e2bac00d05e82.jpg",
       "source": "FTV Prima official 2013 branding announcement on iprima.cz",
       "note": "P1; direct FTV Prima-hosted artwork; upgrades the final stable Czech P1 fallback to canonical; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "TVBarrandov.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/e/ef/TV_Barrandov_logo_2025.png",
+      "source": "TV Barrandov official logo-download pack; current 2025 TV Barrandov-authored PNG mirror",
+      "note": "P2; reviewed against the broadcaster's current downloadable branding; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "KinoBarrandov.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Kino_Barrandov_logo_2025.png",
+      "source": "TV Barrandov official logo-download pack; current 2025 TV Barrandov-authored PNG mirror",
+      "note": "P2; reviewed against the broadcaster's current downloadable branding; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "BarrandovKrimi.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Krimi_Barrandov_logo_2025.png",
+      "source": "TV Barrandov official logo-download pack; current 2025 TV Barrandov-authored PNG mirror",
+      "note": "P2; reviewed against the broadcaster's current downloadable branding; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "TelevizeSeznam.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logo_Televize_Seznam.png/1280px-Logo_Televize_Seznam.png",
+      "source": "Televize Seznam official identity; Wikimedia Commons file source metadata identifies Seznam TV",
+      "note": "P2; replaces an unreviewed source fallback with reviewed channel artwork; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "History.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/History_%282021%29.svg/500px-History_%282021%29.svg.png",
+      "source": "History/A&E Networks official identity; Wikimedia Commons file references history.com and credits A&E Networks",
+      "note": "P2; current History identity; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "AMCEurope.uk@CzechRepublic"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/AMC_logo_2019.svg/960px-AMC_logo_2019.svg.png",
+      "source": "AMC official network identity; Wikimedia Commons file references amc.com and credits AMC",
+      "note": "P2; reviewed AMC identity for the Czech-market feed; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "PrimaCool.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Prima_Cool_logo_zelen%C3%A9.png/960px-Prima_Cool_logo_zelen%C3%A9.png",
+      "source": "FTV Prima official Prima COOL identity pages; clean PNG mirror reviewed against broadcaster branding",
+      "note": "P2; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "PrimaLove.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Prima_Love_logo_2018.png/960px-Prima_Love_logo_2018.png",
+      "source": "FTV Prima official Prima LOVE branding history confirms the 2018 pink identity; clean PNG mirror",
+      "note": "P2; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "PrimaShow.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Prima_Show.svg/1280px-Prima_Show.svg.png",
+      "source": "FTV Prima; Wikimedia Commons file lists FTV Prima as both source and author",
+      "note": "P2; PNG rendering selected for TV-client compatibility; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "PrimaStar.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Prima_Star.png",
+      "source": "FTV Prima official Prima Star social asset; Wikimedia Commons credits FTV Prima as author",
+      "note": "P2; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "PrimaZoom.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Prima_ZOOM_logo.svg/960px-Prima_ZOOM_logo.svg.png",
+      "source": "FTV Prima official Prima ZOOM logo gallery; clean PNG rendering reviewed against broadcaster artwork",
+      "note": "P2; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "CTDecko.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/%C4%8CT-D_logo.svg/960px-%C4%8CT-D_logo.svg.png",
+      "source": "Česká televize official logo-download page; clean PNG rendering of the ČT :D identity",
+      "note": "P2; shared ČT :D/ČT art service row; manually reviewed 2026-08-13"
     }
   ]
 }

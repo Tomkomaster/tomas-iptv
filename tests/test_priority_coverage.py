@@ -67,6 +67,51 @@ class PriorityCoverageTests(unittest.TestCase):
             ["Movie Two"],
         )
 
+    def test_logo_score_uses_only_stable_priority_targets(self):
+        rows = [
+            audit_row("Alpha", "Alpha.hu", "HU", stable=True),
+            audit_row("Beta", "Beta.hu", "HU"),
+            audit_row("Movie One", "MovieOne.hu", "HU", stable=True),
+        ]
+        config = {
+            "country_names": {"HU": "Hungary"},
+            "country_outputs": {"HU": "public/hu.m3u"},
+        }
+        policy = {
+            "schema_version": 1,
+            "default_priority": "P3",
+            "entries": [{"country": "HU", "channel": "Movie One", "priority": "P2"}],
+        }
+        wanted = [
+            {"country_code": "HU", "channel": "Alpha", "tvg_id": "Alpha.hu", "priority": "P1"},
+            {"country_code": "HU", "channel": "Beta", "tvg_id": "Beta.hu", "priority": "P1"},
+        ]
+        logos = {
+            "channels": [
+                {"country_code": "HU", "channel": "Alpha", "tvg_id": "Alpha.hu", "quality_category": "Canonical"},
+                {"country_code": "HU", "channel": "Movie One", "tvg_id": "MovieOne.hu", "quality_category": "Source fallback"},
+            ]
+        }
+
+        coverage = build_priority_coverage(
+            rows,
+            config=config,
+            priority_policy=policy,
+            wanted_channels=wanted,
+            logo_quality=logos,
+        )
+
+        hu = coverage["countries"]["HU"]["priorities"]
+        self.assertEqual(hu["P1"]["logo_coverage"]["stable_targets"], 1)
+        self.assertEqual(hu["P1"]["logo_coverage"]["canonical_logo"], 1)
+        self.assertEqual(hu["P2"]["logo_coverage"]["stable_targets"], 1)
+        self.assertEqual(hu["P2"]["logo_coverage"]["source_fallback"], 1)
+        self.assertEqual(coverage["logo_summary"]["stable_targets"], 2)
+        self.assertEqual(coverage["logo_summary"]["with_logo"], 2)
+        self.assertEqual(coverage["logo_summary"]["canonical_logo"], 1)
+        self.assertEqual(coverage["logo_summary"]["missing_logo"], 0)
+        self.assertEqual(coverage["logo_summary"]["canonical_logo_coverage_percent"], 50.0)
+
     def test_injects_prominent_scorecard_before_next_work(self):
         coverage = {
             "countries": {

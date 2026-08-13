@@ -128,6 +128,10 @@ class LogoQualityTests(unittest.TestCase):
         self.assertIn("Canonical logo coverage", template + script)
         self.assertIn("Source fallback", template + script)
         self.assertIn("logo-quality.json", script)
+        self.assertIn("priority-coverage.json", script)
+        self.assertIn("P1 / P2 logo completeness", template)
+        self.assertIn('id="priorityLogoSummary"', template)
+        self.assertIn("P1/P2 canonical coverage", script)
         self.assertIn("missing-logos.csv", template)
 
 
