@@ -31,16 +31,12 @@ jobs:
                   )
               p.write_text(text.replace(old, new), encoding='utf-8')
 
-          # The repository config now has one unambiguous country default and
-          # one ISO-639-3 spoken-language default list.
           replace_exact(
               'config.json',
               '  "default_language_code": "HU",\n',
               '',
           )
 
-          # Every production consumer used the legacy singular field as a
-          # *country* fallback. Keep only the explicit country field.
           replace_exact(
               'country_language.py',
               '        cfg.get("default_country_code"),\n        cfg.get("default_language_code"),\n',
@@ -58,12 +54,10 @@ jobs:
           ):
               replace_exact(
                   path,
-                  '                            or cfg.get("default_country_code")\n                            or cfg.get("default_language_code")\n',
-                  '                            or cfg.get("default_country_code")\n',
+                  'or cfg.get("default_language_code")',
+                  '',
               )
 
-          # Test fixtures were still modelling the old field as a country
-          # default. Migrate them to the modern country field too.
           fixture_counts = {
               'tests/test_build.py': 6,
               'tests/test_canonical_published_names.py': 1,
