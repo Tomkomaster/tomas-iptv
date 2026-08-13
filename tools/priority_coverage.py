@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 from pathlib import Path
 
 from research_priority import compile_research_priority_policy, priority_rank
@@ -75,6 +76,86 @@ def _status_rank(status: str) -> int:
     }.get(str(status or ""), 9)
 
 
+def _logo_match_name(value: object) -> str:
+    name = normalize_name(value)
+    # Research labels can retain a harmless provider/feed discriminator even when
+    # publication has already collapsed it to the logical channel identity.
+    name = re.sub(r"\bfeed\s+\d+\b", " ", name, flags=re.I)
+    return " ".join(name.split())
+
+
+def _best_logo_row(rows: list[dict]) -> dict | None:
+    if not rows:
+        return None
+    quality_rank = {"Canonical": 2, "Source fallback": 1, "Missing": 0}
+    return max(rows, key=lambda row: quality_rank.get(str(row.get("quality_category") or ""), -1))
+
+
+def _logo_row_for_target(target: dict, logo_rows: list[dict]) -> dict | None:
+    country = str(target.get("country") or "").strip().upper()
+    same_country = [
+        row for row in logo_rows
+        if str(row.get("country_code") or "").strip().upper() == country
+    ]
+    target_id = normalize_tvg_id(target.get("tvg_id", ""))
+    if target_id:
+        exact_same_country = [
+            row for row in same_country
+            if normalize_tvg_id(row.get("tvg_id", "")) == target_id
+        ]
+        if exact_same_country:
+            return _best_logo_row(exact_same_country)
+
+        # Priority coverage follows the research/audit geography, while logo quality
+        # follows the final published geography. An explicit routing can therefore
+        # move the same logical service between country buckets. Exact tvg-id remains
+        # strong enough identity evidence to bridge that reporting boundary.
+        exact_any_country = [
+            row for row in logo_rows
+            if normalize_tvg_id(row.get("tvg_id", "")) == target_id
+        ]
+        if exact_any_country:
+            return _best_logo_row(exact_any_country)
+
+    target_name = _logo_match_name(target.get("channel", ""))
+    if target_name:
+        same_name_country = [
+            row for row in same_country
+            if _logo_match_name(row.get("channel", "")) == target_name
+        ]
+        if same_name_country:
+            return _best_logo_row(same_name_country)
+    return None
+
+
+def _priority_logo_summary(targets: list[dict], logo_quality: dict | None) -> dict:
+    stable = [target for target in targets if target.get("status") == "WORKING"]
+    logo_rows = list((logo_quality or {}).get("channels") or [])
+    canonical = 0
+    source = 0
+    missing = 0
+    for target in stable:
+        row = _logo_row_for_target(target, logo_rows)
+        quality = str((row or {}).get("quality_category") or "Missing")
+        if quality == "Canonical":
+            canonical += 1
+        elif quality == "Source fallback":
+            source += 1
+        else:
+            missing += 1
+    total = len(stable)
+    available = canonical + source
+    return {
+        "stable_targets": total,
+        "with_logo": available,
+        "canonical_logo": canonical,
+        "source_fallback": source,
+        "missing_logo": missing,
+        "logo_availability_percent": round(100.0 * available / total if total else 0.0, 1),
+        "canonical_logo_coverage_percent": round(100.0 * canonical / total if total else 0.0, 1),
+    }
+
+
 def _add_target(targets: list[dict], candidate: dict) -> None:
     candidate = dict(candidate)
     candidate["country"] = str(candidate.get("country") or "").strip().upper()
@@ -135,6 +216,7 @@ def build_priority_coverage(
     config: dict,
     priority_policy: dict,
     wanted_channels: list[dict[str, str]],
+    logo_quality: dict | None = None,
 ) -> dict:
     grouped = group_channels(audit_rows)
     compiled_priority = compile_research_priority_policy(priority_policy)
@@ -227,6 +309,7 @@ def build_priority_coverage(
             priorities[priority] = {
                 "found": len(items) - len(missing),
                 "total": len(items),
+                "logo_coverage": _priority_logo_summary(items, logo_quality),
                 "missing": [
                     {
                         "channel": item.get("channel") or item.get("tvg_id") or "Unnamed channel",
@@ -244,6 +327,14 @@ def build_priority_coverage(
     return {
         "schema_version": 1,
         "definition": "found means at least one stable family feed (WORKING)",
+        "logo_metric": {
+            "definition": (
+                "Among stable tracked P1/P2 targets only, logo availability counts Canonical plus "
+                "Source fallback; canonical coverage counts reviewed logo overrides only."
+            ),
+            "denominator": "stable tracked P1/P2 targets",
+        },
+        "logo_summary": _priority_logo_summary(targets, logo_quality),
         "priorities": list(TRACKED_PRIORITIES),
         "countries": countries,
     }
@@ -393,12 +484,15 @@ def generate_priority_coverage(
     config_path: Path = Path("config.json"),
     priority_policy_path: Path = Path("data/research_priority.json"),
     wanted_channels_path: Path = Path("data/wanted_channels.json"),
+    logo_quality_path: Path = Path("public/logo-quality.json"),
 ) -> dict:
+    logo_quality = _load_json(logo_quality_path) if logo_quality_path.is_file() else {}
     coverage = build_priority_coverage(
         load_audit_rows(audit_path),
         config=_load_json(config_path),
         priority_policy=_load_json(priority_policy_path),
         wanted_channels=load_wanted_channels(wanted_channels_path),
+        logo_quality=logo_quality,
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
