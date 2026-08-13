@@ -1,0 +1,27 @@
+name: One-off remove core duplicates
+on:
+  push:
+    branches: [agent/remove-core-duplicates]
+permissions:
+  contents: write
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/remove-core-duplicates
+          fetch-depth: 0
+      - run: python3 tools/_remove_core_duplicates_once.py
+      - run: python3 -m py_compile iptv/build_core.py build.py
+      - run: python3 run_tests.py
+      - run: |
+          rm tools/_remove_core_duplicates_once.py
+          rm .github/workflows/remove-core-duplicates-once.yml
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "Remove duplicate build core implementations"
+          git push origin HEAD:agent/remove-core-duplicates
