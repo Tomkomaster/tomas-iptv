@@ -63,6 +63,7 @@ The core implementation package contains:
 - `language_routing.py` — spoken-language interpretation and explicit publication-country routing
 - `audit.py` — manual playback audit validation, decisions and stream-history preparation
 - `feed_selection.py` — current-feed suppression and complete test-playlist candidate selection
+- `stable_selection.py` — stable-family filtering and callback-driven best-feed ranking
 - `dashboard.py` — dashboard rendering/publishing helpers
 - `identity_overrides.py` — canonical channel identity resolution
 - `source_concentration.py` — stable-source concentration reporting
