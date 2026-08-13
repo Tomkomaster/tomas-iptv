@@ -1,0 +1,27 @@
+name: One-off extract stable selection
+on:
+  push:
+    branches: [agent/extract-stable-selection]
+permissions:
+  contents: write
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/extract-stable-selection
+          fetch-depth: 0
+      - run: python3 tools/_extract_stable_selection_once.py
+      - run: python3 -m py_compile iptv/stable_selection.py iptv/build_core.py build.py
+      - run: python3 run_tests.py
+      - run: |
+          rm tools/_extract_stable_selection_once.py
+          rm .github/workflows/refactor-stable-selection-once.yml
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "Extract stable selection from build core"
+          git push origin HEAD:agent/extract-stable-selection
