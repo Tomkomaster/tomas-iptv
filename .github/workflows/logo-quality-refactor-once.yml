@@ -18,7 +18,9 @@ jobs:
           fetch-depth: 0
 
       - name: Apply canonical logo quality refactor
-        run: python3 tools/_logo_quality_refactor_once.py
+        run: |
+          python3 tools/_logo_quality_refactor_once.py
+          python3 tools/_logo_quality_fix_once.py
 
       - name: Compile affected Python
         run: |
@@ -42,14 +44,18 @@ jobs:
           assert Path('data/logo_overrides.json').is_file()
           assert 'logo-quality.json' in Path('static/dashboard.js').read_text(encoding='utf-8')
           assert 'missing-logos.csv' in Path('templates/dashboard.html').read_text(encoding='utf-8')
-          assert 'apply_channel_logos' in Path('iptv/build_core.py').read_text(encoding='utf-8')
-          assert Path('iptv/build_core.py').stat().st_size < 20000
-          print('Canonical logo quality contract OK.')
+          core = Path('iptv/build_core.py')
+          core_text = core.read_text(encoding='utf-8')
+          assert 'apply_channel_logos' in core_text
+          assert 'Logo coverage:' in core_text
+          assert core.stat().st_size < 20000
+          print(f'Canonical logo quality contract OK; build_core={core.stat().st_size} bytes.')
           PY
 
       - name: Remove one-off helpers
         run: |
           rm tools/_logo_quality_refactor_once.py
+          rm tools/_logo_quality_fix_once.py
           rm .github/workflows/logo-quality-refactor-once.yml
 
       - name: Commit tested logo quality implementation
