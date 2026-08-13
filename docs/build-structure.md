@@ -61,6 +61,7 @@ The core implementation package contains:
 - `reports.py` — country/language build summaries and CSV export helpers
 - `playback_status.py` — shared VLC/Samsung manual-test status normalization
 - `language_routing.py` — spoken-language interpretation and explicit publication-country routing
+- `audit.py` — manual playback audit validation, decisions and stream-history preparation
 - `dashboard.py` — dashboard rendering/publishing helpers
 - `identity_overrides.py` — canonical channel identity resolution
 - `source_concentration.py` — stable-source concentration reporting

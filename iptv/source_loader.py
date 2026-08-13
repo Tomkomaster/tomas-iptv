@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 ATTR_RE = re.compile(r'([A-Za-z0-9_-]+)="([^"]*)"')
+SOURCE_FLAG_RE = re.compile(r'\[(Geo[- ]?blocked|Not\s*24/7|Offline)\]', re.IGNORECASE)
 VALID_SOURCE_KINDS = {
     "base",
     "alternatives",
