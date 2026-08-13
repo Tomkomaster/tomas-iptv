@@ -54,7 +54,8 @@ GitHub Actions invokes these with `python3 -m epg.<module>` so the folder is bot
 
 The core implementation package contains:
 
-- `build_core.py` — transitional remainder of the historical monolithic builder
+- `build_core.py` — transitional build orchestration and remaining coupled subsystems
+- `channel_identity.py` — logical channel identity, canonical stream URLs and safe display-name normalization
 - `source_loader.py` — source definitions, remote/local loading and M3U parsing
 - `playlist_writer.py` — generated M3U headers and playlist writing
 - `dashboard.py` — dashboard rendering/publishing helpers
@@ -63,7 +64,7 @@ The core implementation package contains:
 
 `build.py` deliberately aliases imports to `iptv.build_core` so existing callers continue to use the same module globals. This is especially important for `tools/stable_build.py`, which temporarily replaces feed-quality functions during the second reliable-build pass.
 
-The large `build_core.py` is not the final architecture. It is a compatibility bridge that lets responsibilities be extracted one tested unit at a time instead of rewriting the builder in one risky change.
+The large `build_core.py` is not the final architecture. It is a compatibility bridge that lets responsibilities be extracted one tested unit at a time instead of rewriting the builder in one risky change. Channel identity/name normalization is now one of those extracted units; audit, routing and stable selection remain the larger coupled blocks.
 
 ## `data/`
 
