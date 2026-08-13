@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 import build
+from tools.priority_coverage import generate_priority_coverage
 from tools.same_build_failover import (
     load_audit_rows,
     probe_verified_redundancy,
@@ -13,6 +14,23 @@ from tools.same_build_failover import (
     write_report,
 )
 from tools.stable_build import install_same_build_evidence
+
+
+def _finish_dashboard(audit_path: Path, config_path: Path) -> None:
+    coverage = generate_priority_coverage(
+        audit_path=audit_path,
+        config_path=config_path,
+    )
+    summary = []
+    for code, country in coverage.get("countries", {}).items():
+        priorities = country.get("priorities", {})
+        p1 = priorities.get("P1", {})
+        p2 = priorities.get("P2", {})
+        summary.append(
+            f"{code} P1 {p1.get('found', 0)}/{p1.get('total', 0)}, "
+            f"P2 {p2.get('found', 0)}/{p2.get('total', 0)}"
+        )
+    print("Priority coverage: " + "; ".join(summary))
 
 
 def main() -> None:
@@ -51,6 +69,7 @@ def main() -> None:
 
     if not report.get("streams"):
         print("Reliable build: no redundant manually TV-safe feeds; first pass is final.")
+        _finish_dashboard(args.audit, args.config)
         return
 
     current = install_same_build_evidence(report)
@@ -59,6 +78,7 @@ def main() -> None:
         f"{len(current)} verified alternatives."
     )
     build.main(strict=args.strict)
+    _finish_dashboard(args.audit, args.config)
 
     print(
         json.dumps(
