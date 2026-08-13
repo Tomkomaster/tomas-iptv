@@ -16,45 +16,90 @@ jobs:
           ref: agent/remove-default-language-code
           fetch-depth: 0
 
-      - name: Prove legacy field has no consumers
-        run: |
-          needle="default_language_"'code'
-          echo "Tracked references before cleanup:"
-          git grep -n "$needle" -- ':!.github/workflows/remove-default-language-code-once.yml' || true
-          refs="$(git grep -l "$needle" -- ':!config.json' ':!.github/workflows/remove-default-language-code-once.yml' || true)"
-          if [ -n "$refs" ]; then
-            echo "Legacy field is still consumed outside config.json:" >&2
-            echo "$refs" >&2
-            exit 1
-          fi
-
-      - name: Remove obsolete field and add regression test
+      - name: Migrate legacy country fallbacks and config
         run: |
           python3 - <<'PY'
-          import json
           from pathlib import Path
 
-          path = Path('config.json')
-          cfg = json.loads(path.read_text(encoding='utf-8'))
-          legacy_key = 'default_language_' + 'code'
-          if cfg.get(legacy_key) != 'HU':
-              raise SystemExit(f'Unexpected {legacy_key!r} value: {cfg.get(legacy_key)!r}')
-          del cfg[legacy_key]
-          path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          def replace_exact(path: str, old: str, new: str, expected: int = 1) -> None:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != expected:
+                  raise SystemExit(
+                      f'{path}: expected {expected} occurrence(s) of {old!r}, found {count}'
+                  )
+              p.write_text(text.replace(old, new), encoding='utf-8')
 
-          test = Path('tests/test_config_language_keys.py')
-          test.write_text('''import json\nimport unittest\nfrom pathlib import Path\n\n\nclass ConfigLanguageKeyTests(unittest.TestCase):\n    def test_country_and_language_defaults_use_distinct_code_systems(self):\n        cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))\n        legacy_key = "default_language_" + "code"\n\n        self.assertNotIn(legacy_key, cfg)\n        self.assertEqual(cfg["default_country_code"], "HU")\n        self.assertEqual(cfg["default_language_codes"], ["hun"])\n\n        configured_languages = set(cfg["language_outputs"])\n        for code in cfg["default_language_codes"]:\n            self.assertEqual(len(code), 3)\n            self.assertIn(code, configured_languages)\n\n\nif __name__ == "__main__":\n    unittest.main()\n''', encoding='utf-8')
+          # The repository config now has one unambiguous country default and
+          # one ISO-639-3 spoken-language default list.
+          replace_exact(
+              'config.json',
+              '  "default_language_code": "HU",\n',
+              '',
+          )
+
+          # Every production consumer used the legacy singular field as a
+          # *country* fallback. Keep only the explicit country field.
+          replace_exact(
+              'country_language.py',
+              '        cfg.get("default_country_code"),\n        cfg.get("default_language_code"),\n',
+              '        cfg.get("default_country_code"),\n',
+          )
+          replace_exact(
+              'country_language.py',
+              '        str(cfg.get("default_country_code") or cfg.get("default_language_code") or "")\n',
+              '        str(cfg.get("default_country_code") or "")\n',
+          )
+          for path in (
+              'iptv/language_routing.py',
+              'iptv/playlist_writer.py',
+              'iptv/publication.py',
+          ):
+              replace_exact(
+                  path,
+                  '                            or cfg.get("default_country_code")\n                            or cfg.get("default_language_code")\n',
+                  '                            or cfg.get("default_country_code")\n',
+              )
+
+          # Test fixtures were still modelling the old field as a country
+          # default. Migrate them to the modern country field too.
+          fixture_counts = {
+              'tests/test_build.py': 6,
+              'tests/test_canonical_published_names.py': 1,
+              'tests/test_country_language_model.py': 1,
+              'tests/test_feed_quality.py': 1,
+              'tests/test_provider_test_channel_names.py': 2,
+              'tests/test_regressions.py': 3,
+          }
+          for path, expected in fixture_counts.items():
+              replace_exact(
+                  path,
+                  '"default_language_code":',
+                  '"default_country_code":',
+                  expected=expected,
+              )
+
+          Path('tests/test_config_language_keys.py').write_text(
+              '''import json\nimport unittest\nfrom pathlib import Path\n\n\nclass ConfigLanguageKeyTests(unittest.TestCase):\n    def test_country_and_language_defaults_use_distinct_code_systems(self):\n        cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))\n        legacy_key = "default_language_" + "code"\n\n        self.assertNotIn(legacy_key, cfg)\n        self.assertEqual(cfg["default_country_code"], "HU")\n        self.assertEqual(cfg["default_language_codes"], ["hun"])\n\n        configured_languages = set(cfg["language_outputs"])\n        for code in cfg["default_language_codes"]:\n            self.assertEqual(len(code), 3)\n            self.assertIn(code, configured_languages)\n\n\nif __name__ == "__main__":\n    unittest.main()\n''',
+              encoding='utf-8',
+          )
           PY
 
-      - name: Verify no production reference remains
+      - name: Verify exact legacy field is gone from production and fixtures
         run: |
           needle="default_language_"'code'
-          refs="$(git grep -l "$needle" -- ':!tests/test_config_language_keys.py' ':!.github/workflows/remove-default-language-code-once.yml' || true)"
+          echo "Exact legacy references after migration:"
+          git grep -n -w "$needle" -- ':!.github/workflows/remove-default-language-code-once.yml' || true
+          refs="$(git grep -l -w "$needle" -- ':!tests/test_documentation_naming.py' ':!tests/test_config_language_keys.py' ':!.github/workflows/remove-default-language-code-once.yml' || true)"
           if [ -n "$refs" ]; then
-            echo "Legacy field still appears outside its regression test:" >&2
+            echo "Unexpected legacy-field reference remains:" >&2
             echo "$refs" >&2
             exit 1
           fi
+
+          echo "Modern plural default-language references:"
+          git grep -n -w 'default_language_codes' || true
 
       - name: Validate config JSON
         run: python3 -m json.tool config.json >/dev/null
@@ -71,6 +116,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git diff --cached --stat
-          git diff --cached -- config.json tests/test_config_language_keys.py
+          git diff --cached -- config.json country_language.py iptv/language_routing.py iptv/playlist_writer.py iptv/publication.py tests/test_config_language_keys.py
           git commit -m "Remove obsolete default language code"
           git push origin HEAD:agent/remove-default-language-code
