@@ -1,0 +1,91 @@
+name: One-off wire modern language defaults
+
+on:
+  push:
+    branches: [agent/remove-default-language-code]
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/remove-default-language-code
+          fetch-depth: 0
+
+      - name: Make plural language default active
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('country_language.py')
+          text = path.read_text(encoding='utf-8')
+          marker = '''    language_outputs = cfg.get("language_outputs") or {}\n'''
+          replacement = '''    add(cfg.get("default_language_codes"))\n\n    language_outputs = cfg.get("language_outputs") or {}\n'''
+          if text.count(marker) != 1:
+              raise SystemExit('configured_language_codes insertion marker changed')
+          path.write_text(text.replace(marker, replacement, 1), encoding='utf-8')
+
+          test = Path('tests/test_config_language_keys.py')
+          content = test.read_text(encoding='utf-8')
+          content = content.replace(
+              'from pathlib import Path\n',
+              'from pathlib import Path\n\nfrom country_language import configured_language_codes\n',
+              1,
+          )
+          needle = '''        configured_languages = set(cfg["language_outputs"])\n'''
+          replacement = '''        self.assertEqual(configured_language_codes({"default_language_codes": ["hun"]}), ["hun"])\n\n        configured_languages = set(cfg["language_outputs"])\n'''
+          if content.count(needle) != 1:
+              raise SystemExit('config test insertion marker changed')
+          test.write_text(content.replace(needle, replacement, 1), encoding='utf-8')
+
+          for filename in (
+              'iptv/language_routing.py',
+              'iptv/playlist_writer.py',
+              'iptv/publication.py',
+          ):
+              p = Path(filename)
+              lines = p.read_text(encoding='utf-8').splitlines()
+              p.write_text('\n'.join(line.rstrip() for line in lines) + '\n', encoding='utf-8')
+          PY
+
+      - name: Verify language config semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from country_language import configured_language_codes
+
+          cfg = json.loads(Path('config.json').read_text(encoding='utf-8'))
+          legacy = 'default_language_' + 'code'
+          assert legacy not in cfg
+          assert cfg['default_country_code'] == 'HU'
+          assert cfg['default_language_codes'] == ['hun']
+          assert configured_language_codes({'default_language_codes': ['hun']}) == ['hun']
+          PY
+
+          legacy="default_language_"'code'
+          refs="$(git grep -l -w "$legacy" -- ':!tests/test_documentation_naming.py' ':!tests/test_config_language_keys.py' ':!.github/workflows/wire-default-language-codes-once.yml' || true)"
+          if [ -n "$refs" ]; then
+            echo "Unexpected legacy singular reference:" >&2
+            echo "$refs" >&2
+            exit 1
+          fi
+
+      - name: Run full unittest suite
+        run: python3 run_tests.py
+
+      - name: Remove one-off workflow
+        run: rm .github/workflows/wire-default-language-codes-once.yml
+
+      - name: Commit final cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "Use explicit country and language defaults"
+          git push origin HEAD:agent/remove-default-language-code
