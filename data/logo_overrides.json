@@ -189,6 +189,15 @@
       "logo": "https://www.jojgroup.sk/wp-content/uploads/CS-mistery.png",
       "source": "JOJ Group official CS Mystery brand page visual material",
       "note": "P2; direct broadcaster-owned PNG; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "Prima.cz@SD"
+      },
+      "logo": "https://cdn.administrace.tv/2023/06/16/hd/8f877162949d74adb19e2bac00d05e82.jpg",
+      "source": "FTV Prima official 2013 branding announcement on iprima.cz",
+      "note": "P1; direct FTV Prima-hosted artwork; upgrades the final stable Czech P1 fallback to canonical; manually reviewed 2026-08-13"
     }
   ]
 }
