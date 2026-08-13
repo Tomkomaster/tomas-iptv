@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class LanguagePlaylistTests(unittest.TestCase):
-    def test_config_exposes_three_initial_language_outputs(self):
+    def test_config_exposes_configured_language_outputs(self):
         cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
         self.assertEqual(
             cfg["language_outputs"],
@@ -23,10 +23,11 @@ class LanguagePlaylistTests(unittest.TestCase):
                 "hun": "public/by-language/hun.m3u",
                 "slk": "public/by-language/slk.m3u",
                 "ces": "public/by-language/ces.m3u",
+                "ron": "public/by-language/ron.m3u",
             },
         )
         supported = configured_language_codes(cfg)
-        for code in ("hun", "slk", "ces"):
+        for code in ("hun", "slk", "ces", "ron"):
             self.assertIn(code, supported)
 
     def test_serbian_hungarian_entry_remains_rs_in_hungarian_catalog(self):
