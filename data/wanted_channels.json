@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
   "channels": [
-    {
-      "country_code": "HU",
-      "channel": "Hir TV",
-      "priority": "P1",
-      "reason": "Major national news channel."
-    },
+{
+  "country_code": "HU",
+  "channel": "Hír TV",
+  "tvg_id": "HirTV.hu",
+  "priority": "P1",
+  "reason": "Major national news channel."
+},
     {
       "country_code": "SK",
       "channel": "TA3",
