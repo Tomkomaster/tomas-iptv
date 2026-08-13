@@ -37,7 +37,8 @@ function setCountry(country) {
       ? 'Showing all countries. Country tabs filter country-aware cards and tables below.'
       : `Showing ${selectedCountry} only. Unresolved identity warnings with no safe country remain visible.`;
   }
-  renderEpgCountryCoverage(epgData);
+  renderEpgQuality();
+  applyEpgQualityFilters();
   renderAttentionSummary();
   applyAttentionFilters();
   renderHealthSummary();
@@ -55,41 +56,150 @@ for (const button of countryButtons) {
   button.addEventListener('click', () => setCountry(button.dataset.countryTab || 'ALL'));
 }
 
+const epgQualitySummary = document.getElementById('epgQualitySummary');
 const epgCountrySummary = document.getElementById('epgCountrySummary');
-let epgData = null;
+const epgQualitySearch = document.getElementById('epgQualitySearch');
+const epgQualityFilter = document.getElementById('epgQualityFilter');
+const epgQualityVisibleCount = document.getElementById('epgQualityVisibleCount');
+const epgQualityTableBody = document.querySelector('#epgQualityTable tbody');
+const epgCollisionTableBody = document.querySelector('#epgCollisionTable tbody');
+const epgVerifiedMissingTableBody = document.querySelector('#epgVerifiedMissingTable tbody');
+let epgQualityData = null;
+let epgQualityRows = [];
 
-function renderEpgCountryCoverage(data) {
-  if (!epgCountrySummary) return;
-  const countries = data?.countries || {};
-  const codes = SUPPORTED_COUNTRIES
-    .filter(code => countries[code])
-    .filter(countryMatches);
-  if (!codes.length) {
-    epgCountrySummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Country EPG data unavailable</div></div>';
-    return;
-  }
-  epgCountrySummary.innerHTML = codes.map(code => {
-    const info = countries[code] || {};
-    const total = Number(info.playlist_tvg_ids || 0);
-    const mapped = Number(info.mapped_tvg_ids || 0);
-    const populated = Number(info.channels_with_programmes || 0);
-    const actual = Number(info.actual_programme_coverage_percent || 0).toFixed(1);
-    const mappedPct = Number(info.mapping_coverage_percent || 0).toFixed(1);
-    return `
-      <div class="card" data-country="${esc(code)}">
-        <div class="value">${actual}%</div>
-        <div class="label">${code} programmes (${populated}/${total})</div>
-        <div class="detail">Mapped: ${mapped}/${total} (${mappedPct}%)</div>
-      </div>`;
-  }).join('');
+function epgQualityBadgeClass(category) {
+  if (category === 'Exact tvg-id') return 'verified';
+  if (category === 'Alias') return 'tv';
+  if (category === 'Guessed' || category === 'EPG unavailable') return 'review';
+  if (category === 'Missing') return 'rejected';
+  return 'base';
 }
 
-fetch('epg-health.json', { cache: 'no-store' })
+function selectedEpgChannels() {
+  const channels = Array.isArray(epgQualityData?.channels) ? epgQualityData.channels : [];
+  return channels.filter(row => countryMatches(row.country_code));
+}
+
+function epgSummaryForRows(rows) {
+  const count = category => rows.filter(row => row.quality_category === category).length;
+  const expected = rows.filter(row => row.epg_policy === 'expected');
+  const complete = expected.filter(row => ['Exact tvg-id', 'Alias', 'Guessed'].includes(row.quality_category));
+  return {
+    total: rows.length,
+    exact: count('Exact tvg-id'),
+    alias: count('Alias'),
+    guessed: count('Guessed'),
+    missing: count('Missing'),
+    unavailable: count('EPG unavailable'),
+    expected: expected.length,
+    complete: complete.length,
+    completeness: expected.length ? (100 * complete.length / expected.length) : 0,
+  };
+}
+
+function renderEpgQuality() {
+  if (!epgQualityData) return;
+  const rows = selectedEpgChannels();
+  const summary = epgSummaryForRows(rows);
+  if (epgQualitySummary) {
+    epgQualitySummary.innerHTML = `
+      <div class="card"><div class="value">${summary.completeness.toFixed(1)}%</div><div class="label">EPG completeness (${summary.complete}/${summary.expected} expected)</div></div>
+      <div class="card"><div class="value">${summary.exact}</div><div class="label">Exact tvg-id</div></div>
+      <div class="card"><div class="value">${summary.alias}</div><div class="label">Alias</div></div>
+      <div class="card"><div class="value">${summary.guessed}</div><div class="label">Guessed</div></div>
+      <div class="card"><div class="value">${summary.missing}</div><div class="label">Missing</div></div>
+      <div class="card"><div class="value">${summary.unavailable}</div><div class="label">EPG unavailable</div></div>`;
+  }
+
+  if (epgCountrySummary) {
+    const countries = epgQualityData.countries || {};
+    const codes = SUPPORTED_COUNTRIES.filter(code => countries[code]).filter(countryMatches);
+    epgCountrySummary.innerHTML = codes.length ? codes.map(code => {
+      const info = countries[code] || {};
+      return `<div class="card" data-country="${esc(code)}">
+        <div class="value">${Number(info.epg_completeness_percent || 0).toFixed(1)}%</div>
+        <div class="label">${esc(code)} EPG completeness (${Number(info.epg_expected_with_programmes || 0)}/${Number(info.epg_expected_channels || 0)})</div>
+        <div class="detail">Exact ${Number(info.exact_tvg_id || 0)} · Alias ${Number(info.alias || 0)} · Guessed ${Number(info.guessed || 0)} · Missing ${Number(info.missing || 0)} · Unavailable ${Number(info.epg_unavailable || 0)}</div>
+      </div>`;
+    }).join('') : '<div class="card"><div class="value">—</div><div class="label">Country EPG quality unavailable</div></div>';
+  }
+
+  if (epgCollisionTableBody) {
+    const collisions = (epgQualityData.tvg_id_collisions || []).filter(item => {
+      const channels = Array.isArray(item.channels) ? item.channels : [];
+      return selectedCountry === 'ALL' || channels.some(channel => countryMatches(channel.country_code));
+    });
+    epgCollisionTableBody.innerHTML = collisions.length ? collisions.map(item => {
+      const channels = Array.isArray(item.channels) ? item.channels : [];
+      return `<tr>
+        <td>${esc(item.tvg_id || '—')}</td>
+        <td><span class="badge rejected">${Number(item.logical_channel_count || channels.length)} channels</span></td>
+        <td>${esc([...new Set(channels.map(row => row.country_code).filter(Boolean))].join(', ') || '—')}</td>
+        <td>${channels.map(row => `<div><strong>${esc(row.channel || 'Unnamed')}</strong><div class="detail">${esc(row.key || '')}</div></div>`).join('')}</td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="4"><span class="badge verified">Clear</span> No unexpected tvg-id collisions.</td></tr>';
+  }
+
+  if (epgVerifiedMissingTableBody) {
+    const gaps = (epgQualityData.verified_without_epg_mapping || []).filter(row => countryMatches(row.country_code));
+    epgVerifiedMissingTableBody.innerHTML = gaps.length ? gaps.map(row => {
+      const issue = row.issue === 'missing_tvg_id' ? 'Missing tvg-id' : 'No EPG mapping';
+      const link = row.stream_url ? `<a href="${esc(row.stream_url)}" target="_blank" rel="noopener">stream</a>` : '—';
+      return `<tr data-country="${esc(row.country_code || 'UNKNOWN')}">
+        <td>${esc(row.country_code || 'UNKNOWN')}</td><td class="channel">${esc(row.channel || 'Unnamed')}</td>
+        <td>${esc(row.tvg_id || '—')}</td><td><span class="badge rejected">${esc(issue)}</span></td>
+        <td><span class="badge ${manualBadgeClass(row.decision)}">${esc(row.decision || 'Unknown')}</span></td><td>${link}</td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="6"><span class="badge verified">Clear</span> Every verified stable channel has an EPG mapping identity.</td></tr>';
+  }
+}
+
+function applyEpgQualityFilters() {
+  if (!epgQualitySearch || !epgQualityFilter) return;
+  const query = epgQualitySearch.value.trim().toLowerCase();
+  const category = epgQualityFilter.value;
+  let shown = 0;
+  for (const row of epgQualityRows) {
+    const matchesText = !query || row.innerText.toLowerCase().includes(query);
+    const matchesCategory = !category || row.dataset.epgQuality === category;
+    const show = countryMatches(row.dataset.country) && matchesText && matchesCategory;
+    row.style.display = show ? '' : 'none';
+    if (show) shown++;
+  }
+  if (epgQualityVisibleCount) {
+    epgQualityVisibleCount.textContent = `Showing ${shown} of ${epgQualityRows.length} stable logical channels`;
+  }
+}
+
+function renderEpgQualityTable() {
+  if (!epgQualityTableBody || !epgQualityData) return;
+  const channels = Array.isArray(epgQualityData.channels) ? epgQualityData.channels : [];
+  epgQualityTableBody.innerHTML = channels.length ? channels.map(row => `
+    <tr data-country="${esc(row.country_code || 'UNKNOWN')}" data-epg-quality="${esc(row.quality_category || '')}">
+      <td>${esc(row.country_code || 'UNKNOWN')}</td><td class="channel">${esc(row.channel || 'Unnamed')}</td>
+      <td>${esc(row.tvg_id || '—')}</td><td><span class="badge ${epgQualityBadgeClass(row.quality_category)}">${esc(row.quality_category || 'Unknown')}</span></td>
+      <td>${esc(row.match_type || '—')}<div class="detail">${esc(row.provider_xmltv_id || '')}</div></td>
+      <td>${esc(row.provider || '—')}</td><td>${esc(row.epg_policy || 'expected')}<div class="detail">${esc(row.epg_policy_reason || '')}</div></td>
+      <td>${row.programme_available ? '<span class="badge verified">Available</span>' : '<span class="badge review">Unavailable</span>'}</td>
+    </tr>`).join('') : '<tr><td colspan="8">No stable logical channels were reported.</td></tr>';
+  epgQualityRows = Array.from(document.querySelectorAll('#epgQualityTable tbody tr[data-epg-quality]'));
+  applyEpgQualityFilters();
+}
+
+fetch('epg-quality.json', { cache: 'no-store' })
   .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
-  .then(data => { epgData = data; renderEpgCountryCoverage(data); })
+  .then(data => {
+    epgQualityData = data;
+    renderEpgQuality();
+    renderEpgQualityTable();
+  })
   .catch(error => {
-    if (epgCountrySummary) epgCountrySummary.innerHTML = `<div class="card"><div class="value">—</div><div class="label">EPG coverage unavailable: ${esc(error.message)}</div></div>`;
+    if (epgQualitySummary) epgQualitySummary.innerHTML = `<div class="card"><div class="value">—</div><div class="label">EPG quality unavailable: ${esc(error.message)}</div></div>`;
+    if (epgCountrySummary) epgCountrySummary.innerHTML = '<div class="card"><div class="value">—</div><div class="label">Country EPG quality unavailable</div></div>';
+    if (epgQualityTableBody) epgQualityTableBody.innerHTML = `<tr><td colspan="8">epg-quality.json could not be loaded: ${esc(error.message)}</td></tr>`;
   });
+if (epgQualitySearch) epgQualitySearch.addEventListener('input', applyEpgQualityFilters);
+if (epgQualityFilter) epgQualityFilter.addEventListener('change', applyEpgQualityFilters);
 
 function manualBadgeClass(status) {
   if (status === 'Verified' || status === 'Samsung + VLC') return 'verified';

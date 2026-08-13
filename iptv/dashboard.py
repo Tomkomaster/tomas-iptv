@@ -64,6 +64,18 @@ def render_dashboard(
             '<a href="epg-coverage.json">'
             'EPG coverage report'
             '</a>'
+            ' · '
+            '<a href="epg-quality.json">'
+            'EPG identity quality (JSON)'
+            '</a>'
+            ' · '
+            '<a href="tvg-id-collisions.csv">'
+            'tvg-id collisions (CSV)'
+            '</a>'
+            ' · '
+            '<a href="verified-without-epg.csv">'
+            'Verified without EPG (CSV)'
+            '</a>'
         )
 		
     total_streams = len(final_entries)

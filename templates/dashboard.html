@@ -79,14 +79,65 @@
     </table>
   </div>
 
-  <h2>EPG coverage by country</h2>
+  <h2>EPG identity quality & completeness</h2>
   <p class="muted">
-    Programme-guide coverage is shown separately for HU, SK and CZ so growth in
-    one country does not hide gaps in another. Percentages use stable channels
-    that currently have a tvg-id. Missing tvg-id values remain visible in Needs attention.
+    EPG quality is measured per stable logical channel, not per stream URL. Exact IDs
+    and explicit aliases are higher-confidence identities; deterministic variant/name
+    inference is shown as Guessed. Missing IDs and mapped-but-empty/unmapped guide
+    entries stay visible instead of disappearing from the denominator. The main EPG
+    completeness percentage counts expected logical channels with current/future
+    programme data, including missing tvg-id values as incomplete.
   </p>
+  <div id="epgQualitySummary" class="audit-summary">
+    <div class="card"><div class="value">…</div><div class="label">Loading EPG identity quality</div></div>
+  </div>
+
+  <h3>EPG coverage by country</h3>
   <div id="epgCountrySummary" class="audit-summary">
-    <div class="card"><div class="value">…</div><div class="label">Loading EPG coverage</div></div>
+    <div class="card"><div class="value">…</div><div class="label">Loading country EPG quality</div></div>
+  </div>
+
+  <div class="controls">
+    <input id="epgQualitySearch" type="search" placeholder="Search EPG identity quality...">
+    <select id="epgQualityFilter">
+      <option value="">All EPG identity states</option>
+      <option value="Exact tvg-id">Exact tvg-id</option>
+      <option value="Alias">Alias</option>
+      <option value="Guessed">Guessed</option>
+      <option value="Missing">Missing</option>
+      <option value="EPG unavailable">EPG unavailable</option>
+    </select>
+  </div>
+  <p id="epgQualityVisibleCount" class="muted">Loading epg-quality.json…</p>
+  <div class="table-wrap">
+    <table id="epgQualityTable">
+      <thead><tr><th>Country</th><th>Channel</th><th>tvg-id</th><th>Quality</th><th>Match</th><th>Provider</th><th>EPG policy</th><th>Programmes</th></tr></thead>
+      <tbody><tr><td colspan="8" class="muted">Loading EPG identity quality…</td></tr></tbody>
+    </table>
+  </div>
+
+  <h3>Unexpected tvg-id collisions</h3>
+  <p class="muted">
+    These are distinct logical channels sharing the same exact tvg-id. Multiple feeds
+    of one logical channel are intentionally collapsed and do not create a warning.
+  </p>
+  <div class="table-wrap">
+    <table id="epgCollisionTable">
+      <thead><tr><th>tvg-id</th><th>Logical channels</th><th>Countries</th><th>Channel identities</th></tr></thead>
+      <tbody><tr><td colspan="4" class="muted">Loading tvg-id collisions…</td></tr></tbody>
+    </table>
+  </div>
+
+  <h3>Verified channels without EPG mapping</h3>
+  <p class="muted">
+    Stable channels already verified for TV playback but lacking an EPG identity path.
+    Missing tvg-id and present-but-unmapped tvg-id cases are separated in the report.
+  </p>
+  <div class="table-wrap">
+    <table id="epgVerifiedMissingTable">
+      <thead><tr><th>Country</th><th>Channel</th><th>tvg-id</th><th>Issue</th><th>Manual status</th><th>URL</th></tr></thead>
+      <tbody><tr><td colspan="6" class="muted">Loading verified EPG gaps…</td></tr></tbody>
+    </table>
   </div>
 
   <h2>Candidate streams to test</h2>
