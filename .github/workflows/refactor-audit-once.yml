@@ -1,0 +1,46 @@
+name: One-off extract audit
+
+on:
+  push:
+    branches:
+      - agent/extract-audit
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout refactor branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/extract-audit
+          fetch-depth: 0
+
+      - name: Extract audit subsystem
+        run: python3 tools/_extract_audit_once.py
+
+      - name: Compile extracted modules
+        run: python3 -m py_compile iptv/audit.py iptv/source_loader.py iptv/build_core.py build.py
+
+      - name: Run full unittest suite
+        run: python3 run_tests.py
+
+      - name: Remove one-off helpers
+        run: |
+          rm tools/_extract_audit_once.py
+          rm .github/workflows/refactor-audit-once.yml
+
+      - name: Commit extracted subsystem
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No refactor changes were produced." >&2
+            exit 1
+          fi
+          git diff --cached --stat
+          git commit -m "Extract audit from build core"
+          git push origin HEAD:agent/extract-audit
