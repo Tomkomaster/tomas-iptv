@@ -1,4 +1,104 @@
 {
   "schema_version": 1,
-  "entries": []
+  "entries": [
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "CT1.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/%C4%8CT1_logo_2012.svg/960px-%C4%8CT1_logo_2012.svg.png",
+      "source": "Česká televize official logo download page; Wikimedia Commons mirror identifies ceskatelevize.cz as source and Česká televize as author",
+      "note": "P1; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "CT2.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/%C4%8CT2_logo_2012.svg/960px-%C4%8CT2_logo_2012.svg.png",
+      "source": "Česká televize official logo download page; Wikimedia Commons mirror identifies ceskatelevize.cz as source and Česká televize as author",
+      "note": "P1; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "CT24.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/%C4%8CT24_logo.png/960px-%C4%8CT24_logo.png",
+      "source": "Česká televize official logo download page; Wikimedia Commons file records the original Česká televize press asset as source",
+      "note": "P1; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "CTSport.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/%C4%8CT_sport_logo.png/960px-%C4%8CT_sport_logo.png",
+      "source": "Česká televize official logo download page; manually matched to the current ČT sport identity",
+      "note": "P1; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "TVNova.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/TV_Nova_Logo_2024.svg/960px-TV_Nova_Logo_2024.svg.png",
+      "source": "TV Nova 2024 official identity; Wikimedia Commons mirror lists tv.nova.cz/program as source and TV Nova s.r.o. as author",
+      "note": "P1; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "NovaCinema.cz@SD"
+      },
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/6/63/Nova_Cinema_2024.png",
+      "source": "TV Nova official site; Wikimedia Commons mirror lists tv.nova.cz as source and Nova as author",
+      "note": "P2; fills a previously missing stable logo; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "FILMBOXPlusComedy.pl@Czechia"
+      },
+      "logo": "https://spiintl.com/data/files/kcfinderUploadDir/images/filmboxplus/filmbox%2Bcomedy.png",
+      "source": "SPI International official FILMBOX+ channel asset",
+      "note": "P2; broadcaster-owned asset; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "FILMBOXPlusEmotion.pl@Czechia"
+      },
+      "logo": "https://spiintl.com/data/files/kcfinderUploadDir/images/filmboxplus/filmbox%2Bemotion.png",
+      "source": "SPI International official FILMBOX+ channel asset",
+      "note": "P2; broadcaster-owned asset; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "FILMBOXPlusHits.pl@Czechia"
+      },
+      "logo": "https://spiintl.com/data/files/kcfinderUploadDir/images/filmboxplus/filmbox%2Bhits.png",
+      "source": "SPI International official FILMBOX+ channel asset",
+      "note": "P2; broadcaster-owned asset; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "FILMBOXPlusLoveCrime.pl@Czechia"
+      },
+      "logo": "https://spiintl.com/data/files/kcfinderUploadDir/images/filmboxplus/filmbox%2Blove-and-crime.png",
+      "source": "SPI International official FILMBOX+ channel asset",
+      "note": "P2; broadcaster-owned asset; manually reviewed 2026-08-13"
+    },
+    {
+      "match": {
+        "country_code": "CZ",
+        "tvg_id": "FILMBOXPlusOne.pl@Czechia"
+      },
+      "logo": "https://spiintl.com/data/files/kcfinderUploadDir/images/filmboxplus/filmbox%2Bone.png",
+      "source": "SPI International official FILMBOX+ channel asset",
+      "note": "P2; broadcaster-owned asset; manually reviewed 2026-08-13"
+    }
+  ]
 }
