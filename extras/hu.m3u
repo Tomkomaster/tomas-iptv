@@ -634,7 +634,7 @@ https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.
 # Our current direct Videa feed is already rejected.
 # This is a different OnlineStream playlist-wrapper route currently listed for Hír TV.
 # Check whether it actually resolves to a different usable backend.
-#EXTINF:-1 tvg-id="HirTV.hu@SD" tvg-name="Hir TV",Hir TV [TEST] [OnlineStream wrapper]
+#EXTINF:-1 tvg-id="HirTV.hu@SD" tvg-name="Hír TV",Hír TV [TEST] [OnlineStream wrapper]
 https://onlinestream.live/play.m3u?id=4740&ext=.m3u
 
 # M4 Sport — P2 replacement candidate.
