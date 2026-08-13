@@ -132,7 +132,7 @@ class FeedQualityScoringTests(unittest.TestCase):
             },
         ]
         cfg = {
-            "default_language_code": "HU",
+            "default_country_code": "HU",
             "country_names": {"HU": "Hungary"},
             "country_outputs": {"HU": "public/hu.m3u"},
             "stable_playlist": {

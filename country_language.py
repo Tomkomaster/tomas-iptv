@@ -204,7 +204,6 @@ def source_country_code(spec: dict, cfg: dict) -> str:
         # Historical source config used language_code as the country bucket.
         spec.get("language_code"),
         cfg.get("default_country_code"),
-        cfg.get("default_language_code"),
     ):
         code = normalize_country_code(str(value or ""))
         if code:
@@ -234,7 +233,7 @@ def configured_country_codes(cfg: dict) -> list[str]:
         return result
 
     fallback = normalize_country_code(
-        str(cfg.get("default_country_code") or cfg.get("default_language_code") or "")
+        str(cfg.get("default_country_code") or "")
     )
     return [fallback or "HU"]
 
@@ -247,6 +246,8 @@ def configured_language_codes(cfg: dict) -> list[str]:
         for code in normalize_language_codes(values):
             if code not in result:
                 result.append(code)
+
+    add(cfg.get("default_language_codes"))
 
     language_outputs = cfg.get("language_outputs") or {}
     if isinstance(language_outputs, dict):

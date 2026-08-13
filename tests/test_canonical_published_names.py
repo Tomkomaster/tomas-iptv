@@ -63,7 +63,7 @@ class CanonicalPublishedNameTests(unittest.TestCase):
                 }
             ],
             {
-                "default_language_code": "HU",
+                "default_country_code": "HU",
                 "country_names": {"CZ": "Czechia"},
             },
         )
