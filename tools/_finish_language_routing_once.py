@@ -52,6 +52,15 @@ def main() -> None:
     remaining = remaining.replace(marker, marker + additions, 1)
 
     target = TARGET.read_text(encoding="utf-8")
+    if "normalize_language_code as normalize_spoken_language_code" not in target:
+        country_import_marker = "    configured_language_codes,\n"
+        if country_import_marker not in target:
+            raise RuntimeError("country_language import marker missing")
+        target = target.replace(
+            country_import_marker,
+            country_import_marker + "    normalize_language_code as normalize_spoken_language_code,\n",
+            1,
+        )
     if "from iptv.channel_identity import canonical_stream_url" not in target:
         import_marker = "from iptv.playback_status import normalize_test_status\n"
         if import_marker not in target:
