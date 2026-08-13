@@ -76,8 +76,36 @@ def compile_wanted_channels(payload: dict | None) -> list[dict[str, str]]:
     return compiled
 
 
+def _load_payload(path: Path) -> dict:
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"Wanted channel catalog {path.name} must be a JSON object.")
+    return payload
+
+
 def load_wanted_channels(path: Path | None) -> list[dict[str, str]]:
     if path is None or not path.is_file():
         return []
-    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+
+    payload = _load_payload(path)
+    if path.name == "wanted_channels.json":
+        merged_channels = list(payload.get("channels") or [])
+        for extra_path in sorted(path.parent.glob("wanted_channels_*.json")):
+            extra_payload = _load_payload(extra_path)
+            schema_version = int(extra_payload.get("schema_version") or 1)
+            if schema_version != 1:
+                raise ValueError(
+                    f"Unsupported wanted channel schema_version in {extra_path.name}: "
+                    f"{schema_version}."
+                )
+            extra_channels = extra_payload.get("channels") or []
+            if not isinstance(extra_channels, list):
+                raise ValueError(
+                    f"Wanted channel catalog {extra_path.name} channels must be a list."
+                )
+            merged_channels.extend(extra_channels)
+
+        payload = dict(payload)
+        payload["channels"] = merged_channels
+
     return compile_wanted_channels(payload)
