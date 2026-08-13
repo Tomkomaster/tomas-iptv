@@ -64,9 +64,9 @@
     },
     {
       "country_code": "HU",
-      "channel": "Discovery Turbo Extra",
+      "channel": "Discovery Turbo Xtra",
       "priority": "P2",
-      "reason": "Hungarian-language factual and motoring channel."
+      "reason": "Hungarian-language factual, motoring and motorsport channel."
     },
     {
       "country_code": "HU",
@@ -127,6 +127,36 @@
       "channel": "Eurosport 2",
       "priority": "P2",
       "reason": "Major sports channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Arena4",
+      "priority": "P2",
+      "reason": "Major Hungarian sports channel from Network4; no working source is currently tracked."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Auto Motor Sport",
+      "priority": "P2",
+      "reason": "Motorsport channel available with a Hungarian audio track; no working source is currently tracked."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Extreme Sports",
+      "priority": "P2",
+      "reason": "Sports channel distributed with a Hungarian audio track; no working source is currently tracked."
+    },
+    {
+      "country_code": "HU",
+      "channel": "M4 Sport+",
+      "priority": "P2",
+      "reason": "Hungarian public-service sports service carried in the Duna World weekend programme slot; research whether a usable direct feed can be tracked separately."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Match4",
+      "priority": "P2",
+      "reason": "Major Hungarian sports channel from Network4; no working source is currently tracked."
     },
     {
       "country_code": "SK",
