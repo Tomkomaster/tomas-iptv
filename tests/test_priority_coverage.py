@@ -112,6 +112,56 @@ class PriorityCoverageTests(unittest.TestCase):
         self.assertEqual(coverage["logo_summary"]["missing_logo"], 0)
         self.assertEqual(coverage["logo_summary"]["canonical_logo_coverage_percent"], 50.0)
 
+    def test_logo_score_bridges_published_country_for_exact_tvg_identity(self):
+        rows = [
+            audit_row("AMC Europe Czech Republic", "AMCEurope.uk@CzechRepublic", "SK", stable=True),
+            audit_row("Disney Channel Feed 1", "DisneyChannel.cz@SD", "HU", stable=True),
+        ]
+        config = {
+            "country_names": {"HU": "Hungary", "SK": "Slovakia"},
+            "country_outputs": {"HU": "public/hu.m3u", "SK": "public/sk.m3u"},
+        }
+        policy = {
+            "schema_version": 1,
+            "default_priority": "P3",
+            "entries": [
+                {"country": "SK", "channel": "AMC Europe Czech Republic", "priority": "P2"},
+                {"country": "HU", "channel": "Disney Channel Feed 1", "priority": "P2"},
+            ],
+        }
+        logos = {
+            "channels": [
+                {
+                    "country_code": "CZ",
+                    "channel": "AMC Europe Czech Republic",
+                    "tvg_id": "AMCEurope.uk@CzechRepublic",
+                    "quality_category": "Canonical",
+                },
+                {
+                    "country_code": "HU",
+                    "channel": "Disney Channel",
+                    "tvg_id": "DisneyChannel.hu@SD",
+                    "quality_category": "Source fallback",
+                },
+            ]
+        }
+
+        coverage = build_priority_coverage(
+            rows,
+            config=config,
+            priority_policy=policy,
+            wanted_channels=[],
+            logo_quality=logos,
+        )
+
+        summary = coverage["logo_summary"]
+        self.assertEqual(summary["stable_targets"], 2)
+        self.assertEqual(summary["with_logo"], 2)
+        self.assertEqual(summary["canonical_logo"], 1)
+        self.assertEqual(summary["source_fallback"], 1)
+        self.assertEqual(summary["missing_logo"], 0)
+        self.assertEqual(summary["logo_availability_percent"], 100.0)
+
     def test_injects_prominent_scorecard_before_next_work(self):
         coverage = {
             "countries": {

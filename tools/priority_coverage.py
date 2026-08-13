@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 from pathlib import Path
 
 from research_priority import compile_research_priority_policy, priority_rank
@@ -75,22 +76,55 @@ def _status_rank(status: str) -> int:
     }.get(str(status or ""), 9)
 
 
+def _logo_match_name(value: object) -> str:
+    name = normalize_name(value)
+    # Research labels can retain a harmless provider/feed discriminator even when
+    # publication has already collapsed it to the logical channel identity.
+    name = re.sub(r"\bfeed\s+\d+\b", " ", name, flags=re.I)
+    return " ".join(name.split())
+
+
+def _best_logo_row(rows: list[dict]) -> dict | None:
+    if not rows:
+        return None
+    quality_rank = {"Canonical": 2, "Source fallback": 1, "Missing": 0}
+    return max(rows, key=lambda row: quality_rank.get(str(row.get("quality_category") or ""), -1))
+
+
 def _logo_row_for_target(target: dict, logo_rows: list[dict]) -> dict | None:
     country = str(target.get("country") or "").strip().upper()
-    candidates = [
+    same_country = [
         row for row in logo_rows
         if str(row.get("country_code") or "").strip().upper() == country
     ]
     target_id = normalize_tvg_id(target.get("tvg_id", ""))
     if target_id:
-        for row in candidates:
-            if normalize_tvg_id(row.get("tvg_id", "")) == target_id:
-                return row
-    target_name = normalize_name(target.get("channel", ""))
+        exact_same_country = [
+            row for row in same_country
+            if normalize_tvg_id(row.get("tvg_id", "")) == target_id
+        ]
+        if exact_same_country:
+            return _best_logo_row(exact_same_country)
+
+        # Priority coverage follows the research/audit geography, while logo quality
+        # follows the final published geography. An explicit routing can therefore
+        # move the same logical service between country buckets. Exact tvg-id remains
+        # strong enough identity evidence to bridge that reporting boundary.
+        exact_any_country = [
+            row for row in logo_rows
+            if normalize_tvg_id(row.get("tvg_id", "")) == target_id
+        ]
+        if exact_any_country:
+            return _best_logo_row(exact_any_country)
+
+    target_name = _logo_match_name(target.get("channel", ""))
     if target_name:
-        for row in candidates:
-            if normalize_name(row.get("channel", "")) == target_name:
-                return row
+        same_name_country = [
+            row for row in same_country
+            if _logo_match_name(row.get("channel", "")) == target_name
+        ]
+        if same_name_country:
+            return _best_logo_row(same_name_country)
     return None
 
 
