@@ -1,0 +1,32 @@
+name: One-off lock build core architecture
+on:
+  push:
+    branches: [agent/lock-build-core-architecture]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/lock-build-core-architecture
+          fetch-depth: 0
+      - run: python3 -m py_compile iptv/build_core.py build.py
+      - run: python3 run_tests.py
+      - run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          size = Path('iptv/build_core.py').stat().st_size
+          print(f'Final build_core.py: {size:,} bytes')
+          if size >= 20_000:
+              raise SystemExit('build_core.py exceeded architecture guard')
+          PY
+      - run: rm .github/workflows/lock-build-core-architecture-once.yml
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "Lock build core architecture"
+          git push origin HEAD:agent/lock-build-core-architecture
