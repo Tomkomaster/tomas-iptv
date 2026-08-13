@@ -54,7 +54,7 @@ GitHub Actions invokes these with `python3 -m epg.<module>` so the folder is bot
 
 The core implementation package contains:
 
-- `build_core.py` — transitional build orchestration and remaining coupled subsystems
+- `build_core.py` — build orchestration, ROOT-aware I/O shims and compatibility wrappers
 - `channel_identity.py` — logical channel identity, canonical stream URLs and safe display-name normalization
 - `source_loader.py` — source definitions, remote/local loading and M3U parsing; `build_core.py` no longer carries duplicate parser/downloader implementations
 - `deduplication.py` — source collection, canonical identity application, global URL deduplication and source contribution stats
@@ -72,7 +72,9 @@ The core implementation package contains:
 
 `build.py` deliberately aliases imports to `iptv.build_core` so existing callers continue to use the same module globals. This is especially important for `tools/stable_build.py`, which temporarily replaces feed-quality functions during the second reliable-build pass.
 
-The large `build_core.py` is not the final architecture. It is a compatibility bridge that lets responsibilities be extracted one tested unit at a time instead of rewriting the builder in one risky change. Channel identity/name normalization is now one of those extracted units; audit, routing and stable selection remain the larger coupled blocks.
+`build_core.py` is now intentionally the orchestration/compatibility layer rather than the home of the build subsystems. `main()` coordinates configuration, source collection, audit preparation, candidate/stable selection, publication, playlist outputs, reports and dashboard generation. Thin wrappers remain where live module globals are part of the compatibility contract. In particular, stable selection receives the current feed-quality functions as callbacks so same-build failover can continue to replace `build.score_feed_quality` safely at runtime.
+
+The test suite enforces that `iptv/build_core.py` stays below 20 KB. New parsing, identity, audit, routing, selection, publication or reporting behavior should normally be added to its owning module rather than growing the core again.
 
 ## `data/`
 
@@ -101,11 +103,11 @@ It makes the transitional `tools/` and `epg/` module locations available to lega
 
 ## Next extraction candidates
 
-Good next steps, in roughly increasing coupling/risk, are:
+The original build-core breakup is substantially complete. Future structural work should be smaller and driven by real maintenance needs rather than file-size targets:
 
-1. audit parsing/validation/preparation (`iptv/audit.py`)
-2. publication/country routing (`iptv/channel_routing.py`)
-3. stable candidate selection (`iptv/stable_selection.py`)
-4. move the remaining shared root library modules into `iptv/` as their callers are touched
+1. move the remaining widely imported root libraries (`country_language.py`, `feed_quality.py`, `health_policy.py`, `research_priority.py`, `wanted_channels.py`) into `iptv/` one at a time when their callers are touched;
+2. move ROOT-aware audit/source file loading only if a clean path-based API is useful elsewhere;
+3. extract playlist-output orchestration only if country/language output rules become complex enough to deserve their own subsystem;
+4. keep the `build` compatibility facade until intentionally making a breaking API change.
 
-Stable selection should move only together with an explicit home for the same-build health/feed-quality override hooks. The failover behavior must remain testable and must not depend on accidental module-global monkeypatching after that extraction.
+Do not bypass the callback boundary in stable selection: same-build verified-feed failover depends on the live scoring hooks remaining explicit and testable.
