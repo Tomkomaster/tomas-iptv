@@ -9,6 +9,10 @@ from urllib.parse import urlparse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from iptv.playback_status import (
+    normalize_test_status,
+    is_tested_status,
+)
 from iptv.reports import (
     summarize_country_stats,
     summarize_language_stats,
@@ -584,58 +588,7 @@ def load_audit(path: str | None) -> list[dict]:
     return [dict(item) for item in data if isinstance(item, dict)]
 
 
-def normalize_test_status(value: str) -> str:
-    raw = (value or "").strip()
-    value = raw.casefold().replace(" ", "_")
 
-    canonical = {
-        "works", "works_with_warning", "loads", "mrl_error",
-        "format_error", "generic_error", "wrong_language",
-        "not_tested", "needs_review"
-    }
-    if value in canonical:
-        return value
-
-    aliases = {
-        "ok": "works",
-        "working": "works",
-        "pass": "works",
-        "passed": "works",
-        "yes": "works",
-        "just_loads": "loads",
-        "pending": "not_tested",
-        "untested": "not_tested",
-        "not-tested": "not_tested",
-        "": "not_tested",
-    }
-    if value in aliases:
-        return aliases[value]
-
-    lower = raw.casefold()
-    if "unable to open the mrl" in lower:
-        return "mrl_error"
-    if "player_error_not_supported_file" in lower:
-        return "format_error"
-    if "player_error_generic" in lower:
-        return "generic_error"
-    if "certificate" in lower and ("work" in lower or "play" in lower or "ok" in lower):
-        return "works_with_warning"
-    if "just loads" in lower:
-        return "loads"
-    if lower.startswith("ok"):
-        return "works"
-
-    return "needs_review"
-
-def is_tested_status(value: str) -> bool:
-    """
-    Return True when a device has an actual recorded test result.
-
-    Any normalized status except 'not_tested' means the stream was tested,
-    even if playback failed, kept loading, had a warning, used the wrong
-    language, or still needs review.
-    """
-    return normalize_test_status(value) != "not_tested"
 
 LANGUAGE_NAME_TO_CODE = {
     "hungarian": "HU",
