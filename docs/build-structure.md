@@ -60,7 +60,7 @@ The core implementation package contains:
 - `deduplication.py` — source collection, canonical identity application, global URL deduplication and source contribution stats
 - `playlist_writer.py` — generated M3U headers and playlist writing
 - `publication.py` — published names, content groups and EXTINF metadata rewriting
-- `reports.py` — country/language build summaries and CSV export helpers
+- `reports.py` — channel/report context, previous-build diffing, country/language summaries, CSV/machine-report exports and console summaries
 - `playback_status.py` — shared VLC/Samsung manual-test status normalization
 - `language_routing.py` — spoken-language interpretation, publication-country routing, country naming and language-catalog assembly
 - `audit.py` — manual playback audit validation, decisions and stream-history preparation
