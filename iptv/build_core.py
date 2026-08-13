@@ -6,7 +6,6 @@ import json
 import re
 import sys
 from urllib.parse import urlparse
-import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from iptv.stable_selection import stable_block_reason
@@ -47,7 +46,19 @@ from iptv.language_routing import (
     verified_output_language_code,
     language_acceptance_state,
 )
-from iptv.source_loader import SOURCE_FLAG_RE
+from iptv.source_loader import (
+    ATTR_RE,
+    SOURCE_FLAG_RE,
+    VALID_SOURCE_KINDS,
+    http_get_text,
+    download_m3u,
+    split_extinf,
+    parse_entries,
+    normalize_source_kind,
+    source_spec,
+)
+from iptv.playlist_writer import playlist_header
+from iptv.playlist_writer import write_m3u_playlist as _write_m3u_playlist
 from iptv.playback_status import (
     normalize_test_status,
     is_tested_status,
@@ -97,63 +108,11 @@ from country_language import (
 
 ROOT = Path(__file__).resolve().parent
 
-ATTR_RE = re.compile(r'([A-Za-z0-9_-]+)="([^"]*)"')
 
 
-def http_get_text(url: str, timeout: int = 45) -> str:
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "Mozilla/5.0 Tomas-IPTV-Playlist-Builder/2.0",
-            "Accept": "*/*",
-            "Cache-Control": "no-cache",
-        },
-    )
-    with urllib.request.urlopen(req, timeout=timeout) as response:
-        data = response.read()
-    return data.decode("utf-8-sig", errors="replace")
 
 
-def download_m3u(url: str) -> str:
-    text = http_get_text(url)
-    if "#EXTM3U" not in text[:1000]:
-        raise RuntimeError(f"Source did not look like an M3U playlist: {url}")
-    return text
 
-def playlist_header(cfg: dict) -> str:
-    """
-    Build the #EXTM3U header.
-
-    When EPG is enabled, advertise the public XMLTV guide URL using both
-    commonly understood M3U header attribute names.
-    """
-    header = "#EXTM3U"
-
-    epg = cfg.get("epg") or {}
-
-    if not isinstance(epg, dict):
-        return header
-
-    if not bool(epg.get("enabled")):
-        return header
-
-    public_url = str(
-        epg.get("public_url") or ""
-    ).strip()
-
-    if not public_url:
-        return header
-
-    safe_url = public_url.replace(
-        '"',
-        "%22",
-    )
-
-    return (
-        f'{header} '
-        f'url-tvg="{safe_url}" '
-        f'x-tvg-url="{safe_url}"'
-    )
 	
 def read_local(path: str) -> str:
     p = ROOT / path
@@ -162,63 +121,8 @@ def read_local(path: str) -> str:
     return p.read_text(encoding="utf-8-sig")
 
 
-def split_extinf(line: str) -> tuple[str, str]:
-    """Split an #EXTINF line at the first comma outside double quotes."""
-    in_quotes = False
-    for i, ch in enumerate(line):
-        if ch == '"':
-            in_quotes = not in_quotes
-        elif ch == "," and not in_quotes:
-            return line[:i], line[i + 1 :].strip()
-    return line, ""
 
 
-def parse_entries(text: str) -> list[dict]:
-    """Parse M3U entries while preserving their original lines."""
-    entries: list[dict] = []
-    current: dict | None = None
-
-    for raw in text.splitlines():
-        raw = raw.rstrip("\r")
-        line = raw.strip()
-
-        if not line or line.startswith("#EXTM3U"):
-            continue
-
-        if line.startswith("#EXTINF:"):
-            if current and current.get("url"):
-                entries.append(current)
-
-            metadata_part, display_name = split_extinf(line)
-            attrs = {k.lower(): v for k, v in ATTR_RE.findall(metadata_part)}
-            current = {
-                "lines": [raw],
-                "url": None,
-                "display_name": display_name or attrs.get("tvg-name", "") or "Unnamed channel",
-                "tvg_id": attrs.get("tvg-id", ""),
-                "tvg_name": attrs.get("tvg-name", ""),
-                "logo": attrs.get("tvg-logo", ""),
-                "group_title": attrs.get("group-title", ""),
-                "canonical_id": attrs.get("canonical-id", ""),
-                "country_code": attrs.get("country-code", ""),
-                "language_codes": attrs.get("language-codes", ""),
-            }
-            continue
-
-        if current is None:
-            continue
-
-        current["lines"].append(raw)
-
-        if not line.startswith("#"):
-            current["url"] = line
-            entries.append(current)
-            current = None
-
-    if current and current.get("url"):
-        entries.append(current)
-
-    return entries
 
 
 
@@ -468,122 +372,9 @@ def playlist_status_suffix(decision: str) -> str:
         "Rejected": "X",
     }.get(decision, "?")
 
-VALID_SOURCE_KINDS = {
-    "base",
-    "alternatives",
-    "extras",
-    "source",
-}
 
 
-def normalize_source_kind(
-    value: str,
-    default: str = "source",
-) -> str:
-    """
-    Normalize and validate a source kind.
 
-    Supported canonical kinds:
-      base
-      alternatives
-      extras
-      source
-
-    Singular aliases are accepted for convenience:
-      alternative -> alternatives
-      extra       -> extras
-    """
-    raw = str(
-        value or default
-    ).strip().casefold()
-
-    raw = (
-        raw
-        .replace("-", "_")
-        .replace(" ", "_")
-    )
-
-    aliases = {
-        "base": "base",
-
-        "alternative": "alternatives",
-        "alternatives": "alternatives",
-
-        "extra": "extras",
-        "extras": "extras",
-
-        "source": "source",
-    }
-
-    normalized = aliases.get(raw)
-
-    if not normalized:
-        allowed = ", ".join(
-            sorted(VALID_SOURCE_KINDS)
-        )
-
-        raise RuntimeError(
-            f"Unsupported source kind {value!r}. "
-            f"Allowed kinds: {allowed}."
-        )
-
-    return normalized
-
-def source_spec(
-    item,
-    default_name: str,
-    kind: str,
-) -> dict:
-    """
-    Accept both old plain-string config entries and source objects.
-
-    Source kind is normalized here so the rest of the builder can safely
-    rely on one of:
-      base
-      alternatives
-      extras
-      source
-    """
-    default_kind = normalize_source_kind(
-        kind
-    )
-
-    if isinstance(item, str):
-        key = (
-            "url"
-            if item.startswith(
-                ("http://", "https://")
-            )
-            else "path"
-        )
-
-        return {
-            "name": default_name,
-            "kind": default_kind,
-            key: item,
-        }
-
-    if isinstance(item, dict):
-        result = dict(item)
-
-        result.setdefault(
-            "name",
-            default_name,
-        )
-
-        result["kind"] = (
-            normalize_source_kind(
-                result.get("kind"),
-                default=default_kind,
-            )
-        )
-
-        return result
-
-    raise TypeError(
-        f"Unsupported source definition: "
-        f"{item!r}"
-    )
 
 
 
@@ -1084,6 +875,9 @@ def entries_for_spoken_language(
     ]
 
 
+	
+
+
 def write_m3u_playlist(
     path: Path,
     cfg: dict,
@@ -1092,100 +886,19 @@ def write_m3u_playlist(
     playlist_label: str,
     name_style: str = "status",
 ) -> None:
-    """
-    Write one generated M3U playlist.
-
-    name_style controls only the visible channel-name prefix:
-      status   -> [HU OK] / [SK ?] / [CZ TV] (testing playlist)
-      country  -> [HU] / [SK] / [CZ] (shared stable playlist)
-      language -> legacy alias for country
-      plain    -> no generated prefix (single-country playlists)
-    """
-    path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
+    """Compatibility wrapper around the extracted playlist writer."""
+    return _write_m3u_playlist(
+        path,
+        cfg,
+        entries,
+        generated,
+        playlist_label,
+        name_style=name_style,
+        strip_custom_prefix=strip_custom_prefix,
+        normalize_country_code=normalize_country_code,
+        rewrite_entry_lines=rewrite_entry_lines,
     )
 
-    out_lines = [
-        playlist_header(cfg),
-        (
-            "# Generated automatically: "
-            f"{generated}"
-        ),
-        (
-            "# Tomas IPTV "
-            "smart builder v19"
-        ),
-        (
-            "# Playlist: "
-            f"{playlist_label}"
-        ),
-        "",
-    ]
-
-    valid_name_styles = {
-        "status",
-        "language",
-        "country",
-        "plain",
-    }
-
-    if name_style not in valid_name_styles:
-        raise ValueError(
-            f"Unsupported playlist name_style: {name_style!r}"
-        )
-
-    for entry in entries:
-        entry_lines = entry["lines"]
-
-        if name_style != "status":
-            original_display = strip_custom_prefix(
-                str(
-                    entry.get("published_name")
-                    or entry.get("display_name")
-                    or "Unnamed channel"
-                )
-            )
-
-            if name_style in {"language", "country"}:
-                country_code = (
-                    normalize_country_code(
-                        str(
-                            entry.get("country_code")
-                            or entry.get("language_code")
-                            or cfg.get("default_country_code")
-                            or cfg.get("default_language_code")
-                            or "HU"
-                        )
-                    )
-                    or "HU"
-                )
-                output_name = f"[{country_code}] {original_display}"
-            else:
-                output_name = original_display
-
-            entry_lines = rewrite_entry_lines(
-                entry_lines,
-                output_name,
-                str(entry.get("group_title") or ""),
-            )
-
-        out_lines.extend(
-            entry_lines
-        )
-
-        out_lines.append(
-            ""
-        )
-
-    path.write_text(
-        "\n".join(
-            out_lines
-        ).rstrip()
-        + "\n",
-        encoding="utf-8",
-    )
-	
 def make_dashboard(
     cfg: dict,
     generated: str,
