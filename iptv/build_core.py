@@ -28,6 +28,12 @@ from iptv.audit import (
     audit_rows_by_stream_url,
 )
 from iptv.language_routing import (
+    country_name_for_code,
+    country_name_for_language,
+    route_candidates_to_verified_countries,
+    route_candidates_to_verified_languages,
+    build_language_catalog_entries,
+    entries_for_spoken_language,
     LANGUAGE_NAME_TO_CODE,
     normalize_language_code,
     normalize_language_codes,
@@ -161,26 +167,8 @@ def extract_source_flags(name: str) -> list[str]:
 
 
 
-def country_name_for_code(
-    cfg: dict,
-    country_code: str,
-) -> str:
-    """Return the human-readable name for one publication country."""
-    code = normalize_country_code(country_code) or str(country_code or "").strip().upper()
-    country_names = cfg.get("country_names") or {}
-    if isinstance(country_names, dict):
-        country = str(country_names.get(code) or "").strip()
-        if country:
-            return country
-    return code or "Other"
 
 
-def country_name_for_language(
-    cfg: dict,
-    language_code: str,
-) -> str:
-    """Legacy compatibility alias: historical language_code stored country scope."""
-    return country_name_for_code(cfg, language_code)
 
 def normalize_content_group(
     group_title: str,
@@ -470,63 +458,8 @@ def load_audit(path: str | None) -> list[dict]:
 
 
 
-def route_candidates_to_verified_countries(
-    candidates: list[dict],
-    cfg: dict,
-) -> list[dict]:
-    """Apply country routing and attach verified observed spoken-language metadata."""
-    supported = set(configured_playlist_country_codes(cfg))
-    routed: list[dict] = []
-    for entry in candidates:
-        candidate = dict(entry)
-        source_code = (
-            normalize_country_code(
-                str(
-                    candidate.get("country_code")
-                    or candidate.get("language_code")
-                    or cfg.get("default_country_code")
-                    or cfg.get("default_language_code")
-                    or "HU"
-                )
-            )
-            or "HU"
-        )
-        audit = candidate.get("_audit") or {}
-        decision = str(candidate.get("_decision") or audit.get("decision") or "").strip()
-        observed_languages = normalize_spoken_language_codes(
-            audit.get("observed_language_codes")
-        )
-        if decision in {"Verified", "TV verified"} and observed_languages:
-            candidate["language_codes"] = observed_languages
-        else:
-            candidate["language_codes"] = normalize_spoken_language_codes(
-                candidate.get("language_codes")
-            )
-
-        output_code = normalize_country_code(
-            str(audit.get("output_country_code") or audit.get("output_language_code") or "")
-        ) or verified_output_country_code(
-            audit,
-            source_code,
-            cfg,
-        )
-        if output_code not in supported:
-            output_code = source_code
-        candidate["source_country_code"] = source_code
-        candidate["country_code"] = output_code
-        # Legacy entry alias retained so older report/dashboard code keeps working.
-        candidate["language_code"] = output_code
-        candidate["country_name"] = country_name_for_code(cfg, output_code)
-        routed.append(candidate)
-    return routed
 
 
-def route_candidates_to_verified_languages(
-    candidates: list[dict],
-    cfg: dict,
-) -> list[dict]:
-    """Legacy compatibility alias."""
-    return route_candidates_to_verified_countries(candidates, cfg)
 
 
 
@@ -815,64 +748,8 @@ def prepare_published_entries(
     return published_entries
 
 
-def build_language_catalog_entries(
-    country_entries: list[dict],
-    language_only_entries: list[dict],
-) -> list[dict]:
-    """Build a URL-unique catalog for spoken-language playlists.
-
-    Existing country entries are inserted first and therefore keep authority
-    for an exact URL already published by the country build. A language-only
-    duplicate may still add additional spoken-language metadata, but it cannot
-    steal or rewrite the established country identity.
-    """
-    result: list[dict] = []
-    by_url: dict[str, dict] = {}
-
-    for entry in [*country_entries, *language_only_entries]:
-        url = str(entry.get("url") or "").strip()
-        url_key = canonical_stream_url(url)
-        if not url_key:
-            continue
-
-        languages = normalize_spoken_language_codes(
-            entry.get("language_codes")
-        )
-
-        current = by_url.get(url_key)
-        if current is not None:
-            current["language_codes"] = normalize_spoken_language_codes(
-                [
-                    *(current.get("language_codes") or []),
-                    *languages,
-                ]
-            )
-            continue
-
-        candidate = dict(entry)
-        candidate["language_codes"] = languages
-        by_url[url_key] = candidate
-        result.append(candidate)
-
-    return result
 
 
-def entries_for_spoken_language(
-    entries: list[dict],
-    language_code: str,
-) -> list[dict]:
-    """Return entries explicitly carrying one normalized spoken language."""
-    code = normalize_spoken_language_code(language_code)
-    if not code:
-        raise ValueError(f"Unsupported spoken language code: {language_code!r}")
-
-    return [
-        entry
-        for entry in entries
-        if code in normalize_spoken_language_codes(
-            entry.get("language_codes")
-        )
-    ]
 
 
 	
