@@ -55,10 +55,25 @@ class BuildRefactorTests(unittest.TestCase):
 
     def test_root_keeps_entrypoints_while_helpers_are_grouped(self):
         self.assertLess(Path("build.py").stat().st_size, 10_000)
+        self.assertLess(
+            Path("iptv/build_core.py").stat().st_size,
+            20_000,
+            "build_core.py should remain a thin orchestration/compatibility layer",
+        )
+
         for path in (
             "iptv/build_core.py",
+            "iptv/channel_identity.py",
             "iptv/source_loader.py",
+            "iptv/deduplication.py",
             "iptv/playlist_writer.py",
+            "iptv/publication.py",
+            "iptv/reports.py",
+            "iptv/playback_status.py",
+            "iptv/language_routing.py",
+            "iptv/audit.py",
+            "iptv/feed_selection.py",
+            "iptv/stable_selection.py",
             "iptv/dashboard.py",
             "iptv/identity_overrides.py",
             "iptv/source_concentration.py",
