@@ -1,0 +1,56 @@
+name: One-off wire EPG quality
+
+on:
+  push:
+    branches:
+      - agent/epg-tvg-quality
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/epg-tvg-quality
+          fetch-depth: 0
+
+      - name: Wire generated EPG quality outputs
+        run: python3 tools/_wire_epg_quality_once.py
+
+      - name: Compile affected Python
+        run: |
+          python3 -m py_compile tools/attention.py epg/epg_quality.py tests/test_epg_quality.py
+
+      - name: Run full unittest suite
+        run: python3 run_tests.py
+
+      - name: Verify integration contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          attention = Path('tools/attention.py').read_text(encoding='utf-8')
+          assert 'write_epg_quality_side_reports' in attention
+          assert 'epg-quality.json' in attention
+          assert 'tvg-id-collisions.csv' in attention
+          assert 'verified-without-epg.csv' in attention
+          workflow = Path('.github/workflows/build-and-publish.yml').read_text(encoding='utf-8')
+          assert 'python3 -m tools.attention --epg-policy data/epg_policy.json' in workflow
+          print('Existing post-EPG attention step owns EPG quality generation.')
+          PY
+
+      - name: Remove one-off helpers
+        run: |
+          rm tools/_wire_epg_quality_once.py
+          rm .github/workflows/wire-epg-quality-once.yml
+
+      - name: Commit tested integration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "Generate EPG quality with attention reports"
+          git push origin HEAD:agent/epg-tvg-quality
