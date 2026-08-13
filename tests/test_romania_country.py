@@ -63,15 +63,44 @@ class RomaniaCountryTests(unittest.TestCase):
             routed,
         )
 
-    def test_romanian_wanted_catalog_is_merged_by_existing_loader(self):
+    def test_romanian_wanted_catalog_only_tracks_missing_or_unusable_sources(self):
         wanted = load_wanted_channels(Path("data/wanted_channels.json"))
         romanian = [row for row in wanted if row["country_code"] == "RO"]
 
-        self.assertGreaterEqual(len(romanian), 100)
+        self.assertGreaterEqual(len(romanian), 50)
+        self.assertLess(len(romanian), 100)
+
         by_name = {row["channel"]: row for row in romanian}
-        self.assertEqual(by_name["TVR 1"]["priority"], "P1")
+
+        # Missing major stations remain research targets.
         self.assertEqual(by_name["Pro TV"]["priority"], "P1")
+        self.assertEqual(by_name["Antena 1"]["priority"], "P1")
         self.assertEqual(by_name["Erdély TV"]["priority"], "P3")
+
+        # Stations already supplied by the configured IPTV-org Romanian sources
+        # must not clutter the wanted/research catalog.
+        for supplied in (
+            "TVR 1",
+            "TVR 2",
+            "TVR 3",
+            "TVR Info",
+            "TVR Sport",
+            "Digi 24",
+            "Kanal D",
+            "Kanal D2",
+            "Realitatea Plus",
+            "Kiss TV",
+            "Magic TV",
+            "Rock TV",
+            "Aleph News",
+            "Aleph Business",
+        ):
+            self.assertNotIn(supplied, by_name)
+
+        # A source may still be wanted if the only upstream candidate is
+        # explicitly unusable for normal access.
+        self.assertIn("geo-blocked", by_name["TeleMoldova Plus"]["reason"])
+        self.assertIn("geo-blocked", by_name["TV SUD"]["reason"])
 
 
 if __name__ == "__main__":
