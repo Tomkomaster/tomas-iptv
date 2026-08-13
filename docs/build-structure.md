@@ -60,7 +60,7 @@ The core implementation package contains:
 - `playlist_writer.py` — generated M3U headers and playlist writing
 - `reports.py` — country/language build summaries and CSV export helpers
 - `playback_status.py` — shared VLC/Samsung manual-test status normalization
-- `language_routing.py` — spoken-language interpretation and explicit publication-country routing
+- `language_routing.py` — spoken-language interpretation, publication-country routing, country naming and language-catalog assembly
 - `audit.py` — manual playback audit validation, decisions and stream-history preparation
 - `feed_selection.py` — current-feed suppression and complete test-playlist candidate selection
 - `stable_selection.py` — stable-family filtering and callback-driven best-feed ranking
