@@ -1,0 +1,81 @@
+name: Apply temporary manual audit batch
+
+on:
+  push:
+    branches:
+      - agent/manual-audit-103-2026-08-13
+    paths:
+      - data/manual-audit-2026-08-13.json
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v7
+
+      - name: Apply exact-URL audit updates
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from iptv.channel_identity import canonical_stream_url
+
+          audit_path = Path("audit.json")
+          batch_path = Path("data/manual-audit-2026-08-13.json")
+          audit = json.loads(audit_path.read_text(encoding="utf-8"))
+          updates = json.loads(batch_path.read_text(encoding="utf-8"))["updates"]
+
+          by_url = {}
+          for row in audit.get("channels", []):
+              key = canonical_stream_url(str(row.get("stream_url") or ""))
+              if key:
+                  by_url.setdefault(key, []).append(row)
+
+          resolved = []
+          problems = []
+          for update in updates:
+              key = canonical_stream_url(update["stream_url"])
+              matches = by_url.get(key, [])
+              if len(matches) != 1:
+                  problems.append(f"{update['channel']}: {len(matches)} exact URL matches: {update['stream_url']}")
+              else:
+                  resolved.append((update, matches[0]))
+
+          if len(updates) != 103:
+              problems.append(f"Expected 103 updates, got {len(updates)}")
+          if problems:
+              raise SystemExit("\n".join(problems))
+
+          for update, row in resolved:
+              for key, value in update["set"].items():
+                  row[key] = value
+              for key in update.get("unset", []):
+                  row.pop(key, None)
+
+          audit_path.write_text(
+              json.dumps(audit, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(f"Applied {len(resolved)} exact-URL audit updates.")
+          PY
+
+      - name: Validate repository
+        run: |
+          python3 run_tests.py
+          python3 -m tools.reliable_build --strict
+
+      - name: Commit validated audit update and remove temporary importer
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git rm -f data/manual-audit-2026-08-13.json .github/workflows/manual-audit-import.yml
+          if [ -e data/.manual-audit-write-test.json ]; then
+            git rm -f data/.manual-audit-write-test.json
+          fi
+          git commit -m "Record August 13 manual playback tests"
+          git push
