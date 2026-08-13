@@ -12,6 +12,7 @@ import re
 import unicodedata
 from urllib.parse import urlparse, urlunparse
 
+from country_language import normalize_country_code
 from iptv.source_loader import split_extinf
 
 QUALITY_SUFFIX_RE = re.compile(
@@ -369,3 +370,18 @@ def channel_key(entry: dict) -> str:
 
 def strip_custom_prefix(name: str) -> str:
     return CUSTOM_PREFIX_RE.sub("", (name or "").strip()).strip()
+
+
+def logical_channel_key(entry: dict) -> str:
+    """Identify one logical channel inside one publication country."""
+    country_code = (
+        normalize_country_code(
+            str(entry.get("country_code") or entry.get("language_code") or "")
+        )
+        or "UNKNOWN"
+    )
+    raw_key = str(entry.get("channel_key") or channel_key(entry))
+    prefix = f"{country_code}:"
+    if raw_key.startswith(prefix):
+        return raw_key
+    return f"{prefix}{raw_key}"
