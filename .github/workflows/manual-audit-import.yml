@@ -17,45 +17,32 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v7
 
-      - name: Apply exact-URL audit updates
+      - name: Apply URL-first manual audit updates
         run: |
           python3 - <<'PY'
           import json
           from collections import Counter
           from pathlib import Path
-          from iptv.channel_identity import canonical_stream_url
+          from iptv.channel_identity import canonical_stream_url, normalize_text
 
           audit_path = Path("audit.json")
           batch_path = Path("data/manual-audit-2026-08-13.json")
           audit = json.loads(audit_path.read_text(encoding="utf-8"))
-          packed = json.loads(batch_path.read_text(encoding="utf-8"))
-          raw_rows = packed["rows"]
+          raw_rows = json.loads(batch_path.read_text(encoding="utf-8"))["rows"]
 
           tests = []
           for values in raw_rows:
               if len(values) != 7:
                   raise SystemExit(f"Invalid packed audit row: {values!r}")
               lang, channel, vlc, samsung, url, vlc_note, samsung_note = values
-              tests.append({
-                  "language_code": lang,
-                  "channel": channel,
-                  "vlc": vlc,
-                  "samsung": samsung,
-                  "stream_url": url,
-                  "vlc_note": vlc_note,
-                  "samsung_note": samsung_note,
-              })
-
+              tests.append({"language_code": lang, "channel": channel, "vlc": vlc, "samsung": samsung, "stream_url": url, "vlc_note": vlc_note, "samsung_note": samsung_note})
           if len(tests) != 103:
               raise SystemExit(f"Expected 103 manual results, got {len(tests)}")
 
-          event_review_urls = {
-              canonical_stream_url("http://88.212.7.10/live/tanecnesutaze/index.m3u8"),
-          }
+          event_review_urls = {canonical_stream_url("http://88.212.7.10/live/tanecnesutaze/index.m3u8")}
 
           def classify(test):
-              vlc = test["vlc"]
-              samsung = test["samsung"]
+              vlc, samsung = test["vlc"], test["samsung"]
               pc_good = vlc in {"works", "works_with_warning"}
               key = canonical_stream_url(test["stream_url"])
               if samsung == "works" and pc_good:
@@ -73,34 +60,24 @@ jobs:
               return "needs_review"
 
           def desired_fields(test, status):
-              vlc = test["vlc"]
-              samsung = test["samsung"]
+              vlc, samsung = test["vlc"], test["samsung"]
               vlc_note = test["vlc_note"]
               samsung_note = "not tested in this batch" if samsung == "not_tested" else test["samsung_note"]
               key = canonical_stream_url(test["stream_url"])
-
               if status == "verified":
-                  decision = "auto"
-                  exclude = False
+                  decision, exclude = "auto", False
                   reason = "Working on both VLC and Samsung in the 2026-08-13 manual test."
-                  notes = (
-                      f"Samsung passed. VLC played with warning: {vlc_note}."
-                      if vlc == "works_with_warning"
-                      else "Passed both manual playback tests."
-                  )
+                  notes = f"Samsung passed. VLC played with warning: {vlc_note}." if vlc == "works_with_warning" else "Passed both manual playback tests."
               elif status == "tv_verified":
-                  decision = "auto"
-                  exclude = False
+                  decision, exclude = "auto", False
                   reason = "Samsung playback was manually verified; VLC failed in the 2026-08-13 test batch."
                   notes = f"Samsung passed the later TV test. VLC result: {vlc_note}. Keep as TV verified; VLC still needs investigation."
               elif status == "rejected":
-                  decision = "rejected"
-                  exclude = True
+                  decision, exclude = "rejected", True
                   reason = "This exact feed failed on both tested devices in the 2026-08-13 manual test."
                   notes = f"Failed both manual playback tests. VLC: {vlc_note}. Samsung: {samsung_note}."
               else:
-                  decision = "needs_review"
-                  exclude = False
+                  decision, exclude = "needs_review", False
                   if key in event_review_urls:
                       reason = "Manual failures may reflect an event-only/off-air period; retest during a confirmed broadcast before rejecting this exact URL."
                       notes = f"VLC: {vlc_note}. Samsung: {samsung_note}. This channel is event-like and should be retested during a confirmed event."
@@ -113,38 +90,46 @@ jobs:
                   else:
                       reason = "Manual playback was not fully successful; keep for review rather than treating the result as verified."
                       notes = f"VLC: {vlc_note}. Samsung: {samsung_note}. Needs review."
-
-              fields = {
-                  "vlc": vlc,
-                  "samsung": samsung,
-                  "vlc_note": vlc_note,
-                  "samsung_note": samsung_note,
-                  "decision": decision,
-                  "exclude_from_playlist": exclude,
-                  "tested_on": "2026-08-13",
-                  "expected_language_codes": [test["language_code"]],
-                  "reason": reason,
-                  "notes": notes,
-              }
+              fields = {"vlc": vlc, "samsung": samsung, "vlc_note": vlc_note, "samsung_note": samsung_note, "decision": decision, "exclude_from_playlist": exclude, "tested_on": "2026-08-13", "expected_language_codes": [test["language_code"]], "reason": reason, "notes": notes}
               if vlc == "works" or samsung == "works":
                   fields["observed_language_codes"] = [test["language_code"]]
               return fields
 
+          channels = audit.get("channels", [])
           by_url = {}
-          for row in audit.get("channels", []):
-              key = canonical_stream_url(str(row.get("stream_url") or ""))
-              if key:
-                  by_url.setdefault(key, []).append(row)
+          by_name = {}
+          for row in channels:
+              url_key = canonical_stream_url(str(row.get("stream_url") or ""))
+              if url_key:
+                  by_url.setdefault(url_key, []).append(row)
+              name_key = normalize_text(str(row.get("channel") or ""))
+              if name_key:
+                  by_name.setdefault(name_key, []).append(row)
 
           resolved = []
           problems = []
+          methods = Counter()
           for test in tests:
-              key = canonical_stream_url(test["stream_url"])
-              matches = by_url.get(key, [])
-              if len(matches) != 1:
-                  problems.append(f"{test['channel']}: {len(matches)} exact URL matches: {test['stream_url']}")
+              url_key = canonical_stream_url(test["stream_url"])
+              url_matches = by_url.get(url_key, [])
+              if len(url_matches) == 1:
+                  resolved.append((test, url_matches[0]))
+                  methods["url"] += 1
+                  continue
+              if len(url_matches) > 1:
+                  problems.append(f"AMBIGUOUS URL: {test['channel']}: {len(url_matches)} matches: {test['stream_url']}")
+                  continue
+
+              name_matches = by_name.get(normalize_text(test["channel"]), [])
+              blank_url_matches = [row for row in name_matches if not str(row.get("stream_url") or "").strip()]
+              if len(name_matches) == 1 and len(blank_url_matches) == 1:
+                  row = blank_url_matches[0]
+                  row["stream_url"] = test["stream_url"]
+                  resolved.append((test, row))
+                  methods["legacy_name_to_url"] += 1
               else:
-                  resolved.append((test, matches[0]))
+                  detail = [(str(row.get("channel") or ""), str(row.get("stream_url") or "")) for row in name_matches]
+                  problems.append(f"NO SAFE MATCH: {test['channel']} -> {test['stream_url']} ; name candidates={detail!r}")
 
           if problems:
               raise SystemExit("\n".join(problems))
@@ -156,20 +141,12 @@ jobs:
               for key, value in desired_fields(test, status).items():
                   row[key] = value
 
-          expected_counts = {
-              "verified": 74,
-              "tv_verified": 2,
-              "needs_review": 18,
-              "rejected": 9,
-          }
+          expected_counts = {"verified": 74, "tv_verified": 2, "needs_review": 18, "rejected": 9}
           if dict(counts) != expected_counts:
               raise SystemExit(f"Unexpected status counts: {dict(counts)!r}")
 
-          audit_path.write_text(
-              json.dumps(audit, ensure_ascii=False, indent=2) + "\n",
-              encoding="utf-8",
-          )
-          print(f"Applied {len(resolved)} exact-URL audit updates: {dict(counts)}")
+          audit_path.write_text(json.dumps(audit, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(f"Applied {len(resolved)} manual audit updates; match methods={dict(methods)}; statuses={dict(counts)}")
           PY
 
       - name: Validate repository
