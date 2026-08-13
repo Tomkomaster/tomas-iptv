@@ -9,12 +9,12 @@
     "P5": "Probably not worth pursuing"
   },
   "entries": [
-    {
-      "country": "HU",
-      "channel": "Hir TV",
-      "priority": "P1",
-      "reason": "Major national news channel."
-    },
+{
+  "country": "HU",
+  "tvg_id": "HirTV.hu",
+  "priority": "P1",
+  "reason": "Major national news channel."
+},
     {
       "country": "SK",
       "channel": "TA3",
