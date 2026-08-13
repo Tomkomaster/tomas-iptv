@@ -1,13 +1,343 @@
 {
   "schema_version": 1,
   "channels": [
-{
-  "country_code": "HU",
-  "channel": "Hír TV",
-  "tvg_id": "HirTV.hu",
-  "priority": "P1",
-  "reason": "Major national news channel."
-},
+    {
+      "country_code": "HU",
+      "channel": "Duna",
+      "priority": "P1",
+      "reason": "Flagship Hungarian public-service general channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Duna World",
+      "priority": "P2",
+      "reason": "Hungarian public-service international channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "M1",
+      "priority": "P1",
+      "reason": "Hungarian public-service national news channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "M2 / Petőfi",
+      "priority": "P2",
+      "reason": "Hungarian public-service children and youth service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "M4 Sport",
+      "priority": "P2",
+      "reason": "Hungarian public-service national sports channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "M5",
+      "priority": "P2",
+      "reason": "Hungarian public-service culture, education and documentary channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "RTL",
+      "priority": "P1",
+      "reason": "Major Hungarian national commercial general-entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TV2",
+      "priority": "P1",
+      "reason": "Major Hungarian national commercial general-entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "HBO",
+      "priority": "P2",
+      "reason": "Major premium movie channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Spektrum",
+      "priority": "P2",
+      "reason": "Major Hungarian-language documentary channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "ATV",
+      "priority": "P1",
+      "reason": "Major Hungarian national news and current-affairs channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Hír TV",
+      "tvg_id": "HirTV.hu",
+      "priority": "P1",
+      "reason": "Major national news channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "VIASAT3",
+      "priority": "P2",
+      "reason": "Major Hungarian-language entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Comedy Central",
+      "priority": "P2",
+      "reason": "Major Hungarian-language comedy channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "RTL Kettő",
+      "priority": "P2",
+      "reason": "Major Hungarian-language entertainment and comedy channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Super TV2",
+      "priority": "P2",
+      "reason": "Major Hungarian-language commercial entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Sláger TV",
+      "priority": "P4",
+      "reason": "Hungarian-language music channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Spíler TV",
+      "priority": "P2",
+      "reason": "Hungarian-language sports channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Zenebutik",
+      "priority": "P4",
+      "reason": "Hungarian-language music channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Minimax",
+      "priority": "P2",
+      "reason": "Major Hungarian-language children's channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Izaura TV",
+      "priority": "P2",
+      "reason": "Hungarian-language telenovela and entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Cartoon Network",
+      "priority": "P2",
+      "reason": "Major children's channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TV2 Comedy",
+      "priority": "P2",
+      "reason": "Hungarian-language comedy channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Prime",
+      "priority": "P2",
+      "reason": "Hungarian-language commercial entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "FEM3",
+      "priority": "P2",
+      "reason": "Hungarian-language commercial entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TV2 Séf",
+      "priority": "P2",
+      "reason": "Hungarian-language cooking and gastronomy channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TV2 Kids",
+      "priority": "P2",
+      "reason": "Hungarian-language children's channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Moziverzum",
+      "priority": "P2",
+      "reason": "Hungarian-language movie channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "FIXHD",
+      "priority": "P4",
+      "reason": "Online-only Hungarian-language lifestyle channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "ATV Extra",
+      "priority": "P2",
+      "reason": "Hungarian news, politics and live-events channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "RTL Gold",
+      "priority": "P2",
+      "reason": "Hungarian-language commercial entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "VIASAT6",
+      "priority": "P2",
+      "reason": "Hungarian-language commercial entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "VIASAT2",
+      "priority": "P2",
+      "reason": "Hungarian-language commercial entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "AXN",
+      "priority": "P2",
+      "reason": "Major Hungarian-language film and series channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Disney Channel",
+      "priority": "P2",
+      "reason": "Major children's channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Nickelodeon",
+      "priority": "P2",
+      "reason": "Major children's channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Nick Jr.",
+      "priority": "P2",
+      "reason": "Major preschool channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "NickToons",
+      "priority": "P2",
+      "reason": "Major children's animation channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TeenNick",
+      "priority": "P2",
+      "reason": "Hungarian-language youth entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Paramount Network",
+      "priority": "P2",
+      "reason": "Hungarian-language movie and entertainment channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "National Geographic",
+      "priority": "P2",
+      "reason": "Major documentary channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "National Geographic Wild",
+      "priority": "P2",
+      "reason": "Major nature and wildlife channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Discovery Channel",
+      "priority": "P2",
+      "reason": "Major documentary channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Animal Planet",
+      "priority": "P2",
+      "reason": "Major nature and wildlife channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Discovery Turbo Extra",
+      "priority": "P2",
+      "reason": "Hungarian-language factual and motoring channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Discovery Science",
+      "priority": "P2",
+      "reason": "Hungarian-language science and documentary channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "TLC",
+      "priority": "P2",
+      "reason": "Major Hungarian-language lifestyle channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Investigation Discovery",
+      "priority": "P2",
+      "reason": "Hungarian-language crime and investigation channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Viasat Explore",
+      "priority": "P2",
+      "reason": "Hungarian-language documentary and factual channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Viasat History",
+      "priority": "P2",
+      "reason": "Hungarian-language history channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Viasat Nature",
+      "priority": "P2",
+      "reason": "Hungarian-language nature and wildlife channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Da Vinci",
+      "priority": "P2",
+      "reason": "Hungarian-language educational and documentary channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "History",
+      "priority": "P2",
+      "reason": "Major Hungarian-language history and documentary channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Fishing and Hunting",
+      "priority": "P2",
+      "reason": "Hungarian-language fishing and hunting channel."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Eurosport 1",
+      "priority": "P2",
+      "reason": "Major sports channel with Hungarian-language service."
+    },
+    {
+      "country_code": "HU",
+      "channel": "Eurosport 2",
+      "priority": "P2",
+      "reason": "Major sports channel with Hungarian-language service."
+    },
     {
       "country_code": "SK",
       "channel": "TA3",
