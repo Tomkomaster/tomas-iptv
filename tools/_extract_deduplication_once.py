@@ -155,8 +155,14 @@ class DeduplicationRefactorTests(unittest.TestCase):
             ],
         }
         playlists = {
-            "one.m3u": '#EXTM3U\n#EXTINF:-1 tvg-id="Demo.hu" group-title="News",Demo\nhttps://example.test:443/live.m3u8\n',
-            "two.m3u": '#EXTM3U\n#EXTINF:-1 tvg-id="Demo.hu" group-title="News",Demo\nhttps://example.test/live.m3u8\n',
+            "one.m3u": """#EXTM3U
+#EXTINF:-1 tvg-id="Demo.hu" group-title="News",Demo
+https://example.test:443/live.m3u8
+""",
+            "two.m3u": """#EXTM3U
+#EXTINF:-1 tvg-id="Demo.hu" group-title="News",Demo
+https://example.test/live.m3u8
+""",
         }
         registry = IdentityRegistry({"schema_version": 1, "identities": {}, "selectors": []})
         final_entries, language_only, duplicates, stats = deduplication.collect_source_entries(
