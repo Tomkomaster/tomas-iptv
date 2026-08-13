@@ -1,0 +1,76 @@
+name: One-off remove legacy language config
+
+on:
+  push:
+    branches: [agent/remove-default-language-code]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: agent/remove-default-language-code
+          fetch-depth: 0
+
+      - name: Prove legacy field has no consumers
+        run: |
+          needle="default_language_"'code'
+          echo "Tracked references before cleanup:"
+          git grep -n "$needle" -- ':!.github/workflows/remove-default-language-code-once.yml' || true
+          refs="$(git grep -l "$needle" -- ':!config.json' ':!.github/workflows/remove-default-language-code-once.yml' || true)"
+          if [ -n "$refs" ]; then
+            echo "Legacy field is still consumed outside config.json:" >&2
+            echo "$refs" >&2
+            exit 1
+          fi
+
+      - name: Remove obsolete field and add regression test
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('config.json')
+          cfg = json.loads(path.read_text(encoding='utf-8'))
+          legacy_key = 'default_language_' + 'code'
+          if cfg.get(legacy_key) != 'HU':
+              raise SystemExit(f'Unexpected {legacy_key!r} value: {cfg.get(legacy_key)!r}')
+          del cfg[legacy_key]
+          path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          test = Path('tests/test_config_language_keys.py')
+          test.write_text('''import json\nimport unittest\nfrom pathlib import Path\n\n\nclass ConfigLanguageKeyTests(unittest.TestCase):\n    def test_country_and_language_defaults_use_distinct_code_systems(self):\n        cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))\n        legacy_key = "default_language_" + "code"\n\n        self.assertNotIn(legacy_key, cfg)\n        self.assertEqual(cfg["default_country_code"], "HU")\n        self.assertEqual(cfg["default_language_codes"], ["hun"])\n\n        configured_languages = set(cfg["language_outputs"])\n        for code in cfg["default_language_codes"]:\n            self.assertEqual(len(code), 3)\n            self.assertIn(code, configured_languages)\n\n\nif __name__ == "__main__":\n    unittest.main()\n''', encoding='utf-8')
+          PY
+
+      - name: Verify no production reference remains
+        run: |
+          needle="default_language_"'code'
+          refs="$(git grep -l "$needle" -- ':!tests/test_config_language_keys.py' ':!.github/workflows/remove-default-language-code-once.yml' || true)"
+          if [ -n "$refs" ]; then
+            echo "Legacy field still appears outside its regression test:" >&2
+            echo "$refs" >&2
+            exit 1
+          fi
+
+      - name: Validate config JSON
+        run: python3 -m json.tool config.json >/dev/null
+
+      - name: Run full unittest suite
+        run: python3 run_tests.py
+
+      - name: Remove one-off workflow
+        run: rm .github/workflows/remove-default-language-code-once.yml
+
+      - name: Commit cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git diff --cached -- config.json tests/test_config_language_keys.py
+          git commit -m "Remove obsolete default language code"
+          git push origin HEAD:agent/remove-default-language-code
