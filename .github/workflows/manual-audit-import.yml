@@ -21,13 +21,114 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
+          from collections import Counter
           from pathlib import Path
           from iptv.channel_identity import canonical_stream_url
 
           audit_path = Path("audit.json")
           batch_path = Path("data/manual-audit-2026-08-13.json")
           audit = json.loads(audit_path.read_text(encoding="utf-8"))
-          updates = json.loads(batch_path.read_text(encoding="utf-8"))["updates"]
+          packed = json.loads(batch_path.read_text(encoding="utf-8"))
+          raw_rows = packed["rows"]
+
+          tests = []
+          for values in raw_rows:
+              if len(values) != 7:
+                  raise SystemExit(f"Invalid packed audit row: {values!r}")
+              lang, channel, vlc, samsung, url, vlc_note, samsung_note = values
+              tests.append({
+                  "language_code": lang,
+                  "channel": channel,
+                  "vlc": vlc,
+                  "samsung": samsung,
+                  "stream_url": url,
+                  "vlc_note": vlc_note,
+                  "samsung_note": samsung_note,
+              })
+
+          if len(tests) != 103:
+              raise SystemExit(f"Expected 103 manual results, got {len(tests)}")
+
+          event_review_urls = {
+              canonical_stream_url("http://88.212.7.10/live/tanecnesutaze/index.m3u8"),
+          }
+
+          def classify(test):
+              vlc = test["vlc"]
+              samsung = test["samsung"]
+              pc_good = vlc in {"works", "works_with_warning"}
+              key = canonical_stream_url(test["stream_url"])
+              if samsung == "works" and pc_good:
+                  return "verified"
+              if samsung == "works" and not pc_good:
+                  return "tv_verified"
+              if samsung == "not_tested":
+                  return "needs_review"
+              if pc_good and samsung != "works":
+                  return "needs_review"
+              if key in event_review_urls:
+                  return "needs_review"
+              if not pc_good and samsung in {"format_error", "generic_error", "mrl_error", "loads"}:
+                  return "rejected"
+              return "needs_review"
+
+          def desired_fields(test, status):
+              vlc = test["vlc"]
+              samsung = test["samsung"]
+              vlc_note = test["vlc_note"]
+              samsung_note = "not tested in this batch" if samsung == "not_tested" else test["samsung_note"]
+              key = canonical_stream_url(test["stream_url"])
+
+              if status == "verified":
+                  decision = "auto"
+                  exclude = False
+                  reason = "Working on both VLC and Samsung in the 2026-08-13 manual test."
+                  notes = (
+                      f"Samsung passed. VLC played with warning: {vlc_note}."
+                      if vlc == "works_with_warning"
+                      else "Passed both manual playback tests."
+                  )
+              elif status == "tv_verified":
+                  decision = "auto"
+                  exclude = False
+                  reason = "Samsung playback was manually verified; VLC failed in the 2026-08-13 test batch."
+                  notes = f"Samsung passed the later TV test. VLC result: {vlc_note}. Keep as TV verified; VLC still needs investigation."
+              elif status == "rejected":
+                  decision = "rejected"
+                  exclude = True
+                  reason = "This exact feed failed on both tested devices in the 2026-08-13 manual test."
+                  notes = f"Failed both manual playback tests. VLC: {vlc_note}. Samsung: {samsung_note}."
+              else:
+                  decision = "needs_review"
+                  exclude = False
+                  if key in event_review_urls:
+                      reason = "Manual failures may reflect an event-only/off-air period; retest during a confirmed broadcast before rejecting this exact URL."
+                      notes = f"VLC: {vlc_note}. Samsung: {samsung_note}. This channel is event-like and should be retested during a confirmed event."
+                  elif samsung == "not_tested":
+                      reason = "Samsung was not tested in this batch, so the manual result is incomplete."
+                      notes = f"Samsung was not tested in this batch. VLC result: {vlc_note}. Needs review."
+                  elif vlc in {"works", "works_with_warning"} and samsung != "works":
+                      reason = "VLC worked earlier, but the Samsung test was performed more than 2 hours later and failed; the result is inconclusive because the stream may not broadcast 24/7."
+                      notes = f"VLC result: {vlc_note}. Samsung result: {samsung_note}. Samsung was tested more than 2 hours after VLC; retest both devices at approximately the same time before classifying this feed as PC-only."
+                  else:
+                      reason = "Manual playback was not fully successful; keep for review rather than treating the result as verified."
+                      notes = f"VLC: {vlc_note}. Samsung: {samsung_note}. Needs review."
+
+              fields = {
+                  "vlc": vlc,
+                  "samsung": samsung,
+                  "vlc_note": vlc_note,
+                  "samsung_note": samsung_note,
+                  "decision": decision,
+                  "exclude_from_playlist": exclude,
+                  "tested_on": "2026-08-13",
+                  "expected_language_codes": [test["language_code"]],
+                  "reason": reason,
+                  "notes": notes,
+              }
+              if vlc == "works" or samsung == "works":
+                  fields["observed_language_codes"] = [test["language_code"]]
+              return fields
 
           by_url = {}
           for row in audit.get("channels", []):
@@ -37,30 +138,38 @@ jobs:
 
           resolved = []
           problems = []
-          for update in updates:
-              key = canonical_stream_url(update["stream_url"])
+          for test in tests:
+              key = canonical_stream_url(test["stream_url"])
               matches = by_url.get(key, [])
               if len(matches) != 1:
-                  problems.append(f"{update['channel']}: {len(matches)} exact URL matches: {update['stream_url']}")
+                  problems.append(f"{test['channel']}: {len(matches)} exact URL matches: {test['stream_url']}")
               else:
-                  resolved.append((update, matches[0]))
+                  resolved.append((test, matches[0]))
 
-          if len(updates) != 103:
-              problems.append(f"Expected 103 updates, got {len(updates)}")
           if problems:
               raise SystemExit("\n".join(problems))
 
-          for update, row in resolved:
-              for key, value in update["set"].items():
+          counts = Counter()
+          for test, row in resolved:
+              status = classify(test)
+              counts[status] += 1
+              for key, value in desired_fields(test, status).items():
                   row[key] = value
-              for key in update.get("unset", []):
-                  row.pop(key, None)
+
+          expected_counts = {
+              "verified": 74,
+              "tv_verified": 2,
+              "needs_review": 18,
+              "rejected": 9,
+          }
+          if dict(counts) != expected_counts:
+              raise SystemExit(f"Unexpected status counts: {dict(counts)!r}")
 
           audit_path.write_text(
               json.dumps(audit, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
           )
-          print(f"Applied {len(resolved)} exact-URL audit updates.")
+          print(f"Applied {len(resolved)} exact-URL audit updates: {dict(counts)}")
           PY
 
       - name: Validate repository
