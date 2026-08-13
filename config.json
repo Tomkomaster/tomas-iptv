@@ -3,7 +3,8 @@
   "country_names": {
     "HU": "Hungary",
     "SK": "Slovakia",
-    "CZ": "Czechia"
+    "CZ": "Czechia",
+    "RO": "Romania"
   },
   "identity_overrides_path": "data/identity_overrides.json",
   "logo_overrides_path": "data/logo_overrides.json",
@@ -12,17 +13,20 @@
   "country_outputs": {
     "HU": "public/hu.m3u",
     "SK": "public/sk.m3u",
-    "CZ": "public/cz.m3u"
+    "CZ": "public/cz.m3u",
+    "RO": "public/ro.m3u"
   },
   "language_names": {
     "hun": "Hungarian",
     "slk": "Slovak",
-    "ces": "Czech"
+    "ces": "Czech",
+    "ron": "Romanian"
   },
   "language_outputs": {
     "hun": "public/by-language/hun.m3u",
     "slk": "public/by-language/slk.m3u",
-    "ces": "public/by-language/ces.m3u"
+    "ces": "public/by-language/ces.m3u",
+    "ron": "public/by-language/ron.m3u"
   },
   "stable_playlist": {
     "allowed_decisions": [
@@ -139,6 +143,15 @@
           "provider": "epgshare01.online",
           "url": "https://epgshare01.online/epgshare01/epg_ripper_CZ1.xml.gz"
         }
+      },
+      "RO": {
+        "sites": [
+          "epgshare01.online"
+        ],
+        "external": {
+          "provider": "epgshare01.online",
+          "url": "https://epgshare01.online/epgshare01/epg_ripper_RO1.xml.gz"
+        }
       }
     },
     "future_days": 7,
@@ -200,6 +213,24 @@
       ]
     },
     {
+      "name": "IPTV-org Romania",
+      "kind": "base",
+      "url": "https://iptv-org.github.io/iptv/countries/ro.m3u",
+      "country_code": "RO",
+      "language_codes": [
+        "ron"
+      ]
+    },
+    {
+      "name": "IPTV-org Romania raw alternatives",
+      "kind": "alternatives",
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ro.m3u",
+      "country_code": "RO",
+      "language_codes": [
+        "ron"
+      ]
+    },
+    {
       "name": "IPTV-org Hungarian language",
       "kind": "alternatives",
       "url": "https://iptv-org.github.io/iptv/languages/hun.m3u",
@@ -223,6 +254,15 @@
       "url": "https://iptv-org.github.io/iptv/languages/ces.m3u",
       "language_codes": [
         "ces"
+      ],
+      "country_mode": "tvg_id"
+    },
+    {
+      "name": "IPTV-org Romanian language",
+      "kind": "alternatives",
+      "url": "https://iptv-org.github.io/iptv/languages/ron.m3u",
+      "language_codes": [
+        "ron"
       ],
       "country_mode": "tvg_id"
     }
@@ -254,6 +294,15 @@
       "language_codes": [
         "ces"
       ]
+    },
+    {
+      "name": "Our Romanian test/verified extras",
+      "kind": "extras",
+      "path": "extras/ro.m3u",
+      "country_code": "RO",
+      "language_codes": [
+        "ron"
+      ]
     }
   ],
   "default_country_code": "HU",
@@ -269,6 +318,9 @@
     ],
     "CZ": [
       "ces"
+    ],
+    "RO": [
+      "ron"
     ]
   },
   "verified_country_routes": [
