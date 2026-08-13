@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Callable
 
+from iptv.source_loader import split_extinf
+
 
 def playlist_header(cfg: dict) -> str:
     """Build the #EXTM3U header, including the configured XMLTV URL."""
@@ -22,6 +24,22 @@ def playlist_header(cfg: dict) -> str:
         f'url-tvg="{safe_url}" '
         f'x-tvg-url="{safe_url}"'
     )
+
+
+def vlc_safe_extinf_display(line: str) -> str:
+    """Avoid VLC treating ``Artist - Title`` display names as media metadata."""
+    if not line.startswith("#EXTINF:"):
+        return line
+
+    metadata, display_name = split_extinf(line)
+    if not display_name:
+        return line
+
+    # VLC interprets the exact ASCII separator " - " as Artist/Title and may
+    # show only the text after it in the playlist. Keep tvg-name and all other
+    # EXTINF attributes untouched; only make the human-visible M3U label safe.
+    display_name = display_name.replace(" - ", " — ")
+    return f"{metadata},{display_name}"
 
 
 def write_m3u_playlist(
@@ -90,6 +108,7 @@ def write_m3u_playlist(
                 str(entry.get("group_title") or ""),
             )
 
+        entry_lines = [vlc_safe_extinf_display(line) for line in entry_lines]
         out_lines.extend(entry_lines)
         out_lines.append("")
 
