@@ -2,6 +2,8 @@ import json
 import unittest
 from pathlib import Path
 
+from country_language import configured_language_codes
+
 
 class ConfigLanguageKeyTests(unittest.TestCase):
     def test_country_and_language_defaults_use_distinct_code_systems(self):
@@ -11,6 +13,8 @@ class ConfigLanguageKeyTests(unittest.TestCase):
         self.assertNotIn(legacy_key, cfg)
         self.assertEqual(cfg["default_country_code"], "HU")
         self.assertEqual(cfg["default_language_codes"], ["hun"])
+
+        self.assertEqual(configured_language_codes({"default_language_codes": ["hun"]}), ["hun"])
 
         configured_languages = set(cfg["language_outputs"])
         for code in cfg["default_language_codes"]:
