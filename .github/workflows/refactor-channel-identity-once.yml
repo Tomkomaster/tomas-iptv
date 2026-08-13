@@ -1,0 +1,58 @@
+name: One-off extract channel identity
+
+on:
+  push:
+    branches:
+      - agent/extract-channel-identity
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout refactor branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent/extract-channel-identity
+          fetch-depth: 0
+
+      - name: Extract channel identity subsystem
+        run: python3 tools/_extract_channel_identity_once.py
+
+      - name: Compile extracted modules
+        run: python3 -m py_compile iptv/channel_identity.py iptv/build_core.py build.py
+
+      - name: Run full unittest suite
+        run: python3 run_tests.py
+
+      - name: Verify extraction shape
+        run: |
+          test -f iptv/channel_identity.py
+          test -f tests/test_channel_identity_refactor.py
+          python3 - <<'PY'
+          from pathlib import Path
+          size = Path('iptv/build_core.py').stat().st_size
+          print(f'build_core.py after extraction: {size:,} bytes')
+          if size >= 142000:
+              raise SystemExit('build_core.py did not shrink enough')
+          PY
+
+      - name: Remove one-off refactor helpers
+        run: |
+          rm tools/_extract_channel_identity_once.py
+          rm .github/workflows/refactor-channel-identity-once.yml
+
+      - name: Commit extracted subsystem
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No refactor changes were produced." >&2
+            exit 1
+          fi
+          git diff --cached --stat
+          git commit -m "Extract channel identity from build core"
+          git push origin HEAD:agent/extract-channel-identity
