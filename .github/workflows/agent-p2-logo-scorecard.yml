@@ -1,0 +1,57 @@
+name: Agent P2 logo scorecard validation
+
+on:
+  push:
+    branches:
+      - agent/p2-logo-canonical-scorecard
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Apply focused logo and scorecard patch
+        run: python3 tools/_agent_p2_logo_scorecard_patch.py
+
+      - name: Run full test suite
+        run: python3 run_tests.py
+
+      - name: Validate JavaScript syntax
+        run: node --check static/dashboard.js
+
+      - name: Run real playlist build
+        run: python3 -m tools.reliable_build --strict
+
+      - name: Validate generated P1/P2 logo metric
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          logo = json.loads(Path('public/logo-quality.json').read_text(encoding='utf-8'))
+          priority = json.loads(Path('public/priority-coverage.json').read_text(encoding='utf-8'))
+          summary = priority.get('logo_summary') or {}
+          assert int(summary.get('stable_targets') or 0) > 0, summary
+          assert int(summary.get('with_logo') or 0) <= int(summary.get('stable_targets') or 0), summary
+          assert 'canonical_logo_coverage_percent' in summary, summary
+          assert int((logo.get('summary') or {}).get('canonical_logo') or 0) >= 30, logo.get('summary')
+          assert 'P1 / P2 logo completeness' in Path('public/index.html').read_text(encoding='utf-8')
+          print('P1/P2 logo summary:', json.dumps(summary, ensure_ascii=False, sort_keys=True))
+          print('All-channel logo summary:', json.dumps(logo.get('summary') or {}, ensure_ascii=False, sort_keys=True))
+          PY
+
+      - name: Keep only intended source changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/logo_overrides.json tools/priority_coverage.py templates/dashboard.html static/dashboard.js tests/test_priority_coverage.py tests/test_logo_quality.py
+          git rm tools/_agent_p2_logo_scorecard_patch.py .github/workflows/agent-p2-logo-scorecard.yml
+          git commit -m "Promote P2 logos and score priority coverage"
+          git push origin HEAD:agent/p2-logo-canonical-scorecard
