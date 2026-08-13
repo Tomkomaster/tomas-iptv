@@ -38,6 +38,7 @@ from iptv.reports import (
     safe_csv_value,
     write_csv,
 )
+from iptv.channel_identity import logical_channel_key
 from iptv.channel_identity import (
     QUALITY_SUFFIX_RE,
     TVG_VARIANT_SUFFIX_RE,
@@ -613,19 +614,6 @@ def load_audit(path: str | None) -> list[dict]:
 
 
 
-def logical_channel_key(entry: dict) -> str:
-    """Identify one logical channel inside one publication country."""
-    country_code = (
-        normalize_country_code(
-            str(entry.get("country_code") or entry.get("language_code") or "")
-        )
-        or "UNKNOWN"
-    )
-    raw_key = str(entry.get("channel_key") or channel_key(entry))
-    prefix = f"{country_code}:"
-    if raw_key.startswith(prefix):
-        return raw_key
-    return f"{prefix}{raw_key}"
 
 
 
