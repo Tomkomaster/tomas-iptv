@@ -19,7 +19,9 @@ jobs:
           fetch-depth: 0
 
       - name: Apply EPG quality refactor
-        run: python3 tools/_epg_quality_refactor_once.py
+        run: |
+          python3 tools/_epg_quality_refactor_once.py
+          python3 tools/_epg_quality_fix_once.py
 
       - name: Compile affected Python
         run: |
@@ -40,6 +42,7 @@ jobs:
           script = Path('static/dashboard.js').read_text(encoding='utf-8')
           assert 'python3 -m epg.epg_quality' in workflow
           assert 'epg-quality.json' in script
+          assert 'EPG coverage by country' in template
           for label in ('Exact tvg-id', 'Alias', 'Guessed', 'Missing', 'EPG unavailable'):
               assert label in template + script
           assert 'Verified channels without EPG mapping' in template
@@ -50,6 +53,7 @@ jobs:
       - name: Remove one-off helpers
         run: |
           rm tools/_epg_quality_refactor_once.py
+          rm tools/_epg_quality_fix_once.py
           rm .github/workflows/epg-quality-refactor-once.yml
 
       - name: Commit tested EPG quality implementation
