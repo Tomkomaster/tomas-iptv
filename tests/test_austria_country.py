@@ -53,8 +53,8 @@ class AustriaCountryTests(unittest.TestCase):
         self.assertTrue(path.is_file())
         payload = json.loads(path.read_text(encoding="utf-8"))
         self.assertEqual(payload["schema_version"], 1)
-        self.assertEqual(payload["replace_country"], "AT")
         self.assertEqual(payload["channels"], [])
+        self.assertNotIn("replace_country", payload)
 
     def test_priority_coverage_uses_austrian_flag(self):
         coverage = {
