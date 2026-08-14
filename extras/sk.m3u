@@ -458,3 +458,11 @@ https://st01-1.iptv.joj.sk/111-tv-pc.m3u8
 # P3 — TV Raj
 #EXTINF:-1 tvg-name="TV Raj" group-title="Regional",TV Raj
 https://ottst05.flexitv.sk/2827-tv-pc.m3u8
+
+# TV NRSR — alternate STV Livebox backend
+# Different from IPTV-org n11 feed and our JOJ CDN candidate
+# Current public stream database reports working
+# P4 parliamentary/event feed
+# TEST VLC + Samsung
+#EXTINF:-1 tvg-id="TVNRSR.sk" tvg-name="TV NRSR" group-title="News",TV NRSR
+https://n15.stv.livebox.sk/stv-tv/_definst_/stv7.smil/playlist.m3u8
