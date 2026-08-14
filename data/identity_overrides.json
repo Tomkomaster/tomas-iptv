@@ -50,6 +50,56 @@
         "slk"
       ],
       "language_code": "SK"
+    },
+    "ru:current-time-tv": {
+      "channel_name": "Current Time TV",
+      "tvg_name": "Current Time TV",
+      "tvg_id": "",
+      "country_code": "RU",
+      "language_codes": [
+        "rus"
+      ],
+      "language_code": "RU"
+    },
+    "ro:axn-white": {
+      "channel_name": "AXN White",
+      "tvg_name": "AXN White",
+      "tvg_id": "",
+      "country_code": "RO",
+      "language_codes": [
+        "ron"
+      ],
+      "language_code": "RO"
+    },
+    "ro:rtg-int": {
+      "channel_name": "RTG int.",
+      "tvg_name": "RTG int.",
+      "tvg_id": "",
+      "country_code": "RO",
+      "language_codes": [
+        "ron"
+      ],
+      "language_code": "RO"
+    },
+    "ro:rtv-1-vajdasag": {
+      "channel_name": "RTV 1 Vajdaság",
+      "tvg_name": "RTV 1 Vajdaság",
+      "tvg_id": "",
+      "country_code": "RO",
+      "language_codes": [
+        "ron"
+      ],
+      "language_code": "RO"
+    },
+    "ro:rtv-2-vajdasag": {
+      "channel_name": "RTV 2 Vajdaság",
+      "tvg_name": "RTV 2 Vajdaság",
+      "tvg_id": "",
+      "country_code": "RO",
+      "language_codes": [
+        "ron"
+      ],
+      "language_code": "RO"
     }
   },
   "selectors": [
@@ -87,6 +137,55 @@
       },
       "canonical_id": "sk:ocko",
       "note": "This manually verified Slovak-language Óčko feed is a distinct SK publication identity; do not reuse the Czech Ocko.cz@SD EPG ID across country outputs."
+    },
+    {
+      "match": {
+        "url": "http://stream.mcquack.net/384/index.m3u8"
+      },
+      "canonical_id": "ru:current-time-tv",
+      "note": "Manual 2026-08-14 country/language verification overrides the upstream/source country assignment."
+    },
+    {
+      "match": {
+        "url": "https://rfe-ingest.akamaized.net/hls/live/2033043/tvmc05/master.m3u8"
+      },
+      "canonical_id": "ru:current-time-tv",
+      "note": "Manual 2026-08-14 country/language verification overrides the upstream/source country assignment."
+    },
+    {
+      "match": {
+        "url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8"
+      },
+      "canonical_id": "ro:axn-white",
+      "note": "Manual 2026-08-14 country/language verification overrides the upstream/source country assignment."
+    },
+    {
+      "match": {
+        "url": "https://t.freetv.fun/live/axn-white.m3u8"
+      },
+      "canonical_id": "ro:axn-white",
+      "note": "Manual 2026-08-14 country/language verification overrides the upstream/source country assignment."
+    },
+    {
+      "match": {
+        "url": "http://213.91.179.28:8000/play/a0bw"
+      },
+      "canonical_id": "ro:rtg-int",
+      "note": "Manual 2026-08-14 country/language verification overrides the upstream/source country assignment."
+    },
+    {
+      "match": {
+        "url": "http://212.200.230.50:1935/RTV/rtv1/playlist.m3u8"
+      },
+      "canonical_id": "ro:rtv-1-vajdasag",
+      "note": "Manual 2026-08-14 country/language verification overrides the upstream/source country assignment."
+    },
+    {
+      "match": {
+        "url": "http://212.200.230.50:1935/RTV/rtv2/playlist.m3u8"
+      },
+      "canonical_id": "ro:rtv-2-vajdasag",
+      "note": "Manual 2026-08-14 country/language verification overrides the upstream/source country assignment."
     }
   ]
 }
