@@ -54,6 +54,42 @@ class WantedChannelSplitTests(unittest.TestCase):
             self.assertIn(("SK", "TA3"), names)
             self.assertIn(("SK", "TV JOJ"), names)
 
+    def test_fully_split_catalogs_work_without_legacy_master_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data_dir = Path(tmp)
+            main_path = data_dir / "wanted_channels.json"
+            (data_dir / "wanted_channels_hu.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "channels": [
+                            {"country_code": "HU", "channel": "Duna", "priority": "P1"}
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (data_dir / "wanted_channels_ro.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "replace_country": "RO",
+                        "channels": [
+                            {"country_code": "RO", "channel": "PRO TV", "priority": "P1"}
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (data_dir / "wanted_channels_at.json").write_text(
+                json.dumps({"schema_version": 1, "channels": []}),
+                encoding="utf-8",
+            )
+
+            compiled = load_wanted_channels(main_path)
+            names = {(row["country_code"], row["channel"]) for row in compiled}
+            self.assertEqual(names, {("HU", "Duna"), ("RO", "PRO TV")})
+
     def test_duplicate_detection_still_applies_after_split_merge(self):
         with tempfile.TemporaryDirectory() as tmp:
             data_dir = Path(tmp)
