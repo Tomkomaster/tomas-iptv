@@ -90,10 +90,10 @@
       "channel": "AXN White",
       "stream_url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8",
       "tvg_id": "AXNWhite.us@SD",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
       "expected_language_codes": [
-        "hun"
+        "ron"
       ],
       "observed_language_codes": [
         "ron"
@@ -102,7 +102,6 @@
       "samsung": "format_error",
       "vlc_note": "ok",
       "samsung_note": "NOT_SUPPORTED_FILE",
-      "exclude_from_playlist": true,
       "tested_on": "2026-08-14",
       "provenance": "IPTV-org source (manual playback review)",
       "discovery": "Current IPTV-org Hungary playlist/manual test"
@@ -9653,10 +9652,10 @@
       "channel": "RTG int.",
       "stream_url": "http://213.91.179.28:8000/play/a0bw",
       "tvg_id": "RTGint.ru@SD",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
       "expected_language_codes": [
-        "hun"
+        "ron"
       ],
       "observed_language_codes": [
         "ron"
@@ -9665,7 +9664,6 @@
       "samsung": "works",
       "vlc_note": "ok",
       "samsung_note": "ok",
-      "exclude_from_playlist": true,
       "tested_on": "2026-08-14",
       "provenance": "IPTV-org Hungarian-language candidate; manually retested",
       "discovery": "Current Hungarian testing playlist; manual VLC + Samsung language retest"
@@ -9673,10 +9671,10 @@
     {
       "channel": "RTV 1 Vajdaság",
       "stream_url": "http://212.200.230.50:1935/RTV/rtv1/playlist.m3u8",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
       "expected_language_codes": [
-        "hun"
+        "ron"
       ],
       "observed_language_codes": [
         "ron"
@@ -9685,7 +9683,6 @@
       "samsung": "works",
       "vlc_note": "ok",
       "samsung_note": "ok",
-      "exclude_from_playlist": true,
       "tested_on": "2026-08-14",
       "notes": "Channel logo is PTB 1",
       "provenance": "Curated extras/hu.m3u Serbian/Vojvodina cross-border candidate; manually retested",
@@ -9694,10 +9691,10 @@
     {
       "channel": "RTV 2 Vajdaság",
       "stream_url": "http://212.200.230.50:1935/RTV/rtv2/playlist.m3u8",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
       "expected_language_codes": [
-        "hun"
+        "ron"
       ],
       "observed_language_codes": [
         "ron"
@@ -9706,7 +9703,6 @@
       "samsung": "works",
       "vlc_note": "ok",
       "samsung_note": "ok",
-      "exclude_from_playlist": true,
       "tested_on": "2026-08-14",
       "notes": "Channel logo is RTV 2",
       "provenance": "Curated extras/hu.m3u multilingual Vojvodina candidate; manually retested over multiple days",
@@ -10212,10 +10208,10 @@
     {
       "channel": "Current Time TV",
       "stream_url": "http://stream.mcquack.net/384/index.m3u8",
-      "playlist_country_code": "CZ",
-      "output_country_code": "CZ",
+      "playlist_country_code": "RU",
+      "output_country_code": "RU",
       "expected_language_codes": [
-        "ces"
+        "rus"
       ],
       "observed_language_codes": [
         "rus"
@@ -10224,7 +10220,6 @@
       "samsung": "format_error",
       "vlc_note": "ok",
       "samsung_note": "NOT_SUPPORTED_FILE",
-      "exclude_from_playlist": true,
       "tested_on": "2026-08-14",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test"
@@ -12057,10 +12052,10 @@
     {
       "channel": "Current Time TV",
       "stream_url": "https://rfe-ingest.akamaized.net/hls/live/2033043/tvmc05/master.m3u8",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
+      "playlist_country_code": "RU",
+      "output_country_code": "RU",
       "expected_language_codes": [
-        "hun"
+        "rus"
       ],
       "observed_language_codes": [
         "rus"
@@ -12069,7 +12064,6 @@
       "samsung": "works",
       "vlc_note": "ok",
       "samsung_note": "ok",
-      "exclude_from_playlist": true,
       "tested_on": "2026-08-14",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test"
