@@ -466,3 +466,8 @@ https://ottst05.flexitv.sk/2827-tv-pc.m3u8
 # TEST VLC + Samsung
 #EXTINF:-1 tvg-id="TVNRSR.sk" tvg-name="TV NRSR" group-title="News",TV NRSR
 https://n15.stv.livebox.sk/stv-tv/_definst_/stv7.smil/playlist.m3u8
+
+# RTV Krea — current official online broadcast
+# Replacement for old 213.81.153.221/galanta
+#EXTINF:-1 tvg-name="RTV Krea" group-title="Regional",RTV Krea
+https://ythls.onrender.com/video/XSP1kSSDjzQ.m3u8
