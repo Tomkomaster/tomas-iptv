@@ -16,6 +16,7 @@ ROW = {
     "language_codes": ["ron"],
     "source": "Test source",
     "discovery": "Current playlist",
+    "provenance": "IPTV-org source (manual playback review)",
     "in_playlist": True,
     "decision": "Needs review",
     "feed_index": 1,
@@ -38,7 +39,7 @@ class AuditConsoleTests(unittest.TestCase):
                 "vlc": ["works"],
                 "samsung": ["works"],
                 "language": ["ron"],
-                "provenance": ["Official broadcaster"],
+                "source_type": ["Unknown"],
                 "notes": ["Passed both tests."],
             },
             tested_on="2026-08-13",
@@ -50,6 +51,10 @@ class AuditConsoleTests(unittest.TestCase):
         self.assertEqual(item["samsung"], "works")
         self.assertEqual(item["observed_language_codes"], ["ron"])
         self.assertEqual(item["tested_on"], "2026-08-13")
+        self.assertEqual(
+            item["provenance"],
+            "IPTV-org source (manual playback review)",
+        )
         self.assertEqual(build_queue([ROW], updated), [])
 
     def test_canonical_url_upsert_preserves_existing_manual_fields(self):
@@ -64,6 +69,7 @@ class AuditConsoleTests(unittest.TestCase):
                     "decision": "needs_review",
                     "exclude_from_playlist": True,
                     "vlc": "works",
+                    "provenance": "Original research note",
                 }
             ],
         }
@@ -75,7 +81,7 @@ class AuditConsoleTests(unittest.TestCase):
                 "vlc": ["works"],
                 "samsung": ["generic_error"],
                 "language": ["ron"],
-                "provenance": ["Unknown"],
+                "source_type": ["Unknown"],
             },
             tested_on="2026-08-13",
         )
@@ -85,6 +91,29 @@ class AuditConsoleTests(unittest.TestCase):
         self.assertEqual(item["output_country_code"], "HU")
         self.assertEqual(item["decision"], "needs_review")
         self.assertTrue(item["exclude_from_playlist"])
+        self.assertEqual(item["provenance"], "Original research note")
+
+    def test_confirmed_source_type_can_replace_provenance(self):
+        payload = {
+            "schema_version": 2,
+            "storage": "manual_only",
+            "channels": [],
+        }
+        updated = save_result(
+            payload,
+            ROW,
+            {
+                "vlc": ["works"],
+                "samsung": ["works"],
+                "language": ["ron"],
+                "source_type": ["Official broadcaster"],
+            },
+            tested_on="2026-08-13",
+        )
+        self.assertEqual(
+            updated["channels"][0]["provenance"],
+            "Official broadcaster",
+        )
 
     def test_write_audit_keeps_backup(self):
         with tempfile.TemporaryDirectory() as directory:
