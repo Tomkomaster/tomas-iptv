@@ -62,6 +62,14 @@ jobs:
               ("Prima SK", "http://88.212.15.19/live/test_prima_plus_25p/playlist.m3u8", "slk", "works", "works", "ok", "ok", None),
           ]
 
+          # These two exact feeds are new to audit.json rather than retests of an
+          # already stored exact URL. Give them the same minimal identity context
+          # the local audit console would preserve from the current report row.
+          NEW_FEED_SCOPE = {
+              canonical_stream_url("https://t.freetv.fun/live/axn-white.m3u8"): ("RO", "RO", ["ron"]),
+              canonical_stream_url("http://88.212.15.19/live/test_prima_plus_25p/playlist.m3u8"): ("SK", "SK", ["slk"]),
+          }
+
           payload = compact_manual_audit_payload(json.loads(AUDIT.read_text(encoding="utf-8-sig")))
           channels = list(payload.get("channels") or [])
           index = {}
@@ -74,16 +82,31 @@ jobs:
                   raise SystemExit(f"Duplicate audit URL before update: {url}")
               index[key] = pos
 
-          missing = []
           updated_names = []
+          added_names = []
           for display_name, url, language, vlc, samsung, vlc_note, samsung_note, note in RETESTS:
               key = canonical_stream_url(url)
               pos = index.get(key)
               if pos is None:
-                  missing.append(f"{display_name}: {url}")
-                  continue
+                  scope = NEW_FEED_SCOPE.get(key)
+                  if scope is None:
+                      raise SystemExit(f"Unexpected missing exact audit URL: {display_name}: {url}")
+                  playlist_country, output_country, expected = scope
+                  item = {
+                      "channel": display_name,
+                      "stream_url": url,
+                      "playlist_country_code": playlist_country,
+                      "output_country_code": output_country,
+                      "expected_language_codes": expected,
+                      "discovery": "Manual playback test supplied 2026-08-14",
+                  }
+                  channels.append(item)
+                  pos = len(channels) - 1
+                  index[key] = pos
+                  added_names.append(display_name)
+              else:
+                  item = dict(channels[pos])
 
-              item = dict(channels[pos])
               item["observed_language_codes"] = [language]
               item["vlc"] = vlc
               item["samsung"] = samsung
@@ -91,22 +114,20 @@ jobs:
               item["samsung_note"] = samsung_note
               item["tested_on"] = TESTED_ON
 
-              # These are fresh retests: recalculate any old explicit decision/reason
-              # from the new playback/language evidence instead of pinning stale facts.
+              # Fresh evidence supersedes old test-derived decisions/reasons.
               item.pop("decision", None)
               item.pop("reason", None)
               item.pop("language_match", None)
 
-              # The general note is part of this retest. A blank note supersedes stale
-              # failure prose from older manual tests while provenance/discovery remain.
+              # Blank general notes supersede stale failure prose; provenance and
+              # discovery remain intact. Preserve the three notes supplied here.
               if note:
                   item["notes"] = note
               else:
                   item.pop("notes", None)
 
-              # Clear an old manual exclusion only for a clean two-device pass whose
-              # observed language agrees with the row's expected language (or where no
-              # expected language was recorded). Partial/failed retests keep exclusions.
+              # Clear an old exclusion only for a clean two-device pass in the
+              # expected language. Partial/failed retests keep explicit exclusions.
               expected = set(item.get("expected_language_codes") or [])
               if vlc == "works" and samsung == "works" and (not expected or language in expected):
                   item.pop("exclude_from_playlist", None)
@@ -114,15 +135,15 @@ jobs:
               channels[pos] = item
               updated_names.append(display_name)
 
-          if missing:
-              raise SystemExit("Missing exact audit URL(s):\n" + "\n".join(missing))
           if len(updated_names) != len(RETESTS):
               raise SystemExit(f"Expected {len(RETESTS)} updates, got {len(updated_names)}")
+          if set(added_names) != {"AXN White Test", "Prima SK"}:
+              raise SystemExit(f"Unexpected newly added feed set: {added_names}")
 
           payload["channels"] = channels
           payload = compact_manual_audit_payload(payload)
           AUDIT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-          print(f"Updated {len(updated_names)} manual audit records for {TESTED_ON}.")
+          print(f"Updated {len(updated_names)} manual audit records for {TESTED_ON}; added exact audit rows for: {', '.join(added_names)}.")
           PY
 
       - name: Validate audit-focused tests
