@@ -24,10 +24,11 @@ class LanguagePlaylistTests(unittest.TestCase):
                 "slk": "public/by-language/slk.m3u",
                 "ces": "public/by-language/ces.m3u",
                 "ron": "public/by-language/ron.m3u",
+                "deu": "public/by-language/deu.m3u",
             },
         )
         supported = configured_language_codes(cfg)
-        for code in ("hun", "slk", "ces", "ron"):
+        for code in ("hun", "slk", "ces", "ron", "deu"):
             self.assertIn(code, supported)
 
     def test_serbian_hungarian_entry_remains_rs_in_hungarian_catalog(self):
