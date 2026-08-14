@@ -14,6 +14,7 @@ from epg_cross_country_alias import (
     apply_cross_country_aliases,
     load_cross_country_aliases,
 )
+from epg_external_sources import prepare_external_guide
 from epg_merge import load_external_aliases, merge_guides
 
 
@@ -109,7 +110,16 @@ def merge_country_guides(
             external_provider = str(
                 external_cfg.get("provider") or "epgshare01.online"
             ).strip() or "epgshare01.online"
-            country_external_path = _external_path(external_dir, code)
+            primary_external_path = _external_path(external_dir, code)
+            (
+                country_external_path,
+                external_source_stats,
+            ) = prepare_external_guide(
+                primary_path=primary_external_path,
+                external_dir=external_dir,
+                country_code=code,
+                external_cfg=external_cfg,
+            )
 
             aliases: dict[str, str] = {}
             if country_external_path is not None:
@@ -246,6 +256,7 @@ def merge_country_guides(
                 **external_info,
                 "configured": bool(external_cfg.get("url")),
                 "downloaded": country_external_path is not None,
+                **external_source_stats,
             }
 
     ET.indent(combined_root, space="  ")
