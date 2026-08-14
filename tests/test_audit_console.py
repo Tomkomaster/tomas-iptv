@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.audit_console import build_queue, save_result, write_audit
+from tools.audit_console import build_queue, render, save_result, write_audit
 
 
 ROW = {
@@ -20,6 +20,8 @@ ROW = {
     "in_playlist": True,
     "decision": "Needs review",
     "feed_index": 1,
+    "feed_count": 2,
+    "feed_label": "Feed 1/2",
 }
 
 
@@ -114,6 +116,42 @@ class AuditConsoleTests(unittest.TestCase):
             updated["channels"][0]["provenance"],
             "Official broadcaster",
         )
+
+    def test_render_has_one_channel_jump_option_for_multiple_feeds(self):
+        second = dict(ROW)
+        second.update({
+            "stream_url": "https://example.com/live-backup.m3u8",
+            "feed_index": 2,
+            "feed_label": "Feed 2/2",
+        })
+        alpha = dict(ROW)
+        alpha.update({
+            "channel": "Alpha TV",
+            "stream_url": "https://example.com/alpha.m3u8",
+            "tvg_id": "AlphaTV.ro",
+            "feed_index": 1,
+            "feed_count": 1,
+            "feed_label": "Single",
+        })
+        payload = {
+            "schema_version": 2,
+            "storage": "manual_only",
+            "channels": [],
+        }
+
+        page = render(
+            [alpha, ROW, second],
+            payload,
+            [("ron", "Romanian")],
+            "token",
+            "pending",
+            "RO",
+        )
+
+        self.assertIn('name="focus"', page)
+        self.assertIn("PRO TV — RO — 2 feeds", page)
+        self.assertEqual(page.count("PRO TV — RO — 2 feeds"), 1)
+        self.assertIn("Alpha TV — RO", page)
 
     def test_write_audit_keeps_backup(self):
         with tempfile.TemporaryDirectory() as directory:
