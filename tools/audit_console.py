@@ -275,6 +275,32 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
         for value, label in (("pending", "Pending tests"), ("needs_review", "Build: needs review"), ("all", "All current"))
     ]
 
+    jump_options = ['<option value="">Jump to channel…</option>']
+    seen_channels: set[tuple[str, str]] = set()
+    for item in queue:
+        item_country = normalize_country_code(
+            str(item.get("playlist_country_code") or item.get("country_code") or "")
+        )
+        item_channel = str(item.get("channel") or "Unnamed channel").strip()
+        channel_key = (item_country, item_channel.casefold())
+        if channel_key in seen_channels:
+            continue
+        seen_channels.add(channel_key)
+        feed_count = max(int(item.get("feed_count") or 1), 1)
+        label = f"{item_channel} — {item_country or '??'}"
+        if feed_count > 1:
+            label += f" — {feed_count} feeds"
+        selected = False
+        if current:
+            current_country = normalize_country_code(
+                str(current.get("playlist_country_code") or current.get("country_code") or "")
+            )
+            current_channel = str(current.get("channel") or "").strip().casefold()
+            selected = current_country == item_country and current_channel == item_channel.casefold()
+        jump_options.append(
+            f'<option value="{esc(item.get("_key"))}"{" selected" if selected else ""}>{esc(label)}</option>'
+        )
+
     if not current:
         card = '<section><h2>Queue complete</h2><p>No streams match this filter.</p></section>'
     else:
@@ -331,10 +357,11 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
 
     notice = '<p class="saved">Saved to audit.json.</p>' if saved else ''
     return f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Tomas IPTV Test Queue</title>
-<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}details{{border:1px solid #303849;border-radius:10px;margin:12px 0;background:#131822}}summary{{cursor:pointer;padding:12px;font-weight:600}}.details-body{{padding:0 12px 12px}}</style></head><body>
+<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}.toolbar form{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}details{{border:1px solid #303849;border-radius:10px;margin:12px 0;background:#131822}}summary{{cursor:pointer;padding:12px;font-weight:600}}.details-body{{padding:0 12px 12px}}.jump-select{{min-width:310px;max-width:520px}}</style></head><body>
 <header><h1>TOMAS IPTV — TEST QUEUE</h1><p>Local-only audit assistant. Exact-URL results are written to audit.json; the previous file is kept as audit.json.bak.</p>
 <div class="toolbar"><strong>{len(queue)} in queue · {len(rows)} current streams · {len(exact_index(payload))} exact audits</strong>
-<form method="get"><select name="mode">{''.join(mode_options)}</select><select name="country">{''.join(country_options)}</select><button>Apply</button></form></div></header>{notice}{card}</body></html>'''
+<form method="get"><select name="mode">{''.join(mode_options)}</select><select name="country">{''.join(country_options)}</select><button>Apply</button></form>
+<form method="get"><input type="hidden" name="mode" value="{esc(mode)}"><input type="hidden" name="country" value="{esc(country)}"><select class="jump-select" name="focus" title="Select a channel; typing its first letters also jumps within the list">{''.join(jump_options)}</select><button>Jump</button></form></div></header>{notice}{card}</body></html>'''
 
 
 class App:
