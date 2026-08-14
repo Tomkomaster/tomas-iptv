@@ -11,11 +11,16 @@
     "Spiler2.hu@SD": "Spíler2.TV.hu",
     "Viasat2.hu@SD": "Viasat.2.hu",
     "ZalaegerszegiTV.hu@SD": "Zeg.TV.hu",
+    "AXNBlack.us@CzechRepublic": "AXN.Black.cz",
+    "AXNCEE.es@CzechRepublic": "AXN.cz",
+    "AXNWhite.us@CzechRepublic": "AXN.White.cz",
+    "BBCEarth.uk@Czechia": "BBC.Earth.CZ.cz",
     "CanalPlusActionEurope.nl@Czechia": "CANAL.PLUS.ACTION.CZ.cz",
     "FILMBOXPlusComedy.pl@Czechia": "Filmbox+.comedy.cz",
     "FILMBOXPlusEmotion.pl@Czechia": "Filmbox+.emotion.cz",
     "FILMBOXPlusHits.pl@Czechia": "Filmbox+.hits.cz",
     "FILMBOXPlusOne.pl@Czechia": "Filmbox+.one.cz",
+    "ViasatEpicDrama.uk@Czechia": "Epic.Drama.cz",
     "AXNBlack.us@Romania": "AXN.Black.ro",
     "KanalD2.ro@SD": "Kanal.D2.(HD).ro",
     "TVRIasi.ro@SD": "TVR.Iași.ro",
@@ -32,6 +37,11 @@
       "playlist_country_code": "SK",
       "external_country_code": "CZ",
       "external_id": "HaHa.TV.cz"
+    },
+    "LifeTv.sk@SD": {
+      "playlist_country_code": "SK",
+      "external_country_code": "CZ",
+      "external_id": "Life.TV.cz"
     },
     "PrimaKrimiSK.sk@HD": {
       "playlist_country_code": "SK",
