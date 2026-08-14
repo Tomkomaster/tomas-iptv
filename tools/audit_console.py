@@ -106,7 +106,7 @@ def pending_reasons(manual: dict | None) -> list[str]:
 def build_queue(rows: list[dict], payload: dict, mode="pending", country="") -> list[dict]:
     idx = exact_index(payload)
     country = normalize_country_code(country)
-    mode = mode if mode in {"pending", "needs_review", "all"} else "pending"
+    mode = mode if mode in {"pending", "retest", "needs_review", "all"} else "pending"
     out = []
     for row in rows:
         key = canonical_stream_url(str(row.get("stream_url") or ""))
@@ -121,6 +121,8 @@ def build_queue(rows: list[dict], payload: dict, mode="pending", country="") -> 
             continue
         reasons = pending_reasons(manual)
         if mode == "pending" and not reasons:
+            continue
+        if mode == "retest" and manual is None:
             continue
         if mode == "needs_review" and row.get("decision") != "Needs review":
             continue
@@ -180,6 +182,20 @@ def save_result(payload: dict, row: dict, form: dict[str, list[str]], tested_on=
         item["observed_language_codes"] = observed
     else:
         item.pop("observed_language_codes", None)
+
+    # Retesting may invalidate an old explicit decision that would otherwise
+    # override the newly saved playback evidence forever. Only clear it when
+    # the user explicitly asks the retest form to recalculate from the new
+    # VLC/Samsung/language facts.
+    if _first(form, "recalculate_decision") == "1":
+        item.pop("decision", None)
+        item.pop("reason", None)
+
+    # A manual exclusion is deliberately separate from test-derived status.
+    # Never remove it merely because a retest succeeds; require a second,
+    # explicit checkbox.
+    if _first(form, "clear_exclusion") == "1":
+        item.pop("exclude_from_playlist", None)
 
     for field in ("vlc_note", "samsung_note", "notes"):
         value = _first(form, field)
@@ -272,7 +288,12 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
     ]
     mode_options = [
         f'<option value="{value}"{" selected" if value == mode else ""}>{label}</option>'
-        for value, label in (("pending", "Pending tests"), ("needs_review", "Build: needs review"), ("all", "All current"))
+        for value, label in (
+            ("pending", "Pending tests"),
+            ("retest", "Retest / edit existing"),
+            ("needs_review", "Build: needs review"),
+            ("all", "All current"),
+        )
     ]
 
     jump_options = ['<option value="">Jump to channel…</option>']
@@ -324,6 +345,28 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
         other_lang = ", ".join(code for code in observed if code not in known)
         prefix = normalize_country_code(str(current.get("playlist_country_code") or current.get("country_code") or ""))
         reasons = " · ".join(current.get("_pending") or [])
+
+        manual = exact_index(payload).get(str(current.get("_key") or ""), (None, None))[1]
+        saved_decision = str((manual or {}).get("decision") or "").strip()
+        saved_reason = str((manual or {}).get("reason") or "").strip()
+        saved_excluded = (manual or {}).get("exclude_from_playlist") is True
+        retest_controls = ""
+        if mode == "retest" and (saved_decision or saved_excluded):
+            decision_text = esc(saved_decision or "Automatic")
+            reason_text = f' · <strong>Reason:</strong> {esc(saved_reason)}' if saved_reason else ""
+            exclusion_html = ""
+            if saved_excluded:
+                exclusion_html = '''
+<label class="block-choice"><input type="checkbox" name="clear_exclusion" value="1"> Remove the existing manual playlist exclusion too</label>
+<p class="muted">This is intentionally not selected automatically because a manual exclusion may have been deliberate.</p>'''
+            retest_controls = f'''
+<fieldset class="retest-box"><legend>Retest handling</legend>
+<p><strong>Saved manual decision:</strong> {decision_text}{reason_text}</p>
+<label class="block-choice"><input type="checkbox" name="recalculate_decision" value="1" checked> Recalculate the decision from these new VLC, Samsung and language results</label>
+<p class="muted">Recommended when an old failed stream now works. This clears the stale explicit decision/reason so the normal build policy can evaluate the new test results.</p>
+{exclusion_html}
+</fieldset>'''
+
         card = f'''
 <section>
 <h2>[{esc(prefix)}] {esc(current.get("channel"))}</h2>
@@ -335,6 +378,7 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
 <input type="hidden" name="stream_url" value="{esc(stream_url)}">
 <input type="hidden" name="next_focus" value="{esc(nxt.get("_key"))}">
 <input type="hidden" name="mode" value="{esc(mode)}"><input type="hidden" name="country" value="{esc(country)}">
+{retest_controls}
 <fieldset><legend>VLC</legend>{radio("vlc", normalize_test_status(str(current.get("vlc") or "")))}<input name="vlc_note" placeholder="VLC note" value="{esc(current.get("vlc_note"))}"></fieldset>
 <fieldset><legend>Samsung</legend>{radio("samsung", normalize_test_status(str(current.get("samsung") or "")))}<input name="samsung_note" placeholder="Samsung note" value="{esc(current.get("samsung_note"))}"></fieldset>
 <fieldset><legend>Observed language</legend>{lang_html}<input name="other_languages" placeholder="Other codes: deu, srp" value="{esc(other_lang)}"></fieldset>
@@ -357,7 +401,7 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
 
     notice = '<p class="saved">Saved to audit.json.</p>' if saved else ''
     return f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Tomas IPTV Test Queue</title>
-<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}.toolbar form{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}details{{border:1px solid #303849;border-radius:10px;margin:12px 0;background:#131822}}summary{{cursor:pointer;padding:12px;font-weight:600}}.details-body{{padding:0 12px 12px}}.jump-select{{min-width:310px;max-width:520px}}</style></head><body>
+<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}.toolbar form{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}details{{border:1px solid #303849;border-radius:10px;margin:12px 0;background:#131822}}summary{{cursor:pointer;padding:12px;font-weight:600}}.details-body{{padding:0 12px 12px}}.jump-select{{min-width:310px;max-width:520px}}.retest-box{{border-color:#7d6631;background:#211d13}}.block-choice{{display:block!important;margin:10px 0!important}}</style></head><body>
 <header><h1>TOMAS IPTV — TEST QUEUE</h1><p>Local-only audit assistant. Exact-URL results are written to audit.json; the previous file is kept as audit.json.bak.</p>
 <div class="toolbar"><strong>{len(queue)} in queue · {len(rows)} current streams · {len(exact_index(payload))} exact audits</strong>
 <form method="get"><select name="mode">{''.join(mode_options)}</select><select name="country">{''.join(country_options)}</select><button>Apply</button></form>
