@@ -15,7 +15,12 @@
     "FILMBOXPlusComedy.pl@Czechia": "Filmbox+.comedy.cz",
     "FILMBOXPlusEmotion.pl@Czechia": "Filmbox+.emotion.cz",
     "FILMBOXPlusHits.pl@Czechia": "Filmbox+.hits.cz",
-    "FILMBOXPlusOne.pl@Czechia": "Filmbox+.one.cz"
+    "FILMBOXPlusOne.pl@Czechia": "Filmbox+.one.cz",
+    "AXNBlack.us@Romania": "AXN.Black.ro",
+    "KanalD2.ro@SD": "Kanal.D2.(HD).ro",
+    "TVRIasi.ro@SD": "TVR.Iași.ro",
+    "TVRTarguMures.ro@SD": "TVR.Mureș.ro",
+    "TVRTimisoara.ro@SD": "TVR.Timișoara.ro"
   },
   "cross_country_aliases": {
     "ducktvPLUS.sk@SD": {
