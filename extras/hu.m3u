@@ -670,3 +670,7 @@ https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8
 # Hír TV — direct Videa HLS candidate
 #EXTINF:-1 tvg-id="HirTV.hu" tvg-name="Hír TV" group-title="News",Hír TV
 https://video11.videa.hu/static/live/8.2966061.2530409.1.5.590.590/index.m3u8
+
+# P3 — Óbuda TV — Streaming4U direct HLS
+#EXTINF:-1 tvg-id="ObudaTV.hu" tvg-name="Óbuda TV" group-title="Regional",Óbuda TV
+https://stream.streaming4u.hu:443/ObudaTV/index.m3u8
