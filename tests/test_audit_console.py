@@ -58,6 +58,7 @@ class AuditConsoleTests(unittest.TestCase):
             "IPTV-org source (manual playback review)",
         )
         self.assertEqual(build_queue([ROW], updated), [])
+        self.assertEqual(len(build_queue([ROW], updated, mode="retest")), 1)
 
     def test_canonical_url_upsert_preserves_existing_manual_fields(self):
         payload = {
@@ -94,6 +95,80 @@ class AuditConsoleTests(unittest.TestCase):
         self.assertEqual(item["decision"], "needs_review")
         self.assertTrue(item["exclude_from_playlist"])
         self.assertEqual(item["provenance"], "Original research note")
+
+    def test_retest_can_clear_stale_decision_without_clearing_manual_exclusion(self):
+        payload = {
+            "schema_version": 2,
+            "storage": "manual_only",
+            "channels": [
+                {
+                    "channel": "PRO TV",
+                    "stream_url": "https://example.com/live.m3u8",
+                    "playlist_country_code": "RO",
+                    "output_country_code": "RO",
+                    "decision": "rejected",
+                    "reason": "Failed previous playback test.",
+                    "exclude_from_playlist": True,
+                    "vlc": "generic_error",
+                    "samsung": "generic_error",
+                    "observed_language_codes": ["ron"],
+                }
+            ],
+        }
+
+        updated = save_result(
+            payload,
+            ROW,
+            {
+                "vlc": ["works"],
+                "samsung": ["works"],
+                "language": ["ron"],
+                "source_type": ["Unknown"],
+                "recalculate_decision": ["1"],
+            },
+            tested_on="2026-08-14",
+        )
+
+        item = updated["channels"][0]
+        self.assertNotIn("decision", item)
+        self.assertNotIn("reason", item)
+        self.assertTrue(item["exclude_from_playlist"])
+        self.assertEqual(item["output_country_code"], "RO")
+        self.assertEqual(item["vlc"], "works")
+        self.assertEqual(item["samsung"], "works")
+        self.assertEqual(item["tested_on"], "2026-08-14")
+
+    def test_retest_can_explicitly_remove_manual_exclusion(self):
+        payload = {
+            "schema_version": 2,
+            "storage": "manual_only",
+            "channels": [
+                {
+                    "channel": "PRO TV",
+                    "stream_url": "https://example.com/live.m3u8",
+                    "playlist_country_code": "RO",
+                    "decision": "rejected",
+                    "exclude_from_playlist": True,
+                    "vlc": "generic_error",
+                    "samsung": "generic_error",
+                }
+            ],
+        }
+        updated = save_result(
+            payload,
+            ROW,
+            {
+                "vlc": ["works"],
+                "samsung": ["works"],
+                "language": ["ron"],
+                "recalculate_decision": ["1"],
+                "clear_exclusion": ["1"],
+            },
+            tested_on="2026-08-14",
+        )
+        item = updated["channels"][0]
+        self.assertNotIn("decision", item)
+        self.assertNotIn("exclude_from_playlist", item)
 
     def test_confirmed_source_type_can_replace_provenance(self):
         payload = {
@@ -152,6 +227,36 @@ class AuditConsoleTests(unittest.TestCase):
         self.assertIn("PRO TV — RO — 2 feeds", page)
         self.assertEqual(page.count("PRO TV — RO — 2 feeds"), 1)
         self.assertIn("Alpha TV — RO", page)
+
+    def test_render_retest_exposes_recalculation_controls(self):
+        payload = {
+            "schema_version": 2,
+            "storage": "manual_only",
+            "channels": [
+                {
+                    "channel": "PRO TV",
+                    "stream_url": "https://example.com/live.m3u8",
+                    "playlist_country_code": "RO",
+                    "decision": "rejected",
+                    "reason": "Old failure",
+                    "exclude_from_playlist": True,
+                    "vlc": "generic_error",
+                    "samsung": "generic_error",
+                    "observed_language_codes": ["ron"],
+                }
+            ],
+        }
+        page = render(
+            [ROW],
+            payload,
+            [("ron", "Romanian")],
+            "token",
+            "retest",
+            "RO",
+        )
+        self.assertIn("Retest handling", page)
+        self.assertIn('name="recalculate_decision"', page)
+        self.assertIn('name="clear_exclusion"', page)
 
     def test_write_audit_keeps_backup(self):
         with tempfile.TemporaryDirectory() as directory:
