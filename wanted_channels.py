@@ -84,13 +84,24 @@ def _load_payload(path: Path) -> dict:
 
 
 def load_wanted_channels(path: Path | None) -> list[dict[str, str]]:
-    if path is None or not path.is_file():
+    if path is None:
         return []
 
-    payload = _load_payload(path)
+    # ``wanted_channels.json`` was historically the master catalog. Country
+    # catalogs can now be fully split (wanted_channels_hu.json, _sk.json, ...),
+    # so a missing legacy master is valid as long as at least one split exists.
     if path.name == "wanted_channels.json":
-        merged_channels = list(payload.get("channels") or [])
-        for extra_path in sorted(path.parent.glob("wanted_channels_*.json")):
+        split_paths = sorted(path.parent.glob("wanted_channels_*.json"))
+        if path.is_file():
+            payload = _load_payload(path)
+            merged_channels = list(payload.get("channels") or [])
+        elif split_paths:
+            payload = {"schema_version": 1, "channels": []}
+            merged_channels = []
+        else:
+            return []
+
+        for extra_path in split_paths:
             extra_payload = _load_payload(extra_path)
             schema_version = int(extra_payload.get("schema_version") or 1)
             if schema_version != 1:
@@ -123,5 +134,8 @@ def load_wanted_channels(path: Path | None) -> list[dict[str, str]]:
 
         payload = dict(payload)
         payload["channels"] = merged_channels
+        return compile_wanted_channels(payload)
 
-    return compile_wanted_channels(payload)
+    if not path.is_file():
+        return []
+    return compile_wanted_channels(_load_payload(path))
