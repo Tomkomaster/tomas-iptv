@@ -3,7 +3,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.audit_console import build_queue, render, save_result, write_audit
+from tools.audit_console import (
+    build_queue,
+    render,
+    save_result,
+    wanted_target_for_row,
+    write_audit,
+)
 
 
 ROW = {
@@ -59,6 +65,94 @@ class AuditConsoleTests(unittest.TestCase):
         )
         self.assertEqual(build_queue([ROW], updated), [])
         self.assertEqual(len(build_queue([ROW], updated, mode="retest")), 1)
+
+    def test_important_queue_contains_only_pending_p1_p2_and_sorts_priority_first(self):
+        p2 = dict(ROW)
+        p2.update({
+            "channel": "Alpha P2",
+            "tvg_id": "AlphaP2.ro",
+            "stream_url": "https://example.com/alpha-p2.m3u8",
+            "feed_count": 1,
+        })
+        p1 = dict(ROW)
+        p1.update({
+            "channel": "Zulu P1",
+            "tvg_id": "ZuluP1.ro@HD",
+            "stream_url": "https://example.com/zulu-p1.m3u8",
+            "feed_count": 1,
+        })
+        p3 = dict(ROW)
+        p3.update({
+            "channel": "Beta P3",
+            "tvg_id": "BetaP3.ro",
+            "stream_url": "https://example.com/beta-p3.m3u8",
+            "feed_count": 1,
+        })
+        wanted = [
+            {"country_code": "RO", "channel": "Alpha P2", "tvg_id": "AlphaP2.ro", "priority": "P2", "reason": "Important thematic"},
+            {"country_code": "RO", "channel": "Zulu P1", "tvg_id": "ZuluP1.ro", "priority": "P1", "reason": "Major national"},
+            {"country_code": "RO", "channel": "Beta P3", "tvg_id": "BetaP3.ro", "priority": "P3", "reason": "Regional"},
+        ]
+        payload = {"schema_version": 2, "storage": "manual_only", "channels": []}
+
+        queue = build_queue(
+            [p2, p3, p1],
+            payload,
+            mode="important",
+            country="RO",
+            wanted_channels=wanted,
+        )
+
+        self.assertEqual([item["channel"] for item in queue], ["Zulu P1", "Alpha P2"])
+        self.assertEqual([item["_priority"] for item in queue], ["P1", "P2"])
+
+    def test_important_queue_drops_completed_priority_stream(self):
+        wanted = [
+            {"country_code": "RO", "channel": "PRO TV", "tvg_id": "PROTV.ro", "priority": "P1", "reason": "Major national"},
+        ]
+        payload = {
+            "schema_version": 2,
+            "storage": "manual_only",
+            "channels": [
+                {
+                    "channel": "PRO TV",
+                    "stream_url": "https://example.com/live.m3u8",
+                    "playlist_country_code": "RO",
+                    "tvg_id": "PROTV.ro",
+                    "vlc": "works",
+                    "samsung": "works",
+                    "observed_language_codes": ["ron"],
+                }
+            ],
+        }
+        self.assertEqual(
+            build_queue([ROW], payload, mode="important", wanted_channels=wanted),
+            [],
+        )
+
+    def test_exact_wanted_id_does_not_promote_same_name_different_service(self):
+        wanted = [
+            {"country_code": "SK", "channel": "Prima SK", "tvg_id": "PrimaSK.sk", "priority": "P1"},
+        ]
+        right = {
+            "channel": "Prima SK",
+            "tvg_id": "PrimaSK.sk@HD",
+            "playlist_country_code": "SK",
+        }
+        wrong = {
+            "channel": "Prima SK",
+            "tvg_id": "DifferentService.sk",
+            "playlist_country_code": "SK",
+        }
+
+        self.assertIsNotNone(wanted_target_for_row(right, wanted))
+        self.assertIsNone(wanted_target_for_row(wrong, wanted))
+
+    def test_name_only_wanted_target_can_match_current_channel(self):
+        wanted = [
+            {"country_code": "RO", "channel": "PRO TV", "tvg_id": "", "priority": "P1"},
+        ]
+        self.assertEqual(wanted_target_for_row(ROW, wanted)["priority"], "P1")
 
     def test_canonical_url_upsert_preserves_existing_manual_fields(self):
         payload = {
@@ -227,6 +321,31 @@ class AuditConsoleTests(unittest.TestCase):
         self.assertIn("PRO TV — RO — 2 feeds", page)
         self.assertEqual(page.count("PRO TV — RO — 2 feeds"), 1)
         self.assertIn("Alpha TV — RO", page)
+
+    def test_render_important_mode_shows_priority_badge_and_reason(self):
+        payload = {"schema_version": 2, "storage": "manual_only", "channels": []}
+        wanted = [
+            {
+                "country_code": "RO",
+                "channel": "PRO TV",
+                "tvg_id": "PROTV.ro",
+                "priority": "P1",
+                "reason": "Major Romanian national channel.",
+            }
+        ]
+        page = render(
+            [ROW],
+            payload,
+            [("ron", "Romanian")],
+            "token",
+            "important",
+            "RO",
+            wanted_channels=wanted,
+        )
+        self.assertIn("Important pending (P1 + P2)", page)
+        self.assertIn("[P1]", page)
+        self.assertIn("Major Romanian national channel.", page)
+        self.assertIn("P1 · PRO TV — RO", page)
 
     def test_render_retest_exposes_recalculation_controls(self):
         payload = {

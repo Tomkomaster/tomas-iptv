@@ -70,23 +70,38 @@ py -m tools.audit_console --no-browser
 
 ## Queue navigation
 
-The queue is still kept in stable country/channel/feed order, but you do not have to work through it alphabetically.
-
 Use the **Jump to channel** selector at the top of the page to choose any channel currently present in the selected queue/country. A channel with multiple streams is listed once, for example:
 
 ```text
-PRO TV — RO — 3 feeds
+P1 · PRO TV — RO — 3 feeds
 ```
 
 Jumping to it opens its first feed. **Save & next** then proceeds through the remaining feeds for that channel before continuing to the next channel in the queue.
 
-The jump selector respects the current queue mode and country filter. This makes it practical to test a specific important channel without first processing every alphabetically earlier channel.
+The jump selector respects the current queue mode and country filter.
 
 ## Queue modes
 
-### Pending tests
+### Important pending (P1 + P2)
 
-This is the default and is intended for normal testing. A current stream stays in this queue while any of these are true:
+This is the default view when the console opens. It uses the repository's existing wanted-channel catalog (`data/wanted_channels.json` plus its country split files) rather than maintaining a second priority list in the console.
+
+Only current streams that are both:
+
+- still pending manual testing; and
+- attached to a wanted target marked `P1` or `P2`
+
+are shown.
+
+`P1` streams sort before `P2`, then by country, channel and feed. The card and jump selector show the priority, and the card also shows the wanted-channel reason when one is configured.
+
+If a wanted target has an exact `tvg_id`, that identity is authoritative. Quality suffixes such as `@HD` normalize safely, but a different same-name service is not promoted by name alone. Name matching is used only for wanted targets that do not define an exact `tvg_id`.
+
+When the important queue is empty, switch to **All pending tests** to continue with lower-priority work.
+
+### All pending tests
+
+Shows every current stream that still needs at least one manual fact. A stream stays pending while any of these are true:
 
 - no exact-URL audit exists;
 - VLC has not been tested;
@@ -122,15 +137,16 @@ All modes can be filtered by country.
 1. Add or discover a candidate feed.
 2. Run `py build.py`.
 3. Start `py -m tools.audit_console`.
-4. Choose **Pending tests** for new work or **Retest / edit existing** for a previously tested stream.
-5. Optionally jump directly to the channel you want to test.
-6. Test the shown exact URL in VLC.
-7. Test the same exact URL on Samsung.
-8. Confirm the spoken language.
-9. Add notes when useful.
-10. Ignore source type unless it has been separately researched.
-11. On a retest, allow the old explicit decision to be recalculated when the playback result has changed; remove a manual exclusion only when that exclusion should really be lifted.
-12. Click **Save & next**.
-13. When the testing session is finished, run the normal strict build/tests before committing the changed `audit.json`.
+4. Work through **Important pending (P1 + P2)** first.
+5. Use **All pending tests** when the important queue is complete, or **Retest / edit existing** for a previously tested stream.
+6. Optionally jump directly to the channel you want to test.
+7. Test the shown exact URL in VLC.
+8. Test the same exact URL on Samsung.
+9. Confirm the spoken language.
+10. Add notes when useful.
+11. Ignore source type unless it has been separately researched.
+12. On a retest, allow the old explicit decision to be recalculated when the playback result has changed; remove a manual exclusion only when that exclusion should really be lifted.
+13. Click **Save & next**.
+14. When the testing session is finished, run the normal strict build/tests before committing the changed `audit.json`.
 
 The console deliberately does not change automated health/EPG telemetry and does not make the public dashboard writable.

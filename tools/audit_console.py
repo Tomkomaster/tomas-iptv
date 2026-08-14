@@ -21,10 +21,14 @@ from country_language import normalize_country_code, normalize_language_codes
 from iptv.audit_storage import compact_manual_audit_payload
 from iptv.channel_identity import canonical_stream_url
 from iptv.playback_status import normalize_test_status
+from research_priority import normalize_name, normalize_tvg_id
+from wanted_channels import load_wanted_channels
 
 ROOT = Path(__file__).resolve().parents[1]
 HOST = "127.0.0.1"
 PORT = 8765
+IMPORTANT_PRIORITIES = {"P1", "P2"}
+PRIORITY_RANK = {"P1": 0, "P2": 1}
 
 PLAYBACK = (
     ("works", "Works"),
@@ -103,10 +107,46 @@ def pending_reasons(manual: dict | None) -> list[str]:
     return reasons
 
 
-def build_queue(rows: list[dict], payload: dict, mode="pending", country="") -> list[dict]:
+def wanted_target_for_row(row: dict, wanted_channels: list[dict] | None) -> dict | None:
+    """Return the wanted target for a current row without weakening exact-ID identity."""
+    country = normalize_country_code(
+        str(row.get("playlist_country_code") or row.get("country_code") or "")
+    )
+    row_tvg_id = normalize_tvg_id(row.get("tvg_id", ""))
+    row_name = normalize_name(row.get("channel", ""))
+    if not country:
+        return None
+
+    # Exact wanted identities are authoritative and intentionally do not fall
+    # back to name matching. This prevents a same-name alternate service from
+    # being promoted just because an important channel has a familiar label.
+    for wanted in wanted_channels or []:
+        if normalize_country_code(str(wanted.get("country_code") or "")) != country:
+            continue
+        wanted_id = normalize_tvg_id(wanted.get("tvg_id", ""))
+        if wanted_id and row_tvg_id and wanted_id == row_tvg_id:
+            return wanted
+
+    for wanted in wanted_channels or []:
+        if normalize_country_code(str(wanted.get("country_code") or "")) != country:
+            continue
+        if normalize_tvg_id(wanted.get("tvg_id", "")):
+            continue
+        if row_name and normalize_name(wanted.get("channel", "")) == row_name:
+            return wanted
+    return None
+
+
+def build_queue(
+    rows: list[dict],
+    payload: dict,
+    mode="pending",
+    country="",
+    wanted_channels: list[dict] | None = None,
+) -> list[dict]:
     idx = exact_index(payload)
     country = normalize_country_code(country)
-    mode = mode if mode in {"pending", "retest", "needs_review", "all"} else "pending"
+    mode = mode if mode in {"important", "pending", "retest", "needs_review", "all"} else "pending"
     out = []
     for row in rows:
         key = canonical_stream_url(str(row.get("stream_url") or ""))
@@ -120,6 +160,15 @@ def build_queue(rows: list[dict], payload: dict, mode="pending", country="") -> 
         if country and row_country != country:
             continue
         reasons = pending_reasons(manual)
+        wanted = wanted_target_for_row(item, wanted_channels)
+        priority = str((wanted or {}).get("priority") or "").strip().upper()
+        if wanted:
+            item["_priority"] = priority
+            item["_priority_reason"] = str(wanted.get("reason") or "").strip()
+            item["_wanted_channel"] = str(wanted.get("channel") or "").strip()
+
+        if mode == "important" and (not reasons or priority not in IMPORTANT_PRIORITIES):
+            continue
         if mode == "pending" and not reasons:
             continue
         if mode == "retest" and manual is None:
@@ -129,11 +178,18 @@ def build_queue(rows: list[dict], payload: dict, mode="pending", country="") -> 
         item["_key"] = key
         item["_pending"] = reasons
         out.append(item)
-    return sorted(out, key=lambda x: (
-        normalize_country_code(str(x.get("playlist_country_code") or x.get("country_code") or "")),
-        str(x.get("channel") or "").casefold(),
-        int(x.get("feed_index") or 1),
-    ))
+
+    def sort_key(item):
+        common = (
+            normalize_country_code(str(item.get("playlist_country_code") or item.get("country_code") or "")),
+            str(item.get("channel") or "").casefold(),
+            int(item.get("feed_index") or 1),
+        )
+        if mode == "important":
+            return (PRIORITY_RANK.get(str(item.get("_priority") or ""), 9),) + common
+        return common
+
+    return sorted(out, key=sort_key)
 
 
 def _first(form: dict[str, list[str]], name: str, default="") -> str:
@@ -277,8 +333,18 @@ def radio(name: str, current: str) -> str:
     )
 
 
-def render(rows, payload, languages, token, mode, country, focus="", saved=False) -> str:
-    queue = build_queue(rows, payload, mode, country)
+def render(
+    rows,
+    payload,
+    languages,
+    token,
+    mode,
+    country,
+    focus="",
+    saved=False,
+    wanted_channels=None,
+) -> str:
+    queue = build_queue(rows, payload, mode, country, wanted_channels)
     current = next((x for x in queue if x.get("_key") == canonical_stream_url(focus)), None) if focus else None
     current = current or (queue[0] if queue else None)
     countries = sorted({normalize_country_code(str(x.get("playlist_country_code") or x.get("country_code") or "")) for x in rows} - {""})
@@ -289,7 +355,8 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
     mode_options = [
         f'<option value="{value}"{" selected" if value == mode else ""}>{label}</option>'
         for value, label in (
-            ("pending", "Pending tests"),
+            ("important", "Important pending (P1 + P2)"),
+            ("pending", "All pending tests"),
             ("retest", "Retest / edit existing"),
             ("needs_review", "Build: needs review"),
             ("all", "All current"),
@@ -308,7 +375,8 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
             continue
         seen_channels.add(channel_key)
         feed_count = max(int(item.get("feed_count") or 1), 1)
-        label = f"{item_channel} — {item_country or '??'}"
+        priority = str(item.get("_priority") or "").strip().upper()
+        label = f"{priority + ' · ' if priority else ''}{item_channel} — {item_country or '??'}"
         if feed_count > 1:
             label += f" — {feed_count} feeds"
         selected = False
@@ -323,7 +391,10 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
         )
 
     if not current:
-        card = '<section><h2>Queue complete</h2><p>No streams match this filter.</p></section>'
+        if mode == "important":
+            card = '<section><h2>Important queue complete</h2><p>No pending P1/P2 streams match this filter. Use <strong>All pending tests</strong> for the rest of the queue.</p></section>'
+        else:
+            card = '<section><h2>Queue complete</h2><p>No streams match this filter.</p></section>'
     else:
         pos = queue.index(current)
         nxt = queue[(pos + 1) % len(queue)] if len(queue) > 1 else current
@@ -345,6 +416,13 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
         other_lang = ", ".join(code for code in observed if code not in known)
         prefix = normalize_country_code(str(current.get("playlist_country_code") or current.get("country_code") or ""))
         reasons = " · ".join(current.get("_pending") or [])
+        priority = str(current.get("_priority") or "").strip().upper()
+        priority_badge = f'<span class="priority-badge {esc(priority.casefold())}">[{esc(priority)}]</span> ' if priority else ""
+        priority_reason = str(current.get("_priority_reason") or "").strip()
+        priority_line = (
+            f'<p class="priority-line"><strong>{esc(priority)} priority:</strong> {esc(priority_reason)}</p>'
+            if priority and priority_reason else ""
+        )
 
         manual = exact_index(payload).get(str(current.get("_key") or ""), (None, None))[1]
         saved_decision = str((manual or {}).get("decision") or "").strip()
@@ -369,7 +447,8 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
 
         card = f'''
 <section>
-<h2>[{esc(prefix)}] {esc(current.get("channel"))}</h2>
+<h2>[{esc(prefix)}] {priority_badge}{esc(current.get("channel"))}</h2>
+{priority_line}
 <p class="muted">{esc(current.get("feed_label") or "Single")} · {esc(reasons)}</p>
 <p><strong>URL:</strong> <code>{esc(stream_url)}</code></p>
 <p><strong>Candidate source:</strong> {esc(current.get("source"))} · <strong>Expected:</strong> {esc(", ".join(normalize_language_codes(current.get("expected_language_codes"))) or "Unknown")}</p>
@@ -401,7 +480,7 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
 
     notice = '<p class="saved">Saved to audit.json.</p>' if saved else ''
     return f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Tomas IPTV Test Queue</title>
-<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}.toolbar form{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}details{{border:1px solid #303849;border-radius:10px;margin:12px 0;background:#131822}}summary{{cursor:pointer;padding:12px;font-weight:600}}.details-body{{padding:0 12px 12px}}.jump-select{{min-width:310px;max-width:520px}}.retest-box{{border-color:#7d6631;background:#211d13}}.block-choice{{display:block!important;margin:10px 0!important}}</style></head><body>
+<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}.toolbar form{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}details{{border:1px solid #303849;border-radius:10px;margin:12px 0;background:#131822}}summary{{cursor:pointer;padding:12px;font-weight:600}}.details-body{{padding:0 12px 12px}}.jump-select{{min-width:310px;max-width:520px}}.retest-box{{border-color:#7d6631;background:#211d13}}.block-choice{{display:block!important;margin:10px 0!important}}.priority-badge{{display:inline-block;border:1px solid #7183a5;border-radius:7px;padding:2px 7px;font-size:.75em;vertical-align:2px}}.priority-badge.p1{{border-color:#d99f43;background:#352713}}.priority-badge.p2{{border-color:#6d8dc6;background:#18243a}}.priority-line{{background:#151f32;border-left:3px solid #6d8dc6;padding:9px 11px;border-radius:6px}}</style></head><body>
 <header><h1>TOMAS IPTV — TEST QUEUE</h1><p>Local-only audit assistant. Exact-URL results are written to audit.json; the previous file is kept as audit.json.bak.</p>
 <div class="toolbar"><strong>{len(queue)} in queue · {len(rows)} current streams · {len(exact_index(payload))} exact audits</strong>
 <form method="get"><select name="mode">{''.join(mode_options)}</select><select name="country">{''.join(country_options)}</select><button>Apply</button></form>
@@ -409,14 +488,15 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
 
 
 class App:
-    def __init__(self, report: Path, audit: Path, config: Path):
-        self.report, self.audit, self.config = report, audit, config
+    def __init__(self, report: Path, audit: Path, config: Path, wanted: Path | None = None):
+        self.report, self.audit, self.config, self.wanted = report, audit, config, wanted
         self.token = secrets.token_urlsafe(32)
         self.lock = threading.Lock()
 
     def rows(self): return load_report_rows(self.report)
     def payload(self): return load_audit(self.audit)
     def languages(self): return language_choices(self.config)
+    def wanted_channels(self): return load_wanted_channels(self.wanted)
 
     def row_for_url(self, url):
         key = canonical_stream_url(url)
@@ -451,12 +531,22 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         if parsed.path != "/": self.send_error(404); return
         q = parse_qs(parsed.query, keep_blank_values=True)
-        mode = (q.get("mode") or ["pending"])[0] or "pending"
+        mode = (q.get("mode") or ["important"])[0] or "important"
         country = (q.get("country") or [""])[0]
         focus = (q.get("focus") or [""])[0]
         try:
-            self.send_html(render(self.server.app.rows(), self.server.app.payload(), self.server.app.languages(), self.server.app.token, mode, country, focus, (q.get("saved") or [""])[0] == "1"))
-        except ConsoleError as exc:
+            self.send_html(render(
+                self.server.app.rows(),
+                self.server.app.payload(),
+                self.server.app.languages(),
+                self.server.app.token,
+                mode,
+                country,
+                focus,
+                (q.get("saved") or [""])[0] == "1",
+                self.server.app.wanted_channels(),
+            ))
+        except (ConsoleError, ValueError) as exc:
             self.send_html(f"<h1>Console error</h1><pre>{esc(exc)}</pre>", HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def do_POST(self):
@@ -470,7 +560,7 @@ class Handler(BaseHTTPRequestHandler):
             self.server.app.save(self.server.app.row_for_url(_first(form, "stream_url")), form)
         except ConsoleError as exc:
             self.send_html(f"<h1>Could not save</h1><pre>{esc(exc)}</pre>", HTTPStatus.BAD_REQUEST); return
-        location = f'/?saved=1&mode={quote(_first(form,"mode","pending"))}&country={quote(_first(form,"country"))}&focus={quote(_first(form,"next_focus"))}'
+        location = f'/?saved=1&mode={quote(_first(form,"mode","important"))}&country={quote(_first(form,"country"))}&focus={quote(_first(form,"next_focus"))}'
         self.send_response(HTTPStatus.SEE_OTHER); self.send_header("Location", location); self.end_headers()
 
 
@@ -478,13 +568,14 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(description="Run the local Tomas IPTV manual testing console")
     p.add_argument("--root", default=str(ROOT)); p.add_argument("--report", default="public/report.json")
     p.add_argument("--audit", default="audit.json"); p.add_argument("--config", default="config.json")
+    p.add_argument("--wanted", default="data/wanted_channels.json")
     p.add_argument("--port", type=int, default=PORT); p.add_argument("--no-browser", action="store_true")
     args = p.parse_args(argv); root = Path(args.root).resolve()
     resolve = lambda value: (Path(value) if Path(value).is_absolute() else root / value).resolve()
-    report, audit, config = resolve(args.report), resolve(args.audit), resolve(args.config)
+    report, audit, config, wanted = resolve(args.report), resolve(args.audit), resolve(args.config), resolve(args.wanted)
     if not report.is_file(): p.error(f"{report} not found. Run the normal playlist build first (py build.py).")
     if not config.is_file(): p.error(f"{config} not found.")
-    server = Server((HOST, args.port), App(report, audit, config)); url = f"http://{HOST}:{server.server_port}/"
+    server = Server((HOST, args.port), App(report, audit, config, wanted)); url = f"http://{HOST}:{server.server_port}/"
     print(f"Tomas IPTV test console: {url}\nAudit file: {audit}\nPress Ctrl+C to stop.")
     if not args.no_browser: threading.Timer(.3, lambda: webbrowser.open(url)).start()
     try: server.serve_forever(.25)
