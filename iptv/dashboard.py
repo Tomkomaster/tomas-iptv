@@ -47,7 +47,7 @@ def render_dashboard(
     title = str(cfg.get("site_title") or "Tomas IPTV")
     epg_cfg = cfg.get("epg") or {}
 
-    epg_link_html = '<a href="ro.m3u">Stable Romania (ro.m3u)</a>'
+    epg_link_html = ""
 
     if (
         isinstance(epg_cfg, dict)
@@ -56,8 +56,7 @@ def render_dashboard(
             epg_cfg.get("public_url") or ""
         ).strip()
     ):
-        epg_link_html += (
-            ' · '
+        epg_link_html = (
             '<a href="guide.xml">'
             'EPG programme guide (guide.xml)'
             '</a>'
@@ -142,6 +141,24 @@ def render_dashboard(
         country_codes = [code for code in country_codes if code != "UNKNOWN"]
     else:
         country_codes = ["HU", "SK", "CZ"]
+
+    country_names = cfg.get("country_names") or {}
+    if not isinstance(country_names, dict):
+        country_names = {}
+
+    country_playlist_links = []
+    if isinstance(country_outputs, dict):
+        for raw_code, raw_output in country_outputs.items():
+            code = normalized_country_code(raw_code)
+            output = str(raw_output or "").strip().replace("\\", "/")
+            if code == "UNKNOWN" or not output:
+                continue
+            href = output[len("public/"):] if output.startswith("public/") else output
+            country_name = str(country_names.get(code) or code).strip() or code
+            country_playlist_links.append(
+                f'<a href="{esc(href)}">Stable {esc(country_name)} ({esc(href)})</a>'
+            )
+    country_playlist_links_html = "\n    ".join(country_playlist_links)
 
     country_tabs = [
         '<button type="button" class="country-tab active" data-country-tab="ALL" aria-pressed="true">All</button>'
@@ -522,6 +539,7 @@ def render_dashboard(
     context = {
         "TITLE": str(esc(title)),
         "GENERATED": str(esc(generated)),
+        "COUNTRY_PLAYLIST_LINKS": str(country_playlist_links_html),
         "EPG_LINKS": str(epg_link_html),
         "TOTAL_CHANNELS": str(total_channels),
         "TOTAL_STREAMS": str(total_streams),
