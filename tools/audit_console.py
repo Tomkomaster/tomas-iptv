@@ -37,7 +37,7 @@ PLAYBACK = (
     ("needs_review", "Needs review"),
     ("not_tested", "Not tested"),
 )
-PROVENANCE = (
+SOURCE_TYPES = (
     "Official broadcaster",
     "Broadcaster CDN",
     "Provider relay",
@@ -188,12 +188,13 @@ def save_result(payload: dict, row: dict, form: dict[str, list[str]], tested_on=
         else:
             item.pop(field, None)
 
-    provenance = _first(form, "provenance")
-    custom = _first(form, "custom_provenance")
-    if provenance in PROVENANCE:
-        item["provenance"] = provenance
-    elif custom:
-        item["provenance"] = custom
+    # Source type cannot be learned from a playback test. "Unknown" therefore
+    # means "do not change provenance", not "replace useful discovery evidence
+    # with the word Unknown". Only a positive separately researched source type
+    # is allowed to replace provenance from this optional advanced control.
+    source_type = _first(form, "source_type", "Unknown")
+    if source_type in SOURCE_TYPES[:-1]:
+        item["provenance"] = source_type
     elif not item.get("provenance") and row.get("provenance"):
         item["provenance"] = row["provenance"]
 
@@ -285,11 +286,15 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
             f'<label><input type="checkbox" name="language" value="{code}"{" checked" if code in observed else ""}> {esc(label)} ({code})</label>'
             for code, label in languages
         )
-        prov = str(current.get("provenance") or "")
-        prov_html = " ".join(
-            f'<label><input type="radio" name="provenance" value="{esc(value)}"{" checked" if prov == value else ""}> {esc(value)}</label>'
-            for value in PROVENANCE
+        provenance = str(current.get("provenance") or "").strip()
+        source_type = provenance if provenance in SOURCE_TYPES[:-1] else "Unknown"
+        source_type_html = " ".join(
+            f'<label><input type="radio" name="source_type" value="{esc(value)}"{" checked" if source_type == value else ""}> {esc(value)}</label>'
+            for value in SOURCE_TYPES
         )
+        stream_url = str(current.get("stream_url") or "").strip()
+        host = urlparse(stream_url).hostname or "Unknown"
+        discovery = str(current.get("discovery") or current.get("source") or "Unknown").strip()
         other_lang = ", ".join(code for code in observed if code not in known)
         prefix = normalize_country_code(str(current.get("playlist_country_code") or current.get("country_code") or ""))
         reasons = " · ".join(current.get("_pending") or [])
@@ -297,25 +302,36 @@ def render(rows, payload, languages, token, mode, country, focus="", saved=False
 <section>
 <h2>[{esc(prefix)}] {esc(current.get("channel"))}</h2>
 <p class="muted">{esc(current.get("feed_label") or "Single")} · {esc(reasons)}</p>
-<p><strong>URL:</strong> <code>{esc(current.get("stream_url"))}</code></p>
-<p><strong>Source:</strong> {esc(current.get("source"))} · <strong>Expected:</strong> {esc(", ".join(normalize_language_codes(current.get("expected_language_codes"))) or "Unknown")}</p>
+<p><strong>URL:</strong> <code>{esc(stream_url)}</code></p>
+<p><strong>Candidate source:</strong> {esc(current.get("source"))} · <strong>Expected:</strong> {esc(", ".join(normalize_language_codes(current.get("expected_language_codes"))) or "Unknown")}</p>
 <form method="post" action="/save">
 <input type="hidden" name="token" value="{esc(token)}">
-<input type="hidden" name="stream_url" value="{esc(current.get("stream_url"))}">
+<input type="hidden" name="stream_url" value="{esc(stream_url)}">
 <input type="hidden" name="next_focus" value="{esc(nxt.get("_key"))}">
 <input type="hidden" name="mode" value="{esc(mode)}"><input type="hidden" name="country" value="{esc(country)}">
 <fieldset><legend>VLC</legend>{radio("vlc", normalize_test_status(str(current.get("vlc") or "")))}<input name="vlc_note" placeholder="VLC note" value="{esc(current.get("vlc_note"))}"></fieldset>
 <fieldset><legend>Samsung</legend>{radio("samsung", normalize_test_status(str(current.get("samsung") or "")))}<input name="samsung_note" placeholder="Samsung note" value="{esc(current.get("samsung_note"))}"></fieldset>
 <fieldset><legend>Observed language</legend>{lang_html}<input name="other_languages" placeholder="Other codes: deu, srp" value="{esc(other_lang)}"></fieldset>
-<fieldset><legend>Source quality</legend>{prov_html}<input name="custom_provenance" placeholder="Other provenance" value="{esc('' if prov in PROVENANCE else prov)}"></fieldset>
 <fieldset><legend>Notes</legend><textarea name="notes" rows="4">{esc(current.get("notes"))}</textarea></fieldset>
+<details>
+<summary>More details <span class="muted">(optional source information)</span></summary>
+<div class="details-body">
+<p><strong>Discovered from:</strong> {esc(discovery)}</p>
+<p><strong>URL host:</strong> <code>{esc(host)}</code></p>
+<p><strong>Saved provenance:</strong> {esc(provenance or "Unknown")}</p>
+<fieldset><legend>Known source type</legend>
+<p class="muted">Playback testing cannot determine this. Leave <strong>Unknown</strong> unless the source was separately researched and confirmed.</p>
+{source_type_html}
+</fieldset>
+</div>
+</details>
 <div class="actions"><button type="submit">Save &amp; next</button><a href="/?mode={quote(mode)}&country={quote(country)}&focus={quote(str(nxt.get('_key') or ''))}">Skip</a></div>
 </form>
 </section>'''
 
     notice = '<p class="saved">Saved to audit.json.</p>' if saved else ''
     return f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Tomas IPTV Test Queue</title>
-<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}</style></head><body>
+<style>body{{font-family:system-ui;max-width:1100px;margin:auto;padding:24px;background:#10131a;color:#eef2f7}}header,section{{background:#171c26;border:1px solid #303849;border-radius:14px;padding:20px;margin-bottom:16px}}.toolbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}select,input,textarea,button,a{{font:inherit}}select,input,textarea{{background:#0f131a;color:#eef2f7;border:1px solid #465064;border-radius:7px;padding:8px}}input[type=radio],input[type=checkbox]{{width:auto}}fieldset{{border:1px solid #394354;border-radius:10px;margin:12px 0;padding:12px}}fieldset label{{display:inline-block;margin:5px 12px 5px 0}}fieldset input[type=text],fieldset input:not([type]){{display:block;width:100%;margin-top:8px}}textarea{{width:100%}}button,a{{display:inline-block;background:#356ed3;color:white;border:0;border-radius:8px;padding:9px 13px;text-decoration:none}}.actions{{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}}code{{overflow-wrap:anywhere}}.muted{{color:#a7b0c0}}.saved{{background:#173c25;padding:10px;border-radius:8px}}details{{border:1px solid #303849;border-radius:10px;margin:12px 0;background:#131822}}summary{{cursor:pointer;padding:12px;font-weight:600}}.details-body{{padding:0 12px 12px}}</style></head><body>
 <header><h1>TOMAS IPTV — TEST QUEUE</h1><p>Local-only audit assistant. Exact-URL results are written to audit.json; the previous file is kept as audit.json.bak.</p>
 <div class="toolbar"><strong>{len(queue)} in queue · {len(rows)} current streams · {len(exact_index(payload))} exact audits</strong>
 <form method="get"><select name="mode">{''.join(mode_options)}</select><select name="country">{''.join(country_options)}</select><button>Apply</button></form></div></header>{notice}{card}</body></html>'''
