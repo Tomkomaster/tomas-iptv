@@ -4,7 +4,9 @@
   "country_defaults": {
     "HU": "expected",
     "SK": "expected",
-    "CZ": "expected"
+    "CZ": "expected",
+    "RO": "expected",
+    "AT": "expected"
   },
   "description": "Controls whether EPG gaps create Needs Attention signals. expected = actionable gap; optional = suppress gap but use EPG when available; not_expected = conventional EPG does not apply.",
   "entries": [
