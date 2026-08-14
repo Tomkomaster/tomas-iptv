@@ -222,3 +222,24 @@ https://n105.quickmedia.tv/noe-abr/noe-abr/playlist.m3u8
 # TEST VLC + Samsung
 #EXTINF:-1 tvg-id="TVNoePlus.cz" tvg-name="TV Noe+" group-title="Religious",TV Noe+
 https://n105.quickmedia.tv/noe-2-abr/noe-2-abr/playlist_dvr.m3u8
+
+# CMS TV — Svitavy / Litomyšl regional television
+# Official broadcaster website -> current YouTube Live
+# P3
+# TEST — YouTube live video ID can rotate
+#EXTINF:-1 tvg-name="CMS TV" group-title="Regional",CMS TV
+https://ythls.onrender.com/video/VisH4oT5OI8.m3u8
+
+# TVS — Zlínský kraj / southeastern Moravia
+# Official current live broadcast
+# P3
+# TEST — YouTube live video ID can rotate
+#EXTINF:-1 tvg-name="TVS" group-title="Regional",TVS
+https://ythls.onrender.com/video/Wr2lfcqVI9U.m3u8
+
+# TV Morava — Olomouc regional television
+# Official YouTube channel
+# P3
+# EXPERIMENTAL — test whether channel resolver finds current linear broadcast
+#EXTINF:-1 tvg-name="TV Morava" group-title="Regional",TV Morava
+https://ythls-v2.onrender.com/channel/UCW33LPZQ1SA7ByUW6GeKRGw.m3u8
