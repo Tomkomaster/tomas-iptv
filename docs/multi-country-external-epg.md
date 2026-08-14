@@ -6,6 +6,7 @@ External XMLTV fallback is configured per country under `epg.countries.<CC>.exte
 - SK -> `epg_ripper_SK1.xml.gz`
 - CZ -> `epg_ripper_CZ1.xml.gz`
 - RO -> `epg_ripper_RO1.xml.gz`
+- AT -> `epg_ripper_AT1.xml.gz`
 
 The publish workflow downloads each configured external source independently. A failed download degrades only that country to IPTV-org EPG fallbacks.
 
@@ -18,7 +19,7 @@ public/guide.xml
 public/epg-coverage.json
 ```
 
-The coverage report keeps the previous aggregate `external` fields and adds `external.countries` so HU/SK/CZ/RO availability, freshness and mapping diagnostics can be inspected separately.
+The coverage report keeps the previous aggregate `external` fields and adds `external.countries` so HU/SK/CZ/RO/AT availability, freshness and mapping diagnostics can be inspected separately.
 
 ## Explicit alias policy
 
