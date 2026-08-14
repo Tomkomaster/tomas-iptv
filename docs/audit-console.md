@@ -68,6 +68,20 @@ To start it without automatically opening the browser:
 py -m tools.audit_console --no-browser
 ```
 
+## Queue navigation
+
+The queue is still kept in stable country/channel/feed order, but you do not have to work through it alphabetically.
+
+Use the **Jump to channel** selector at the top of the page to choose any channel currently present in the selected queue/country. A channel with multiple streams is listed once, for example:
+
+```text
+PRO TV — RO — 3 feeds
+```
+
+Jumping to it opens its first feed. **Save & next** then proceeds through the remaining feeds for that channel before continuing to the next channel in the queue.
+
+The jump selector respects the current queue mode and country filter. This makes it practical to test a specific important channel without first processing every alphabetically earlier channel.
+
 ## Queue modes
 
 ### Pending tests
@@ -96,12 +110,13 @@ All modes can be filtered by country.
 1. Add or discover a candidate feed.
 2. Run `py build.py`.
 3. Start `py -m tools.audit_console`.
-4. Test the shown exact URL in VLC.
-5. Test the same exact URL on Samsung.
-6. Confirm the spoken language.
-7. Add notes when useful.
-8. Ignore source type unless it has been separately researched.
-9. Click **Save & next**.
-10. When the testing session is finished, run the normal strict build/tests before committing the changed `audit.json`.
+4. Optionally jump directly to the channel you want to test.
+5. Test the shown exact URL in VLC.
+6. Test the same exact URL on Samsung.
+7. Confirm the spoken language.
+8. Add notes when useful.
+9. Ignore source type unless it has been separately researched.
+10. Click **Save & next**.
+11. When the testing session is finished, run the normal strict build/tests before committing the changed `audit.json`.
 
 The console deliberately does not change automated health/EPG telemetry and does not make the public dashboard writable.
