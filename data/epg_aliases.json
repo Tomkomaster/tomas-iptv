@@ -22,10 +22,15 @@
     "FILMBOXPlusOne.pl@Czechia": "Filmbox+.one.cz",
     "ViasatEpicDrama.uk@Czechia": "Epic.Drama.cz",
     "AXNBlack.us@Romania": "AXN.Black.ro",
-    "KanalD2.ro@SD": "Kanal.D2.(HD).ro",
+    "AXNWhite.us@SD": "AXN.White.ro",
+    "KanalD2.ro@SD": "Kanal.D2.ro",
     "TVRIasi.ro@SD": "TVR.Iași.ro",
     "TVRTarguMures.ro@SD": "TVR.Mureș.ro",
-    "TVRTimisoara.ro@SD": "TVR.Timișoara.ro"
+    "TVRTimisoara.ro@SD": "TVR.Timișoara.ro",
+    "FolklorikaTV.sk": "Folklorika.TV.HD.sk",
+    "JOJSvet.sk": "JOJ.Svet.HD.sk",
+    "Ocko.sk": "Óčko.HD.sk",
+    "TVRiK.sk": "TV.RiK.HD.sk"
   },
   "cross_country_aliases": {
     "ducktvPLUS.sk@SD": {
