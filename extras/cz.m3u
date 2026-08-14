@@ -183,3 +183,23 @@ https://sktv.mxnticek.eu/new/stream.php?ch=Nova%20TN%20Live
 
 #EXTINF:-1 tvg-name="ČT sport Plus" group-title="Sports",ČT sport Plus
 https://sktv.mxnticek.eu/new/stream.php?ch=%C4%8CT%20sport%20Plus
+
+# P2 — Óčko — CRA direct CDN
+#EXTINF:-1 tvg-id="Ocko.cz" tvg-name="Óčko" group-title="Music",Óčko
+https://ocko-live.ssl.cdn.cra.cz/channels/ocko/playlist.m3u8
+
+# P3 — Óčko Expres — CRA direct CDN
+#EXTINF:-1 tvg-id="OckoExpres.cz" tvg-name="Óčko Expres" group-title="Music",Óčko Expres
+https://ocko-live.ssl.cdn.cra.cz/channels/ocko_expres/playlist.m3u8
+
+# P3 — Šlágr Originál — Mazana direct stream
+#EXTINF:-1 tvg-id="SlagrOriginal.cz" tvg-name="Šlágr Originál" group-title="Music",Šlágr Originál
+https://stream-6.mazana.tv/slagr.m3u
+
+# P3 — UTV / Televize Ústeckého kraje — ZAK TV direct HLS
+#EXTINF:-1 tvg-id="utv.cz" tvg-name="UTV" group-title="Regional",UTV
+https://vysilani.zaktv.cz/broadcast/hls/utv/index.m3u8
+
+# P3 — RTM+ Liberecko — broadcaster-domain candidate
+#EXTINF:-1 tvg-id="RTMplus.cz" tvg-name="RTM+" group-title="Regional",RTM+
+http://www.rtmplus.cz/live/1-playlist.m3u8
