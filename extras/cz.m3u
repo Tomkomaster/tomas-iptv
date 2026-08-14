@@ -203,3 +203,22 @@ https://vysilani.zaktv.cz/broadcast/hls/utv/index.m3u8
 # P3 — RTM+ Liberecko — broadcaster-domain candidate
 #EXTINF:-1 tvg-id="RTMplus.cz" tvg-name="RTM+" group-title="Regional",RTM+
 http://www.rtmplus.cz/live/1-playlist.m3u8
+
+# Šlágr Muzika — alternate direct Mazana backend
+# Different endpoint from current IPTV-org source
+# TEST VLC + Samsung
+#EXTINF:-1 tvg-id="SlagerMuzika.cz" tvg-name="Šlágr Muzika" group-title="Music",Šlágr Muzika
+https://stream-33.mazana.tv/slagr2.m3u
+
+# TV Noe — generic QuickMedia ABR master
+# Replacement candidate for current variant-specific/geo-blocked IPTV-org URL
+# Recently successfully probed as H.264/AAC HLS
+# TEST VLC + Samsung
+#EXTINF:-1 tvg-id="TVNoe.cz" tvg-name="TV Noe" group-title="Religious",TV Noe
+https://n105.quickmedia.tv/noe-abr/noe-abr/playlist.m3u8
+
+# TV Noe+ — generic QuickMedia DVR/master candidate
+# Alternative to current IPTV-org variant-specific stream
+# TEST VLC + Samsung
+#EXTINF:-1 tvg-id="TVNoePlus.cz" tvg-name="TV Noe+" group-title="Religious",TV Noe+
+https://n105.quickmedia.tv/noe-2-abr/noe-2-abr/playlist_dvr.m3u8
