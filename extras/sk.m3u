@@ -430,3 +430,19 @@ https://tvgo02.antik.sk/live/test_telke/playlist_key_url.m3u8
 # Test on PC/VLC + Samsung
 #EXTINF:-1 tvg-id="LubovnianskaTV.sk" tvg-name="Ľubovnianska televízia" tvg-country="SK" tvg-language="Slovak" group-title="General",Ľubovnianska televízia
 https://kamery.kukni.sk:8181/memfs/fb00d981-d2d4-4d69-bb44-a9ff6aa25a76.m3u8
+
+# TV JOJ — alternate direct JOJ HLS candidate
+#EXTINF:-1 tvg-id="TVJOJ.sk" tvg-name="TV JOJ" group-title="General",TV JOJ
+https://nn.geo.joj.sk/hls/joj-720.m3u8
+
+# TV JOJ — mxnticek resolver fallback
+#EXTINF:-1 tvg-id="TVJOJ.sk" tvg-name="TV JOJ" group-title="General",TV JOJ
+https://sktv.mxnticek.eu/new/stream.php?ch=JOJ
+
+# JOJ 24 — resolver replacement candidate
+#EXTINF:-1 tvg-id="JOJ24.sk" tvg-name="JOJ 24" group-title="News",JOJ 24
+https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%2024
+
+# TA3 — mxnticek resolver candidate
+#EXTINF:-1 tvg-id="TA3.sk" tvg-name="TA3" group-title="News",TA3
+https://sktv.mxnticek.eu/new/stream.php?ch=TA3
