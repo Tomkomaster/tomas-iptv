@@ -446,3 +446,12 @@ https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%2024
 # TA3 — mxnticek resolver candidate
 #EXTINF:-1 tvg-id="TA3.sk" tvg-name="TA3" group-title="News",TA3
 https://sktv.mxnticek.eu/new/stream.php?ch=TA3
+
+# TV JOJ — direct JOJ IPTV candidate
+#EXTINF:-1 tvg-id="TVJOJ.sk" tvg-name="TV JOJ" group-title="General",TV JOJ
+https://st01-1.iptv.joj.sk/101-tv-pc.m3u8
+
+# JOJ 24 — direct JOJ IPTV candidate
+#EXTINF:-1 tvg-id="JOJ24.sk" tvg-name="JOJ 24" group-title="News",JOJ 24
+https://st01-1.iptv.joj.sk/111-tv-pc.m3u8
+
