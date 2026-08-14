@@ -29,7 +29,7 @@
     },
     {
       "country": "SK",
-      "channel": "Prima SK",
+      "tvg_id": "PrimaSK.sk",
       "priority": "P1",
       "reason": "Major mainstream general-entertainment channel for Slovakia."
     },

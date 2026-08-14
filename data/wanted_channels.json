@@ -170,7 +170,7 @@
       "channel": "Fehérvár TV",
       "tvg_id": "FehervarTV.hu",
       "priority": "P3",
-      "reason": "Regional Hungarian broadcaster; multiple tested feeds failed on both target devices and a replacement source is needed."
+      "reason": "Regional Hungarian broadcaster; multiple tested feeds failed on both target devices and a replacement or verified working feed is still needed."
     },
     {
       "country_code": "HU",
@@ -620,6 +620,7 @@
     {
       "country_code": "SK",
       "channel": "Prima SK",
+      "tvg_id": "PrimaSK.sk",
       "priority": "P1",
       "reason": "Major mainstream general-entertainment channel for Slovakia."
     },
