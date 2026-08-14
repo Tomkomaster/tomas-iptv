@@ -13,7 +13,7 @@ For each exact stream URL, the normal testing screen lets you record:
 - observed spoken language(s);
 - general notes.
 
-Saving updates the matching exact-URL row in `audit.json`. Existing manual fields that are outside the console's scope, such as an explicit decision, output-country override or exclusion flag, are preserved.
+Saving updates the matching exact-URL row in `audit.json`. Existing manual fields that are outside the console's scope, such as an output-country override or deliberate exclusion flag, are preserved unless the retest workflow explicitly asks to change them.
 
 Before a write, the previous `audit.json` is copied to `audit.json.bak`.
 
@@ -95,6 +95,18 @@ This is the default and is intended for normal testing. A current stream stays i
 
 A failed playback result still counts as a completed test. For example, `generic_error` is a real Samsung test result and does not keep the feed pending merely because playback failed.
 
+### Retest / edit existing
+
+Shows current streams that already have an exact-URL audit. Use this when a stream's behavior has changed or when an earlier manual result needs correcting.
+
+Previous VLC, Samsung and observed-language values are loaded into the form. Change them and save again.
+
+If the saved audit contains an explicit decision such as `Rejected`, `PC only` or `Needs review`, the retest screen offers **Recalculate the decision from these new VLC, Samsung and language results**. This is selected by default in retest mode because an old explicit decision would otherwise continue to override the new playback evidence.
+
+Recalculation clears the old explicit decision and its reason, allowing the normal build policy to derive the new decision from the fresh test results.
+
+A deliberate `exclude_from_playlist=true` is separate. If one exists, the retest screen shows a second **Remove the existing manual playlist exclusion too** checkbox. It is not selected automatically.
+
 ### Build: needs review
 
 Shows current streams whose most recent generated build decision is `Needs review`.
@@ -110,13 +122,15 @@ All modes can be filtered by country.
 1. Add or discover a candidate feed.
 2. Run `py build.py`.
 3. Start `py -m tools.audit_console`.
-4. Optionally jump directly to the channel you want to test.
-5. Test the shown exact URL in VLC.
-6. Test the same exact URL on Samsung.
-7. Confirm the spoken language.
-8. Add notes when useful.
-9. Ignore source type unless it has been separately researched.
-10. Click **Save & next**.
-11. When the testing session is finished, run the normal strict build/tests before committing the changed `audit.json`.
+4. Choose **Pending tests** for new work or **Retest / edit existing** for a previously tested stream.
+5. Optionally jump directly to the channel you want to test.
+6. Test the shown exact URL in VLC.
+7. Test the same exact URL on Samsung.
+8. Confirm the spoken language.
+9. Add notes when useful.
+10. Ignore source type unless it has been separately researched.
+11. On a retest, allow the old explicit decision to be recalculated when the playback result has changed; remove a manual exclusion only when that exclusion should really be lifted.
+12. Click **Save & next**.
+13. When the testing session is finished, run the normal strict build/tests before committing the changed `audit.json`.
 
 The console deliberately does not change automated health/EPG telemetry and does not make the public dashboard writable.
