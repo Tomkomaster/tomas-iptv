@@ -1,0 +1,112 @@
+name: Diagnose August 14 retests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/_diag_retests_2026_08_14.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Show saved retest rows
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          urls = [
+            "http://stream.mcquack.net/384/index.m3u8",
+            "http://88.212.15.19/live/test_h2/playlist.m3u8",
+            "https://5ca49f2417d90.streamlock.net/mnau/livestream/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/channels/ocko/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/channels/ocko_expres/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/channels/ocko_gold/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/cra_live2/ocko_gold.stream.1.smil/playlist.m3u8",
+            "https://rfe-ingest.akamaized.net/hls/live/2033043/tvmc05/master.m3u8",
+            "https://cloudfront41.lexanetwork.com:1344/relay01/livestream006.sdp/playlist.m3u8",
+            "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8",
+            "https://t.freetv.fun/live/axn-white.m3u8",
+            "https://cloudfront44.lexanetwork.com:1344/freerelay/bpetv.sdp/playlist.m3u8",
+            "https://streams.prd.commavservices.eu/live/ebs/index.m3u8",
+            "https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8",
+            "http://213.91.179.28:8000/play/a0bw",
+            "http://212.200.230.50:1935/RTV/rtv1/playlist.m3u8",
+            "http://212.200.230.50:1935/RTV/rtv2/playlist.m3u8",
+            "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast006.sdp/playlist.m3u8",
+            "https://xykt-fix.github.io/cinerama_edge01/hls/BOLLYWOOD_RU/Movie009.m3u8",
+            "https://7nyaler.streamhostingcdn.top/stream/79/index.m3u8",
+            "https://live.tvimpact.ro:8088/hevc/index.m3u8",
+            "https://tv.broadcasting.ro/kisstv/a629c031-2170-4ee9-a36d-87a891aa3131.m3u8",
+            "https://tv.broadcasting.ro/magictv/925f90db-5c88-4190-a53d-5163cdffe6f4.m3u8",
+            "https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8",
+            "https://jstre.am/live/jsl:2gNjpghXRLE.m3u8",
+            "http://78.96.33.89:8080",
+            "http://88.212.15.19/live/test_prima_plus_25p/playlist.m3u8",
+          ]
+          data = json.loads(Path("audit.json").read_text(encoding="utf-8"))
+          rows = {row.get("stream_url"): row for row in data.get("channels", [])}
+          for url in urls:
+              print("AUDIT", json.dumps(rows.get(url), ensure_ascii=False, sort_keys=True))
+          print("ALL OCKO AUDITS")
+          for row in data.get("channels", []):
+              if "ocko" in str(row.get("channel", "")).casefold() or "ocko" in str(row.get("stream_url", "")).casefold():
+                  print("OCKO_AUDIT", json.dumps(row, ensure_ascii=False, sort_keys=True))
+          PY
+
+      - name: Build current playlists and show published retests
+        shell: bash
+        run: |
+          python3 -m tools.reliable_build --strict
+          python3 - <<'PY'
+          from pathlib import Path
+
+          wanted = {
+            "http://stream.mcquack.net/384/index.m3u8",
+            "http://88.212.15.19/live/test_h2/playlist.m3u8",
+            "https://5ca49f2417d90.streamlock.net/mnau/livestream/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/channels/ocko/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/channels/ocko_expres/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/channels/ocko_gold/playlist.m3u8",
+            "https://ocko-live.ssl.cdn.cra.cz/cra_live2/ocko_gold.stream.1.smil/playlist.m3u8",
+            "https://rfe-ingest.akamaized.net/hls/live/2033043/tvmc05/master.m3u8",
+            "https://cloudfront41.lexanetwork.com:1344/relay01/livestream006.sdp/playlist.m3u8",
+            "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8",
+            "https://t.freetv.fun/live/axn-white.m3u8",
+            "https://cloudfront44.lexanetwork.com:1344/freerelay/bpetv.sdp/playlist.m3u8",
+            "https://streams.prd.commavservices.eu/live/ebs/index.m3u8",
+            "https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8",
+            "http://213.91.179.28:8000/play/a0bw",
+            "http://212.200.230.50:1935/RTV/rtv1/playlist.m3u8",
+            "http://212.200.230.50:1935/RTV/rtv2/playlist.m3u8",
+            "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast006.sdp/playlist.m3u8",
+            "https://xykt-fix.github.io/cinerama_edge01/hls/BOLLYWOOD_RU/Movie009.m3u8",
+            "https://7nyaler.streamhostingcdn.top/stream/79/index.m3u8",
+            "https://live.tvimpact.ro:8088/hevc/index.m3u8",
+            "https://tv.broadcasting.ro/kisstv/a629c031-2170-4ee9-a36d-87a891aa3131.m3u8",
+            "https://tv.broadcasting.ro/magictv/925f90db-5c88-4190-a53d-5163cdffe6f4.m3u8",
+            "https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8",
+            "https://jstre.am/live/jsl:2gNjpghXRLE.m3u8",
+            "http://78.96.33.89:8080",
+            "http://88.212.15.19/live/test_prima_plus_25p/playlist.m3u8",
+          }
+          lines = Path("public/test.m3u").read_text(encoding="utf-8").splitlines()
+          for i, line in enumerate(lines):
+              if line.strip() in wanted:
+                  extinf = next((lines[j] for j in range(i - 1, max(-1, i - 8), -1) if lines[j].startswith("#EXTINF:")), "")
+                  print("PUBLISHED", extinf)
+                  print("URL", line.strip())
+          for code in ("sk", "cz"):
+              print(f"--- {code.upper()} OCKO ---")
+              plines = Path(f"public/{code}.m3u").read_text(encoding="utf-8").splitlines()
+              for i, line in enumerate(plines):
+                  if "Ocko.cz@SD" in line or "Óčko" in line:
+                      print(line)
+                      if i + 1 < len(plines): print(plines[i + 1])
+          PY
