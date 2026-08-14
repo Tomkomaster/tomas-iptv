@@ -4,7 +4,8 @@
     "HU": "Hungary",
     "SK": "Slovakia",
     "CZ": "Czechia",
-    "RO": "Romania"
+    "RO": "Romania",
+    "AT": "Austria"
   },
   "identity_overrides_path": "data/identity_overrides.json",
   "logo_overrides_path": "data/logo_overrides.json",
@@ -14,19 +15,22 @@
     "HU": "public/hu.m3u",
     "SK": "public/sk.m3u",
     "CZ": "public/cz.m3u",
-    "RO": "public/ro.m3u"
+    "RO": "public/ro.m3u",
+    "AT": "public/at.m3u"
   },
   "language_names": {
     "hun": "Hungarian",
     "slk": "Slovak",
     "ces": "Czech",
-    "ron": "Romanian"
+    "ron": "Romanian",
+    "deu": "German"
   },
   "language_outputs": {
     "hun": "public/by-language/hun.m3u",
     "slk": "public/by-language/slk.m3u",
     "ces": "public/by-language/ces.m3u",
-    "ron": "public/by-language/ron.m3u"
+    "ron": "public/by-language/ron.m3u",
+    "deu": "public/by-language/deu.m3u"
   },
   "stable_playlist": {
     "allowed_decisions": [
@@ -155,6 +159,15 @@
             "https://epgshare01.online/epgshare01/epg_ripper_RO2.xml.gz"
           ]
         }
+      },
+      "AT": {
+        "sites": [
+          "epgshare01.online"
+        ],
+        "external": {
+          "provider": "epgshare01.online",
+          "url": "https://epgshare01.online/epgshare01/epg_ripper_AT1.xml.gz"
+        }
       }
     },
     "future_days": 7,
@@ -234,6 +247,24 @@
       ]
     },
     {
+      "name": "IPTV-org Austria",
+      "kind": "base",
+      "url": "https://iptv-org.github.io/iptv/countries/at.m3u",
+      "country_code": "AT",
+      "language_codes": [
+        "deu"
+      ]
+    },
+    {
+      "name": "IPTV-org Austria raw alternatives",
+      "kind": "alternatives",
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/at.m3u",
+      "country_code": "AT",
+      "language_codes": [
+        "deu"
+      ]
+    },
+    {
       "name": "IPTV-org Hungarian language",
       "kind": "alternatives",
       "url": "https://iptv-org.github.io/iptv/languages/hun.m3u",
@@ -306,6 +337,15 @@
       "language_codes": [
         "ron"
       ]
+    },
+    {
+      "name": "Our Austrian test/verified extras",
+      "kind": "extras",
+      "path": "extras/at.m3u",
+      "country_code": "AT",
+      "language_codes": [
+        "deu"
+      ]
     }
   ],
   "default_country_code": "HU",
@@ -324,6 +364,9 @@
     ],
     "RO": [
       "ron"
+    ],
+    "AT": [
+      "deu"
     ]
   },
   "verified_country_routes": [
