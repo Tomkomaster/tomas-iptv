@@ -34,6 +34,7 @@ FLAG_BY_COUNTRY = {
     "SK": "🇸🇰",
     "CZ": "🇨🇿",
     "RO": "🇷🇴",
+    "AT": "🇦🇹",
 }
 STYLE_START = "<!-- priority-coverage:style:start -->"
 STYLE_END = "<!-- priority-coverage:style:end -->"
