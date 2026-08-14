@@ -2,6 +2,8 @@ import json
 import unittest
 from pathlib import Path
 
+from tools.priority_coverage import render_priority_coverage_html
+
 
 class AustriaCountryTests(unittest.TestCase):
     @classmethod
@@ -45,6 +47,30 @@ class AustriaCountryTests(unittest.TestCase):
         self.assertEqual(epg["sites"], ["epgshare01.online"])
         self.assertEqual(epg["external"]["provider"], "epgshare01.online")
         self.assertTrue(epg["external"]["url"].endswith("epg_ripper_AT1.xml.gz"))
+
+    def test_austria_has_empty_wanted_channel_catalog_until_manual_testing(self):
+        path = Path("data/wanted_channels_at.json")
+        self.assertTrue(path.is_file())
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(payload["schema_version"], 1)
+        self.assertEqual(payload["replace_country"], "AT")
+        self.assertEqual(payload["channels"], [])
+
+    def test_priority_coverage_uses_austrian_flag(self):
+        coverage = {
+            "countries": {
+                "AT": {
+                    "name": "Austria",
+                    "priorities": {
+                        "P1": {"found": 0, "total": 0, "missing": []},
+                        "P2": {"found": 0, "total": 0, "missing": []},
+                    },
+                }
+            }
+        }
+        rendered = render_priority_coverage_html(coverage)
+        self.assertIn("🇦🇹 Austria", rendered)
+        self.assertNotIn("🌐 Austria", rendered)
 
 
 if __name__ == "__main__":
