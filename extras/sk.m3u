@@ -455,3 +455,6 @@ https://st01-1.iptv.joj.sk/101-tv-pc.m3u8
 #EXTINF:-1 tvg-id="JOJ24.sk" tvg-name="JOJ 24" group-title="News",JOJ 24
 https://st01-1.iptv.joj.sk/111-tv-pc.m3u8
 
+# P3 — TV Raj
+#EXTINF:-1 tvg-name="TV Raj" group-title="Regional",TV Raj
+https://ottst05.flexitv.sk/2827-tv-pc.m3u8
