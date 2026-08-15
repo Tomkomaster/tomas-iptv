@@ -48,13 +48,27 @@ class AustriaCountryTests(unittest.TestCase):
         self.assertEqual(epg["external"]["provider"], "epgshare01.online")
         self.assertTrue(epg["external"]["url"].endswith("epg_ripper_AT1.xml.gz"))
 
-    def test_austria_has_empty_wanted_channel_catalog_until_manual_testing(self):
+    def test_austria_has_wanted_channel_catalog(self):
         path = Path("data/wanted_channels_at.json")
         self.assertTrue(path.is_file())
         payload = json.loads(path.read_text(encoding="utf-8"))
         self.assertEqual(payload["schema_version"], 1)
-        self.assertEqual(payload["channels"], [])
         self.assertNotIn("replace_country", payload)
+
+        channels = payload["channels"]
+        self.assertTrue(channels)
+        self.assertTrue(all(row["country_code"] == "AT" for row in channels))
+        self.assertTrue(
+            all(row["priority"] in {"P1", "P2", "P3", "P4"} for row in channels)
+        )
+
+        by_name = {row["channel"]: row for row in channels}
+        self.assertEqual(by_name["ORF 1"]["priority"], "P1")
+        self.assertEqual(by_name["PULS 4"]["priority"], "P1")
+        self.assertEqual(by_name["ORF Sport+"]["priority"], "P2")
+        self.assertEqual(by_name["RTS Regional TV Salzburg"]["priority"], "P3")
+        self.assertEqual(by_name["KT1"]["priority"], "P3")
+        self.assertEqual(by_name["Landeck TV"]["priority"], "P4")
 
     def test_priority_coverage_uses_austrian_flag(self):
         coverage = {
