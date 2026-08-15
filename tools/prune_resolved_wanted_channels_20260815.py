@@ -18,7 +18,7 @@ COUNTRIES = ("hu", "sk", "cz", "ro")
 
 
 def main() -> None:
-    audit_rows = load_audit_rows(Path("audit.csv"))
+    audit_rows = load_audit_rows(Path("public/audit.csv"))
     grouped = group_channels(audit_rows)
 
     total_removed = 0
