@@ -133,7 +133,7 @@ class CountryEpgPrepareTests(unittest.TestCase):
             (site_dir / "external-only.test.channels.xml").write_text(
                 """<?xml version="1.0" encoding="UTF-8"?>
 <channels>
-  <channel site="external-only.test" lang="ro" xmltv_id="" site_id="RO1#TVR1.ro">TVR 1</channel>
+  <channel site="external-only.test" lang="ro" xmltv_id="" site_id="RO1#TVR1.ro">Different TV</channel>
 </channels>
 """,
                 encoding="utf-8",
@@ -187,7 +187,7 @@ class CountryEpgPrepareTests(unittest.TestCase):
             (site_dir / "no-match.test.channels.xml").write_text(
                 """<?xml version="1.0" encoding="UTF-8"?>
 <channels>
-  <channel site="no-match.test" lang="ro" xmltv_id="" site_id="1">TVR 1</channel>
+  <channel site="no-match.test" lang="ro" xmltv_id="" site_id="1">Different TV</channel>
 </channels>
 """,
                 encoding="utf-8",
