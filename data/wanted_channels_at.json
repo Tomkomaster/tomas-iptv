@@ -1,4 +1,257 @@
 {
   "schema_version": 1,
-  "channels": []
+  "channels": [
+    {
+      "country_code": "AT",
+      "channel": "ORF 1",
+      "tvg_id": "ORF1.at",
+      "priority": "P1",
+      "reason": "Major Austrian public-service national channel; the current tested feed is PC-only because it works in VLC but fails on Samsung, so a TV-safe replacement or compatible feed is still needed."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ORF III",
+      "tvg_id": "ORFIII.at",
+      "priority": "P1",
+      "reason": "Major Austrian public-service culture and information channel; the current tested HD feed still needs review and is not stable in the family playlist."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ATV",
+      "tvg_id": "ATV.at",
+      "priority": "P1",
+      "reason": "Major nationwide Austrian private channel; the current tested HD feed was rejected after failing both target devices."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ATV2",
+      "tvg_id": "ATV2.at",
+      "priority": "P1",
+      "reason": "Major nationwide Austrian private entertainment channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "PULS 4",
+      "tvg_id": "Puls4.at",
+      "priority": "P1",
+      "reason": "Major nationwide Austrian private entertainment channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "PULS 24",
+      "tvg_id": "Puls24.at",
+      "priority": "P1",
+      "reason": "Major Austrian news and information channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ServusTV",
+      "tvg_id": "ServusTV.at",
+      "priority": "P1",
+      "reason": "Major nationwide Austrian private channel; the current tested feed was rejected after failing both target devices."
+    },
+    {
+      "country_code": "AT",
+      "channel": "oe24.TV",
+      "tvg_id": "oe24TV.at",
+      "priority": "P1",
+      "reason": "Major Austrian 24-hour news channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ORF Sport+",
+      "tvg_id": "ORFSportPlus.at",
+      "priority": "P2",
+      "reason": "Austrian public-service sports channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ORF Kids",
+      "tvg_id": "ORFKids.at",
+      "priority": "P2",
+      "reason": "Official Austrian public-service kids live channel; the currently tested candidate was rejected as incompatible on the target devices."
+    },
+    {
+      "country_code": "AT",
+      "channel": "krone.tv",
+      "tvg_id": "kronetv.at",
+      "priority": "P2",
+      "reason": "National Austrian news and entertainment channel from Kronen Zeitung; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "KURIER TV",
+      "tvg_id": "KurierTV.at",
+      "priority": "P2",
+      "reason": "National Austrian news, talk and magazine television service; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "CANAL+ FIRST",
+      "tvg_id": "CanalPlusFirst.at",
+      "priority": "P2",
+      "reason": "Austrian linear film, series and entertainment channel produced for the domestic market; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ProSieben Austria",
+      "tvg_id": "ProSiebenAustria.at",
+      "priority": "P2",
+      "reason": "Austria-specific version of a major entertainment channel; no stable verified Austrian feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ProSieben Maxx Austria",
+      "tvg_id": "ProSiebenMaxxAustria.at",
+      "priority": "P2",
+      "reason": "Austria-specific entertainment and factual channel service; no stable verified Austrian feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "SAT.1 Austria",
+      "tvg_id": "SAT1Austria.at",
+      "priority": "P2",
+      "reason": "Austria-specific version of a major entertainment channel; no stable verified Austrian feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "SAT.1 Gold Austria",
+      "tvg_id": "SAT1GoldAustria.at",
+      "priority": "P2",
+      "reason": "Austria-specific entertainment channel service; no stable verified Austrian feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "kabel eins Austria",
+      "tvg_id": "kabeleinsAustria.at",
+      "priority": "P2",
+      "reason": "Austria-specific version of a major entertainment channel; no stable verified Austrian feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "kabel eins Doku Austria",
+      "tvg_id": "kabeleinsDokuAustria.at",
+      "priority": "P2",
+      "reason": "Austria-specific documentary channel service; no stable verified Austrian feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "sixx Austria",
+      "tvg_id": "sixxAustria.at",
+      "priority": "P2",
+      "reason": "Austria-specific entertainment channel service; no stable verified Austrian feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 1",
+      "tvg_id": "SkySportAustria1.at",
+      "priority": "P2",
+      "reason": "Major Austrian sports channel; the current tested feed works in VLC but fails on Samsung, so a TV-safe replacement or compatible feed is needed."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 2",
+      "tvg_id": "SkySportAustria2.at",
+      "priority": "P2",
+      "reason": "Active Sky Sport Austria sports option channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 3",
+      "tvg_id": "SkySportAustria3.at",
+      "priority": "P2",
+      "reason": "Active Sky Sport Austria sports option channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 4",
+      "tvg_id": "SkySportAustria4.at",
+      "priority": "P2",
+      "reason": "Active Sky Sport Austria sports option channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 5",
+      "tvg_id": "SkySportAustria5.at",
+      "priority": "P2",
+      "reason": "Active Sky Sport Austria sports option channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 6",
+      "tvg_id": "SkySportAustria6.at",
+      "priority": "P2",
+      "reason": "Active Sky Sport Austria sports option channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 7",
+      "tvg_id": "SkySportAustria7.at",
+      "priority": "P2",
+      "reason": "Active Sky Sport Austria sports option channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Sky Sport Austria 8",
+      "tvg_id": "SkySportAustria8.at",
+      "priority": "P2",
+      "reason": "Active Sky Sport Austria sports option channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "LT1",
+      "tvg_id": "LT1.at",
+      "priority": "P3",
+      "reason": "Active Upper Austrian regional television channel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "DORF TV",
+      "tvg_id": "DorfTV.at",
+      "priority": "P3",
+      "reason": "Active Upper Austrian regional/community television channel with terrestrial and online distribution; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "TV 1 Oberösterreich",
+      "tvg_id": "TV1Oberosterreich.at",
+      "priority": "P3",
+      "reason": "Active Upper Austrian regional television channel; the current tested feed was rejected after failing both target devices."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Gemeinde TV",
+      "tvg_id": "GemeindeTV.at",
+      "priority": "P3",
+      "reason": "Active regional television service from Lower Austria and successor to M4TV; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ATV Aichfeld",
+      "tvg_id": "ATVAichfeld.at",
+      "priority": "P3",
+      "reason": "Active regional Austrian television service in the Mur-Mürz/Aichfeld area; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "P3tv",
+      "tvg_id": "P3tv.at",
+      "priority": "P3",
+      "reason": "Active regional television channel for central Lower Austria; the current tested feed was rejected after failing both target devices."
+    },
+    {
+      "country_code": "AT",
+      "channel": "K19",
+      "tvg_id": "K19.at",
+      "priority": "P4",
+      "reason": "Active Austrian niche and sports television channel; the current tested feed was rejected after failing both target devices."
+    },
+    {
+      "country_code": "AT",
+      "channel": "K-TV",
+      "tvg_id": "KTV.at",
+      "priority": "P4",
+      "reason": "Active religious television channel distributed in Austria; the current tested feed loads in VLC but fails on Samsung and was rejected."
+    }
+  ]
 }
