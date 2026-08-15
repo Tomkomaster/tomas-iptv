@@ -44,7 +44,6 @@ class AustriaCountryTests(unittest.TestCase):
         self.assertEqual(
             epg["sites"],
             [
-                "tv.magenta.at",
                 "tvheute.at",
                 "pluto.tv/pluto.tv_de.channels.xml",
             ],
