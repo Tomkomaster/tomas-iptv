@@ -1,0 +1,194 @@
+name: Import AT manual tests 2026-08-15
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-at-manual-tests-20260815.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Build current candidate state
+        run: python3 -m tools.reliable_build --strict
+
+      - name: Import Austrian manual playback tests
+        env:
+          AT_TESTS_ZLIB_B64: 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
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from __future__ import annotations
+          import base64, csv, io, os, zlib
+          from collections import Counter
+          from pathlib import Path
+
+          from country_language import normalize_country_code, normalize_language_codes
+          from iptv.channel_identity import canonical_stream_url
+          from tools.audit_console import exact_index, load_audit, save_result, write_audit
+
+          TESTED_ON = "2026-08-15"
+          EXPECTED = 150
+
+          def truthy(v):
+              return str(v or "").strip().casefold() in {"1", "true", "yes", "y", "on"}
+
+          def restore_url(v):
+              return str(v or "").strip().replace("\\", "/")
+
+          def status(raw, device):
+              text = str(raw or "").strip()
+              f = text.casefold()
+              if f == "ok":
+                  return "works", ""
+              if f.startswith("ok, but"):
+                  return "works_with_warning", text
+              if device == "vlc" and f == "just loads":
+                  return "loads", text
+              if device == "vlc" and f == "skips to the next channel":
+                  return "generic_error", text
+              if device == "samsung" and f == "not_supported_file":
+                  return "format_error", text
+              raise RuntimeError(f"Unrecognized {device} result: {text!r}")
+
+          def country(row):
+              for field in ("playlist_country_code", "output_country_code", "country_code"):
+                  c = normalize_country_code(str(row.get(field) or ""))
+                  if c:
+                      return c
+              return ""
+
+          raw = zlib.decompress(base64.b64decode(os.environ["AT_TESTS_ZLIB_B64"])).decode("utf-8-sig")
+          sheet = list(csv.reader(io.StringIO(raw), delimiter="\t"))
+          header = [str(x or "").strip() for x in sheet[0]]
+          if header[:5] != ["Speaking Language", "Channel", "Source", "VLC", "Samsung"]:
+              raise RuntimeError(f"Unexpected header: {header!r}")
+
+          tests = []
+          for line_no, row in enumerate(sheet[1:], 2):
+              vals = list(row) + [""] * max(0, 6 - len(row))
+              scope, channel, source, vlc, samsung, note = vals[:6]
+              if not any(str(x or "").strip() for x in vals):
+                  continue
+              if str(scope or "").strip().upper() != "AT":
+                  raise RuntimeError(f"Line {line_no}: expected AT, got {scope!r}")
+              url = restore_url(source)
+              if not channel.strip() or not url:
+                  raise RuntimeError(f"Line {line_no}: missing channel or URL")
+              tests.append({
+                  "line": line_no, "channel": channel.strip(), "url": url,
+                  "vlc": vlc.strip(), "samsung": samsung.strip(), "notes": note.strip()
+              })
+
+          if len(tests) != EXPECTED:
+              raise RuntimeError(f"Expected {EXPECTED} test rows, found {len(tests)}")
+          keys = [canonical_stream_url(x["url"]) for x in tests]
+          dupes = [k for k, n in Counter(keys).items() if n > 1]
+          if dupes:
+              raise RuntimeError("Duplicate tested URLs: " + ", ".join(dupes))
+
+          generated_path = Path("public/audit.csv")
+          if not generated_path.is_file():
+              raise RuntimeError("public/audit.csv missing after reliable build")
+          with generated_path.open("r", encoding="utf-8-sig", newline="") as f:
+              generated_rows = [dict(r) for r in csv.DictReader(f)]
+
+          groups = {}
+          for r in generated_rows:
+              if country(r) != "AT":
+                  continue
+              url = str(r.get("stream_url") or "").strip()
+              if url:
+                  groups.setdefault(canonical_stream_url(url), []).append(r)
+
+          generated = {}
+          for key, candidates in groups.items():
+              current = [r for r in candidates if truthy(r.get("in_playlist"))]
+              if len(current) == 1:
+                  generated[key] = current[0]
+              elif len(current) > 1:
+                  raise RuntimeError(f"Multiple current AT rows share {key}")
+              elif len(candidates) == 1:
+                  generated[key] = candidates[0]
+              else:
+                  raise RuntimeError(f"Multiple historical AT rows share {key}")
+
+          audit_path = Path("audit.json")
+          payload = load_audit(audit_path)
+          old_idx = exact_index(payload)
+          pairs = Counter()
+          unmatched = []
+          renamed = []
+
+          for t in tests:
+              key = canonical_stream_url(t["url"])
+              g = generated.get(key)
+              old = old_idx.get(key, (None, {}))[1] or {}
+              if g is None:
+                  unmatched.append(f"line {t['line']}: {t['channel']} | {t['url']}")
+                  row = {
+                      "channel": t["channel"], "stream_url": t["url"],
+                      "playlist_country_code": "AT", "country_code": "AT"
+                  }
+              else:
+                  row = dict(g)
+                  row["stream_url"] = t["url"]
+                  gname = str(g.get("channel") or "").strip()
+                  if gname and gname != t["channel"]:
+                      renamed.append(f"{t['channel']} -> {gname} ({t['url']})")
+
+              vlc, vlc_note = status(t["vlc"], "vlc")
+              samsung, samsung_note = status(t["samsung"], "samsung")
+              pairs[(vlc, samsung)] += 1
+              observed = normalize_language_codes(old.get("observed_language_codes"))
+              general_note = t["notes"] or str(old.get("notes") or "").strip()
+              form = {
+                  "vlc": [vlc], "samsung": [samsung],
+                  "vlc_note": [vlc_note], "samsung_note": [samsung_note],
+                  "notes": [general_note], "language": observed,
+                  "source_type": ["Unknown"], "recalculate_decision": ["1"]
+              }
+              payload = save_result(payload, row, form, tested_on=TESTED_ON)
+
+          write_audit(audit_path, payload)
+          print(f"Imported {len(tests)} Austrian manual playback tests.")
+          for (v, s), n in sorted(pairs.items()):
+              print(f"  {v:20s} / {s:20s}: {n}")
+          if unmatched:
+              print(f"WARNING: {len(unmatched)} URLs were not generated this run; saved as exact historical audit rows.")
+              for x in unmatched:
+                  print("  -", x)
+          else:
+              print("All 150 tested URLs matched generated Austrian audit rows.")
+          if renamed:
+              print(f"{len(renamed)} sheet labels differed from generated identity; exact URL identity was retained.")
+              for x in renamed:
+                  print("  -", x)
+
+          PY
+
+      - name: Validate audit and project
+        run: |
+          python3 -m json.tool audit.json > /dev/null
+          python3 run_tests.py
+          python3 -m tools.reliable_build --strict
+
+      - name: Commit AT audit results and remove one-off workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git rm .github/workflows/import-at-manual-tests-20260815.yml
+          git commit -m "Record Austrian manual playback tests"
+          git push origin HEAD:main
