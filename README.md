@@ -2,7 +2,7 @@
 
 Automatic IPTV playlist builder and manual stream-verification system for family and friends.
 
-The project combines public IPTV sources with manually researched Hungarian, Slovak, Czech, Romanian and Austrian channels, removes duplicate stream URLs, tracks playback testing, selects the best available feed for each channel, and publishes the result through GitHub Pages.
+The project combines public IPTV sources with manually researched Hungarian, Slovak, Czech, Romanian, Austrian and Serbian channels, removes duplicate stream URLs, tracks playback testing, selects the best available feed for each channel, and publishes the result through GitHub Pages.
 
 ## Public playlists
 
@@ -20,6 +20,7 @@ https://tomkomaster.github.io/tomas-iptv/sk.m3u
 https://tomkomaster.github.io/tomas-iptv/cz.m3u
 https://tomkomaster.github.io/tomas-iptv/ro.m3u
 https://tomkomaster.github.io/tomas-iptv/at.m3u
+https://tomkomaster.github.io/tomas-iptv/rs.m3u
 ```
 
 Stable spoken-language playlists:
@@ -30,9 +31,10 @@ https://tomkomaster.github.io/tomas-iptv/by-language/slk.m3u
 https://tomkomaster.github.io/tomas-iptv/by-language/ces.m3u
 https://tomkomaster.github.io/tomas-iptv/by-language/ron.m3u
 https://tomkomaster.github.io/tomas-iptv/by-language/deu.m3u
+https://tomkomaster.github.io/tomas-iptv/by-language/srp.m3u
 ```
 
-Language playlists keep geography visible in the channel name. For example, a verified Hungarian-language Serbian station is published as `[RS] ...` inside `by-language/hun.m3u`; it is not moved into `hu.m3u` merely because it speaks Hungarian. Romanian-language output is enabled as `by-language/ron.m3u`, and German-language output is enabled as `by-language/deu.m3u` for the German-speaking channels discovered through the currently configured country sources. The global IPTV-org German-language source (`languages/deu.m3u`) is intentionally **not** enabled, so adding Austria does not automatically import German-language channels from Germany, Switzerland or other countries. Future outputs such as `srp.m3u` only require a configured language output plus suitable source/audit data.
+Language playlists keep geography visible in the channel name. For example, a verified Hungarian-language Serbian station is published as `[RS] ...` inside `by-language/hun.m3u`; it is not moved into `hu.m3u` merely because it speaks Hungarian. Serbian-language output is enabled as `by-language/srp.m3u`, Romanian-language output is enabled as `by-language/ron.m3u`, and German-language output is enabled as `by-language/deu.m3u` for the German-speaking channels discovered through the currently configured country sources. The global IPTV-org German-language source (`languages/deu.m3u`) is intentionally **not** enabled, so adding Austria does not automatically import German-language channels from Germany, Switzerland or other countries.
 
 Testing/research playlist:
 
@@ -54,13 +56,14 @@ The playlists can be used in IPTV applications, VLC, televisions, phones, tablet
 
 ## Currently supported countries
 
-The project currently treats all five countries as first-class outputs:
+The project currently treats all six countries as first-class outputs:
 
 * 🇭🇺 Hungary (`HU`)
 * 🇸🇰 Slovakia (`SK`)
 * 🇨🇿 Czechia (`CZ`)
 * 🇷🇴 Romania (`RO`)
 * 🇦🇹 Austria (`AT`)
+* 🇷🇸 Serbia (`RS`)
 
 Each country has enabled upstream sources, a local extras file and its own generated stable playlist.
 
@@ -112,12 +115,21 @@ Current source layers are:
 
 Austria defines German (`deu`) as its default spoken language and publishes `by-language/deu.m3u`, but the global IPTV-org German-language playlist is deliberately not configured as a source yet.
 
+### Serbia
+
+1. IPTV-org Serbia country playlist (base)
+2. IPTV-org raw Serbian alternative streams
+3. IPTV-org Serbian-language playlist
+4. Our manually curated `extras/rs.m3u`
+
+Serbia defines Serbian (`srp`) as its default spoken language and publishes `by-language/srp.m3u`.
+
 The sources are processed in configuration order.
 
 The builder then:
 
 1. downloads remote playlists;
-2. reads the HU/SK/CZ/RO/AT local extras;
+2. reads the HU/SK/CZ/RO/AT/RS local extras;
 3. parses all M3U entries;
 4. assigns every entry an explicit source/audit `country_code` and independent spoken `language_codes`;
 5. identifies logical channels;
@@ -158,6 +170,7 @@ IPTV-org Slovakia
 IPTV-org Czechia
 IPTV-org Romania
 IPTV-org Austria
+IPTV-org Serbia
 ```
 
 If a channel first appears in a base source, the dashboard classifies it as:
@@ -205,6 +218,7 @@ extras/sk.m3u
 extras/cz.m3u
 extras/ro.m3u
 extras/at.m3u
+extras/rs.m3u
 ```
 
 These contain streams we researched or added ourselves, including:
@@ -308,6 +322,8 @@ The testing playlist keeps both country and verification state because those lab
 [RO ?] Example Romanian TV
 [AT OK] Example Austrian TV
 [AT ?] Example Austrian TV
+[RS OK] Example Serbian TV
+[RS ?] Example Serbian TV
 ```
 
 Country codes are:
@@ -319,6 +335,7 @@ Country codes are:
 | `CZ` | Czechia |
 | `RO` | Romania |
 | `AT` | Austria |
+| `RS` | Serbia |
 
 Verification states are:
 
@@ -342,6 +359,7 @@ The family/friends playlist contains only stable channels, so the status suffix 
 [CZ] Prima
 [RO] Example Romanian TV
 [AT] Example Austrian TV
+[RS] Example Serbian TV
 ```
 
 ## Per-country stable playlists
@@ -354,6 +372,7 @@ sk.m3u -> JOJ
 cz.m3u -> Prima
 ro.m3u -> Example Romanian TV
 at.m3u -> Example Austrian TV
+rs.m3u -> Example Serbian TV
 ```
 
 These labels describe playlist organization and playback verification, not broadcasting licences, copyright status or legal availability.
@@ -390,6 +409,11 @@ Austria | General
 Austria | Music
 Austria | News
 Austria | Sports
+
+Serbia | General
+Serbia | Music
+Serbia | News
+Serbia | Sports
 ```
 
 Where useful, categories supplied by upstream sources are preserved.
@@ -459,7 +483,7 @@ VLC works + Samsung works
         ↓
 Verified
         ↓
-[HU OK] / [SK OK] / [CZ OK] / [RO OK] / [AT OK] in `test.m3u`
+[HU OK] / [SK OK] / [CZ OK] / [RO OK] / [AT OK] / [RS OK] in `test.m3u`
 ```
 
 ---
@@ -565,9 +589,9 @@ expected_language_codes
 observed_language_codes
 ```
 
-The first two are countries. The latter two are spoken-language evidence and use ISO-639-3-style values such as `hun`, `slk`, `ces`, `ron` or `deu`.
+The first two are countries. The latter two are spoken-language evidence and use ISO-639-3-style values such as `hun`, `slk`, `ces`, `ron`, `deu` or `srp`.
 
-Verified streams are **not** generically routed by language. Current HU/SK/CZ cross-routing is explicitly configured in `verified_country_routes`, for example `SK + ces -> CZ`. Romania remains its own geography even when a Romanian station is verified as Hungarian-language; such a station can also appear in `by-language/hun.m3u` without being moved to `hu.m3u`.
+Verified streams are **not** generically routed by language. Current HU/SK/CZ cross-routing is explicitly configured in `verified_country_routes`, for example `SK + ces -> CZ`. Romania and Serbia remain their own geographies even when a station is verified in another spoken language; such a station can also appear in the appropriate by-language playlist without being moved to another country output.
 
 This allows models such as:
 
@@ -585,7 +609,7 @@ Multilingual or ambiguous language results are not blindly duplicated across cou
 
 # Adding channels
 
-Use the extras file for the country where the candidate belongs. Do **not** manually add `[HU ...]`, `[SK ...]`, `[CZ ...]`, `[RO ...]` or `[AT ...]` prefixes to source names; the builder formats generated playlists automatically.
+Use the extras file for the country where the candidate belongs. Do **not** manually add `[HU ...]`, `[SK ...]`, `[CZ ...]`, `[RO ...]`, `[AT ...]` or `[RS ...]` prefixes to source names; the builder formats generated playlists automatically.
 
 ## Adding a Hungarian channel
 
@@ -732,15 +756,52 @@ at.m3u -> Example Austrian TV
 by-language/deu.m3u -> [AT] Example Austrian TV
 ```
 
+## Adding a Serbian channel
+
+Edit:
+
+```text
+extras/rs.m3u
+```
+
+Example:
+
+```text
+# Example Serbian TV — direct official HLS candidate
+#EXTINF:-1 tvg-id="ExampleTV.rs" tvg-name="Example Serbian TV" group-title="General",Example Serbian TV
+https://example.rs/live/playlist.m3u8
+```
+
+`extras/rs.m3u` is configured with:
+
+```json
+"country_code": "RS",
+"language_codes": ["srp"]
+```
+
+A new unresolved candidate normally appears as:
+
+```text
+[RS ?] Example Serbian TV
+```
+
+in `test.m3u`. After successful VLC/Samsung and language verification, the stable outputs are:
+
+```text
+tv.m3u -> [RS] Example Serbian TV
+rs.m3u -> Example Serbian TV
+by-language/srp.m3u -> [RS] Example Serbian TV
+```
+
 ---
 
 # Testing a new channel
 
-The same manual workflow applies to Hungarian, Slovak, Czech, Romanian and Austrian candidates:
+The same manual workflow applies to Hungarian, Slovak, Czech, Romanian, Austrian and Serbian candidates:
 
-1. add the exact candidate URL to `extras/hu.m3u`, `extras/sk.m3u`, `extras/cz.m3u`, `extras/ro.m3u` or `extras/at.m3u` as appropriate;
+1. add the exact candidate URL to `extras/hu.m3u`, `extras/sk.m3u`, `extras/cz.m3u`, `extras/ro.m3u`, `extras/at.m3u` or `extras/rs.m3u` as appropriate;
 2. let the playlist rebuild;
-3. find the candidate in `test.m3u` (`[HU ?]`, `[SK ?]`, `[CZ ?]`, `[RO ?]` or `[AT ?]` initially);
+3. find the candidate in `test.m3u` (`[HU ?]`, `[SK ?]`, `[CZ ?]`, `[RO ?]`, `[AT ?]` or `[RS ?]` initially);
 4. test that exact stream/feed in VLC;
 5. test that exact stream/feed on the Samsung IPTV application;
 6. verify the actual channel identity and spoken language/content;
@@ -779,7 +840,7 @@ public/
 
 ## `tv.m3u`
 
-Shared stable family/friends playlist containing HU, SK, CZ, RO and AT channels. Stable names use country prefixes such as `[HU]`, `[SK]`, `[CZ]`, `[RO]` and `[AT]`.
+Shared stable family/friends playlist containing HU, SK, CZ, RO, AT and RS channels. Stable names use country prefixes such as `[HU]`, `[SK]`, `[CZ]`, `[RO]`, `[AT]` and `[RS]`.
 
 ```text
 https://tomkomaster.github.io/tomas-iptv/tv.m3u
@@ -787,7 +848,7 @@ https://tomkomaster.github.io/tomas-iptv/tv.m3u
 
 ## `test.m3u`
 
-Testing/research playlist. This is where diagnostic status prefixes such as `[HU OK]`, `[SK ?]`, `[CZ ?]`, `[RO ?]` and `[AT ?]` remain visible.
+Testing/research playlist. This is where diagnostic status prefixes such as `[HU OK]`, `[SK ?]`, `[CZ ?]`, `[RO ?]`, `[AT ?]` and `[RS ?]` remain visible.
 
 ```text
 https://tomkomaster.github.io/tomas-iptv/test.m3u
@@ -803,6 +864,7 @@ public/sk.m3u -> https://tomkomaster.github.io/tomas-iptv/sk.m3u
 public/cz.m3u -> https://tomkomaster.github.io/tomas-iptv/cz.m3u
 public/ro.m3u -> https://tomkomaster.github.io/tomas-iptv/ro.m3u
 public/at.m3u -> https://tomkomaster.github.io/tomas-iptv/at.m3u
+public/rs.m3u -> https://tomkomaster.github.io/tomas-iptv/rs.m3u
 ```
 
 ---
@@ -971,7 +1033,7 @@ The workflow validates that the result:
 * contains channels;
 * contains programme entries.
 
-Romania and Austria have their own EPG country configurations and external guide sources, alongside the Hungary, Slovakia and Czechia EPG configurations. Austria uses EPGShare `AT1` as its configured external source.
+Romania, Austria and Serbia have their own EPG country configurations and external guide sources, alongside the Hungary, Slovakia and Czechia EPG configurations. Austria uses EPGShare `AT1` and Serbia uses EPGShare `RS1` as their configured external sources.
 
 When EPG is disabled, this step is skipped.
 
@@ -1064,14 +1126,16 @@ A simplified modern structure looks like:
     "SK": "Slovakia",
     "CZ": "Czechia",
     "RO": "Romania",
-    "AT": "Austria"
+    "AT": "Austria",
+    "RS": "Serbia"
   },
   "country_outputs": {
     "HU": "public/hu.m3u",
     "SK": "public/sk.m3u",
     "CZ": "public/cz.m3u",
     "RO": "public/ro.m3u",
-    "AT": "public/at.m3u"
+    "AT": "public/at.m3u",
+    "RS": "public/rs.m3u"
   },
 
   "language_names": {
@@ -1079,14 +1143,16 @@ A simplified modern structure looks like:
     "slk": "Slovak",
     "ces": "Czech",
     "ron": "Romanian",
-    "deu": "German"
+    "deu": "German",
+    "srp": "Serbian"
   },
   "language_outputs": {
     "hun": "public/by-language/hun.m3u",
     "slk": "public/by-language/slk.m3u",
     "ces": "public/by-language/ces.m3u",
     "ron": "public/by-language/ron.m3u",
-    "deu": "public/by-language/deu.m3u"
+    "deu": "public/by-language/deu.m3u",
+    "srp": "public/by-language/srp.m3u"
   },
 
   "output": "public/tv.m3u",
@@ -1126,7 +1192,7 @@ Language-wide sources should use `country_mode: "tvg_id"` so geography comes fro
 
 # Current country configuration
 
-HU, SK, CZ, RO and AT are fully enabled as first-class country outputs. `config.json` defines all five country names and generated country outputs:
+HU, SK, CZ, RO, AT and RS are fully enabled as first-class country outputs. `config.json` defines all six country names and generated country outputs:
 
 ```json
 "country_names": {
@@ -1134,18 +1200,20 @@ HU, SK, CZ, RO and AT are fully enabled as first-class country outputs. `config.
   "SK": "Slovakia",
   "CZ": "Czechia",
   "RO": "Romania",
-  "AT": "Austria"
+  "AT": "Austria",
+  "RS": "Serbia"
 },
 "country_outputs": {
   "HU": "public/hu.m3u",
   "SK": "public/sk.m3u",
   "CZ": "public/cz.m3u",
   "RO": "public/ro.m3u",
-  "AT": "public/at.m3u"
+  "AT": "public/at.m3u",
+  "RS": "public/rs.m3u"
 }
 ```
 
-Romania has the base country playlist, raw alternatives, Romanian-language playlist and local extras enabled. Austria has the base country playlist, raw alternatives and local extras enabled, with German (`deu`) configured as its spoken-language output:
+Romania has the base country playlist, raw alternatives, Romanian-language playlist and local extras enabled. Austria has the base country playlist, raw alternatives and local extras enabled, with German (`deu`) configured as its spoken-language output. Serbia has the base country playlist, raw alternatives, Serbian-language playlist and local extras enabled, with Serbian (`srp`) configured as its spoken-language output:
 
 ```text
 IPTV-org Romania
@@ -1157,11 +1225,17 @@ IPTV-org Austria
 IPTV-org Austria raw alternatives
 extras/at.m3u
 by-language/deu.m3u
+
+IPTV-org Serbia
+IPTV-org Serbia raw alternatives
+IPTV-org Serbian language
+extras/rs.m3u
+by-language/srp.m3u
 ```
 
 The global IPTV-org German-language playlist is intentionally not enabled for Austria. This keeps the Austrian expansion country-scoped instead of importing the wider German-language catalog.
 
-There is no separate Romanian or Austrian builder: entries from both countries go through the same deduplication, audit, stable-selection, language-routing, reporting and publication pipeline as HU, SK and CZ.
+There is no separate Romanian, Austrian or Serbian builder: entries from all three countries go through the same deduplication, audit, stable-selection, language-routing, reporting and publication pipeline as HU, SK and CZ.
 
 ---
 
@@ -1208,7 +1282,8 @@ tomas-iptv/
 │   ├── sk.m3u
 │   ├── cz.m3u
 │   ├── ro.m3u
-│   └── at.m3u
+│   ├── at.m3u
+│   └── rs.m3u
 │
 ├── tests/
 │   ├── test_build.py
@@ -1227,12 +1302,14 @@ tomas-iptv/
     ├── cz.m3u
     ├── ro.m3u
     ├── at.m3u
+    ├── rs.m3u
     ├── by-language/
     │   ├── hun.m3u
     │   ├── slk.m3u
     │   ├── ces.m3u
     │   ├── ron.m3u
-    │   └── deu.m3u
+    │   ├── deu.m3u
+    │   └── srp.m3u
     ├── index.html
     ├── channels.csv
     ├── duplicates.csv
@@ -1255,6 +1332,7 @@ extras/sk.m3u
 extras/cz.m3u
 extras/ro.m3u
 extras/at.m3u
+extras/rs.m3u
 build.py
 tests/
 ```
@@ -1265,13 +1343,13 @@ tests/
 
 Possible next steps include:
 
-* broader country-aware XMLTV/EPG coverage, including continued work on Austrian, Czech, Slovak and Romanian mappings;
+* broader country-aware XMLTV/EPG coverage, including continued work on Austrian, Czech, Slovak, Romanian and Serbian mappings;
 * additional native HLS source research;
 * continued stream-health and event-stream policy improvements;
 * further dashboard/report improvements;
 * continued refactoring of the builder as the project grows.
 
-The stable/test split, per-country HU/SK/CZ/RO/AT playlists and Austrian/Czech/Romanian country support are already implemented and are no longer future roadmap items.
+The stable/test split, per-country HU/SK/CZ/RO/AT/RS playlists and Austrian/Czech/Romanian/Serbian country support are already implemented and are no longer future roadmap items.
 
 ---
 

@@ -5,7 +5,8 @@
     "SK": "Slovakia",
     "CZ": "Czechia",
     "RO": "Romania",
-    "AT": "Austria"
+    "AT": "Austria",
+    "RS": "Serbia"
   },
   "identity_overrides_path": "data/identity_overrides.json",
   "logo_overrides_path": "data/logo_overrides.json",
@@ -16,21 +17,24 @@
     "SK": "public/sk.m3u",
     "CZ": "public/cz.m3u",
     "RO": "public/ro.m3u",
-    "AT": "public/at.m3u"
+    "AT": "public/at.m3u",
+    "RS": "public/rs.m3u"
   },
   "language_names": {
     "hun": "Hungarian",
     "slk": "Slovak",
     "ces": "Czech",
     "ron": "Romanian",
-    "deu": "German"
+    "deu": "German",
+    "srp": "Serbian"
   },
   "language_outputs": {
     "hun": "public/by-language/hun.m3u",
     "slk": "public/by-language/slk.m3u",
     "ces": "public/by-language/ces.m3u",
     "ron": "public/by-language/ron.m3u",
-    "deu": "public/by-language/deu.m3u"
+    "deu": "public/by-language/deu.m3u",
+    "srp": "public/by-language/srp.m3u"
   },
   "stable_playlist": {
     "allowed_decisions": [
@@ -170,6 +174,15 @@
           "provider": "epgshare01.online",
           "url": "https://epgshare01.online/epgshare01/epg_ripper_AT1.xml.gz"
         }
+      },
+      "RS": {
+        "sites": [
+          "mts.rs"
+        ],
+        "external": {
+          "provider": "epgshare01.online",
+          "url": "https://epgshare01.online/epgshare01/epg_ripper_RS1.xml.gz"
+        }
       }
     },
     "future_days": 7,
@@ -267,6 +280,24 @@
       ]
     },
     {
+      "name": "IPTV-org Serbia",
+      "kind": "base",
+      "url": "https://iptv-org.github.io/iptv/countries/rs.m3u",
+      "country_code": "RS",
+      "language_codes": [
+        "srp"
+      ]
+    },
+    {
+      "name": "IPTV-org Serbia raw alternatives",
+      "kind": "alternatives",
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/rs.m3u",
+      "country_code": "RS",
+      "language_codes": [
+        "srp"
+      ]
+    },
+    {
       "name": "IPTV-org Hungarian language",
       "kind": "alternatives",
       "url": "https://iptv-org.github.io/iptv/languages/hun.m3u",
@@ -299,6 +330,15 @@
       "url": "https://iptv-org.github.io/iptv/languages/ron.m3u",
       "language_codes": [
         "ron"
+      ],
+      "country_mode": "tvg_id"
+    },
+    {
+      "name": "IPTV-org Serbian language",
+      "kind": "alternatives",
+      "url": "https://iptv-org.github.io/iptv/languages/srp.m3u",
+      "language_codes": [
+        "srp"
       ],
       "country_mode": "tvg_id"
     }
@@ -348,6 +388,15 @@
       "language_codes": [
         "deu"
       ]
+    },
+    {
+      "name": "Our Serbian test/verified extras",
+      "kind": "extras",
+      "path": "extras/rs.m3u",
+      "country_code": "RS",
+      "language_codes": [
+        "srp"
+      ]
     }
   ],
   "default_country_code": "HU",
@@ -369,6 +418,9 @@
     ],
     "AT": [
       "deu"
+    ],
+    "RS": [
+      "srp"
     ]
   },
   "verified_country_routes": [
