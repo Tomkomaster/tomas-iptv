@@ -1,0 +1,163 @@
+name: EPG coverage validation
+
+on:
+  push:
+    branches:
+      - agent/expand-epg-coverage
+
+permissions:
+  contents: read
+
+jobs:
+  validate-epg:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run tests
+        run: python3 run_tests.py
+
+      - name: Build stable playlists
+        run: python3 -m tools.reliable_build --strict
+
+      - name: Set up Node.js for EPG
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build and measure XMLTV EPG
+        shell: bash
+        env:
+          IPTV_ORG_EPG_REV: "15965406e3d950433788a085a15ab256a8e0035d"
+        run: |
+          set -euo pipefail
+
+          EPG_MAX_CONNECTIONS="$(python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print(int((cfg.get("epg") or {}).get("max_connections") or 3))
+          ')"
+          EPG_FUTURE_DAYS="$(python3 -c '
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          print(int((cfg.get("epg") or {}).get("future_days") or 7))
+          ')"
+
+          rm -rf .epg-builder .epg-external
+          rm -f .epg.channels.xml .epg-iptv.xml .epg-iptv-coverage.json .epg-grab.log
+
+          mkdir .epg-builder
+          git -C .epg-builder init
+          git -C .epg-builder remote add origin https://github.com/iptv-org/epg.git
+          git -C .epg-builder fetch --depth 1 origin "$IPTV_ORG_EPG_REV"
+          git -C .epg-builder checkout --detach FETCH_HEAD
+
+          ACTUAL_REV="$(git -C .epg-builder rev-parse HEAD)"
+          test "$ACTUAL_REV" = "$IPTV_ORG_EPG_REV"
+
+          cd .epg-builder
+          npm ci
+          cd "$GITHUB_WORKSPACE"
+
+          python3 -m epg.epg_country_prepare \
+            --config config.json \
+            --epg-root .epg-builder \
+            --output .epg.channels.xml \
+            --report .epg-iptv-coverage.json
+
+          cd .epg-builder
+          npm run grab --- \
+            --channels="$GITHUB_WORKSPACE/.epg.channels.xml" \
+            --output="$GITHUB_WORKSPACE/.epg-iptv.xml" \
+            --maxConnections="$EPG_MAX_CONNECTIONS" \
+            2>&1 | tee "$GITHUB_WORKSPACE/.epg-grab.log"
+          cd "$GITHUB_WORKSPACE"
+
+          mkdir -p .epg-external
+          python3 - <<'PY' > .epg-external/sources.tsv
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path("config.json").read_text(encoding="utf-8"))
+          for raw_code, raw_country in ((cfg.get("epg") or {}).get("countries") or {}).items():
+              code = str(raw_code or "").strip().upper()
+              country = raw_country if isinstance(raw_country, dict) else {}
+              external = country.get("external") or {}
+              if not isinstance(external, dict):
+                  continue
+              url = str(external.get("url") or "").strip()
+              provider = str(external.get("provider") or "epgshare01.online").strip()
+              if code and url:
+                  print(f"{code}\t{provider}\t{url}")
+          PY
+
+          while IFS=$'\t' read -r code provider url; do
+            [ -n "$code" ] || continue
+            target=".epg-external/${code}.xml.gz"
+            echo "Downloading external EPG source for ${code}: ${provider}"
+            if ! curl --fail --location --silent --show-error --retry 3 --retry-delay 2 \
+              "$url" -o "$target"; then
+              echo "WARNING: external EPG download failed for ${code}; continuing."
+              rm -f "$target"
+            fi
+          done < .epg-external/sources.tsv
+
+          python3 -m epg.epg_multi_merge \
+            --config config.json \
+            --iptv-guide .epg-iptv.xml \
+            --iptv-coverage .epg-iptv-coverage.json \
+            --external-dir .epg-external \
+            --aliases data/epg_aliases.json \
+            --preferred-iptv-provider mediaklikk.hu \
+            --future-days "$EPG_FUTURE_DAYS" \
+            --output public/guide.xml \
+            --report public/epg-coverage.json
+
+          python3 -m epg.local_epg \
+            --playlist public/tv.m3u \
+            --guide public/guide.xml \
+            --coverage public/epg-coverage.json \
+            --report public/local-epg.json \
+            --future-days "$EPG_FUTURE_DAYS"
+
+          python3 -m epg.epg_health \
+            --coverage public/epg-coverage.json \
+            --guide public/guide.xml \
+            --grab-log .epg-grab.log \
+            --output public/epg-health.json
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          coverage = json.loads(Path("public/epg-coverage.json").read_text(encoding="utf-8"))
+          health = json.loads(Path("public/epg-health.json").read_text(encoding="utf-8"))
+          print("FINAL EPG COVERAGE")
+          print(json.dumps({
+              "coverage": {
+                  "matched": coverage.get("matched_tvg_ids"),
+                  "total": coverage.get("playlist_tvg_ids"),
+                  "percent": coverage.get("mapping_coverage_percent"),
+                  "countries": coverage.get("countries"),
+              },
+              "health_countries": health.get("countries"),
+          }, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload EPG measurement artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: epg-coverage-validation-final
+          path: |
+            public/epg-coverage.json
+            public/epg-health.json
+            public/local-epg.json
+            .epg-iptv-coverage.json
+            .epg-grab.log
+          include-hidden-files: true
+          retention-days: 1
