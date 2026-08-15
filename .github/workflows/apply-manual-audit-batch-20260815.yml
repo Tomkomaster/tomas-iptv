@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Apply manual playback tests
-        run: python3 tools/apply_manual_audit_batch_20260815.py
+        run: PYTHONPATH=. python3 tools/apply_manual_audit_batch_20260815.py
 
       - name: Run tests
         run: python3 run_tests.py
