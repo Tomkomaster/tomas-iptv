@@ -27,17 +27,19 @@ class RomaniaCountryTests(unittest.TestCase):
         self.assertIn("IPTV-org Romania raw alternatives", source_names)
         self.assertIn("IPTV-org Romanian language", source_names)
 
-        extras = {
-            extra["path"]: extra
-            for extra in self.cfg["extras"]
-        }
+        extras = {extra["path"]: extra for extra in self.cfg["extras"]}
         self.assertEqual(extras["extras/ro.m3u"]["country_code"], "RO")
         self.assertEqual(extras["extras/ro.m3u"]["language_codes"], ["ron"])
 
     def test_romania_has_dedicated_epg_configuration(self):
         epg = self.cfg["epg"]["countries"]["RO"]
-        self.assertEqual(epg["sites"], ["epgshare01.online"])
+        self.assertEqual(epg["sites"], ["programetv.ro"])
+        self.assertEqual(epg["external"]["provider"], "epgshare01.online")
         self.assertTrue(epg["external"]["url"].endswith("epg_ripper_RO1.xml.gz"))
+        self.assertEqual(
+            epg["external"]["fallback_urls"],
+            ["https://epgshare01.online/epgshare01/epg_ripper_RO2.xml.gz"],
+        )
 
     def test_hungarian_language_does_not_move_romanian_channel_without_route(self):
         candidate = {
@@ -58,31 +60,22 @@ class RomaniaCountryTests(unittest.TestCase):
         self.assertEqual(len(routed), 1)
         self.assertEqual(routed[0]["country_code"], "RO")
         self.assertEqual(routed[0]["language_codes"], ["hun"])
-        self.assertEqual(
-            build.entries_for_spoken_language(routed, "hun"),
-            routed,
-        )
+        self.assertEqual(build.entries_for_spoken_language(routed, "hun"), routed)
 
     def test_romanian_wanted_catalog_only_tracks_missing_or_unusable_sources(self):
         wanted = load_wanted_channels(Path("data/wanted_channels.json"))
         romanian = [row for row in wanted if row["country_code"] == "RO"]
 
-        # The Romania catalog now mirrors the active Wikipedia list after
-        # removing channels already present/tested in the project, plus two
-        # explicit replacement-research targets.
         self.assertGreaterEqual(len(romanian), 160)
         self.assertLess(len(romanian), 220)
 
         by_name = {row["channel"]: row for row in romanian}
 
-        # Missing major stations remain research targets.
         self.assertEqual(by_name["PRO TV"]["priority"], "P1")
         self.assertEqual(by_name["Antena 1"]["priority"], "P1")
         self.assertEqual(by_name["Euronews Romania"]["priority"], "P1")
         self.assertEqual(by_name["Erdély TV"]["priority"], "P3")
 
-        # Stations already supplied/tested by the configured Romanian sources
-        # must not clutter the wanted/research catalog.
         for supplied in (
             "TVR 1",
             "TVR 2",
@@ -104,8 +97,6 @@ class RomaniaCountryTests(unittest.TestCase):
         ):
             self.assertNotIn(supplied, by_name)
 
-        # Closed/replaced channels from the article's historical section are
-        # not research targets.
         for closed in (
             "Profit News",
             "FilmBox Premium",
@@ -115,11 +106,7 @@ class RomaniaCountryTests(unittest.TestCase):
         ):
             self.assertNotIn(closed, by_name)
 
-        # Current replacement branding should be tracked instead.
         self.assertEqual(by_name["FilmBox+ One"]["priority"], "P3")
-
-        # A channel may remain wanted if the only tested candidate is unusable
-        # and we still need a functioning replacement stream.
         self.assertIn("geo-blocked", by_name["TV SUD"]["reason"])
 
 

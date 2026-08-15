@@ -131,7 +131,8 @@
       "SK": {
         "sites": [
           "horizon.tv",
-          "mujtvprogram.cz"
+          "mujtvprogram.cz",
+          "webtv.sk"
         ],
         "external": {
           "provider": "epgshare01.online",
@@ -150,7 +151,7 @@
       },
       "RO": {
         "sites": [
-          "epgshare01.online"
+          "programetv.ro"
         ],
         "external": {
           "provider": "epgshare01.online",
@@ -162,7 +163,8 @@
       },
       "AT": {
         "sites": [
-          "epgshare01.online"
+          "tvheute.at",
+          "pluto.tv/pluto.tv_de.channels.xml"
         ],
         "external": {
           "provider": "epgshare01.online",
