@@ -29,6 +29,21 @@ class DashboardPresentationTests(unittest.TestCase):
         self.assertNotIn('href="hu.m3u">Stable Hungary', template)
         self.assertNotIn('href="ro.m3u">Stable Romania', template)
 
+    def test_dashboard_uses_compact_view_navigation(self):
+        template = Path("templates/dashboard.html").read_text(encoding="utf-8")
+        css = Path("static/dashboard.css").read_text(encoding="utf-8")
+
+        self.assertIn('class="dashboard-toolbar"', template)
+        self.assertIn('href="#overview">Overview</a>', template)
+        self.assertIn('href="#attention">Needs attention</a>', template)
+        self.assertIn('href="#epg">EPG</a>', template)
+        self.assertIn('href="#inventory">Inventory</a>', template)
+        self.assertIn('id="attention" class="dashboard-section"', template)
+        self.assertIn('id="inventory" class="dashboard-section"', template)
+        self.assertIn(".dashboard-section:target", css)
+        self.assertIn("max-height: min(62vh, 620px)", css)
+        self.assertIn("position: sticky", css)
+
     def test_configured_country_outputs_generate_dashboard_playlist_links(self):
         cfg = {
             "site_title": "Test IPTV",
