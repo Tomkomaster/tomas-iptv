@@ -14847,7 +14847,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "90210",
@@ -14934,7 +14938,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Antenne Vorarlberg",
@@ -14953,7 +14961,11 @@
       "discovery": "IPTV-org Austria raw alternatives",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "ARTE",
@@ -14972,7 +14984,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "arte HD",
@@ -15008,7 +15024,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Auction Hunters",
@@ -15401,7 +15421,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: just loads. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "K19",
@@ -15420,7 +15444,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "KIT-TV",
@@ -15473,7 +15501,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Ländle TV",
@@ -15645,7 +15677,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "NDR Fernsehen International",
@@ -15801,7 +15837,11 @@
       "discovery": "IPTV-org Austria raw alternatives",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "ORF 2",
@@ -15837,7 +15877,11 @@
       "discovery": "IPTV-org Austria raw alternatives",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "ORF III HD",
@@ -15875,7 +15919,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "P3tv",
@@ -15894,7 +15942,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Perry Mason",
@@ -16661,7 +16713,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Rakuten TV Comedy Movies Austria",
@@ -16680,7 +16736,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Rakuten TV Drama Movies Austria",
@@ -16699,7 +16759,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Rakuten TV Family Movies Austria",
@@ -16718,7 +16782,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Red Bull TV",
@@ -16791,7 +16859,11 @@
       "discovery": "IPTV-org Austria raw alternatives",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Red Bull TV AU",
@@ -16981,7 +17053,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Sky Sport Austria 1",
@@ -17203,7 +17279,11 @@
       ],
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Swamiji TV American",
@@ -17307,7 +17387,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "The L Word – Wenn Frauen lieben",
@@ -17377,7 +17461,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "Uppera Balkan",
@@ -17396,7 +17484,11 @@
       "discovery": "IPTV-org Austria",
       "observed_language_codes": [
         "deu"
-      ]
+      ],
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Skips to the next channel. Samsung: NOT_SUPPORTED_FILE."
     },
     {
       "channel": "W24",
