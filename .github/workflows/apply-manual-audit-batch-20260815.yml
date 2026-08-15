@@ -1,0 +1,42 @@
+name: Apply 2026-08-15 manual audit batch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - tools/apply_manual_audit_batch_20260815.py
+      - .github/workflows/apply-manual-audit-batch-20260815.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Apply manual playback tests
+        run: python3 tools/apply_manual_audit_batch_20260815.py
+
+      - name: Run tests
+        run: python3 run_tests.py
+
+      - name: Validate audit JSON
+        run: python3 -m json.tool audit.json > /dev/null
+
+      - name: Commit audit and remove one-off helpers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git rm tools/apply_manual_audit_batch_20260815.py
+          git rm .github/workflows/apply-manual-audit-batch-20260815.yml
+          git commit -m "Update manual playback audit"
+          git push origin HEAD:main
