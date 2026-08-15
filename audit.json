@@ -2553,7 +2553,7 @@
       "discovery": "Successor/rebrand of Hatoscsatorna"
     },
     {
-      "channel": "Daru TV",
+      "channel": "Daru TV Feed 2",
       "stream_url": "https://darutv.medialivecdn.hu:443/darutv/7ca4e13b035b7c1ff5608c2c1e6f71e2.sdp/playlist.m3u8",
       "tvg_id": "DaruTV.hu@SD",
       "playlist_country_code": "HU",
@@ -2564,20 +2564,20 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
-      "samsung_note": "Samsung: incompatible/unsupported file (PLAYER_ERROR_NOT_SUPPORTED_FILE).",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-09",
-      "reason": "This exact feed failed on both tested devices.",
-      "notes": "Reject this exact stream from the shared playlist. Keep the channel in research history for future replacement URLs.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "Current/alternative Hungarian feed; broadcaster may still be active",
       "discovery": "IPTV-org/current replacement candidate; manually tested"
     },
     {
-      "channel": "Soltvadkerti Televízió",
+      "channel": "Soltvadkerti Televízió Feed 2",
       "stream_url": "https://soltvadkert.medialivecdn.hu:443/soltvadkerttv/135f0ef3069df243438549b446f911ab.sdp/playlist.m3u8",
       "tvg_id": "SoltvadkertiTelevizio.hu@SD",
       "playlist_country_code": "HU",
@@ -2588,20 +2588,20 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
-      "samsung_note": "Samsung: incompatible/unsupported file (PLAYER_ERROR_NOT_SUPPORTED_FILE).",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-09",
-      "reason": "This exact feed failed on both tested devices.",
-      "notes": "Reject this exact stream from the shared playlist. Keep the channel in research history for future replacement URLs.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "Current/alternative Hungarian feed; broadcaster may still be active",
       "discovery": "IPTV-org/current replacement candidate; manually tested"
     },
     {
-      "channel": "Gran TV",
+      "channel": "Gran TV Feed 2",
       "stream_url": "https://grantv.medialivecdn.hu:443/gran/51328567842cc1ba78b4b851ee9c46b4.sdp/playlist.m3u8",
       "tvg_id": "GranTV.hu@SD",
       "playlist_country_code": "HU",
@@ -2612,15 +2612,13 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "mrl_error",
-      "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
-      "samsung_note": "Samsung: incompatible/unsupported file (PLAYER_ERROR_NOT_SUPPORTED_FILE).",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
-      "tested_on": "2026-08-09",
-      "reason": "This exact feed failed on both tested devices.",
-      "notes": "Reject this exact stream from the shared playlist. Keep the channel in research history for future replacement URLs.",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
+      "notes": "Passed both manual playback tests.",
       "provenance": "Current/alternative Hungarian feed; broadcaster may still be active",
       "discovery": "IPTV-org/current replacement candidate; manually tested"
     },
@@ -2636,15 +2634,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
-      "samsung_note": "Samsung: incompatible/unsupported file (PLAYER_ERROR_NOT_SUPPORTED_FILE).",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-09",
-      "reason": "This exact feed failed on both tested devices.",
-      "notes": "Reject this exact stream from the shared playlist. Keep the channel in research history for future replacement URLs.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "Current/alternative Hungarian feed; broadcaster may still be active",
       "discovery": "IPTV-org/current replacement candidate; manually tested"
     },
@@ -2660,15 +2658,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
-      "samsung_note": "Samsung: incompatible/unsupported file (PLAYER_ERROR_NOT_SUPPORTED_FILE).",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-09",
-      "reason": "This exact feed failed on both tested devices.",
-      "notes": "Reject this exact stream from the shared playlist. Keep the channel in research history for future replacement URLs.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "Current/alternative Hungarian feed; broadcaster may still be active",
       "discovery": "IPTV-org/current replacement candidate; manually tested"
     },
@@ -2684,15 +2682,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
-      "samsung_note": "Samsung: incompatible/unsupported file (PLAYER_ERROR_NOT_SUPPORTED_FILE).",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-09",
-      "reason": "This exact feed failed on both tested devices.",
-      "notes": "Reject this exact stream from the shared playlist. Keep the channel in research history for future replacement URLs.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "Current/alternative Hungarian feed; broadcaster may still be active",
       "discovery": "IPTV-org/current replacement candidate; manually tested"
     },
@@ -2800,15 +2798,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
-      "samsung_note": "Samsung was unusable. User summarized this batch as 'Not Supported File'; some entries may instead have stayed loading, so the exact Samsung error was not recorded for every row.",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-10",
-      "reason": "Repeated failure.",
-      "notes": "Reject this exact URL from the shared playlist. This is a stream-level decision, not a claim that the broadcaster itself has closed.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Hungary stream; manually tested",
       "discovery": "Current IPTV-org Hungary stream; morning retest"
     },
@@ -2909,7 +2907,7 @@
       "discovery": "Current IPTV-org Hungary stream; morning retest"
     },
     {
-      "channel": "Hir TV",
+      "channel": "Hír TV Feed 2",
       "stream_url": "https://video11.videa.hu/static/live/8.2966061.2530409.1.5.590.590/index.m3u8",
       "tvg_id": "HirTV.hu@SD",
       "playlist_country_code": "HU",
@@ -2920,15 +2918,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
-      "samsung_note": "Samsung was unusable. User summarized this batch as 'Not Supported File'; some entries may instead have stayed loading, so the exact Samsung error was not recorded for every row.",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-10",
-      "reason": "Repeated failure.",
-      "notes": "Reject this exact URL from the shared playlist. This is a stream-level decision, not a claim that the broadcaster itself has closed.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Hungary stream; manually tested",
       "discovery": "Current IPTV-org Hungary stream; morning retest"
     },
@@ -2944,15 +2942,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
-      "samsung_note": "Samsung was unusable. User summarized this batch as 'Not Supported File'; some entries may instead have stayed loading, so the exact Samsung error was not recorded for every row.",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-10",
-      "reason": "Repeated failure.",
-      "notes": "Reject this exact URL from the shared playlist. This is a stream-level decision, not a claim that the broadcaster itself has closed.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Hungary stream; manually tested",
       "discovery": "Current IPTV-org Hungary stream; morning retest"
     },
@@ -3204,15 +3202,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
-      "samsung_note": "Samsung was unusable. User summarized this batch as 'Not Supported File'; some entries may instead have stayed loading, so the exact Samsung error was not recorded for every row.",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-10",
-      "reason": "Repeated failure.",
-      "notes": "Reject this exact URL from the shared playlist. This is a stream-level decision, not a claim that the broadcaster itself has closed.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Hungary stream; manually tested",
       "discovery": "Current IPTV-org Hungary stream; morning retest"
     },
@@ -8010,15 +8008,15 @@
       "observed_language_codes": [
         "slk"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC just loads.",
+      "vlc_note": "Immediately skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-11",
-      "reason": "This exact RTV Krea legacy feed failed on both tested devices.",
-      "notes": "Reject this exact URL. Keep RTV Krea itself as a research target for a current replacement stream.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "Curated extras/sk.m3u legacy candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test"
     },
@@ -8329,7 +8327,7 @@
       "discovery": "extras/sk.m3u manual playback test"
     },
     {
-      "channel": "Raj TV",
+      "channel": "TV Raj",
       "stream_url": "https://ottst05.flexitv.sk/2827-tv-pc.m3u8",
       "tvg_id": "TVRaj.sk@SD",
       "playlist_country_code": "SK",
@@ -8344,10 +8342,11 @@
       "samsung": "format_error",
       "vlc_note": "Immediately skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
-      "decision": "needs_review",
-      "tested_on": "2026-08-13",
-      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
-      "notes": "VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE. Needs review.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Slovakia stream; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -9929,13 +9928,13 @@
       ],
       "vlc": "works_with_warning",
       "samsung": "works_with_warning",
-      "vlc_note": "Stream opens, but displays Neplatny token instead of the programme.",
-      "samsung_note": "Stream opens, but displays Neplatny token instead of the programme.",
+      "vlc_note": "ok, but Neplatny token",
+      "samsung_note": "ok, but Neplatny token",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-11",
-      "reason": "The URL contains an invalid or expired access token and no longer delivers the TA3 programme.",
-      "notes": "Reject this exact tokenized URL. Search for a fresh or non-tokenized TA3 stream.",
+      "tested_on": "2026-08-15",
+      "reason": "The feed opens on both tested devices but displays Neplatny token instead of the programme.",
+      "notes": "Retested on VLC and Samsung; both still show Neplatny token. Reject this exact tokenized URL.",
       "provenance": "Curated extras/sk.m3u Livebox TA3 candidate; manually tested",
       "discovery": "extras/sk.m3u manual playback test"
     },
@@ -9952,12 +9951,13 @@
         "slk"
       ],
       "vlc": "works_with_warning",
-      "vlc_note": "ok, but it says vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu",
-      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
+      "samsung": "works_with_warning",
+      "vlc_note": "ok, but Vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu",
+      "samsung_note": "ok, but Vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu",
       "decision": "needs_review",
-      "tested_on": "2026-08-13",
-      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
-      "notes": "VLC: ok, but it says vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu. Samsung: not tested. Needs review.",
+      "tested_on": "2026-08-15",
+      "reason": "Both tested devices open the feed but show the broadcaster inactivity/interruption message instead of confirmed live programming.",
+      "notes": "Retested on VLC and Samsung; both show: Vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu.",
       "provenance": "IPTV-org Slovakia parliamentary feed; manually tested",
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
@@ -9965,7 +9965,7 @@
       ]
     },
     {
-      "channel": "TV NRSR",
+      "channel": "TV NRSR Feed 2",
       "stream_url": "https://live.cdn.joj.sk/live/andromeda/nrsr/live.m3u8",
       "tvg_id": "TVNRSR.sk",
       "playlist_country_code": "SK",
@@ -9977,12 +9977,14 @@
         "slk"
       ],
       "vlc": "generic_error",
+      "samsung": "format_error",
       "vlc_note": "Immediately skips to the next channel",
-      "samsung_note": "Not retested on Samsung in the 2026-08-13 batch.",
-      "decision": "needs_review",
-      "tested_on": "2026-08-13",
-      "reason": "Inconclusive manual result for a source flagged Not 24/7; retest during a confirmed broadcast.",
-      "notes": "VLC: Immediately skips to the next channel. Samsung: not tested. Needs review.",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "Curated extras/sk.m3u JOJ CDN alternative for TV NRSR; manually tested",
       "discovery": "Manual VLC + Samsung retest; TV NRSR Feed 2",
       "source_flags": [
@@ -11464,7 +11466,7 @@
       "discovery": "Manual VLC + Samsung test"
     },
     {
-      "channel": "RTM Plus",
+      "channel": "RTM Plus Feed 2",
       "stream_url": "http://www.rtmplus.cz/live/1-playlist.m3u8",
       "tvg_id": "RTMPlus.cz@SD",
       "playlist_country_code": "CZ",
@@ -11475,14 +11477,15 @@
       "observed_language_codes": [
         "ces"
       ],
-      "vlc": "loads",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "just loads",
+      "vlc_note": "Immediately skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
-      "decision": "needs_review",
-      "tested_on": "2026-08-12",
-      "reason": "Manual playback failed, but possible off-air availability makes this test inconclusive.",
-      "notes": "The pasted Markdown link was normalized to its HTTP target. VLC only kept loading and Samsung reported NOT_SUPPORTED_FILE; re-test during confirmed RTM Plus programming before permanently rejecting this exact URL.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test"
     },
@@ -11649,8 +11652,8 @@
       "samsung": "works",
       "vlc_note": "ok",
       "samsung_note": "ok",
-      "tested_on": "2026-08-12",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
       "notes": "Passed both manual playback tests.",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test"
@@ -11670,8 +11673,8 @@
       "samsung": "works",
       "vlc_note": "ok",
       "samsung_note": "ok",
-      "tested_on": "2026-08-12",
-      "reason": "Working on both VLC and Samsung in the 2026-08-12 manual test.",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
       "notes": "Passed both manual playback tests.",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test"
@@ -14257,6 +14260,595 @@
       "samsung_note": "ok",
       "tested_on": "2026-08-14",
       "discovery": "Manual playback test supplied 2026-08-14"
+    },
+    {
+      "channel": "Šlágr Originál",
+      "stream_url": "https://stream-6.mazana.tv/slagr.m3u",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "RTM Plus",
+      "stream_url": "https://www.rtmplus.cz/live/1-playlist.m3u8",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Šlágr Muzika",
+      "stream_url": "https://stream-33.mazana.tv/slagr2.m3u",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TV Noe Feed 2",
+      "stream_url": "https://n105.quickmedia.tv/noe-abr/noe-abr/playlist.m3u8",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TV Noe+ Feed 2",
+      "stream_url": "https://n105.quickmedia.tv/noe-2-abr/noe-2-abr/playlist_dvr.m3u8",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "CMS TV",
+      "stream_url": "https://ythls.onrender.com/video/VisH4oT5OI8.m3u8",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TVS",
+      "stream_url": "https://ythls.onrender.com/video/Wr2lfcqVI9U.m3u8",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TV Morava",
+      "stream_url": "https://ythls-v2.onrender.com/channel/UCW33LPZQ1SA7ByUW6GeKRGw.m3u8",
+      "playlist_country_code": "CZ",
+      "output_country_code": "CZ",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Hír TV",
+      "stream_url": "https://onlinestream.live/play.m3u?id=4740&ext=.m3u",
+      "playlist_country_code": "HU",
+      "output_country_code": "HU",
+      "expected_language_codes": [
+        "hun"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Óbuda TV",
+      "stream_url": "https://stream.streaming4u.hu:443/ObudaTV/index.m3u8",
+      "playlist_country_code": "HU",
+      "output_country_code": "HU",
+      "expected_language_codes": [
+        "hun"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Völgyhíd TV Feed 2",
+      "stream_url": "https://volgyhidtv.medialivecdn.hu/volgyhidtv/790283f9e4f5b818790551d075c335cf.sdp/playlist.m3u8",
+      "playlist_country_code": "HU",
+      "output_country_code": "HU",
+      "expected_language_codes": [
+        "hun"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "DSTV Feed 2",
+      "stream_url": "https://dstv.medialivecdn.hu:443/dstv/5b72522f9d6849c5b94ea26bf75c9a24.sdp/playlist.m3u8",
+      "playlist_country_code": "HU",
+      "output_country_code": "HU",
+      "expected_language_codes": [
+        "hun"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Mór VTV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/HDE041.sdp/playlist.m3u8",
+      "playlist_country_code": "HU",
+      "output_country_code": "HU",
+      "expected_language_codes": [
+        "hun"
+      ],
+      "observed_language_codes": [
+        "hun"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
+      "notes": "Passed both manual playback tests.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Jászsági Térségi TV Feed 2",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay41_1/livestream001.sdp/playlist.m3u8",
+      "playlist_country_code": "HU",
+      "output_country_code": "HU",
+      "expected_language_codes": [
+        "hun"
+      ],
+      "observed_language_codes": [
+        "hun"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
+      "notes": "Passed both manual playback tests.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Antena 1",
+      "stream_url": "https://live1ag.antenaplay.ro/live_a1ro/live_a1ro.m3u8",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Antena 3 CNN",
+      "stream_url": "https://live3vox.antenaplay.ro/a3free/a3free.m3u8",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "observed_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "samsung": "works",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "ok",
+      "decision": "tv_verified",
+      "tested_on": "2026-08-15",
+      "reason": "Samsung playback works, while VLC immediately skips to the next channel.",
+      "notes": "Mixed manual result. VLC: Immediately skips to the next channel. Samsung: ok.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "România TV",
+      "stream_url": "https://livestream.romaniatv.net/clients/romaniatv/playlist.m3u8",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Prima TV",
+      "stream_url": "https://stream1.1616.ro:1945/prima/livestream/playlist.m3u8",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "PRO TV Feed",
+      "stream_url": "https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-roprotv/playlist/rum/live_fullhd.m3u8",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TRINITAS TV",
+      "stream_url": "https://ythls.onrender.com/video/9czLiKCZ21Y.m3u8",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "Sens TV",
+      "stream_url": "https://ythls-v2.onrender.com/channel/UCjNREXQY17npPPiROGeLocA.m3u8",
+      "playlist_country_code": "RO",
+      "output_country_code": "RO",
+      "expected_language_codes": [
+        "ron"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TV JOJ Feed 2",
+      "stream_url": "https://nn.geo.joj.sk/hls/joj-720.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TV JOJ Feed 3",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=JOJ",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
+      "notes": "Passed both manual playback tests.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TV JOJ Feed 4",
+      "stream_url": "https://st01-1.iptv.joj.sk/101-tv-pc.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "JOJ 24 Feed 1",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=JOJ+24",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
+      "notes": "Passed both manual playback tests.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "JOJ 24 Feed 2",
+      "stream_url": "https://st01-1.iptv.joj.sk/111-tv-pc.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TA3 Feed 2",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=TA3",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "tested_on": "2026-08-15",
+      "reason": "Working on both VLC and Samsung in the 2026-08-15 manual test.",
+      "notes": "Passed both manual playback tests.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "TV NRSR Feed 3",
+      "stream_url": "https://n15.stv.livebox.sk/stv-tv/_definst_/stv7.smil/playlist.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "vlc": "works_with_warning",
+      "samsung": "works_with_warning",
+      "vlc_note": "ok, but Vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu",
+      "samsung_note": "ok, but Vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu",
+      "decision": "needs_review",
+      "tested_on": "2026-08-15",
+      "reason": "Both tested devices open the feed but show the broadcaster inactivity/interruption message instead of confirmed live programming.",
+      "notes": "Retested on VLC and Samsung; both show: Vysielanie sa prerusilo z dovodu necinnosti, prosim nacitajte stranku znovu.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "RTV Krea Feed 2",
+      "stream_url": "https://ythls.onrender.com/video/XSP1kSSDjzQ.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
+      "provenance": "User-provided stream (manual playback review)",
+      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
     }
   ]
 }
