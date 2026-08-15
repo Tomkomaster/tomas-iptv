@@ -1,0 +1,46 @@
+name: Prune resolved wanted channels 2026-08-15
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/prune-resolved-wanted-channels-20260815.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  prune:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Build current project state
+        run: python3 -m tools.reliable_build --strict
+
+      - name: Remove resolved wanted targets
+        run: python3 tools/prune_resolved_wanted_channels_20260815.py
+
+      - name: Validate wanted catalogs
+        run: |
+          python3 -m json.tool data/wanted_channels_hu.json > /dev/null
+          python3 -m json.tool data/wanted_channels_sk.json > /dev/null
+          python3 -m json.tool data/wanted_channels_cz.json > /dev/null
+          python3 -m json.tool data/wanted_channels_ro.json > /dev/null
+          python3 -m json.tool data/wanted_channels_at.json > /dev/null
+          python3 run_tests.py
+
+      - name: Commit cleanup and remove one-off helpers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/wanted_channels_hu.json data/wanted_channels_sk.json data/wanted_channels_cz.json data/wanted_channels_ro.json
+          git rm tools/prune_resolved_wanted_channels_20260815.py
+          git rm .github/workflows/prune-resolved-wanted-channels-20260815.yml
+          git commit -m "Remove resolved channels from wanted catalogs"
+          git push origin HEAD:main
