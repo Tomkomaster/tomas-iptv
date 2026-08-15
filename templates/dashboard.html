@@ -8,8 +8,26 @@
 </head>
 <body>
 <main>
-  <h1>@@TITLE@@</h1>
+  <h1 id="overview">@@TITLE@@</h1>
   <p class="muted">Generated automatically: @@GENERATED@@</p>
+
+  <div class="dashboard-toolbar" aria-label="Dashboard navigation">
+    <nav class="dashboard-view-tabs" aria-label="Dashboard view">
+      <a href="#overview">Overview</a>
+      <a href="#attention">Needs attention</a>
+      <a href="#candidates">Candidates</a>
+      <a href="#health">Stream health</a>
+      <a href="#epg">EPG</a>
+      <a href="#logos">Logos</a>
+      <a href="#manual">Manual verification</a>
+      <a href="#identities">Identities</a>
+      <a href="#countries">Countries</a>
+      <a href="#languages">Languages</a>
+      <a href="#sources">Sources</a>
+      <a href="#changes">Changes</a>
+      <a href="#inventory">Inventory</a>
+    </nav>
+  </div>
 
   <div class="links">
     <a href="tv.m3u">Stable family playlist (tv.m3u)</a>
@@ -59,6 +77,7 @@
 
   @@AUDIT_WARNINGS@@
 
+  <section id="identities" class="dashboard-section">
   <h2>Conflicting identities</h2>
   <p class="muted">
     Identity safety is kept separate from playback status. Unresolved rows are audit
@@ -78,7 +97,9 @@
       <tbody>@@IDENTITY_ROWS@@</tbody>
     </table>
   </div>
+  </section>
 
+  <section id="epg" class="dashboard-section">
   <h2>EPG identity quality & completeness</h2>
   <p class="muted">
     EPG quality is measured per stable logical channel, not per stream URL. Exact IDs
@@ -139,7 +160,9 @@
       <tbody><tr><td colspan="6" class="muted">Loading verified EPG gaps…</td></tr></tbody>
     </table>
   </div>
+  </section>
 
+  <section id="logos" class="dashboard-section">
   <h2>Channel logo quality</h2>
   <p class="muted">
     Logos are measured per stable logical channel, not per stream URL. Canonical
@@ -181,7 +204,9 @@
     </table>
   </div>
   <p class="muted">Canonical logo coverage is the stricter quality score. Overall availability also includes source fallbacks. Missing channels are exported in <a href="missing-logos.csv">missing-logos.csv</a>.</p>
+  </section>
 
+  <section id="candidates" class="dashboard-section">
   <h2>Candidate streams to test</h2>
   <p class="muted">
     This queue is built from the generated research ledger. It shows current, non-stable
@@ -209,7 +234,9 @@
       <tbody><tr><td colspan="9" class="muted">Loading candidate streams…</td></tr></tbody>
     </table>
   </div>
+  </section>
 
+  <section id="attention" class="dashboard-section">
   <h2>Needs attention</h2>
   <p class="muted">
     One prioritized advisory queue combining automated stream failures, old manual
@@ -262,7 +289,9 @@
       </tbody>
     </table>
   </div>
+  </section>
 
+  <section id="source-reliability" class="dashboard-section">
   <h2>Source concentration reliability</h2>
   <p class="muted">
     Stable channels grouped by exact stream hostname and by provenance class.
@@ -287,7 +316,9 @@
       <tbody><tr><td colspan="8" class="muted">Loading hostname concentration…</td></tr></tbody>
     </table>
   </div>
+  </section>
 
+  <section id="health" class="dashboard-section">
   <h2>Automated stream health</h2>
   <p class="muted">
     Advisory network checks for the stable family playlist. For HLS streams the checker
@@ -344,7 +375,9 @@
       </tbody>
     </table>
   </div>
+  </section>
 
+  <section id="manual" class="dashboard-section">
   <h2>Manual verification</h2>
   <p class="muted">
     This is our persistent playback test log. “Verified” means it worked in both VLC
@@ -426,7 +459,9 @@
       <tbody>@@AUDIT_TABLE_ROWS@@</tbody>
     </table>
   </div>
+  </section>
 
+  <section id="countries" class="dashboard-section">
   <h2>Country summary</h2>
 
   <p class="muted">
@@ -441,7 +476,9 @@
       <tbody>@@COUNTRY_ROWS@@</tbody>
     </table>
   </div>
+  </section>
 
+  <section id="languages" class="dashboard-section">
   <h2>Spoken language summary</h2>
   <p class="muted">Languages use ISO-639-3-style codes such as hun, slk, ces and deu. One country may have several languages and one language may appear in several countries.</p>
   <div class="table-wrap">
@@ -450,7 +487,9 @@
       <tbody>@@LANGUAGE_ROWS@@</tbody>
     </table>
   </div>
+  </section>
   
+  <section id="sources" class="dashboard-section">
   <h2>Source contribution and yield</h2>
   <p class="muted">Yield is the percentage of raw source entries whose unique stream URLs survive source-level URL deduplication into the combined candidate inventory.</p>
   <div class="table-wrap">
@@ -475,9 +514,17 @@
     </table>
   </div>
 
+  <h3>Source concentration reliability</h3>
+  <p class="muted">The separate reliability view groups stable channels by hostname and provenance so large third-party relay dependencies are easy to spot.</p>
+  <p><a href="#source-reliability">Open source concentration reliability →</a></p>
+  </section>
+
+  <section id="changes" class="dashboard-section">
   <h2>Changes since previous build</h2>
   @@CHANGE_HTML@@
+  </section>
 
+  <section id="inventory" class="dashboard-section">
   <h2>Channel inventory</h2>
   <p class="muted">
     “Base channel” means the channel was first introduced by a source
@@ -521,6 +568,7 @@
       </tbody>
     </table>
   </div>
+  </section>
 </main>
 
 <script src="static/dashboard.js" defer></script>
