@@ -14829,6 +14829,2155 @@
       "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "User-provided stream (manual playback review)",
       "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
+    },
+    {
+      "channel": "3sat",
+      "stream_url": "https://zdf-hls-18.akamaized.net/hls/live/2016501/dach/high/master.m3u8",
+      "tvg_id": "3sat.de@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "90210",
+      "stream_url": "https://jmp2.uk/plu-65a67dd13af63d0008257f17.m3u8",
+      "tvg_id": "90210.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Alle hassen Chris",
+      "stream_url": "https://jmp2.uk/plu-622f6e1e2792150007e0b2ff.m3u8",
+      "tvg_id": "AllehassenChris.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Antenne Kaernten",
+      "stream_url": "https://60efd7a2b4d02.streamlock.net/a_kaernten/ngrp:livestream_all/playlist.m3u8",
+      "tvg_id": "AntenneKaernten.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Antenne Steiermark",
+      "stream_url": "https://60efd7a2b4d02.streamlock.net/a_steiermark/ngrp:livestream_all/playlist.m3u8",
+      "tvg_id": "AntenneSteiermark.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Antenne Vorarlberg",
+      "stream_url": "https://5857db5306b83.streamlock.net/antennevorarlberg-live/_definst_/mp4:livestream/playlist.m3u8",
+      "tvg_id": "AntenneVorarlberg.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Antenne Vorarlberg",
+      "stream_url": "https://5857db5306b83.streamlock.net/antennevorarlberg-live/mp4:livestream/playlist.m3u8",
+      "tvg_id": "AntenneVorarlberg.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "ARTE",
+      "stream_url": "https://artesimulcast.akamaized.net/hls/live/2030993/artelive_de/index.m3u8",
+      "tvg_id": "arte.de@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "arte HD",
+      "stream_url": "https://dash4.antik.sk/live/test_arte_avc_25p/playlist.m3u8",
+      "tvg_id": "arte.de@HD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "ATV HD",
+      "stream_url": "http://212.186.45.34:9981/stream/channelid/692531719?profile=pass",
+      "tvg_id": "ATV.at@HD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Auction Hunters",
+      "stream_url": "https://jmp2.uk/plu-5ede45d077746000072be0fe.m3u8",
+      "tvg_id": "AuctionHunters.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Awkward",
+      "stream_url": "https://jmp2.uk/plu-62bc1784120ba80007935aaa.m3u8",
+      "tvg_id": "Awkward.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Becker",
+      "stream_url": "https://jmp2.uk/plu-630348a54c48ce00077eb6c7.m3u8",
+      "tvg_id": "Becker.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Beverly Hills 90210",
+      "stream_url": "https://jmp2.uk/plu-60afb576053df900076fa2f0.m3u8",
+      "tvg_id": "BeverlyHills90210.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "BIG BROTHER CLASSIC",
+      "stream_url": "https://jmp2.uk/plu-663e09e4b18d700008e48dcf.m3u8",
+      "tvg_id": "BIGBROTHERCLASSIC.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "CC Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-5d4947590ba40f75dc29c26b.m3u8",
+      "tvg_id": "CCPlutoTV.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Cheers",
+      "stream_url": "https://jmp2.uk/plu-611e7f224676bf00076a4d8d.m3u8",
+      "tvg_id": "Cheers.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Comedy Central South Park",
+      "stream_url": "https://jmp2.uk/plu-60c716084d842c00085f6e64.m3u8",
+      "tvg_id": "ComedyCentralSouthPark.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "DAZN Darts x Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-64b67f0424ade50008a3be17.m3u8",
+      "tvg_id": "DAZNDartsxPlutoTV.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "DAZN Heldinnen x Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-64afe50c5dc16600087f3227.m3u8",
+      "tvg_id": "DAZNHeldinnenxPlutoTV.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Drake & Josh",
+      "stream_url": "https://jmp2.uk/plu-65a67c494a10d800085cab06.m3u8",
+      "tvg_id": "DrakeJosh.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "FIFA+ German",
+      "stream_url": "https://4397879b.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWRlX0ZJRkFQbHVzR2VybWFuX0hMUw/playlist.m3u8",
+      "tvg_id": "FIFAPlus.uk@German",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Frasier",
+      "stream_url": "https://jmp2.uk/plu-62cebf042ffc6d0007c4e59a.m3u8",
+      "tvg_id": "Frasier.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Frasier: Berühmte Gäste",
+      "stream_url": "https://jmp2.uk/plu-6790fa9e1cfc4aa96dfadcef.m3u8",
+      "tvg_id": "FrasierBeruhmteGaste.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "FS1 Salzburg",
+      "stream_url": "http://stream.fs1.tv:8080/hls/webstream.m3u8",
+      "tvg_id": "FS1Salzburg.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "FS1 Salzburg",
+      "stream_url": "https://stream.fs1.tv/hls/webstream.m3u8",
+      "tvg_id": "FS1Salzburg.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "FUEL TV",
+      "stream_url": "https://amg01074-fueltv-fueltvemeaen-rakuten-b6j62.amagi.tv/hls/amagi_hls_data_rakutenAA-fueltvemeaen/CDN/master.m3u8",
+      "tvg_id": "FUELTV.pt@EMEA",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Germany Shore",
+      "stream_url": "https://jmp2.uk/plu-6447dea7e94c380008dba94c.m3u8",
+      "tvg_id": "GermanyShore.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Hitradio O3",
+      "stream_url": "https://studiocam-oe3.mdn.ors.at/orf/studiocam_oe3/q6a/manifest.mpd",
+      "tvg_id": "HitradioO3.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Hitradio O3",
+      "stream_url": "https://studiocam-oe3.mdn.ors.at/orf/studiocam_oe3/q6a/master.m3u8",
+      "tvg_id": "HitradioO3.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Hitradio Ö3",
+      "stream_url": "https://studiocam-oe3.mdn.ors.at/out/u/studiocam_oe3/q6a/manifest_1.m3u8",
+      "tvg_id": "HitradioO3.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "iCarly",
+      "stream_url": "https://jmp2.uk/plu-5e8b580a233dc90007f0cb9d.m3u8",
+      "tvg_id": "iCarly.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "K-TV",
+      "stream_url": "https://d1pz8zear993v8.cloudfront.net/hlsme/kathtv.m3u8",
+      "tvg_id": "KTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "loads",
+      "samsung": "format_error",
+      "vlc_note": "just loads",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "K19",
+      "stream_url": "https://1853185335.rsc.cdn77.org/K192/tv/playlist.m3u8",
+      "tvg_id": "K19.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "KIT-TV",
+      "stream_url": "https://everest.pa-hosting.de:3591/live/joseflive.m3u8",
+      "tvg_id": "KITTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Kronehit",
+      "stream_url": "https://bitcdn-kronehit.bitmovin.com/v2/hls/playlist.m3u8",
+      "tvg_id": "Kronehit.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Love The Planet DE",
+      "stream_url": "https://amg01821-amg01821c12-rlaxx-gb-10461.playouts.now.amagi.tv/playlist.m3u8",
+      "tvg_id": "LoveThePlanet.es@DE",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Ländle TV",
+      "stream_url": "https://streaming13.huberwebmedia.at/LiveApp/streams/985585225397790082777809.m3u8",
+      "tvg_id": "LandleTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "McLeods Töchter",
+      "stream_url": "https://jmp2.uk/plu-66c6fcfc6838ee00085beb1a.m3u8",
+      "tvg_id": "McLeodsTochter.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Mission Impossible",
+      "stream_url": "https://jmp2.uk/plu-634fe5afece2e60007c9d8b8.m3u8",
+      "tvg_id": "MissionImpossible.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "MTV Catfish TV Show",
+      "stream_url": "https://jmp2.uk/plu-5db6a697d5f34a000934cd13.m3u8",
+      "tvg_id": "MTVCatfishTVShow.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "MTV Dating",
+      "stream_url": "https://jmp2.uk/plu-5caf330ea5068259a32320fd.m3u8",
+      "tvg_id": "MTVDating.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "MTV Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-5caf325764025859afdd6c4d.m3u8",
+      "tvg_id": "MTVPlutoTV.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "MTV Reality",
+      "stream_url": "https://jmp2.uk/plu-685136fb33a52de120bbb086.m3u8",
+      "tvg_id": "MTVReality.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "MTV Ridiculousness",
+      "stream_url": "https://jmp2.uk/plu-5f9847fd513250000728a9a5.m3u8",
+      "tvg_id": "MTVRidiculousness.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "MTV Teen Mom",
+      "stream_url": "https://jmp2.uk/plu-5cffcf5686dfe15595fb3f56.m3u8",
+      "tvg_id": "MTVTeenMom.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Nachrichten 360",
+      "stream_url": "https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg01821-lovetvfast-nachrichten360-samsungde/playlist.m3u8",
+      "tvg_id": "Nachrichten360.de@HD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "NDR Fernsehen International",
+      "stream_url": "https://ndrint.akamaized.net/hls/live/2020766/ndr_int/index.m3u8",
+      "tvg_id": "NDRFernsehenInternational.de@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Nick Jr. Club",
+      "stream_url": "https://jmp2.uk/plu-67f3eb1c443f0671bc03ece8.m3u8",
+      "tvg_id": "NickJrClub.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Nickelodeon",
+      "stream_url": "https://ma.anixa.tv/clips/stream/nickelodeon/playlist.php",
+      "tvg_id": "Nickelodeon.de@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Nickelodeon Classics",
+      "stream_url": "https://jmp2.uk/plu-67f3eb800a1beb98767ca748.m3u8",
+      "tvg_id": "NickelodeonClassics.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Nickelodeon Teen",
+      "stream_url": "https://jmp2.uk/plu-5f0d668b872e4400073acc68.m3u8",
+      "tvg_id": "NickelodeonTeen.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Nickelodeon Toons",
+      "stream_url": "https://jmp2.uk/plu-5ede448d3d50590007a4419e.m3u8",
+      "tvg_id": "NickelodeonToons.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Okto TV",
+      "stream_url": "https://cdn3.wowza.com/1/MHFtazJReW5rOFhP/N2NWNDZ2/hls/live/playlist.m3u8",
+      "tvg_id": "Okto.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "ORF 1",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/50/index.m3u8",
+      "tvg_id": "ORF1.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "ORF 1",
+      "stream_url": "http://88.212.15.19/live/test_orf_eins_tizen/playlist.m3u8",
+      "tvg_id": "ORF1.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "ORF 2",
+      "stream_url": "http://88.212.15.19/live/test_orf_zwei_tizen/playlist.m3u8",
+      "tvg_id": "ORF2.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "ORF 2",
+      "stream_url": "https://orf2-247.mdn.ors.at/orf/orf2/qxa-247/manifest.m3u8",
+      "tvg_id": "ORF2.at@HD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "ORF III HD",
+      "stream_url": "https://orf3.mdn.ors.at/orf/orf3/qxa/manifest.m3u8",
+      "tvg_id": "ORFIII.at@HD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works_with_warning",
+      "samsung": "works_with_warning",
+      "vlc_note": "ok, but it says “For legal reasons, this video may only be played in Austria.”",
+      "samsung_note": "ok, but it says “For legal reasons, this video may only be played in Austria.”",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "ORF Kids",
+      "stream_url": "https://web12.mdn.ors.at/orf/web12/qxa/manifest.mpd",
+      "tvg_id": "ORFKids.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "P3tv",
+      "stream_url": "http://p3-6.mov.at:1935/live/weekstream/master.m3u8",
+      "tvg_id": "P3tv.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Perry Mason",
+      "stream_url": "https://jmp2.uk/plu-64eddc3485efec00085b0369.m3u8",
+      "tvg_id": "PerryMason.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Action",
+      "stream_url": "https://jmp2.uk/plu-65004605110545000842035d.m3u8",
+      "tvg_id": "PlutoTVAction.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Adult Animation",
+      "stream_url": "https://jmp2.uk/plu-67f68bd2135aeda9ddf0ef54.m3u8",
+      "tvg_id": "PlutoTVAdultAnimation.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Animals",
+      "stream_url": "https://jmp2.uk/plu-5d767ae7b456c8cf265ce922.m3u8",
+      "tvg_id": "PlutoTVAnimals.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Anime",
+      "stream_url": "https://jmp2.uk/plu-608181d420fc8500075f612a.m3u8",
+      "tvg_id": "PlutoTVAnime.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Britische Serien",
+      "stream_url": "https://jmp2.uk/plu-677e5a3d7bffa6000808dbf2.m3u8",
+      "tvg_id": "PlutoTVBritischeSerien.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Bud & Terence",
+      "stream_url": "https://jmp2.uk/plu-64be7398e4391c0008cdedfe.m3u8",
+      "tvg_id": "PlutoTVBudTerence.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Comedy Therapie",
+      "stream_url": "https://jmp2.uk/plu-69b968ba255fecb01f602257.m3u8",
+      "tvg_id": "PlutoTVComedyTherapie.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Crime",
+      "stream_url": "https://jmp2.uk/plu-5e7b6c60fd20c50007910bf5.m3u8",
+      "tvg_id": "PlutoTVCrime.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Deutsche Comedy",
+      "stream_url": "https://jmp2.uk/plu-6672f49f61a39900089db68e.m3u8",
+      "tvg_id": "PlutoTVDeutscheComedy.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Explore",
+      "stream_url": "https://jmp2.uk/plu-5ad9b8551b95267e225e59c1.m3u8",
+      "tvg_id": "PlutoTVExplore.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Ferne Galaxien",
+      "stream_url": "https://jmp2.uk/plu-68ada46d5190a45dc9c45af1.m3u8",
+      "tvg_id": "PlutoTVFerneGalaxien.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Food",
+      "stream_url": "https://jmp2.uk/plu-5dc280c9aa218c0009724b4b.m3u8",
+      "tvg_id": "PlutoTVFood.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Fran: Beste Mama-Momente",
+      "stream_url": "https://jmp2.uk/plu-69b968e011fc7b9e27c0d958.m3u8",
+      "tvg_id": "PlutoTVFranBesteMamaMomente.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Haialarm",
+      "stream_url": "https://jmp2.uk/plu-69b015c5d29cc97de7da4af8.m3u8",
+      "tvg_id": "PlutoTVHaialarm.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Historische Serien",
+      "stream_url": "https://jmp2.uk/plu-68ada3395190a45dc9c445cf.m3u8",
+      "tvg_id": "PlutoTVHistorischeSerien.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV History",
+      "stream_url": "https://jmp2.uk/plu-5d767b1c126c65d0a307355f.m3u8",
+      "tvg_id": "PlutoTVHistory.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Horror",
+      "stream_url": "https://jmp2.uk/plu-62f4f4b88157cf00075c22db.m3u8",
+      "tvg_id": "PlutoTVHorror.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Horror-Serien",
+      "stream_url": "https://jmp2.uk/plu-67ff7d9c7fc25e0e72451bc9.m3u8",
+      "tvg_id": "PlutoTVHorrorSerien.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Kult Comedies",
+      "stream_url": "https://jmp2.uk/plu-66337de656fc840008ff7a65.m3u8",
+      "tvg_id": "PlutoTVKultComedies.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Kultfilme",
+      "stream_url": "https://jmp2.uk/plu-5dde47b63585b500099f74ec.m3u8",
+      "tvg_id": "PlutoTVKultfilme.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Laughs in Spanish",
+      "stream_url": "https://jmp2.uk/plu-69a554179a3f3bb488c7d2be.m3u8",
+      "tvg_id": "PlutoTVLaughsinSpanish.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Movies",
+      "stream_url": "https://jmp2.uk/plu-5c5c3b948002db3c3e0b262e.m3u8",
+      "tvg_id": "PlutoTVMovies.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Mystery",
+      "stream_url": "https://jmp2.uk/plu-617aad99b68ef100072608cd.m3u8",
+      "tvg_id": "PlutoTVMystery.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Nature",
+      "stream_url": "https://jmp2.uk/plu-5be1c3f9851dd5632e2c91b2.m3u8",
+      "tvg_id": "PlutoTVNature.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Nordic Crime",
+      "stream_url": "https://jmp2.uk/plu-67d984408d8dc3d7754dccf2.m3u8",
+      "tvg_id": "PlutoTVNordicCrime.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Paranormal",
+      "stream_url": "https://jmp2.uk/plu-5f98487036af340008da1e37.m3u8",
+      "tvg_id": "PlutoTVParanormal.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Polizeiserien",
+      "stream_url": "https://jmp2.uk/plu-64be64445dc166000899ce75.m3u8",
+      "tvg_id": "PlutoTVPolizeiserien.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Reportagen",
+      "stream_url": "https://jmp2.uk/plu-68ada3edf84960586ad31c7d.m3u8",
+      "tvg_id": "PlutoTVReportagen.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Romance",
+      "stream_url": "https://jmp2.uk/plu-5dc287ce3086a20009f5024c.m3u8",
+      "tvg_id": "PlutoTVRomance.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Sci-Fi",
+      "stream_url": "https://jmp2.uk/plu-60ed498c4248a400077c0b9d.m3u8",
+      "tvg_id": "PlutoTVSciFi.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Science",
+      "stream_url": "https://jmp2.uk/plu-5d767b4889bca2ce7b73ef2e.m3u8",
+      "tvg_id": "PlutoTVScience.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Serie",
+      "stream_url": "https://jmp2.uk/plu-5dc190f7bfed110009d934c3.m3u8",
+      "tvg_id": "PlutoTVSerie.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Sitcoms",
+      "stream_url": "https://jmp2.uk/plu-5d767ab2b456c8cf265ce921.m3u8",
+      "tvg_id": "PlutoTVSitcoms.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Snooker 900",
+      "stream_url": "https://jmp2.uk/plu-68ac5543a1ac0c90f2c8943e.m3u8",
+      "tvg_id": "PlutoTVSnooker900.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Space",
+      "stream_url": "https://jmp2.uk/plu-61409f8d6feb30000766b675.m3u8",
+      "tvg_id": "PlutoTVSpace.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Star Trek",
+      "stream_url": "https://jmp2.uk/plu-6152ee71bf99590007893a11.m3u8",
+      "tvg_id": "PlutoTVStarTrek.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Star Trek: Animation",
+      "stream_url": "https://jmp2.uk/plu-69492467ae33e24d916e56cf.m3u8",
+      "tvg_id": "PlutoTVStarTrekAnimation.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV True Crime",
+      "stream_url": "https://jmp2.uk/plu-615333098185f00008715a56.m3u8",
+      "tvg_id": "PlutoTVTrueCrime.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Weihnachten im Sommer",
+      "stream_url": "https://jmp2.uk/plu-642ad072283aa4000806148c.m3u8",
+      "tvg_id": "PlutoTVWeihnachtenimSommer.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Western",
+      "stream_url": "https://jmp2.uk/plu-630dd3b2605f140007e002f5.m3u8",
+      "tvg_id": "PlutoTVWestern.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Western Serien",
+      "stream_url": "https://jmp2.uk/plu-682453215c646751955e1204.m3u8",
+      "tvg_id": "PlutoTVWesternSerien.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Pluto TV Worst of Bundy",
+      "stream_url": "https://jmp2.uk/plu-69b968ca1c36025fd0a3d92d.m3u8",
+      "tvg_id": "PlutoTVWorstofBundy.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "R9",
+      "stream_url": "https://ms01.w24.at/R9/smil:liveeventR9.smil/playlist.m3u8",
+      "tvg_id": "R9.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Rakuten TV Action Movies Austria",
+      "stream_url": "https://0f846627524f4dd2995e93581379db82.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-at_RakutenActionMovies-1/playlist.m3u8",
+      "tvg_id": "RakutenTVActionMovies.es@Austria",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Rakuten TV Comedy Movies Austria",
+      "stream_url": "https://7ed752b220a441b7b22bdf697c6c4df8.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-at_RakutenComedyMovies-1/playlist.m3u8",
+      "tvg_id": "RakutenTVComedyMovies.es@Austria",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Rakuten TV Drama Movies Austria",
+      "stream_url": "https://df1aa472ff5b4780a8d91fe319778b4d.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-at_RakutenTVShows-1/playlist.m3u8",
+      "tvg_id": "RakutenTVDramaMovies.es@Austria",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Rakuten TV Family Movies Austria",
+      "stream_url": "https://9fa8baba055e4a52b0a8d1ae7d78bed8.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-at_RakutenFamily-1/playlist.m3u8",
+      "tvg_id": "RakutenTVFamilyMovies.es@Austria",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Red Bull TV",
+      "stream_url": "https://3ea22335.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWdiX1JlZEJ1bGxUVl9ITFM/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@EUMENA",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "notes": "Same channel name and logo as https:\\\\rbmn-live.akamaized.net\\hls\\live\\590964\\BoRB-AT\\master.m3u8, but different program",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV",
+      "stream_url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8",
+      "tvg_id": "RedBullTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "notes": "Same channel name and logo as https:\\\\3ea22335.wurl.com\\master\\f36d25e7e52f1ba8d7e56eb859c636563214f541\\UmFrdXRlblRWLWdiX1JlZEJ1bGxUVl9ITFM\\playlist.m3u8, but different program",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV",
+      "stream_url": "https://76b17ec8b2424026b8e1523836cc90e7.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-641-WORBEUENFAST-WHALETVPLUS/641/whaletvplus/hls/master/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@EUMENA",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "notes": "Exactly the same as https:\\\\3ea22335.wurl.com\\master\\f36d25e7e52f1ba8d7e56eb859c636563214f541\\UmFrdXRlblRWLWdiX1JlZEJ1bGxUVl9ITFM\\playlist.m3u8",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV",
+      "stream_url": "https://shls-live-enc.edgenextcdn.net/out/v1/ad35123d4ad041068bce26ae67ee3180/index.m3u8",
+      "tvg_id": "RedBullTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV AU",
+      "stream_url": "https://db34cc6127ac459db55cab5f97cd66b9.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-680-WORBAUENFAST-WHALETVPLUS/680/whaletvplus/hls/master/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@AU",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV BR",
+      "stream_url": "https://d03ae6b5c6724c24867e97a3dc04934a.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-1026-WORBBRPTFAST-WHALETVPLUS/1026/hls/master/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@BR",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV DE",
+      "stream_url": "https://46cfeb23c7f74853bba7a256655a3119.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-582-WORBDACHDEFAST-WHALETVPLUS/582/whaletvplus/hls/master/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@DE",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Red Bull TV ES",
+      "stream_url": "https://886bd3fbc782459f8de7555d32d7e9ce.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-957-WORBLATAMESFAST-WHALETVPLUS/957/whaletvplus/hls/master/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@ES",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV SD",
+      "stream_url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8",
+      "tvg_id": "RedBullTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "notes": "Exactly the same as https:\\\\76b17ec8b2424026b8e1523836cc90e7.mediatailor.us-west-2.amazonaws.com\\v1\\master\\ba62fe743df0fe93366eba3a257d792884136c7f\\LINEAR-641-WORBEUENFAST-WHALETVPLUS\\641\\whaletvplus\\hls\\master\\playlist.m3u8",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV UK",
+      "stream_url": "https://1a3566cb46914c5499fbc86fbc4ac87e.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-932-WORBUKENFAST-WHALETVPLUS/932/whaletvplus/hls/master/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@UK",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "Red Bull TV US",
+      "stream_url": "https://0b73ace69ebb45eaa249bb87837cb958.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-644-WORBUSENFAST-LG_US/644/lgtv/hls/master/playlist.m3u8",
+      "tvg_id": "RedBullTV.at@US",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria raw alternatives"
+    },
+    {
+      "channel": "RTV",
+      "stream_url": "http://iptv.rtv-ooe.at/stream.m3u8",
+      "tvg_id": "RTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Sabrina Total verhext!",
+      "stream_url": "https://jmp2.uk/plu-622f40c901d4b70007ad7609.m3u8",
+      "tvg_id": "SabrinaTotalverhext.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Schladming-Dachstein TV",
+      "stream_url": "https://m317.video-stream-hosting.de/gzSoftware-live/_definst_/smil:livestream.smil/playlist.m3u8",
+      "tvg_id": "SchladmingDachsteinTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "ServusTV",
+      "stream_url": "https://stv-live.akamaized.net/hls/live/2031011/lingeoSTVATwebPri/master.m3u8",
+      "tvg_id": "ServusTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Sky Sport Austria 1",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/31/index.m3u8",
+      "tvg_id": "SkySportAustria1.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "South Park: Butters Collection",
+      "stream_url": "https://jmp2.uk/plu-646b14a0e94c3800082a8d3a.m3u8",
+      "tvg_id": "SouthParkButtersCollection.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "South Park: Cartman Collection",
+      "stream_url": "https://jmp2.uk/plu-646b14747cb4b1000875724d.m3u8",
+      "tvg_id": "SouthParkCartmanCollection.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "South Park: Kenny Collection",
+      "stream_url": "https://jmp2.uk/plu-646b1404ee6a2f00082b5d66.m3u8",
+      "tvg_id": "SouthParkKennyCollection.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "South Park: Kyle Collection",
+      "stream_url": "https://jmp2.uk/plu-646b14d0e1979c0008915a09.m3u8",
+      "tvg_id": "SouthParkKyleCollection.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "South Park: Original Version",
+      "stream_url": "https://jmp2.uk/plu-646b150a15939400089e2702.m3u8",
+      "tvg_id": "SouthParkOriginalVersion.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "South Park: Stan Collection",
+      "stream_url": "https://jmp2.uk/plu-646b1438e94c3800082a8cff.m3u8",
+      "tvg_id": "SouthParkStanCollection.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "SpongeBob Schwammkopf",
+      "stream_url": "https://jmp2.uk/plu-5d00e8adaab96b5635b2a005.m3u8",
+      "tvg_id": "SpongeBobSchwammkopf.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Sportdigital FUSSBALL",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/15/index.m3u8",
+      "tvg_id": "SportdigitalFUSSBALL.de@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "format_error",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Star Trek: The Next Generation",
+      "stream_url": "https://jmp2.uk/plu-69776ce979545c21a1220bff.m3u8",
+      "tvg_id": "StarTrekTheNextGeneration.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Star Trek: The Original Series",
+      "stream_url": "https://jmp2.uk/plu-69776b58036e883f39e5ab8a.m3u8",
+      "tvg_id": "StarTrekTheOriginalSeries.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Steiermark TV",
+      "stream_url": "https://h056.video-stream-hosting.de/easycast8-live/_definst_/mp4:livestreamhd4/playlist.m3u8?ref=",
+      "tvg_id": "SteiermarkTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Super RTL HD",
+      "stream_url": "https://s6.hopslan.com/superx1/tracks-v1a1/mono.m3u8",
+      "playlist_country_code": "AT",
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15"
+    },
+    {
+      "channel": "Swamiji TV American",
+      "stream_url": "https://stream.swamiji.tv/YogaIPTV/smil:YogaStreamUS.smil/playlist.m3u8",
+      "tvg_id": "SwamijiTVAmerican.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Swamiji TV Australian",
+      "stream_url": "https://stream.swamiji.tv/YogaIPTV/smil:YogaStreamAU.smil/playlist.m3u8",
+      "tvg_id": "SwamijiTVAustralian.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Swamiji TV European",
+      "stream_url": "https://stream.swamiji.tv/YogaIPTV/smil:YogaStream.smil/playlist.m3u8",
+      "tvg_id": "SwamijiTVEuropean.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Takeshi's Castle",
+      "stream_url": "https://jmp2.uk/plu-6054a9f4bc8a5f000771504c.m3u8",
+      "tvg_id": "TakeshisCastle.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Terra Mater WILD",
+      "stream_url": "https://53ff3982.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmxheHhUVi1ldV9UZXJyYU1hdGVyV2lsZF9ITFM/playlist.m3u8",
+      "tvg_id": "TerraMaterWILD.de@German",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "The Cycling Channel",
+      "stream_url": "https://cyclingtv.playout.vju.tv/cyclingtv/main.m3u8",
+      "tvg_id": "TheCyclingChannel.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "The L Word – Wenn Frauen lieben",
+      "stream_url": "https://jmp2.uk/plu-68d2759a59fd82da3226492d.m3u8",
+      "tvg_id": "TheLWordWennFrauenlieben.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Tirol TV",
+      "stream_url": "https://streaming14.huberwebmedia.at/LiveApp/streams/livestream.m3u8",
+      "tvg_id": "TirolTV.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Totally Turtles",
+      "stream_url": "https://jmp2.uk/plu-5d6792bd6be2998ad0ccce30.m3u8",
+      "tvg_id": "TotallyTurtles.de@DACH",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "TV 1 Oberösterreich",
+      "stream_url": "https://streaming10.huberwebmedia.at/LiveApp/streams/238985177034727564068269_adaptive.m3u8",
+      "tvg_id": "TV1Oberosterreich.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Uppera Balkan",
+      "stream_url": "http://89.187.168.245:8080/live/sUPPERchannel2/index.m3u8",
+      "tvg_id": "UpperaBalkan.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "vlc_note": "Skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "W24",
+      "stream_url": "https://ms01.w24.at/W24/smil:liveevent.smil/playlist.m3u8",
+      "tvg_id": "W24.at@SD",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
+    },
+    {
+      "channel": "Zee One German",
+      "stream_url": "https://e4955b54.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1kZV9aZWVPbmVfSExT/playlist.m3u8",
+      "tvg_id": "ZeeOne.uk@German",
+      "playlist_country_code": "AT",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "vlc": "works",
+      "samsung": "works",
+      "tested_on": "2026-08-15",
+      "provenance": "IPTV-org source (manual playback review)",
+      "discovery": "IPTV-org Austria"
     }
   ]
 }
