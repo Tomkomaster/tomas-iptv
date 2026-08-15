@@ -142,6 +142,15 @@ def _load_external_country(
     return result
 
 
+def _reported_fresh_count(item: dict | None) -> int | None:
+    if not isinstance(item, dict) or "fresh_programmes" not in item:
+        return None
+    try:
+        return int(item.get("fresh_programmes") or 0)
+    except (TypeError, ValueError):
+        return None
+
+
 def apply_cross_country_aliases(
     *,
     country_code: str,
@@ -158,10 +167,11 @@ def apply_cross_country_aliases(
 ) -> dict[str, object]:
     """Apply only explicit, fresh, cross-country EPG aliases.
 
-    A target already mapped by its own country's normal deterministic matching
-    is never replaced. An alias whose foreign EPG entry has no current/future
-    programmes is intentionally left unmatched rather than inflating coverage
-    with a mapped-but-empty channel.
+    A target with current/future data from its own country's deterministic
+    mapping is never replaced. A mapped-but-empty target may fall back to an
+    explicit cross-country alias when that alias has fresh programme data.
+    An alias whose foreign EPG entry has no current/future programmes leaves
+    the existing mapping untouched.
     """
     code = str(country_code or "").strip().upper()
     playlist_ids = {
@@ -173,11 +183,12 @@ def apply_cross_country_aliases(
         for item in (country_report.get("matched") or [])
         if isinstance(item, dict)
     ]
-    matched_ids = {
-        str(item.get("tvg_id") or "").strip()
+    matched_by_id = {
+        str(item.get("tvg_id") or "").strip(): item
         for item in matched_items
         if str(item.get("tvg_id") or "").strip()
     }
+    matched_ids = set(matched_by_id)
 
     if reference_date is None:
         raw_reference = str(country_report.get("reference_date") or "").strip()
@@ -196,7 +207,14 @@ def apply_cross_country_aliases(
     skipped: list[dict[str, object]] = []
 
     for target in configured_targets:
-        if target not in playlist_ids or target in matched_ids:
+        if target not in playlist_ids:
+            continue
+
+        existing_match = matched_by_id.get(target)
+        existing_fresh = _reported_fresh_count(existing_match)
+        if existing_match is not None and (
+            existing_fresh is None or existing_fresh > 0
+        ):
             continue
 
         spec = aliases[target]
@@ -258,6 +276,24 @@ def apply_cross_country_aliases(
             })
             continue
 
+        replaced_provider = ""
+        if existing_match is not None:
+            replaced_provider = str(existing_match.get("provider") or "").strip()
+            matched_items = [
+                item
+                for item in matched_items
+                if str(item.get("tvg_id") or "").strip() != target
+            ]
+            matched_ids.discard(target)
+            matched_by_id.pop(target, None)
+
+            for channel in list(country_root.findall("channel")):
+                if str(channel.get("id") or "").strip() == target:
+                    country_root.remove(channel)
+            for programme in list(country_root.findall("programme")):
+                if str(programme.get("channel") or "").strip() == target:
+                    country_root.remove(programme)
+
         channel_copy = copy.deepcopy(source_channel)
         channel_copy.set("id", target)
         country_root.append(channel_copy)
@@ -286,17 +322,26 @@ def apply_cross_country_aliases(
         }
         matched_items.append(match_item)
         matched_ids.add(target)
-        used.append({
+        matched_by_id[target] = match_item
+
+        used_item: dict[str, object] = {
             "tvg_id": target,
             "external_country_code": source_code,
             "provider_xmltv_id": external_id,
             "fresh_programmes": fresh_programmes,
-        })
+        }
+        if replaced_provider:
+            used_item["replaced_provider"] = replaced_provider
+        used.append(used_item)
 
         providers = Counter({
             str(provider): int(count or 0)
             for provider, count in (country_report.get("providers") or {}).items()
         })
+        if replaced_provider:
+            providers[replaced_provider] -= 1
+            if providers[replaced_provider] <= 0:
+                del providers[replaced_provider]
         providers[source_provider] += 1
         country_report["providers"] = dict(sorted(providers.items()))
 
