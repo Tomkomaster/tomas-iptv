@@ -22,7 +22,7 @@ jobs:
         run: python3 -m tools.reliable_build --strict
 
       - name: Remove resolved wanted targets
-        run: python3 tools/prune_resolved_wanted_channels_20260815.py
+        run: python3 -m tools.prune_resolved_wanted_channels_20260815
 
       - name: Validate wanted catalogs
         run: |
