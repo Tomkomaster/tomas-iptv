@@ -160,13 +160,6 @@
     },
     {
       "country_code": "HU",
-      "channel": "Budapest Európa Televízió",
-      "tvg_id": "BudapestEuropaTelevizio.hu",
-      "priority": "P3",
-      "reason": "Local/regional Hungarian broadcaster; all known direct candidates failed manual VLC and Samsung playback, so a replacement source is needed."
-    },
-    {
-      "country_code": "HU",
       "channel": "Fehérvár TV",
       "tvg_id": "FehervarTV.hu",
       "priority": "P3",
@@ -211,20 +204,6 @@
       "tvg_id": "SoltvadkertiTelevizio.hu",
       "priority": "P3",
       "reason": "Local broadcaster; multiple tested candidates failed on both target devices."
-    },
-    {
-      "country_code": "HU",
-      "channel": "Gran TV",
-      "tvg_id": "GranTV.hu",
-      "priority": "P3",
-      "reason": "Local Hungarian broadcaster; multiple tested candidates failed on both target devices."
-    },
-    {
-      "country_code": "HU",
-      "channel": "Alföld TV",
-      "tvg_id": "AlfoldTV.hu",
-      "priority": "P3",
-      "reason": "Regional Hungarian broadcaster; current tested feed repeatedly failed and a replacement is needed."
     },
     {
       "country_code": "HU",
@@ -277,13 +256,6 @@
     },
     {
       "country_code": "HU",
-      "channel": "Jászsági Térségi TV",
-      "tvg_id": "JaszsagiTersegiTV.hu",
-      "priority": "P3",
-      "reason": "Regional Hungarian broadcaster; current tested feed repeatedly failed."
-    },
-    {
-      "country_code": "HU",
       "channel": "Komáromi Televízió",
       "tvg_id": "KomaromiTelevizio.hu",
       "priority": "P3",
@@ -326,13 +298,6 @@
     },
     {
       "country_code": "HU",
-      "channel": "Tatai TV",
-      "tvg_id": "TataiTV.hu",
-      "priority": "P3",
-      "reason": "Local Hungarian broadcaster; current tested feed repeatedly failed."
-    },
-    {
-      "country_code": "HU",
       "channel": "Trimedio TV",
       "tvg_id": "TrimedioTV.hu",
       "priority": "P3",
@@ -344,13 +309,6 @@
       "tvg_id": "TVSzentendre.hu",
       "priority": "P3",
       "reason": "Local Hungarian broadcaster; known source is geo-blocked/unusable from the intended playlist location."
-    },
-    {
-      "country_code": "HU",
-      "channel": "VTV Mór",
-      "tvg_id": "VTVMor.hu",
-      "priority": "P3",
-      "reason": "Local Hungarian broadcaster; no stable TV-safe feed is currently known."
     },
     {
       "country_code": "HU",
@@ -606,66 +564,9 @@
     },
     {
       "country_code": "SK",
-      "channel": "TA3",
-      "tvg_id": "TA3.sk",
-      "priority": "P1",
-      "reason": "Major national news channel."
-    },
-    {
-      "country_code": "SK",
       "channel": "TV JOJ",
       "priority": "P1",
       "reason": "Major national general-entertainment channel."
-    },
-    {
-      "country_code": "SK",
-      "channel": "Prima SK",
-      "tvg_id": "PrimaSK.sk",
-      "priority": "P1",
-      "reason": "Major mainstream general-entertainment channel for Slovakia."
-    },
-    {
-      "country_code": "CZ",
-      "channel": "ČT 1",
-      "priority": "P1",
-      "reason": "Flagship Czech public-service general channel."
-    },
-    {
-      "country_code": "CZ",
-      "channel": "ČT 2",
-      "priority": "P1",
-      "reason": "Major Czech public-service general, culture and documentary channel."
-    },
-    {
-      "country_code": "CZ",
-      "channel": "ČT24",
-      "priority": "P1",
-      "reason": "Major Czech national news channel."
-    },
-    {
-      "country_code": "CZ",
-      "channel": "ČT Sport",
-      "priority": "P1",
-      "reason": "Major Czech public-service sports channel."
-    },
-    {
-      "country_code": "CZ",
-      "channel": "Nova",
-      "tvg_id": "Nova.cz",
-      "priority": "P1",
-      "reason": "Major Czech national commercial general-entertainment channel."
-    },
-    {
-      "country_code": "CZ",
-      "channel": "Prima",
-      "priority": "P1",
-      "reason": "Major Czech national commercial general-entertainment channel."
-    },
-    {
-      "country_code": "CZ",
-      "channel": "CNN Prima News",
-      "priority": "P1",
-      "reason": "Major Czech national news channel."
     }
   ]
 }

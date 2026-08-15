@@ -307,13 +307,6 @@
     },
     {
       "country_code": "SK",
-      "channel": "TV Nové Zámky",
-      "tvg_id": "NZTV.sk",
-      "priority": "P3",
-      "reason": "Active Slovak channel; the currently known/tested candidate is not stable, so a replacement or verified working feed is still needed."
-    },
-    {
-      "country_code": "SK",
       "channel": "TV Oravia",
       "priority": "P3",
       "reason": "Active Slovak regional/local or niche television service; no stable stream is currently tracked."
