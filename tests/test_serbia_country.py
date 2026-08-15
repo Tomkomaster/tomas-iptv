@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 import build
+from tools.priority_coverage import build_priority_coverage, render_priority_coverage_html
 from wanted_channels import load_wanted_channels
 
 
@@ -65,22 +66,37 @@ class SerbiaCountryTests(unittest.TestCase):
         self.assertEqual(routed[0]["language_codes"], ["srp"])
         self.assertEqual(build.entries_for_spoken_language(routed, "srp"), routed)
 
-    def test_serbia_has_initial_wanted_channel_catalog(self):
+    def test_serbian_research_catalog_starts_empty(self):
+        path = Path("data/wanted_channels_rs.json")
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(payload["schema_version"], 1)
+        self.assertEqual(payload["channels"], [])
+
         wanted = load_wanted_channels(Path("data/wanted_channels.json"))
         serbian = [row for row in wanted if row["country_code"] == "RS"]
+        self.assertEqual(serbian, [])
 
-        self.assertEqual(len(serbian), 45)
-        self.assertTrue(
-            all(row["priority"] in {"P1", "P2", "P3", "P4"} for row in serbian)
+    def test_serbia_is_present_in_dashboard_priority_report_with_flag(self):
+        coverage = build_priority_coverage(
+            [],
+            config=self.cfg,
+            priority_policy={
+                "schema_version": 1,
+                "default_priority": "P3",
+                "entries": [],
+            },
+            wanted_channels=[],
         )
 
-        by_name = {row["channel"]: row for row in serbian}
-        self.assertEqual(by_name["RTS 1"]["priority"], "P1")
-        self.assertEqual(by_name["Pink"]["priority"], "P1")
-        self.assertEqual(by_name["N1"]["priority"], "P1")
-        self.assertEqual(by_name["Arena Sport 1"]["priority"], "P2")
-        self.assertEqual(by_name["Novosadska TV"]["priority"], "P3")
-        self.assertEqual(by_name["TV Priboj"]["priority"], "P4")
+        self.assertIn("RS", coverage["countries"])
+        serbia = coverage["countries"]["RS"]
+        self.assertEqual(serbia["name"], "Serbia")
+        self.assertEqual(serbia["priorities"]["P1"]["total"], 0)
+        self.assertEqual(serbia["priorities"]["P2"]["total"], 0)
+
+        rendered = render_priority_coverage_html({"countries": {"RS": serbia}})
+        self.assertIn("🇷🇸 Serbia", rendered)
+        self.assertNotIn("🌐 Serbia", rendered)
 
 
 if __name__ == "__main__":
