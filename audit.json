@@ -3298,15 +3298,15 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
-      "samsung_note": "Samsung was unusable. User summarized this batch as 'Not Supported File'; some entries may instead have stayed loading, so the exact Samsung error was not recorded for every row.",
+      "vlc_note": "Immediately skips to the next channel",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-10",
-      "reason": "Repeated failure.",
-      "notes": "Reject this exact URL from the shared playlist. This is a stream-level decision, not a claim that the broadcaster itself has closed.",
+      "tested_on": "2026-08-15",
+      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Hungary stream; manually tested",
       "discovery": "Current IPTV-org Hungary stream; morning retest"
     },
@@ -14424,26 +14424,6 @@
     {
       "channel": "Hír TV",
       "stream_url": "https://onlinestream.live/play.m3u?id=4740&ext=.m3u",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
-      "expected_language_codes": [
-        "hun"
-      ],
-      "vlc": "generic_error",
-      "samsung": "format_error",
-      "vlc_note": "Immediately skips to the next channel",
-      "samsung_note": "NOT_SUPPORTED_FILE",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
-      "tested_on": "2026-08-15",
-      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
-      "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
-      "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test supplied 2026-08-15"
-    },
-    {
-      "channel": "Óbuda TV",
-      "stream_url": "https://stream.streaming4u.hu:443/ObudaTV/index.m3u8",
       "playlist_country_code": "HU",
       "output_country_code": "HU",
       "expected_language_codes": [
