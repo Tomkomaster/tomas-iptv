@@ -34,17 +34,21 @@ class AustriaCountryTests(unittest.TestCase):
         self.assertNotIn("IPTV-org German language", source_names)
 
     def test_austria_has_manual_extras_bucket(self):
-        extras = {
-            extra["path"]: extra
-            for extra in self.cfg["extras"]
-        }
+        extras = {extra["path"]: extra for extra in self.cfg["extras"]}
         self.assertEqual(extras["extras/at.m3u"]["country_code"], "AT")
         self.assertEqual(extras["extras/at.m3u"]["language_codes"], ["deu"])
         self.assertTrue(Path("extras/at.m3u").is_file())
 
-    def test_austria_has_dedicated_external_epg_configuration(self):
+    def test_austria_has_expanded_country_scoped_epg_configuration(self):
         epg = self.cfg["epg"]["countries"]["AT"]
-        self.assertEqual(epg["sites"], ["epgshare01.online"])
+        self.assertEqual(
+            epg["sites"],
+            [
+                "tv.magenta.at",
+                "tvheute.at",
+                "pluto.tv/pluto.tv_de.channels.xml",
+            ],
+        )
         self.assertEqual(epg["external"]["provider"], "epgshare01.online")
         self.assertTrue(epg["external"]["url"].endswith("epg_ripper_AT1.xml.gz"))
 
