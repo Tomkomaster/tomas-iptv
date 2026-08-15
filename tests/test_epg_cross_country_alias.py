@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from datetime import date
 from pathlib import Path
 
+from epg_cross_country_alias import apply_cross_country_aliases
 from epg_multi_merge import merge_country_guides
 
 
@@ -163,6 +164,142 @@ class CrossCountryEpgAliasTests(unittest.TestCase):
                 for programme in guide.findall("programme")
             }
             self.assertEqual(titles["Local.sk@SD"], "Cross programme")
+
+    def test_cross_country_alias_recovers_mapped_but_empty_target(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            playlist = root / "sk.m3u"
+            external = root / "external"
+            external.mkdir()
+            self.write_playlist(playlist, "Local.sk@SD", "Cross Demo")
+            self.write_external(
+                external / "CZ.xml",
+                [("Cross.CZ", "Cross Demo", "20260811060000 +0200", "Cross programme")],
+            )
+
+            country_root = ET.Element("tv")
+            stale_channel = ET.SubElement(country_root, "channel", {"id": "Local.sk@SD"})
+            ET.SubElement(stale_channel, "display-name").text = "Cross Demo"
+            country_report = {
+                "playlist_tvg_ids": 1,
+                "matched": [{
+                    "tvg_id": "Local.sk@SD",
+                    "provider": "webtv.sk",
+                    "provider_xmltv_id": "",
+                    "match_type": "name",
+                    "fresh_programmes": 0,
+                }],
+                "unmatched_tvg_ids": [],
+                "providers": {"webtv.sk": 1},
+                "fresh_channels_by_provider": {},
+                "reference_date": "2026-08-11",
+            }
+
+            result = apply_cross_country_aliases(
+                country_code="SK",
+                playlist_path=playlist,
+                country_root=country_root,
+                country_report=country_report,
+                aliases={
+                    "Local.sk@SD": {
+                        "playlist_country_code": "SK",
+                        "external_country_code": "CZ",
+                        "external_id": "Cross.CZ",
+                    }
+                },
+                alias_provider="epgshare01.online",
+                countries_cfg={
+                    "CZ": {
+                        "external": {
+                            "provider": "epgshare01.online",
+                        }
+                    }
+                },
+                external_dir=external,
+                external_cache={},
+                reference_date=date(2026, 8, 11),
+                future_days=7,
+            )
+
+            self.assertEqual(len(result["used"]), 1)
+            self.assertEqual(result["used"][0]["replaced_provider"], "webtv.sk")
+            self.assertEqual(country_report["providers"], {"epgshare01.online": 1})
+            item = country_report["matched"][0]
+            self.assertEqual(item["provider"], "epgshare01.online")
+            self.assertEqual(
+                item["match_type"],
+                "external_explicit_cross_country_alias",
+            )
+            self.assertGreater(int(item["fresh_programmes"]), 0)
+
+            channels = country_root.findall("channel")
+            self.assertEqual(len(channels), 1)
+            self.assertEqual(channels[0].get("id"), "Local.sk@SD")
+            programmes = country_root.findall("programme")
+            self.assertEqual(len(programmes), 1)
+            self.assertEqual(programmes[0].get("channel"), "Local.sk@SD")
+            self.assertEqual(programmes[0].findtext("title"), "Cross programme")
+
+    def test_cross_country_alias_keeps_fresh_local_mapping(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            playlist = root / "sk.m3u"
+            external = root / "external"
+            external.mkdir()
+            self.write_playlist(playlist, "Local.sk@SD", "Cross Demo")
+            self.write_external(
+                external / "CZ.xml",
+                [("Cross.CZ", "Cross Demo", "20260811060000 +0200", "Cross programme")],
+            )
+
+            country_root = ET.Element("tv")
+            local_channel = ET.SubElement(country_root, "channel", {"id": "Local.sk@SD"})
+            ET.SubElement(local_channel, "display-name").text = "Cross Demo"
+            country_report = {
+                "playlist_tvg_ids": 1,
+                "matched": [{
+                    "tvg_id": "Local.sk@SD",
+                    "provider": "webtv.sk",
+                    "provider_xmltv_id": "",
+                    "match_type": "name",
+                    "fresh_programmes": 12,
+                }],
+                "unmatched_tvg_ids": [],
+                "providers": {"webtv.sk": 1},
+                "fresh_channels_by_provider": {"webtv.sk": 1},
+                "reference_date": "2026-08-11",
+            }
+
+            result = apply_cross_country_aliases(
+                country_code="SK",
+                playlist_path=playlist,
+                country_root=country_root,
+                country_report=country_report,
+                aliases={
+                    "Local.sk@SD": {
+                        "playlist_country_code": "SK",
+                        "external_country_code": "CZ",
+                        "external_id": "Cross.CZ",
+                    }
+                },
+                alias_provider="epgshare01.online",
+                countries_cfg={
+                    "CZ": {
+                        "external": {
+                            "provider": "epgshare01.online",
+                        }
+                    }
+                },
+                external_dir=external,
+                external_cache={},
+                reference_date=date(2026, 8, 11),
+                future_days=7,
+            )
+
+            self.assertEqual(result["used"], [])
+            self.assertEqual(country_report["providers"], {"webtv.sk": 1})
+            self.assertEqual(country_report["matched"][0]["provider"], "webtv.sk")
+            self.assertEqual(len(country_root.findall("channel")), 1)
 
     def test_cross_country_alias_without_fresh_programmes_stays_unmapped(self):
         with tempfile.TemporaryDirectory() as temp_dir:
