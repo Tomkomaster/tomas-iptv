@@ -44,3 +44,5 @@ jobs:
           git rm .github/workflows/prune-resolved-wanted-channels-20260815.yml
           git commit -m "Remove resolved channels from wanted catalogs"
           git push origin HEAD:main
+
+# third run: corrected audit CSV path
