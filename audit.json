@@ -14844,7 +14844,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "90210",
@@ -14858,7 +14861,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Alle hassen Chris",
@@ -14872,7 +14878,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Antenne Kaernten",
@@ -14886,7 +14895,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Antenne Steiermark",
@@ -14900,7 +14912,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Antenne Vorarlberg",
@@ -14916,7 +14931,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Antenne Vorarlberg",
@@ -14932,7 +14950,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ARTE",
@@ -14948,7 +14969,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "arte HD",
@@ -14962,7 +14986,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ATV HD",
@@ -14978,7 +15005,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Auction Hunters",
@@ -14992,7 +15022,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Awkward",
@@ -15006,7 +15039,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Becker",
@@ -15020,7 +15056,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Beverly Hills 90210",
@@ -15034,7 +15073,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "BIG BROTHER CLASSIC",
@@ -15048,7 +15090,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "CC Pluto TV",
@@ -15062,7 +15107,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Cheers",
@@ -15076,7 +15124,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Comedy Central South Park",
@@ -15090,7 +15141,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "DAZN Darts x Pluto TV",
@@ -15104,7 +15158,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "DAZN Heldinnen x Pluto TV",
@@ -15118,7 +15175,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Drake & Josh",
@@ -15132,7 +15192,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "FIFA+ German",
@@ -15146,7 +15209,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Frasier",
@@ -15160,7 +15226,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Frasier: Berühmte Gäste",
@@ -15174,7 +15243,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "FS1 Salzburg",
@@ -15188,7 +15260,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "FS1 Salzburg",
@@ -15202,7 +15277,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "FUEL TV",
@@ -15216,7 +15294,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Germany Shore",
@@ -15230,7 +15311,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Hitradio O3",
@@ -15244,7 +15328,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Hitradio O3",
@@ -15258,7 +15345,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Hitradio Ö3",
@@ -15272,7 +15362,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "iCarly",
@@ -15286,7 +15379,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "K-TV",
@@ -15302,7 +15398,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "K19",
@@ -15318,7 +15417,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "KIT-TV",
@@ -15332,7 +15434,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Kronehit",
@@ -15346,7 +15451,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Love The Planet DE",
@@ -15362,7 +15470,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Ländle TV",
@@ -15376,7 +15487,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "McLeods Töchter",
@@ -15390,7 +15504,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Mission Impossible",
@@ -15404,7 +15521,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "MTV Catfish TV Show",
@@ -15418,7 +15538,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "MTV Dating",
@@ -15432,7 +15555,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "MTV Pluto TV",
@@ -15446,7 +15572,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "MTV Reality",
@@ -15460,7 +15589,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "MTV Ridiculousness",
@@ -15474,7 +15606,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "MTV Teen Mom",
@@ -15488,7 +15623,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Nachrichten 360",
@@ -15504,7 +15642,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "NDR Fernsehen International",
@@ -15518,7 +15659,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Nick Jr. Club",
@@ -15532,7 +15676,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Nickelodeon",
@@ -15546,7 +15693,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Nickelodeon Classics",
@@ -15560,7 +15710,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Nickelodeon Teen",
@@ -15574,7 +15727,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Nickelodeon Toons",
@@ -15588,7 +15744,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Okto TV",
@@ -15602,7 +15761,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ORF 1",
@@ -15617,7 +15779,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ORF 1",
@@ -15633,7 +15798,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ORF 2",
@@ -15647,7 +15815,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ORF 2",
@@ -15663,7 +15834,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ORF III HD",
@@ -15679,7 +15853,10 @@
       "samsung_note": "ok, but it says “For legal reasons, this video may only be played in Austria.”",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ORF Kids",
@@ -15695,7 +15872,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "P3tv",
@@ -15711,7 +15891,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Perry Mason",
@@ -15725,7 +15908,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Action",
@@ -15739,7 +15925,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Adult Animation",
@@ -15753,7 +15942,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Animals",
@@ -15767,7 +15959,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Anime",
@@ -15781,7 +15976,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Britische Serien",
@@ -15795,7 +15993,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Bud & Terence",
@@ -15809,7 +16010,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Comedy Therapie",
@@ -15823,7 +16027,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Crime",
@@ -15837,7 +16044,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Deutsche Comedy",
@@ -15851,7 +16061,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Explore",
@@ -15865,7 +16078,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Ferne Galaxien",
@@ -15879,7 +16095,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Food",
@@ -15893,7 +16112,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Fran: Beste Mama-Momente",
@@ -15907,7 +16129,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Haialarm",
@@ -15921,7 +16146,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Historische Serien",
@@ -15935,7 +16163,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV History",
@@ -15949,7 +16180,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Horror",
@@ -15963,7 +16197,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Horror-Serien",
@@ -15977,7 +16214,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Kult Comedies",
@@ -15991,7 +16231,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Kultfilme",
@@ -16005,7 +16248,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Laughs in Spanish",
@@ -16019,7 +16265,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Movies",
@@ -16033,7 +16282,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Mystery",
@@ -16047,7 +16299,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Nature",
@@ -16061,7 +16316,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Nordic Crime",
@@ -16075,7 +16333,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Paranormal",
@@ -16089,7 +16350,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Polizeiserien",
@@ -16103,7 +16367,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Reportagen",
@@ -16117,7 +16384,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Romance",
@@ -16131,7 +16401,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Sci-Fi",
@@ -16145,7 +16418,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Science",
@@ -16159,7 +16435,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Serie",
@@ -16173,7 +16452,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Sitcoms",
@@ -16187,7 +16469,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Snooker 900",
@@ -16201,7 +16486,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Space",
@@ -16215,7 +16503,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Star Trek",
@@ -16229,7 +16520,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Star Trek: Animation",
@@ -16243,7 +16537,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV True Crime",
@@ -16257,7 +16554,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Weihnachten im Sommer",
@@ -16271,7 +16571,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Western",
@@ -16285,7 +16588,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Western Serien",
@@ -16299,7 +16605,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Pluto TV Worst of Bundy",
@@ -16313,7 +16622,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "R9",
@@ -16327,7 +16639,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Rakuten TV Action Movies Austria",
@@ -16343,7 +16658,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Rakuten TV Comedy Movies Austria",
@@ -16359,7 +16677,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Rakuten TV Drama Movies Austria",
@@ -16375,7 +16696,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Rakuten TV Family Movies Austria",
@@ -16391,7 +16715,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV",
@@ -16406,7 +16733,10 @@
       "tested_on": "2026-08-15",
       "notes": "Same channel name and logo as https:\\\\rbmn-live.akamaized.net\\hls\\live\\590964\\BoRB-AT\\master.m3u8, but different program",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV",
@@ -16421,7 +16751,10 @@
       "tested_on": "2026-08-15",
       "notes": "Same channel name and logo as https:\\\\3ea22335.wurl.com\\master\\f36d25e7e52f1ba8d7e56eb859c636563214f541\\UmFrdXRlblRWLWdiX1JlZEJ1bGxUVl9ITFM\\playlist.m3u8, but different program",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV",
@@ -16436,7 +16769,10 @@
       "tested_on": "2026-08-15",
       "notes": "Exactly the same as https:\\\\3ea22335.wurl.com\\master\\f36d25e7e52f1ba8d7e56eb859c636563214f541\\UmFrdXRlblRWLWdiX1JlZEJ1bGxUVl9ITFM\\playlist.m3u8",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV",
@@ -16452,7 +16788,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV AU",
@@ -16466,7 +16805,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV BR",
@@ -16480,7 +16822,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV DE",
@@ -16494,7 +16839,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV ES",
@@ -16508,7 +16856,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV SD",
@@ -16523,7 +16874,10 @@
       "tested_on": "2026-08-15",
       "notes": "Exactly the same as https:\\\\76b17ec8b2424026b8e1523836cc90e7.mediatailor.us-west-2.amazonaws.com\\v1\\master\\ba62fe743df0fe93366eba3a257d792884136c7f\\LINEAR-641-WORBEUENFAST-WHALETVPLUS\\641\\whaletvplus\\hls\\master\\playlist.m3u8",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV UK",
@@ -16537,7 +16891,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Red Bull TV US",
@@ -16551,7 +16908,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria raw alternatives"
+      "discovery": "IPTV-org Austria raw alternatives",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "RTV",
@@ -16565,7 +16925,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Sabrina Total verhext!",
@@ -16579,7 +16942,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Schladming-Dachstein TV",
@@ -16593,7 +16959,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "ServusTV",
@@ -16609,7 +16978,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Sky Sport Austria 1",
@@ -16624,7 +16996,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "South Park: Butters Collection",
@@ -16638,7 +17013,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "South Park: Cartman Collection",
@@ -16652,7 +17030,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "South Park: Kenny Collection",
@@ -16666,7 +17047,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "South Park: Kyle Collection",
@@ -16680,7 +17064,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "South Park: Original Version",
@@ -16694,7 +17081,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "South Park: Stan Collection",
@@ -16708,7 +17098,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "SpongeBob Schwammkopf",
@@ -16722,7 +17115,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Sportdigital FUSSBALL",
@@ -16737,7 +17133,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Star Trek: The Next Generation",
@@ -16751,7 +17150,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Star Trek: The Original Series",
@@ -16765,7 +17167,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Steiermark TV",
@@ -16779,7 +17184,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Super RTL HD",
@@ -16789,7 +17197,13 @@
       "samsung": "format_error",
       "vlc_note": "Skips to the next channel",
       "samsung_note": "NOT_SUPPORTED_FILE",
-      "tested_on": "2026-08-15"
+      "tested_on": "2026-08-15",
+      "expected_language_codes": [
+        "deu"
+      ],
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Swamiji TV American",
@@ -16803,7 +17217,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Swamiji TV Australian",
@@ -16817,7 +17234,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Swamiji TV European",
@@ -16831,7 +17251,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Takeshi's Castle",
@@ -16845,7 +17268,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Terra Mater WILD",
@@ -16859,7 +17285,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "The Cycling Channel",
@@ -16875,7 +17304,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "The L Word – Wenn Frauen lieben",
@@ -16889,7 +17321,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Tirol TV",
@@ -16903,7 +17338,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Totally Turtles",
@@ -16917,7 +17355,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "TV 1 Oberösterreich",
@@ -16933,7 +17374,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Uppera Balkan",
@@ -16949,7 +17393,10 @@
       "samsung_note": "NOT_SUPPORTED_FILE",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "W24",
@@ -16963,7 +17410,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     },
     {
       "channel": "Zee One German",
@@ -16977,7 +17427,10 @@
       "samsung": "works",
       "tested_on": "2026-08-15",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "IPTV-org Austria"
+      "discovery": "IPTV-org Austria",
+      "observed_language_codes": [
+        "deu"
+      ]
     }
   ]
 }
