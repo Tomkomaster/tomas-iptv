@@ -241,6 +241,80 @@
     },
     {
       "country_code": "AT",
+      "channel": "RTS Regional TV Salzburg",
+      "priority": "P3",
+      "reason": "Active Salzburg regional television broadcaster and R9 member; no stable verified standalone RTS feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "N1 – Mein Niederösterreich TV",
+      "priority": "P3",
+      "reason": "Active Lower Austrian regional television service and R9 member; no stable verified feed is currently published.",
+      "notes": "Also encountered as N1 and NÖN TV/NÖN-N1 in regional distribution listings."
+    },
+    {
+      "country_code": "AT",
+      "channel": "WNTV",
+      "priority": "P3",
+      "reason": "Active regional television channel serving southern Lower Austria; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "KT1",
+      "priority": "P3",
+      "reason": "Active Carinthian regional television broadcaster and R9 member; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "BTV Kärnten",
+      "priority": "P3",
+      "reason": "Active Carinthian regional television broadcaster with cable and livestream distribution; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "kanal3 Steiermark",
+      "priority": "P3",
+      "reason": "Active Styrian regional television broadcaster and R9 member; no stable verified feed is currently published.",
+      "notes": "Often styled simply as kanal3."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Ennstal TV",
+      "priority": "P3",
+      "reason": "Active Styrian regional television channel serving the Ennstal area; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "ARF Ausseer Regionalfernsehen",
+      "priority": "P3",
+      "reason": "Active regional television broadcaster for the Styrian Salzkammergut and Liezen area; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "AustroTV",
+      "priority": "P3",
+      "reason": "Active regional television service covering the Innviertel and adjacent Salzburg/Mondsee areas; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Mühlviertel.TV",
+      "priority": "P3",
+      "reason": "Active Upper Austrian regional television broadcaster for the Mühlviertel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "HT1",
+      "priority": "P3",
+      "reason": "Active Upper Austrian regional television service for the Innviertel and Hausruckviertel; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "TV MÜRZ",
+      "priority": "P3",
+      "reason": "Registered regional television service for the Mürztal area of Styria; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
       "channel": "K19",
       "tvg_id": "K19.at",
       "priority": "P4",
@@ -252,6 +326,48 @@
       "tvg_id": "KTV.at",
       "priority": "P4",
       "reason": "Active religious television channel distributed in Austria; the current tested feed loads in VLC but fails on Samsung and was rejected."
+    },
+    {
+      "country_code": "AT",
+      "channel": "SW1 – Mein Schwechat TV",
+      "priority": "P4",
+      "reason": "Active local television brand serving Schwechat in Lower Austria; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "KULT1",
+      "priority": "P4",
+      "reason": "Small active Carinthian local television service; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "RKM-Lokal-TV",
+      "priority": "P4",
+      "reason": "Small Carinthian local television service for the Mölltal area; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Munde TV",
+      "priority": "P4",
+      "reason": "Active local Tyrolean television service; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "Landeck TV",
+      "priority": "P4",
+      "reason": "Active local/regional television broadcaster for the Landeck district in Tyrol; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "RE eins – das Außerfernsehen",
+      "priority": "P4",
+      "reason": "Active local television broadcaster for the Außerfern region of Tyrol; no stable verified feed is currently published."
+    },
+    {
+      "country_code": "AT",
+      "channel": "QUFSTEIN.TV",
+      "priority": "P4",
+      "reason": "Local television service for the Kufstein area of Tyrol; no stable verified feed is currently published."
     }
   ]
 }
