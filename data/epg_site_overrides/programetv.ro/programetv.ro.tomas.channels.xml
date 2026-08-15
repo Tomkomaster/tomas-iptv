@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channels>
+  <!--
+    Local, audited mappings for Romanian channels that Programetv currently
+    schedules but whose pinned upstream iptv-org channel list is missing/stale
+    or cannot express our playlist identity unambiguously.
+
+    epg_prepare loads these rows after the pinned upstream provider files, so
+    upstream exact mappings keep priority. The site/site_id values are consumed
+    by the upstream programetv.ro scraper; xmltv_id remains our exact playlist
+    identity so matching is deterministic.
+  -->
+  <channel site="programetv.ro" lang="ro" xmltv_id="Antena3CNN.ro" site_id="antena-3-cnn">Antena 3 CNN</channel>
+  <channel site="programetv.ro" lang="ro" xmltv_id="TVSE.ro@SD" site_id="exploris-tv">Exploris</channel>
+  <channel site="programetv.ro" lang="ro" xmltv_id="TeleMoldovaPlus.ro@SD" site_id="telemoldova-plus">TeleMoldova +</channel>
+  <channel site="programetv.ro" lang="ro" xmltv_id="Telestar1.ro@SD" site_id="telestar-1">Telestar1</channel>
+</channels>

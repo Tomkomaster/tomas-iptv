@@ -24,6 +24,9 @@ NAME_QUALITY_SUFFIX_RE = re.compile(
     r"\s+(?:FHD|HD|SD|UHD|4K|\d{3,4}P)\s*$",
     re.IGNORECASE,
 )
+DEFAULT_SITE_OVERRIDE_ROOT = (
+    Path(__file__).resolve().parent.parent / "data" / "epg_site_overrides"
+)
 
 
 def quality_base_id(value: str) -> str:
@@ -98,6 +101,7 @@ def read_playlist_tvg_ids(path: Path) -> list[str]:
 def load_provider_channels(
     epg_root: Path,
     sites: list[str],
+    site_override_root: Path | None = DEFAULT_SITE_OVERRIDE_ROOT,
 ) -> tuple[
     dict[str, dict[str, str]],
     dict[str, dict[str, str]],
@@ -114,6 +118,11 @@ def load_provider_channels(
     A site selector may be either a site directory (for example ``webtv.sk``)
     or one exact ``*.channels.xml`` path beneath ``sites``. The latter keeps
     multi-market providers such as Pluto scoped to a specific market file.
+
+    Audited local channel rows under ``data/epg_site_overrides/<site>/`` are
+    loaded after the pinned upstream files. They are intended only for source
+    identities that the pinned provider list is missing or cannot represent
+    unambiguously; upstream mappings still retain first priority.
     """
     exact: dict[str, dict[str, str]] = {}
     quality_base: dict[str, dict[str, str]] = {}
@@ -135,6 +144,13 @@ def load_provider_channels(
             raise RuntimeError(
                 f"No channel file found for EPG site selector: {site}"
             )
+
+        if site_override_root is not None:
+            override_path = site_override_root / site
+            if override_path.is_file():
+                files.append(override_path)
+            elif override_path.is_dir():
+                files.extend(sorted(override_path.glob("*.channels.xml")))
 
         for file_path in files:
             root = ET.parse(file_path).getroot()
@@ -164,7 +180,7 @@ def load_provider_channels(
                 if not source_xmltv_id:
                     continue
 
-                # Earlier configured selectors keep priority for ID matches.
+                # Earlier configured selectors/files keep priority for ID matches.
                 exact.setdefault(source_xmltv_id.casefold(), item)
                 quality_base.setdefault(quality_base_id(source_xmltv_id), item)
 
@@ -186,11 +202,16 @@ def prepare_epg_channels(
     sites: list[str],
     output_path: Path,
     report_path: Path,
+    site_override_root: Path | None = DEFAULT_SITE_OVERRIDE_ROOT,
 ) -> dict:
     """Generate IPTV-org channels.xml only for IDs used by our playlist."""
     playlist_channels = read_playlist_channels(playlist_path)
     playlist_ids = [tvg_id for tvg_id, _ in playlist_channels]
-    exact, quality_base, unique_name = load_provider_channels(epg_root, sites)
+    exact, quality_base, unique_name = load_provider_channels(
+        epg_root,
+        sites,
+        site_override_root=site_override_root,
+    )
 
     channels_root = ET.Element("channels")
     matched: list[dict[str, str]] = []
