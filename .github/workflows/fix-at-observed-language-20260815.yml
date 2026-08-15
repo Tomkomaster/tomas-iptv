@@ -1,0 +1,59 @@
+name: Fix AT observed language 2026-08-15
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-at-observed-language-20260815.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Mark tested Austrian rows as German-speaking
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('audit.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          rows = data.get('channels', [])
+
+          matched = []
+          for row in rows:
+              if row.get('playlist_country_code') == 'AT' and row.get('tested_on') == '2026-08-15':
+                  row['expected_language_codes'] = ['deu']
+                  row['observed_language_codes'] = ['deu']
+                  matched.append(row.get('stream_url'))
+
+          if len(matched) != 150:
+              raise SystemExit(f'Expected 150 Austrian test rows from 2026-08-15, found {len(matched)}')
+
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(f'Updated observed language to deu on {len(matched)} Austrian manual-test rows.')
+          PY
+
+      - name: Validate
+        run: |
+          python3 -m json.tool audit.json > /dev/null
+          python3 run_tests.py
+          python3 -m tools.reliable_build --strict
+
+      - name: Commit fix and remove one-off workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git rm .github/workflows/fix-at-observed-language-20260815.yml
+          git commit -m "Confirm German language for Austrian manual tests"
+          git push origin HEAD:main
