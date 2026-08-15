@@ -1,6 +1,6 @@
 # Wanted channel catalog
 
-`wanted_channels.json` is the explicit coverage wish list for Tomas IPTV.
+The `data/wanted_channels_*.json` files are the explicit unresolved coverage wish lists for Tomas IPTV.
 
 The research pipeline previously knew only about channels that had already appeared in `audit.csv`. That meant a channel with no IPTV-org entry, no local extra and no audit history could not appear in `missing.csv` at all.
 
@@ -51,6 +51,8 @@ The resulting coverage state follows the existing research model:
 - partially compatible feed → `PARTIAL`;
 - only rejected/historical feeds → `NO WORKING FEED`;
 - no audit/source history at all → `NOT RESEARCHED` with `Find first candidate`.
+
+The country wanted files are maintained as unresolved work lists. Once a wanted target has a current stable TV-safe feed and its required manual compatibility testing is complete, remove that target from the wanted catalog. The audit history remains the record of what was found and tested, so resolved channels do not need to stay duplicated in the wanted files.
 
 A completely unseen wanted channel is synthesized into `missing.csv` with zero known/tested feeds, which makes the previously unreachable `NOT RESEARCHED` state useful.
 
