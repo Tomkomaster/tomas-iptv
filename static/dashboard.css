@@ -102,11 +102,9 @@ a { color: var(--accent); }
 }
 .dashboard-section {
   display: none;
-  scroll-margin-top: 128px;
+  scroll-margin-top: 82px;
 }
-#overview { display: block; }
 .dashboard-section:target { display: block; }
-main:has(.dashboard-section:target) #overview:not(:target) { display: none; }
 .dashboard-section > h2:first-child { margin-top: 0; }
 .table-wrap {
   max-height: min(62vh, 620px);
