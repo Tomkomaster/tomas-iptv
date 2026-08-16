@@ -471,3 +471,17 @@ https://n15.stv.livebox.sk/stv-tv/_definst_/stv7.smil/playlist.m3u8
 # Replacement for old 213.81.153.221/galanta
 #EXTINF:-1 tvg-name="RTV Krea" group-title="Regional",RTV Krea
 https://ythls.onrender.com/video/XSP1kSSDjzQ.m3u8
+
+# ============================================================
+# AUGUST 2026 REPLACEMENT HUNT
+# ============================================================
+
+# TV Severka — alternative direct feed currently listed as working by FreetuxTV.
+# Prefer testing this against the Panaccess candidate above, which currently errors.
+#EXTINF:-1 tvg-id="TVSeverka.sk" tvg-name="TV Severka" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Severka
+http://88.212.7.11/live/test_severka_web_player/playlist.m3u8
+
+# TV Pezinok — REBIT alternative to the older Media-Planet candidate above.
+# Current public REBIT channel map identifies slot 173 as TV Pezinok; test VLC + Samsung.
+#EXTINF:-1 tvg-name="TV Pezinok" tvg-country="SK" tvg-language="Slovak" group-title="General",TV Pezinok
+http://46.36.41.106:8888/rebit/173.m3u8
