@@ -312,12 +312,6 @@
     },
     {
       "country_code": "RS",
-      "channel": "TV Kanal 9",
-      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
-      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
-    },
-    {
-      "country_code": "RS",
       "channel": "TV Kikinda",
       "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
       "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
@@ -403,12 +397,6 @@
     {
       "country_code": "RS",
       "channel": "TV Studio B",
-      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
-      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
-    },
-    {
-      "country_code": "RS",
-      "channel": "TV Šabac",
       "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
       "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
     },
