@@ -541,12 +541,6 @@
       "channel": "PAX TV",
       "priority": "P4",
       "reason": "Hungarian religious television service; legacy public feed failed and the current official online service is access-controlled, so research only a stable public direct stream."
-    },
-    {
-      "country_code": "SK",
-      "channel": "TV JOJ",
-      "priority": "P1",
-      "reason": "Major national general-entertainment channel."
     }
   ]
 }
