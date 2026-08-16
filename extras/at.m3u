@@ -45,3 +45,18 @@ https://1853185335.rsc.cdn77.org/K192/tv/playlist.m3u8
 # M4TV was merged/renamed to GemeindeTV; confirm that this endpoint now carries GemeindeTV before approval.
 #EXTINF:-1 tvg-id="GemeindeTV.at" tvg-name="Gemeinde TV",Gemeinde TV
 https://5a32c05065c79.streamlock.net/live/stream/playlist.m3u8
+
+# ORF III — alternate qxb ORS HLS; currently listed as working by FreetuxTV.
+# Test against the previously unstable/review-needed ORF III candidate.
+#EXTINF:-1 tvg-id="ORFIII.at" tvg-name="ORF III",ORF III
+https://orf3.mdn.ors.at/out/u/orf3/qxb/manifest.m3u8
+
+# ORF Sport+ — alternate qxb ORS HLS; currently listed as working by FreetuxTV.
+# Compare with the q8c candidate above, especially on Samsung.
+#EXTINF:-1 tvg-id="ORFSportPlus.at" tvg-name="ORF Sport+",ORF Sport+
+https://orfs.mdn.ors.at/out/u/orfs/qxb/manifest.m3u8
+
+# ServusTV Austria — alternate/current Akamai endpoint, distinct from older rbmn-live URL.
+# Geo-restricted to Austria; test VLC + Samsung as a replacement candidate.
+#EXTINF:-1 tvg-id="ServusTV.at" tvg-name="ServusTV",ServusTV
+https://stv-live.akamaized.net/hls/live/2031011/lingeoSTVATwebPri/master.m3u8
