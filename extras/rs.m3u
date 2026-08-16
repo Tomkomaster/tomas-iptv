@@ -1,1 +1,31 @@
 #EXTM3U
+
+# Tomas IPTV - Serbian extras / test candidates.
+# TEST STATUS: not yet manually verified on VLC + Samsung.
+
+# ============================================================
+# AUGUST 2026 SERBIAN HUNT — WANTED CHANNEL CANDIDATES
+# ============================================================
+
+# RTS 1 — current Free-TV/IPTV Serbia candidate.
+# Still listed as working in the current Serbia list; test VLC + Samsung.
+#EXTINF:-1 tvg-id="RTS1.rs" tvg-name="RTS 1" tvg-country="RS" tvg-language="Serbian" group-title="General",RTS 1
+https://webtvstream.bhtelecom.ba/rts1.m3u8
+
+# RTS 2 — current Free-TV/IPTV Serbia candidate.
+# Still listed as working in the current Serbia list; test VLC + Samsung.
+#EXTINF:-1 tvg-id="RTS2.rs" tvg-name="RTS 2" tvg-country="RS" tvg-language="Serbian" group-title="General",RTS 2
+https://webtvstream.bhtelecom.ba/rts2.m3u8
+
+# Happy TV — broadcaster-domain HLS.
+# Recent independent probe identifies a 1080p H.264 HLS stream.
+#EXTINF:-1 tvg-name="Happy" tvg-country="RS" tvg-language="Serbian" group-title="General",Happy
+https://stream1.happytv.rs/Happytv/myStream/playlist.m3u8
+
+# TV Belle Amie — current Serbian-language HLS listed as working by FreetuxTV.
+#EXTINF:-1 tvg-name="TV Belle Amie" tvg-country="RS" tvg-language="Serbian" group-title="General",TV Belle Amie
+http://92.60.238.10:1935/live/belleamie/chunklist_w1811501290.m3u8
+
+# TV Duga Plus — current Serbian-language HLS listed as working by FreetuxTV.
+#EXTINF:-1 tvg-name="TV Duga Plus" tvg-country="RS" tvg-language="Serbian" group-title="General",TV Duga Plus
+http://109.92.29.10:1935/tvduga/tvduga/chunklist_w1097511114.m3u8
