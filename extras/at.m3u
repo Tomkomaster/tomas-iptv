@@ -1,1 +1,29 @@
 #EXTM3U
+
+# ============================================================
+# NEW AUSTRIAN TEST CANDIDATES — NOT YET MANUALLY TESTED
+# ============================================================
+
+# oe24.TV — current APA HLS; independently listed as working
+#EXTINF:-1 tvg-id="oe24TV.at" tvg-name="oe24.TV",oe24.TV
+https://varoe24live.sf.apa.at/oe24-live1/oe24.smil/playlist.m3u8
+
+# krone.tv — ORS non-DRM HLS; independently listed as working
+#EXTINF:-1 tvg-id="kronetv.at" tvg-name="krone.tv",krone.tv
+https://kronetv.mdn.ors.at/out/u/kronetv-nodrm.m3u8
+
+# KURIER TV — former SchauTV ORS stream; SchauTV was renamed KURIER TV
+#EXTINF:-1 tvg-id="KurierTV.at" tvg-name="KURIER TV",KURIER TV
+https://schautv.mdn.ors.at/out/u/schautv-nodrm.m3u8
+
+# DORF TV — Upper Austrian community TV; independently listed as working
+#EXTINF:-1 tvg-id="DorfTV.at" tvg-name="DORF TV",DORF TV
+https://stream.openplayout.org/hls/dorf_high/index.m3u8
+
+# TV 1 Oberösterreich — Huber Web Media replacement candidate
+#EXTINF:-1 tvg-id="TV1Oberosterreich.at" tvg-name="TV 1 Oberösterreich",TV 1 Oberösterreich
+https://streaming10.huberwebmedia.at/LiveApp/streams/238985177034727564068269_adaptive.m3u8
+
+# ORF Sport+ — direct ORS candidate; likely geo-sensitive
+#EXTINF:-1 tvg-id="ORFSportPlus.at" tvg-name="ORF Sport+",ORF Sport+
+https://orfs.mdn.ors.at/out/u/orfs/q8c/manifest.m3u8
