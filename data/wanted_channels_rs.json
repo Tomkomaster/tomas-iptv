@@ -1,4 +1,446 @@
 {
   "schema_version": 1,
-  "channels": []
+  "channels": [
+    {
+      "country_code": "RS",
+      "channel": "Arena Fight",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 1",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 1 Premium",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 10",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 2",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 2 Premium",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 3",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 3 Premium",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 4",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 4 Premium",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 5",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 5 Premium",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 6",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 7",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 8",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport 9",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport Adrenalin",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Arena Sport Tenis",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "DM Sat",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "EDU TV",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Kitchen TV",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Marsh TV",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "MIS Televizija",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Narodna TV",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Pink",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Prva",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Prva Files",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Prva Kick",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Prva Life",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Prva Max",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Prva Plus",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Prva World",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS 1",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS 2",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS 3",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS Drama",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS Kolo",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS Muzika",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS Poletarac",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS Svet",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS Trezor",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTS Zivot",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTV 1",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTV 2",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTV Bap",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "SOS Kanal Plus",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Top TV",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Belle Amie",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Duga Plus",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Kanal M",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Pirot",
+      "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
+    },
+    {
+      "country_code": "RS",
+      "channel": "B92",
+      "reason": "Listed as a private national Serbian television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Happy",
+      "reason": "Listed as a private national Serbian television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "N1",
+      "reason": "Listed as a domestic Serbian pay-TV news channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "SAT TV",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Banat",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Bor",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Enigma",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Info Kanal",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV K23",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Kanal 9",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Kikinda",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTV Kragujevac",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Kraljevo",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Kruševac",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Leskovac",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Lav plus",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Most",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Palma Plus",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Panonija",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16. Distinct from the working Pannon RTV/Pannon TV service."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Podrinje",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Raška",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Santos",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Studio MT",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "Sremska TV",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Studio B",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Šabac",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Vranje",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Vujić",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV YU Eco",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "RTV Trstenik",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    },
+    {
+      "country_code": "RS",
+      "channel": "TV Jasenica",
+      "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
+      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
+    }
+  ]
 }

@@ -66,15 +66,35 @@ class SerbiaCountryTests(unittest.TestCase):
         self.assertEqual(routed[0]["language_codes"], ["srp"])
         self.assertEqual(build.entries_for_spoken_language(routed, "srp"), routed)
 
-    def test_serbian_research_catalog_starts_empty(self):
+    def test_serbian_research_catalog_tracks_failed_and_missing_channels(self):
         path = Path("data/wanted_channels_rs.json")
         payload = json.loads(path.read_text(encoding="utf-8"))
         self.assertEqual(payload["schema_version"], 1)
-        self.assertEqual(payload["channels"], [])
+        self.assertEqual(len(payload["channels"]), 82)
+
+        names = {row["channel"] for row in payload["channels"]}
+        self.assertIn("Arena Sport 2 Premium", names)
+        self.assertIn("Pink", names)
+        self.assertIn("RTS 1", names)
+        self.assertIn("RTV Bap", names)
+        self.assertIn("TV Pirot", names)
+        self.assertIn("B92", names)
+        self.assertIn("Happy", names)
+        self.assertIn("N1", names)
+        self.assertIn("TV Studio B", names)
+        self.assertIn("TV Šabac", names)
+        self.assertIn("TV Panonija", names)
+        self.assertNotIn("AXN Adria", names)
+        self.assertNotIn("RTV Novi Pazar", names)
+        self.assertNotIn("Regionalna TV", names)
+        self.assertNotIn("TV Panon", names)
+        self.assertNotIn("Pannon RTV", names)
+        self.assertNotIn("Nova", names)
 
         wanted = load_wanted_channels(Path("data/wanted_channels.json"))
         serbian = [row for row in wanted if row["country_code"] == "RS"]
-        self.assertEqual(serbian, [])
+        self.assertEqual(len(serbian), 82)
+        self.assertEqual({row["channel"] for row in serbian}, names)
 
     def test_serbia_is_present_in_dashboard_priority_report_with_flag(self):
         coverage = build_priority_coverage(
