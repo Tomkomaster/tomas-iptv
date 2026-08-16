@@ -80,3 +80,8 @@ https://orf3.mdn.ors.at/orf/orf3/qxa/manifest.m3u8
 # The prior K-TV candidate failed on Samsung; test this backend separately.
 #EXTINF:-1 tvg-id="KTV.at" tvg-name="K-TV" tvg-country="AT" tvg-language="German" group-title="Religious",K-TV
 https://d1pz8zear993v8.cloudfront.net/hlsme/kathtv.m3u8
+
+# RTS Regional TV Salzburg — direct Streamlock HLS candidate
+# TEST STATUS: not yet manually verified on VLC + Samsung.
+#EXTINF:-1 tvg-name="RTS Regional TV Salzburg" group-title="Regional",RTS Regional TV Salzburg
+https://58b42f6c8c9bf.streamlock.net:8080/live/RTS2015/playlist.m3u8
