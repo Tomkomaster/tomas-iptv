@@ -44,3 +44,23 @@ https://5bc45691ca49f.streamlock.net/tvpirot/uzivo/playlist.m3u8
 # Still actively indexed/tested in 2026; no YouTube or resolver layer.
 #EXTINF:-1 tvg-id="EDUTV.rs" tvg-name="EDU TV" tvg-country="RS" tvg-language="Serbian" group-title="Education",EDU TV
 https://5aa64ca8b95b8.streamlock.net:4443/edutv/edutelevizija/playlist.m3u8
+
+# Pink — direct Pink Media Group HLS.
+# Independently probed recently as 720p H.264/AAC HLS; test VLC + Samsung.
+#EXTINF:-1 tvg-id="Pink.rs" tvg-name="Pink" tvg-country="RS" tvg-language="Serbian" group-title="General",Pink
+https://edge8.pink.rs/pinktv/index.m3u8
+
+# Narodna TV — direct Pink Media Group HLS.
+# Independently probed recently as 720p H.264/AAC HLS; test VLC + Samsung.
+#EXTINF:-1 tvg-id="NarodnaTV.rs" tvg-name="Narodna TV" tvg-country="RS" tvg-language="Serbian" group-title="Entertainment",Narodna TV
+https://edge8.pink.rs/narodnatv/index.m3u8
+
+# RTV BAP — Bačka Palanka regional TV; current Streamlock candidate.
+# Current channel index still exposes this direct HLS; test VLC + Samsung.
+#EXTINF:-1 tvg-id="RTVBap.rs" tvg-name="RTV BAP" tvg-country="RS" tvg-language="Serbian" group-title="Regional",RTV BAP
+https://53be5ef2d13aa.streamlock.net/rtvbap/uzivo/playlist.m3u8
+
+# SOS Kanal Plus — Serbian sports/health channel; direct Streamlock HLS.
+# Still indexed in current stream databases; test VLC + Samsung.
+#EXTINF:-1 tvg-id="SOSKanalPlus.rs" tvg-name="SOS Kanal Plus" tvg-country="RS" tvg-language="Serbian" group-title="Sports",SOS Kanal Plus
+https://53be5ef2d13aa.streamlock.net/soskanalplus/soskanalplus.stream/playlist.m3u8
