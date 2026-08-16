@@ -39,3 +39,8 @@ https://best-str.umn.cdn.united.cloud/stream?stream=sp1400&sp=n1info&channel=n1s
 # Current channel tester reports this exact TVPirot.rs feed; test VLC + Samsung.
 #EXTINF:-1 tvg-id="TVPirot.rs" tvg-name="TV Pirot" tvg-country="RS" tvg-language="Serbian" group-title="General",TV Pirot
 https://5bc45691ca49f.streamlock.net/tvpirot/uzivo/playlist.m3u8
+
+# EDU TV — direct Streamlock HLS.
+# Still actively indexed/tested in 2026; no YouTube or resolver layer.
+#EXTINF:-1 tvg-id="EDUTV.rs" tvg-name="EDU TV" tvg-country="RS" tvg-language="Serbian" group-title="Education",EDU TV
+https://5aa64ca8b95b8.streamlock.net:4443/edutv/edutelevizija/playlist.m3u8
