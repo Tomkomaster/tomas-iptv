@@ -79,3 +79,8 @@ https://viamotionhsi.netplus.ch/live/eds/dmsat/browser-HLS8/dmsat.m3u8
 # The broadcaster still operates an official live page in 2026; test VLC + Samsung.
 #EXTINF:-1 tvg-name="RTV Kragujevac" tvg-country="RS" tvg-language="Serbian" group-title="Regional",RTV Kragujevac
 https://6069699a9e3f3.streamlock.net/rtvkg/uzivo/chunklist_w1807951792.m3u8
+
+# Top TV — Serbian 24/7 music/entertainment channel.
+# Recently maintained public list still exposes this direct 1080p HLS; test VLC + Samsung.
+#EXTINF:-1 tvg-id="TopTV.rs" tvg-name="Top TV" tvg-country="RS" tvg-language="Serbian" group-title="Music",Top TV
+http://82.165.71.58:8081/TopTV/live/playlist.m3u8
