@@ -239,6 +239,7 @@
     {
       "country_code": "RS",
       "channel": "TV Belle Amie",
+      "tvg_id": "BelleAmie.rs@SD",
       "reason": "No Samsung-safe working feed is currently available from the tested Serbian candidates; find a compatible replacement feed."
     },
     {
