@@ -758,3 +758,53 @@ https://cloudfront44.lexanetwork.com:1344/relay01/HDE051.sdp/playlist.m3u8
 # Test specifically for Samsung compatibility
 #EXTINF:-1 tvg-id="HegyvidekTV.hu" tvg-name="Hegyvidék TV" group-title="Regional",Hegyvidék TV
 https://iptv02.eurocable.co.hu:15400/EC-HEGYVIDEKTV-FTA/index.m3u8
+
+# Völgyhíd TV — newer MediaLive CDN replacement
+# Externally online; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="VolgyhidTV.hu" tvg-name="Völgyhíd TV" group-title="Regional",Völgyhíd TV
+https://volgyhidtv.medialivecdn.hu/volgyhidtv/790283f9e4f5b818790551d075c335cf.sdp/playlist.m3u8
+
+# Williams TV — newer MediaLive CDN replacement
+# Externally online; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="WilliamsTV.hu" tvg-name="Williams TV" group-title="Regional",Williams TV
+https://wtv.medialivecdn.hu:443/williams/9cc445f3fe303261970006b8e5b4949f.sdp/playlist.m3u8
+
+# Óbuda TV — current Streaming4U direct HLS
+# H.264 + MP3 audio; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="ObudaTV.hu" tvg-name="Óbuda TV" group-title="Regional",Óbuda TV
+https://stream.streaming4u.hu:443/ObudaTV/index.m3u8
+
+# Soltvadkerti Televízió — newer MediaLive CDN replacement
+# Externally online; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="SoltvadkertiTelevizio.hu" tvg-name="Soltvadkerti Televízió" group-title="Regional",Soltvadkerti Televízió
+https://soltvadkert.medialivecdn.hu:443/soltvadkerttv/135f0ef3069df243438549b446f911ab.sdp/playlist.m3u8
+
+# Berente TV — current Streaming4U replacement
+# Externally online 1080p H.264/AAC; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="BerenteTV.hu" tvg-name="Berente TV" group-title="Regional",Berente TV
+https://stream.streaming4u.hu:443/BerenteTV/index.m3u8
+
+# Trimedio TV — current Streaming4U direct HLS
+# Externally online 1080p H.264/AAC; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="TrimedioTV.hu" tvg-name="Trimedio TV" group-title="Regional",Trimedio TV
+https://stream.streaming4u.hu/TriMedioTV/index.m3u8
+
+# Komlós TV — current Streaming4U direct HLS
+# Externally online 1080p H.264/AAC; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="KomlosTV.hu" tvg-name="Komlós TV" group-title="Regional",Komlós TV
+https://stream.streaming4u.hu:443/KomlosTV/index.m3u8
+
+# Daru TV — newer MediaLive CDN replacement
+# Externally online 720p H.264/AAC; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="DaruTV.hu" tvg-name="Daru TV" group-title="Regional",Daru TV
+https://darutv.medialivecdn.hu:443/darutv/7ca4e13b035b7c1ff5608c2c1e6f71e2.sdp/playlist.m3u8
+
+# DSTV — Dunaújváros
+# Newer MediaLive CDN replacement; externally online 720p H.264/AAC
+#EXTINF:-1 tvg-id="DSTV.hu" tvg-name="DSTV" group-title="Regional",DSTV
+https://dstv.medialivecdn.hu:443/dstv/5b72522f9d6849c5b94ea26bf75c9a24.sdp/playlist.m3u8
+
+# Pilis TV — newer Streaming4U replacement
+# Externally online 1080p H.264/AAC; TEST VLC + Samsung
+#EXTINF:-1 tvg-id="PilisTV.hu" tvg-name="Pilis TV" group-title="Regional",Pilis TV
+https://stream.streaming4u.hu:443/PilisTV/index.m3u8
