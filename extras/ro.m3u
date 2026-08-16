@@ -19,3 +19,8 @@ https://stream1.1616.ro:1945/prima/livestream/playlist.m3u8
 # PRO TV — CME OTT direct HLS candidate
 #EXTINF:-1 tvg-id="ProTV.ro" tvg-name="PRO TV" group-title="General",PRO TV
 https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-roprotv/playlist/rum/live_fullhd.m3u8
+
+# Inedit TV — current Romanian direct HLS candidate.
+# Independently probed in 2026 as 1280x720 H.264 HLS; test VLC + Samsung.
+#EXTINF:-1 tvg-id="IneditTV.ro" tvg-name="Inedit TV" tvg-country="RO" tvg-language="Romanian" group-title="General",Inedit TV
+http://edge8.imcr.ro:1359/live/myStream/playlist.m3u8
