@@ -65,3 +65,13 @@ https://stv-live.akamaized.net/hls/live/2031011/lingeoSTVATwebPri/master.m3u8
 # Current IPTV-org mirror still carries this direct HLS; station is not 24/7.
 #EXTINF:-1 tvg-id="P3tv.at" tvg-name="P3tv" tvg-country="AT" tvg-language="German" group-title="Regional",P3tv
 http://p3-6.mov.at:1935/live/weekstream/master.m3u8
+
+# ORF 1 — current Antik Tizen-specific HLS candidate.
+# Particularly important because the wanted entry exists due to Samsung/Tizen failure of the previous feed.
+#EXTINF:-1 tvg-id="ORF1.at" tvg-name="ORF 1" tvg-country="AT" tvg-language="German" group-title="General",ORF 1
+http://88.212.15.19/live/test_orf_eins_tizen/playlist.m3u8
+
+# ORF III — current direct ORS qxa HLS alternative.
+# Independent variant from the qxb candidate above; compare on VLC + Samsung.
+#EXTINF:-1 tvg-id="ORFIII.at" tvg-name="ORF III" tvg-country="AT" tvg-language="German" group-title="General",ORF III
+https://orf3.mdn.ors.at/orf/orf3/qxa/manifest.m3u8
