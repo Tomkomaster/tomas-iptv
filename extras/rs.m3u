@@ -84,3 +84,8 @@ https://6069699a9e3f3.streamlock.net/rtvkg/uzivo/chunklist_w1807951792.m3u8
 # Recently maintained public list still exposes this direct 1080p HLS; test VLC + Samsung.
 #EXTINF:-1 tvg-id="TopTV.rs" tvg-name="Top TV" tvg-country="RS" tvg-language="Serbian" group-title="Music",Top TV
 http://82.165.71.58:8081/TopTV/live/playlist.m3u8
+
+# Marsh TV — direct HLS currently tracked in the public Serbian stream inventory.
+# Not 24/7; test VLC + Samsung.
+#EXTINF:-1 tvg-id="TVMarsh.rs" tvg-name="Marsh TV" tvg-country="RS" tvg-language="Serbian" group-title="General",Marsh TV
+http://cdn.dovecher.tv:8081/live/marsh/playlist.m3u8
