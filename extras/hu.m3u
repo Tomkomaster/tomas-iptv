@@ -753,3 +753,8 @@ https://www.tiszatv.hu/onlinetv/tiszatv_1.m3u8
 # Medium-confidence replacement candidate; test VLC + Samsung
 #EXTINF:-1 tvg-id="XVTV.hu" tvg-name="XV TV" group-title="Regional",XV TV
 https://cloudfront44.lexanetwork.com:1344/relay01/HDE051.sdp/playlist.m3u8
+
+# Hegyvidék TV / BUDA TV — standard HLS alternative to existing fMP4 feed
+# Test specifically for Samsung compatibility
+#EXTINF:-1 tvg-id="HegyvidekTV.hu" tvg-name="Hegyvidék TV" group-title="Regional",Hegyvidék TV
+https://iptv02.eurocable.co.hu:15400/EC-HEGYVIDEKTV-FTA/index.m3u8
