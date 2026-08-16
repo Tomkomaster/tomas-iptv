@@ -29,3 +29,13 @@ http://92.60.238.10:1935/live/belleamie/chunklist_w1811501290.m3u8
 # TV Duga Plus — current Serbian-language HLS listed as working by FreetuxTV.
 #EXTINF:-1 tvg-name="TV Duga Plus" tvg-country="RS" tvg-language="Serbian" group-title="General",TV Duga Plus
 http://109.92.29.10:1935/tvduga/tvduga/chunklist_w1097511114.m3u8
+
+# N1 Serbia — current United Cloud web stream candidate.
+# Publicly documented in 2026; test whether Samsung accepts the query-based endpoint directly.
+#EXTINF:-1 tvg-id="N1.rs" tvg-name="N1" tvg-country="RS" tvg-language="Serbian" group-title="News",N1
+https://best-str.umn.cdn.united.cloud/stream?stream=sp1400&sp=n1info&channel=n1srp&u=n1info&p=n1Sh4redSecre7iNf0&player=m3u8
+
+# TV Pirot — current direct Streamlock HLS candidate.
+# Current channel tester reports this exact TVPirot.rs feed; test VLC + Samsung.
+#EXTINF:-1 tvg-id="TVPirot.rs" tvg-name="TV Pirot" tvg-country="RS" tvg-language="Serbian" group-title="General",TV Pirot
+https://5bc45691ca49f.streamlock.net/tvpirot/uzivo/playlist.m3u8
