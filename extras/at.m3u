@@ -60,3 +60,8 @@ https://orfs.mdn.ors.at/out/u/orfs/qxb/manifest.m3u8
 # Geo-restricted to Austria; test VLC + Samsung as a replacement candidate.
 #EXTINF:-1 tvg-id="ServusTV.at" tvg-name="ServusTV",ServusTV
 https://stv-live.akamaized.net/hls/live/2031011/lingeoSTVATwebPri/master.m3u8
+
+# P3tv — replacement candidate for the previously rejected feed.
+# Current IPTV-org mirror still carries this direct HLS; station is not 24/7.
+#EXTINF:-1 tvg-id="P3tv.at" tvg-name="P3tv" tvg-country="AT" tvg-language="German" group-title="Regional",P3tv
+http://p3-6.mov.at:1935/live/weekstream/master.m3u8
