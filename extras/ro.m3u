@@ -19,17 +19,3 @@ https://stream1.1616.ro:1945/prima/livestream/playlist.m3u8
 # PRO TV — CME OTT direct HLS candidate
 #EXTINF:-1 tvg-id="ProTV.ro" tvg-name="PRO TV" group-title="General",PRO TV
 https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-roprotv/playlist/rum/live_fullhd.m3u8
-
-# TRINITAS TV — official current YouTube live
-#EXTINF:-1 tvg-name="TRINITAS TV" group-title="Religious",TRINITAS TV
-https://ythls.onrender.com/video/9czLiKCZ21Y.m3u8
-
-# Sens TV — official YouTube channel resolver
-# EXPERIMENTAL
-#EXTINF:-1 tvg-name="Sens TV" group-title="General",Sens TV
-https://ythls-v2.onrender.com/channel/UCjNREXQY17npPPiROGeLocA.m3u8
-
-# Euronews România — official 24/7 YouTube live via the same channel resolver used above.
-# Official YouTube channel ID: UCbATDExtWstHnwWELZnXNZA. Test VLC + Samsung.
-#EXTINF:-1 tvg-id="EuronewsRomania.ro" tvg-name="Euronews Romania" tvg-country="RO" tvg-language="Romanian" group-title="News",Euronews Romania
-https://ythls-v2.onrender.com/channel/UCbATDExtWstHnwWELZnXNZA.m3u8
