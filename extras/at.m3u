@@ -75,3 +75,8 @@ http://88.212.15.19/live/test_orf_eins_tizen/playlist.m3u8
 # Independent variant from the qxb candidate above; compare on VLC + Samsung.
 #EXTINF:-1 tvg-id="ORFIII.at" tvg-name="ORF III" tvg-country="AT" tvg-language="German" group-title="General",ORF III
 https://orf3.mdn.ors.at/orf/orf3/qxa/manifest.m3u8
+
+# K-TV — current direct CloudFront HLS replacement candidate.
+# The prior K-TV candidate failed on Samsung; test this backend separately.
+#EXTINF:-1 tvg-id="KTV.at" tvg-name="K-TV" tvg-country="AT" tvg-language="German" group-title="Religious",K-TV
+https://d1pz8zear993v8.cloudfront.net/hlsme/kathtv.m3u8
