@@ -713,3 +713,43 @@ https://cloudfront44.lexanetwork.com:1344/relay01/HDE041.sdp/playlist.m3u8
 # Different source from current IPTV-org relay
 #EXTINF:-1 tvg-id="JaszsagiTersegiTV.hu" tvg-name="Jászsági Térségi TV" group-title="Regional",Jászsági Térségi TV
 https://cloudfront41.lexanetwork.com:1344/relay41_1/livestream001.sdp/playlist.m3u8
+
+# ============================================================
+# AUGUST 2026 WANTED-CHANNEL REPLACEMENTS — TEST VLC + SAMSUNG
+# ============================================================
+
+# Kiskőrös TV — newer MediaLive CDN replacement
+# Currently reported online as 720p H.264/AAC
+# Different backend from the previously rejected Kiskőrös candidates
+#EXTINF:-1 tvg-id="KiskorosTV.hu" tvg-name="Kiskőrös TV" group-title="Regional",Kiskőrös TV
+https://kiskorostv.medialivecdn.hu:443/kiskorostv/76eba7141912f897d4962dd55547cf67.sdp/playlist.m3u8
+
+# Rákosmente TV — direct broadcaster HLS
+# Currently reported online as 720p H.264/AAC
+#EXTINF:-1 tvg-name="Rákosmente TV" group-title="Regional",Rákosmente TV
+http://rakosmentetv.hu:8080/hls/rmtv.m3u8
+
+# Kapos TV — alternate LexaNetwork route
+# Different backend/path from the older cloudfront63 candidate
+# Currently reported online as 1080p H.264/AAC
+#EXTINF:-1 tvg-id="KaposTV.hu" tvg-name="Kapos TV" group-title="Regional",Kapos TV
+https://cloudfront44.lexanetwork.com:1344/relay01/broadcast004.sdp/playlist.m3u8
+
+# VTV Füzesabony — newer NMHH-hosted replacement
+# Currently reported online as 720p H.264/AAC
+#EXTINF:-1 tvg-name="VTV Füzesabony" group-title="Regional",VTV Füzesabony
+https://stream.nmih.hu:7962/live.m3u8
+
+# TelePaks — current direct LexaNetwork HLS
+#EXTINF:-1 tvg-name="TelePaks" group-title="Regional",TelePaks
+https://cloudfront44.lexanetwork.com:1344/relay02/livestream004.sdp/playlist.m3u8
+
+# Tisza TV — broadcaster-domain HLS
+# Currently listed as working
+#EXTINF:-1 tvg-name="Tisza TV" group-title="Regional",Tisza TV
+https://www.tiszatv.hu/onlinetv/tiszatv_1.m3u8
+
+# XV TV — alternate LexaNetwork HDE feed
+# Medium-confidence replacement candidate; test VLC + Samsung
+#EXTINF:-1 tvg-id="XVTV.hu" tvg-name="XV TV" group-title="Regional",XV TV
+https://cloudfront44.lexanetwork.com:1344/relay01/HDE051.sdp/playlist.m3u8
