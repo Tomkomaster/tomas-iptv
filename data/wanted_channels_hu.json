@@ -305,13 +305,6 @@
     },
     {
       "country_code": "HU",
-      "channel": "TV Szentendre",
-      "tvg_id": "TVSzentendre.hu",
-      "priority": "P3",
-      "reason": "Local Hungarian broadcaster; known source is geo-blocked/unusable from the intended playlist location."
-    },
-    {
-      "country_code": "HU",
       "channel": "Völgyhíd TV",
       "tvg_id": "VolgyhidTV.hu",
       "priority": "P3",
@@ -376,12 +369,6 @@
       "channel": "Főnix TV",
       "priority": "P3",
       "reason": "Hungarian local broadcaster; both known direct feed candidates failed on the target devices."
-    },
-    {
-      "country_code": "HU",
-      "channel": "Győr+ TV",
-      "priority": "P3",
-      "reason": "Regional Hungarian broadcaster; the tested feed failed on both target devices."
     },
     {
       "country_code": "HU",
@@ -510,13 +497,6 @@
       "channel": "Tolnatáj TV",
       "priority": "P3",
       "reason": "Regional Hungarian broadcaster; tokenless ConnectMedia candidate failed and the official player appears to require a token."
-    },
-    {
-      "country_code": "HU",
-      "channel": "TV Budakalász",
-      "tvg_id": "TVBudakalasz.hu",
-      "priority": "P3",
-      "reason": "Local Hungarian broadcaster; latest test failed but the source is Not 24/7, so an on-air retest or replacement is still needed."
     },
     {
       "country_code": "HU",
