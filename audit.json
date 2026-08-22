@@ -2750,17 +2750,17 @@
       "observed_language_codes": [
         "hun"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
-      "samsung_note": "Samsung was unusable. User summarized this batch as 'Not Supported File'; some entries may instead have stayed loading, so the exact Samsung error was not recorded for every row.",
+      "vlc_note": "Immediately skips",
+      "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-10",
-      "reason": "Repeated failure.",
+      "tested_on": "2026-08-22",
+      "reason": "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE.",
       "notes": "Reject this exact URL from the shared playlist. This is a stream-level decision, not a claim that the broadcaster itself has closed.",
       "provenance": "IPTV-org Hungary stream; manually tested",
-      "discovery": "Current IPTV-org Hungary stream; morning retest"
+      "discovery": "Manual VLC + Samsung test (2026-08-22)"
     },
     {
       "channel": "Bábolnai TV",
@@ -3300,15 +3300,15 @@
       ],
       "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "Immediately skips to the next channel",
+      "vlc_note": "Immediately skips",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-15",
-      "reason": "This exact feed failed on both tested devices in the 2026-08-15 manual test.",
+      "tested_on": "2026-08-22",
+      "reason": "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE.",
       "notes": "Failed both manual playback tests. VLC: Immediately skips to the next channel. Samsung: NOT_SUPPORTED_FILE.",
       "provenance": "IPTV-org Hungary stream; manually tested",
-      "discovery": "Current IPTV-org Hungary stream; morning retest"
+      "discovery": "Manual VLC + Samsung test (2026-08-22)"
     },
     {
       "channel": "Komlós TV",
@@ -5612,17 +5612,17 @@
       "expected_language_codes": [
         "hun"
       ],
-      "vlc": "mrl_error",
+      "vlc": "generic_error",
       "samsung": "format_error",
-      "vlc_note": "VLC immediately skips to the next channel.",
+      "vlc_note": "Immediately skips",
       "samsung_note": "NOT_SUPPORTED_FILE",
       "decision": "rejected",
       "exclude_from_playlist": true,
-      "tested_on": "2026-08-11",
-      "reason": "Geo-blocked/unusable from the intended location and repeatedly failed on both tested devices.",
+      "tested_on": "2026-08-22",
+      "reason": "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE.",
       "notes": "This feed is known to be geo-blocked and has now failed repeated manual tests from the intended playlist location. Exclude this exact URL from the shared playlist.",
       "provenance": "IPTV-org source (manual playback review)",
-      "discovery": "Current IPTV-org Hungary playlist/manual test"
+      "discovery": "Manual VLC + Samsung test (2026-08-22)"
     },
     {
       "channel": "Play Music TV Feed 2",
@@ -18673,22 +18673,6 @@
       "reason": "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE."
     },
     {
-      "channel": "Berente TV",
-      "stream_url": "https://stream.streaming4u.hu:443/BerenteTV/index.m3u8",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
-      "provenance": "Manual playback review",
-      "tested_on": "2026-08-22",
-      "discovery": "Manual VLC + Samsung test (2026-08-22)",
-      "vlc": "generic_error",
-      "samsung": "format_error",
-      "vlc_note": "Immediately skips",
-      "samsung_note": "NOT_SUPPORTED_FILE",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
-      "reason": "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE."
-    },
-    {
       "channel": "Kapos TV",
       "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast004.sdp/playlist.m3u8",
       "playlist_country_code": "HU",
@@ -18724,38 +18708,6 @@
     {
       "channel": "Komlós TV",
       "stream_url": "https://stream.streaming4u.hu:443/KomlosTV/index.m3u8",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
-      "provenance": "Manual playback review",
-      "tested_on": "2026-08-22",
-      "discovery": "Manual VLC + Samsung test (2026-08-22)",
-      "vlc": "generic_error",
-      "samsung": "format_error",
-      "vlc_note": "Immediately skips",
-      "samsung_note": "NOT_SUPPORTED_FILE",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
-      "reason": "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE."
-    },
-    {
-      "channel": "Óbuda TV",
-      "stream_url": "https://stream.streaming4u.hu:443/ObudaTV/index.m3u8",
-      "playlist_country_code": "HU",
-      "output_country_code": "HU",
-      "provenance": "Manual playback review",
-      "tested_on": "2026-08-22",
-      "discovery": "Manual VLC + Samsung test (2026-08-22)",
-      "vlc": "generic_error",
-      "samsung": "format_error",
-      "vlc_note": "Immediately skips",
-      "samsung_note": "NOT_SUPPORTED_FILE",
-      "decision": "rejected",
-      "exclude_from_playlist": true,
-      "reason": "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE."
-    },
-    {
-      "channel": "Pilis TV",
-      "stream_url": "https://stream.streaming4u.hu:443/PilisTV/index.m3u8",
       "playlist_country_code": "HU",
       "output_country_code": "HU",
       "provenance": "Manual playback review",
