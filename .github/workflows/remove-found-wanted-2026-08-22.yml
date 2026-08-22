@@ -1,0 +1,90 @@
+name: Temporary remove found wanted channels
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  remove-found-wanted:
+    if: github.event.pull_request.head.ref == 'cleanup/remove-found-wanted-2026-08-22'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout cleanup branch
+        uses: actions/checkout@v7
+        with:
+          ref: cleanup/remove-found-wanted-2026-08-22
+
+      - name: Remove found wanted targets
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          targets = {
+              'data/wanted_channels_at.json': {('AT', 'TV 1 Oberösterreich')},
+              'data/wanted_channels_hu.json': {
+                  ('HU', 'Kapos TV'),
+                  ('HU', 'Fishing and Hunting'),
+              },
+              'data/wanted_channels_rs.json': {('RS', 'N1')},
+          }
+
+          removed = []
+          for filename, wanted in targets.items():
+              path = Path(filename)
+              data = json.loads(path.read_text(encoding='utf-8'))
+              channels = data.get('channels')
+              if not isinstance(channels, list):
+                  raise SystemExit(f'{filename}: missing channels list')
+
+              kept = []
+              seen = set()
+              for row in channels:
+                  key = (str(row.get('country_code') or '').upper(), str(row.get('channel') or ''))
+                  if key in wanted:
+                      if key in seen:
+                          raise SystemExit(f'{filename}: duplicate wanted target {key}')
+                      seen.add(key)
+                      removed.append((filename, key))
+                  else:
+                      kept.append(row)
+
+              missing = wanted - seen
+              if missing:
+                  raise SystemExit(f'{filename}: expected target(s) not found: {sorted(missing)}')
+
+              data['channels'] = kept
+              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          if len(removed) != 4:
+              raise SystemExit(f'Expected exactly 4 removals, got {len(removed)}: {removed}')
+
+          print('Removed exactly four found wanted targets:')
+          for filename, key in removed:
+              print(f'- {filename}: {key[0]} {key[1]}')
+          PY
+
+      - name: Validate project
+        shell: bash
+        run: |
+          python3 run_tests.py
+          python3 -m tools.research_exports --public-dir public --priority-policy data/research_priority.json --wanted-channels data/wanted_channels.json
+          git diff --check
+
+      - name: Commit cleanup to branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/wanted_channels_at.json data/wanted_channels_hu.json data/wanted_channels_rs.json
+          if git diff --cached --quiet; then
+            echo "No wanted-channel changes to commit."
+            exit 0
+          fi
+          git commit -m "Remove found channels from wanted catalogs"
+          git push origin HEAD:cleanup/remove-found-wanted-2026-08-22
