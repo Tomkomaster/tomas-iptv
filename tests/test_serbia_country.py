@@ -70,7 +70,7 @@ class SerbiaCountryTests(unittest.TestCase):
         path = Path("data/wanted_channels_rs.json")
         payload = json.loads(path.read_text(encoding="utf-8"))
         self.assertEqual(payload["schema_version"], 1)
-        self.assertEqual(len(payload["channels"]), 80)
+        self.assertEqual(len(payload["channels"]), 79)
 
         names = {row["channel"] for row in payload["channels"]}
         self.assertIn("Arena Sport 2 Premium", names)
@@ -80,7 +80,7 @@ class SerbiaCountryTests(unittest.TestCase):
         self.assertIn("TV Pirot", names)
         self.assertIn("B92", names)
         self.assertIn("Happy", names)
-        self.assertIn("N1", names)
+        self.assertNotIn("N1", names)
         self.assertIn("TV Studio B", names)
         self.assertIn("TV Panonija", names)
         self.assertNotIn("TV Kanal 9", names)
@@ -94,7 +94,7 @@ class SerbiaCountryTests(unittest.TestCase):
 
         wanted = load_wanted_channels(Path("data/wanted_channels.json"))
         serbian = [row for row in wanted if row["country_code"] == "RS"]
-        self.assertEqual(len(serbian), 80)
+        self.assertEqual(len(serbian), 79)
         self.assertEqual({row["channel"] for row in serbian}, names)
 
     def test_serbia_is_present_in_dashboard_priority_report_with_flag(self):
