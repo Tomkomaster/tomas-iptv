@@ -274,12 +274,6 @@
     },
     {
       "country_code": "RS",
-      "channel": "N1",
-      "reason": "Listed as a domestic Serbian pay-TV news channel; no Samsung-safe verified feed is currently tracked.",
-      "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."
-    },
-    {
-      "country_code": "RS",
       "channel": "SAT TV",
       "reason": "Listed as a Serbian regional television channel; no Samsung-safe verified feed is currently tracked.",
       "notes": "Coverage source: Wikipedia — Television in Serbia, checked 2026-08-16."

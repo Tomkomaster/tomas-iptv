@@ -213,13 +213,6 @@
     },
     {
       "country_code": "AT",
-      "channel": "TV 1 Oberösterreich",
-      "tvg_id": "TV1Oberosterreich.at",
-      "priority": "P3",
-      "reason": "Active Upper Austrian regional television channel; the current tested feed was rejected after failing both target devices."
-    },
-    {
-      "country_code": "AT",
       "channel": "Gemeinde TV",
       "tvg_id": "GemeindeTV.at",
       "priority": "P3",
