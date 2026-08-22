@@ -1,19 +1,18 @@
 name: Temporary manual audit runner
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_run:
+    workflows:
+      - Validate pull requests
+    types:
+      - completed
 
 permissions:
   contents: write
 
 jobs:
   patch-audit:
-    if: (github.event_name == 'push' && github.actor != 'github-actions[bot]') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'audit/manual-playback-2026-08-22')
+    if: github.event.workflow_run.id == 31934390045
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,5 +54,3 @@ jobs:
           fi
           git commit -m "Record manual VLC and Samsung playback tests"
           git push origin HEAD:audit/manual-playback-2026-08-22
-
-# Second push trigger after workflow already exists on main.
