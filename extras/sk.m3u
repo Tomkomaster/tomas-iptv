@@ -577,4 +577,16 @@ https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20%C5%A0port
 # Different host/path from the failed REBIT and tvh.cyn candidates.
 #EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [Antik alternate]
 http://88.212.7.10/live/test_nova_int_25p/playlist.m3u8
+# ============================================================
+# HUNT BATCH 4 — 2026-08-22 — FRESH UNTESTED CANDIDATES
+# ============================================================
+# JOJ Šport — alternate Antik-origin HEVC candidate on 88.212.15.50
+# Fresh exact URL from a separate CZ/SK playlist source; manual PC + Samsung test required.
+#EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport [TEST] [88.212.15.50 HEVC]
+http://88.212.15.50/live/test_joj_sport_hd_hevc/playlist.m3u8
+
+# Nova International — alternate Antik-origin 25p candidate on 88.212.15.50
+# Different exact host from previously rejected Nova International candidates.
+#EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [88.212.15.50]
+http://88.212.15.50/live/test_nova_int_25p/playlist.m3u8
 
