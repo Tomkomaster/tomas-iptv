@@ -1,0 +1,73 @@
+name: Temporary add hunt batch 5
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: record-joj-sport-nova-success-2026-08-22
+          fetch-depth: 0
+
+      - name: Append fresh candidates
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          candidates = [
+              (
+                  'http://88.212.15.50/live/test_joj_cinema_25p/playlist.m3u8',
+                  '# JOJ Cinema — alternate 88.212.15.50 candidate\n# Same host family that produced the verified JOJ Sport/Nova International feeds; exact URL is untested.\n#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema",JOJ Cinema [TEST] [88.212.15.50]\nhttp://88.212.15.50/live/test_joj_cinema_25p/playlist.m3u8\n'
+              ),
+              (
+                  'http://88.212.15.50/live/test_filmbox/playlist.m3u8',
+                  '# FILMBOX+ One — alternate 88.212.15.50 candidate\n# Source labels this as FilmBox+ One / Filmbox; verify current channel identity during playback.\n#EXTINF:-1 tvg-name="FILMBOX+ One",FILMBOX+ One [TEST] [88.212.15.50]\nhttp://88.212.15.50/live/test_filmbox/playlist.m3u8\n'
+              ),
+              (
+                  'http://185.188.188.237:5000/live/novasport3/playlist.m3u8',
+                  '# Nova Sport 3 SK — January 2026 community candidate\n# Exact endpoint published as Nova Sport 3; manual PC + Samsung test required.\n#EXTINF:-1 tvg-name="Nova Sport 3 SK",Nova Sport 3 SK [TEST] [185.188.188.237]\nhttp://185.188.188.237:5000/live/novasport3/playlist.m3u8\n'
+              ),
+              (
+                  'http://185.188.188.237:5000/live/novasport4/playlist.m3u8',
+                  '# Nova Sport 4 SK — January 2026 community candidate\n# Exact endpoint published as Nova Sport 4; manual PC + Samsung test required.\n#EXTINF:-1 tvg-name="Nova Sport 4 SK",Nova Sport 4 SK [TEST] [185.188.188.237]\nhttp://185.188.188.237:5000/live/novasport4/playlist.m3u8\n'
+              ),
+              (
+                  'http://185.188.188.237:5000/live/novasport5/playlist.m3u8',
+                  '# Nova Sport 5 SK — January 2026 community candidate\n# Exact endpoint published as Nova Sport 5; manual PC + Samsung test required.\n#EXTINF:-1 tvg-name="Nova Sport 5 SK",Nova Sport 5 SK [TEST] [185.188.188.237]\nhttp://185.188.188.237:5000/live/novasport5/playlist.m3u8\n'
+              ),
+          ]
+
+          audit = Path('audit.json').read_text(encoding='utf-8')
+          path = Path('extras/sk.m3u')
+          text = path.read_text(encoding='utf-8')
+          blocks = []
+          for url, block in candidates:
+              if url in audit:
+                  raise SystemExit(f'Candidate already present in audit.json: {url}')
+              if url in text:
+                  raise SystemExit(f'Candidate already present in extras/sk.m3u: {url}')
+              blocks.append(block)
+
+          if len(blocks) != 5:
+              raise SystemExit(f'Expected 5 fresh candidates, got {len(blocks)}')
+
+          marker = '\n# ============================================================\n# HUNT BATCH 5 — 2026-08-22 — FRESH UNTESTED CANDIDATES\n# ============================================================\n'
+          text = text.rstrip() + marker + '\n'.join(blocks) + '\n'
+          path.write_text(text, encoding='utf-8')
+          print('Added 5 fresh SK hunt candidates')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add extras/sk.m3u
+          git commit -m "Add next Slovak channel hunt candidates"
+          git push origin HEAD:record-joj-sport-nova-success-2026-08-22
