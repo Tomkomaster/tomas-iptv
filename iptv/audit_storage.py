@@ -175,13 +175,14 @@ def compact_manual_audit_item(item: dict) -> dict:
         out.pop("language", None)
         out.pop("language_code", None)
 
-    # Missing values are the compact representation of these defaults.
+    # Missing values are the compact representation of automatic decisions.
     decision = str(out.get("decision") or "auto").strip()
     if decision.casefold().replace(" ", "_") == "auto":
         out.pop("decision", None)
 
-    if out.get("exclude_from_playlist") is False:
-        out.pop("exclude_from_playlist", None)
+    # Keep an explicitly recorded exclusion boolean, including False. Manual
+    # playback audits use this to distinguish an intentionally retained feed
+    # from a row that has never had an exclusion decision recorded.
 
     for field in ("vlc", "samsung"):
         status = normalize_test_status(str(out.get(field) or ""))
