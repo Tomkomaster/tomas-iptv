@@ -22,17 +22,185 @@ jobs:
       - name: Apply guarded manual audit patch
         shell: bash
         run: |
-          python3 - <<'RUNNER'
-          import textwrap
+          python3 - <<'PY'
+          import json
+          import re
           from pathlib import Path
 
-          source = Path('.github/workflows/manual-audit-patch-2026-08-22.yml').read_text(encoding='utf-8')
-          marker = "          python - <<'PY'\n"
-          if marker not in source:
-              raise SystemExit('Could not locate embedded audit patch.')
-          script = source.split(marker, 1)[1].split("\n          PY", 1)[0]
-          exec(compile(textwrap.dedent(script), '<manual-audit-patch>', 'exec'))
-          RUNNER
+          TESTED_ON = "2026-08-22"
+
+          rows = [
+              ("AT", "DORF TV", "https://stream.openplayout.org/hls/dorf_high/index.m3u8", "fail", ""),
+              ("AT", "Gemeinde TV", "https://5a32c05065c79.streamlock.net/live/stream/playlist.m3u8", "fail", ""),
+              ("AT", "K19", "https://cdn2.k19.at/K19/tv_1080/chunks.m3u8", "fail", ""),
+              ("AT", "K19", "https://1853185335.rsc.cdn77.org/K192/tv/playlist.m3u8", "fail", ""),
+              ("AT", "krone.tv", "https://kronetv.mdn.ors.at/out/u/kronetv-nodrm.m3u8", "fail", ""),
+              ("AT", "K-TV", "https://d1pz8zear993v8.cloudfront.net/hlsme/kathtv.m3u8", "fail", ""),
+              ("AT", "KURIER TV", "https://schautv.mdn.ors.at/out/u/schautv-nodrm.m3u8", "fail", ""),
+              ("AT", "oe24.TV", "https://varoe24live.sf.apa.at/oe24-live1/oe24.smil/playlist.m3u8", "fail", ""),
+              ("AT", "ORF 1", "http://88.212.15.19/live/test_orf_eins_tizen/playlist.m3u8", "fail", ""),
+              ("AT", "ORF III", "https://orf3.mdn.ors.at/out/u/orf3/qxb/manifest.m3u8", "fail", ""),
+              ("AT", "ORF III", "https://orf3.mdn.ors.at/orf/orf3/qxa/manifest.m3u8", "fail", ""),
+              ("AT", "ORF Sport+", "https://orfs.mdn.ors.at/out/u/orfs/q8c/manifest.m3u8", "fail", ""),
+              ("AT", "ORF Sport+", "https://orfs.mdn.ors.at/out/u/orfs/qxb/manifest.m3u8", "fail", ""),
+              ("AT", "P3tv", "http://p3-6.mov.at:1935/live/weekstream/master.m3u8", "fail", ""),
+              ("AT", "RTS Regional TV Salzburg", "https://58b42f6c8c9bf.streamlock.net:8080/live/RTS2015/playlist.m3u8", "fail", ""),
+              ("AT", "ServusTV", "https://stv-live.akamaized.net/hls/live/2031011/lingeoSTVATwebPri/master.m3u8", "fail", ""),
+              ("AT", "TV 1 Oberösterreich", "https://streaming10.huberwebmedia.at/LiveApp/streams/238985177034727564068269_adaptive.m3u8", "works", ""),
+              ("HU", "Berente TV", "https://stream.streaming4u.hu:443/BerenteTV/index.m3u8", "fail", ""),
+              ("HU", "Daru TV", "https://darutv.medialivecdn.hu:443/darutv/7ca4e13b035b7c1ff5608c2c1e6f71e2.sdp/playlist.m3u8", "fail", ""),
+              ("HU", "DSTV", "https://dstv.medialivecdn.hu:443/dstv/5b72522f9d6849c5b94ea26bf75c9a24.sdp/playlist.m3u8", "fail", ""),
+              ("HU", "Hegyvidék TV", "https://iptv02.eurocable.co.hu:15400/EC-HEGYVIDEKTV-FTA/index.m3u8", "fail", ""),
+              ("HU", "Kapos TV", "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast004.sdp/playlist.m3u8", "works", "Same channel name as the other Kapos TV URL, but they carry different programming and are distinct feeds; keep them separate."),
+              ("HU", "Kapos TV", "https://cloudfront63.lexanetwork.com:1344/relay01/livestream004.sdp/playlist.m3u8", "pc_only_fail", "Same channel name as the other Kapos TV URL, but they carry different programming and are distinct feeds; keep them separate."),
+              ("HU", "Kiskőrös TV", "https://kiskorostv.medialivecdn.hu:443/kiskorostv/76eba7141912f897d4962dd55547cf67.sdp/playlist.m3u8", "fail", ""),
+              ("HU", "Komlós TV", "https://stream.streaming4u.hu/KomlosTV/tracks-v1a1/mono.m3u8", "fail", ""),
+              ("HU", "Komlós TV", "https://stream.streaming4u.hu:443/KomlosTV/index.m3u8", "fail", ""),
+              ("HU", "Óbuda TV", "https://stream.streaming4u.hu:443/ObudaTV/index.m3u8", "fail", ""),
+              ("HU", "Pilis TV", "https://stream.streaming4u.hu:443/PilisTV/index.m3u8", "fail", ""),
+              ("HU", "Rákosmente TV", "http://rakosmentetv.hu:8080/hls/rmtv.m3u8", "fail", ""),
+              ("HU", "Soltvadkerti Televízió", "https://soltvadkert.medialivecdn.hu:443/soltvadkerttv/135f0ef3069df243438549b446f911ab.sdp/playlist.m3u8", "fail", ""),
+              ("HU", "TelePaks", "https://cloudfront44.lexanetwork.com:1344/relay02/livestream004.sdp/playlist.m3u8", "fail", ""),
+              ("HU", "The Fishing and Hunting Channel HD", "http://88.212.15.19/live/fishing_hun/index.m3u8", "works", ""),
+              ("HU", "Tisza TV", "https://www.tiszatv.hu/onlinetv/tiszatv_1.m3u8", "fail", ""),
+              ("HU", "Trimedio TV", "https://stream.streaming4u.hu/TriMedioTV/index.m3u8", "fail", ""),
+              ("HU", "Völgyhíd TV", "https://volgyhidtv.medialivecdn.hu/volgyhidtv/790283f9e4f5b818790551d075c335cf.sdp/playlist.m3u8", "fail", ""),
+              ("HU", "VTV Füzesabony", "https://stream.nmih.hu:7962/live.m3u8", "fail", ""),
+              ("HU", "Williams TV", "https://wtv.medialivecdn.hu:443/williams/9cc445f3fe303261970006b8e5b4949f.sdp/playlist.m3u8", "fail", ""),
+              ("HU", "XV TV", "https://cloudfront44.lexanetwork.com:1344/relay01/HDE051.sdp/playlist.m3u8", "fail", ""),
+              ("RO", "Inedit TV", "http://edge8.imcr.ro:1359/live/myStream/playlist.m3u8", "fail", ""),
+              ("RS", "DM Sat", "https://viamotionhsi.netplus.ch/live/eds/dmsat/browser-HLS8/dmsat.m3u8", "fail", ""),
+              ("RS", "EDU TV", "https://5aa64ca8b95b8.streamlock.net:4443/edutv/edutelevizija/playlist.m3u8", "fail", ""),
+              ("RS", "Happy", "https://stream1.happytv.rs/Happytv/myStream/playlist.m3u8", "fail", ""),
+              ("RS", "Marsh TV", "http://cdn.dovecher.tv:8081/live/marsh/playlist.m3u8", "fail", ""),
+              ("RS", "N1", "https://best-str.umn.cdn.united.cloud/stream?stream=sp1400&sp=n1info&channel=n1srp&u=n1info&p=n1Sh4redSecre7iNf0&player=m3u8", "works", ""),
+              ("RS", "Narodna TV", "https://edge8.pink.rs/narodnatv/index.m3u8", "fail", ""),
+              ("RS", "Pink", "https://edge8.pink.rs/pinktv/index.m3u8", "fail", ""),
+              ("RS", "RTS 1", "https://webtvstream.bhtelecom.ba/rts1.m3u8", "fail", ""),
+              ("RS", "RTS 2", "https://webtvstream.bhtelecom.ba/rts2.m3u8", "fail", ""),
+              ("RS", "RTS Svet", "https://viamotionhsi.netplus.ch/live/eds/rtssat/browser-HLS8/rtssat.m3u8", "fail", ""),
+              ("RS", "RTV BAP", "https://53be5ef2d13aa.streamlock.net/rtvbap/uzivo/playlist.m3u8", "pc_only_fail", ""),
+              ("RS", "RTV Kragujevac", "https://6069699a9e3f3.streamlock.net/rtvkg/uzivo/chunklist_w1807951792.m3u8", "black_samsung_fail", ""),
+              ("RS", "SOS Kanal Plus", "https://53be5ef2d13aa.streamlock.net/soskanalplus/soskanalplus.stream/playlist.m3u8", "pc_only_fail", ""),
+              ("RS", "Top TV", "http://82.165.71.58:8081/TopTV/live/playlist.m3u8", "fail", ""),
+              ("RS", "TV Belle Amie", "http://92.60.238.10:1935/live/belleamie/chunklist_w1811501290.m3u8", "fail", ""),
+              ("RS", "TV Duga Plus", "http://109.92.29.10:1935/tvduga/tvduga/chunklist_w1097511114.m3u8", "fail", ""),
+              ("RS", "TV Pirot", "https://5bc45691ca49f.streamlock.net/tvpirot/uzivo/playlist.m3u8", "fail", ""),
+              ("SK", "JOJ Cinema", "https://live.cdn.joj.sk/live/andromeda/cinema-1080.m3u8", "fail", ""),
+              ("SK", "TV Pezinok", "http://46.36.41.106:8888/rebit/173.m3u8", "fail", ""),
+              ("SK", "TV Severka", "http://88.212.7.11/live/test_severka_web_player/playlist.m3u8", "fail", ""),
+          ]
+
+          def norm_url(value):
+              value = str(value or "").strip().replace("\\", "/")
+              value = re.sub(r"^(https?):/+", r"\1://", value, flags=re.I)
+              return value.rstrip("/")
+
+          if len(rows) != 59 or len({norm_url(row[2]) for row in rows}) != 59:
+              raise SystemExit("Expected exactly 59 unique supplied stream URLs.")
+
+          path = Path("audit.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          channels = data.get("channels")
+          if not isinstance(channels, list):
+              raise SystemExit("audit.json does not contain a channels list.")
+
+          added = 0
+          touched = 0
+
+          for country, channel, raw_url, kind, special in rows:
+              url = norm_url(raw_url)
+              matches = [
+                  item for item in channels
+                  if norm_url(item.get("stream_url")) == url
+                  and str(item.get("playlist_country_code") or item.get("output_country_code") or "").upper() == country
+              ]
+              if not matches:
+                  matches = [item for item in channels if norm_url(item.get("stream_url")) == url]
+
+              if not matches:
+                  item = {
+                      "channel": channel,
+                      "stream_url": url,
+                      "playlist_country_code": country,
+                      "output_country_code": country,
+                      "provenance": "Manual playback review",
+                  }
+                  channels.append(item)
+                  matches = [item]
+                  added += 1
+
+              for item in matches:
+                  touched += 1
+                  item["tested_on"] = TESTED_ON
+                  item["discovery"] = "Manual VLC + Samsung test (2026-08-22)"
+
+                  if kind == "works":
+                      item["vlc"] = "works"
+                      item["samsung"] = "works"
+                      item["vlc_note"] = "ok"
+                      item["samsung_note"] = "ok"
+                      item["decision"] = "verified"
+                      item["exclude_from_playlist"] = False
+                      item["reason"] = "Passed both manual playback tests."
+                  elif kind == "fail":
+                      item["vlc"] = "generic_error"
+                      item["samsung"] = "format_error"
+                      item["vlc_note"] = "Immediately skips"
+                      item["samsung_note"] = "NOT_SUPPORTED_FILE"
+                      item["decision"] = "rejected"
+                      item["exclude_from_playlist"] = True
+                      item["reason"] = "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE."
+                  elif kind == "pc_only_fail":
+                      item["vlc"] = "works"
+                      item["samsung"] = "format_error"
+                      item["vlc_note"] = "ok"
+                      item["samsung_note"] = "NOT_SUPPORTED_FILE"
+                      item["decision"] = "rejected"
+                      item["exclude_from_playlist"] = True
+                      item["reason"] = "Manual test 2026-08-22: VLC works; Samsung reports NOT_SUPPORTED_FILE."
+                  elif kind == "black_samsung_fail":
+                      item["vlc"] = "works_with_warning"
+                      item["samsung"] = "format_error"
+                      item["vlc_note"] = "ok, but it is just black; maybe it is not 24/7"
+                      item["samsung_note"] = "NOT_SUPPORTED_FILE"
+                      item["decision"] = "rejected"
+                      item["exclude_from_playlist"] = True
+                      item["reason"] = "Samsung reports NOT_SUPPORTED_FILE; VLC opens but showed only black video during the manual test, possibly because the channel was off-air/not 24/7."
+                  else:
+                      raise SystemExit(f"Unknown test kind: {kind}")
+
+                  if special:
+                      old_notes = str(item.get("notes") or "").strip()
+                      if special not in old_notes:
+                          item["notes"] = (old_notes + " " + special).strip()
+
+          expected_false = {
+              norm_url("https://streaming10.huberwebmedia.at/LiveApp/streams/238985177034727564068269_adaptive.m3u8"),
+              norm_url("https://cloudfront44.lexanetwork.com:1344/relay01/broadcast004.sdp/playlist.m3u8"),
+              norm_url("http://88.212.15.19/live/fishing_hun/index.m3u8"),
+              norm_url("https://best-str.umn.cdn.united.cloud/stream?stream=sp1400&sp=n1info&channel=n1srp&u=n1info&p=n1Sh4redSecre7iNf0&player=m3u8"),
+          }
+
+          for country, channel, raw_url, kind, special in rows:
+              url = norm_url(raw_url)
+              matches = [item for item in channels if norm_url(item.get("stream_url")) == url]
+              if not matches:
+                  raise SystemExit(f"Missing supplied audit URL after patch: {country} {channel} :: {url}")
+              expected = url not in expected_false
+              for item in matches:
+                  if item.get("exclude_from_playlist") is not expected:
+                      raise SystemExit(f"Wrong explicit exclude_from_playlist for {channel}: {url}")
+                  if item.get("tested_on") != TESTED_ON:
+                      raise SystemExit(f"Wrong tested_on for {channel}: {url}")
+
+          if len(expected_false) != 4:
+              raise SystemExit("Expected four retained Samsung-working streams.")
+
+          data["channels"] = channels
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(f"Manual audit patch OK: 59 URLs, {added} newly added rows, {touched} rows updated, 55 excluded, 4 retained.")
+          PY
 
       - name: Validate patched audit
         shell: bash
