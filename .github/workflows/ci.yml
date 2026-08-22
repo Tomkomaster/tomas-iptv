@@ -6,9 +6,150 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
+  repair-manual-audit:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'audit/manual-playback-2026-08-22'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout manual audit branch
+        uses: actions/checkout@v7
+        with:
+          ref: audit/manual-playback-2026-08-22
+
+      - name: Merge canonical duplicate audit rows
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from iptv.channel_identity import canonical_stream_url
+
+          path = Path('audit.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          channels = data.get('channels')
+          if not isinstance(channels, list):
+              raise SystemExit('audit.json does not contain a channels list.')
+
+          targets = [
+              ('Berente TV', 'https://stream.streaming4u.hu:443/BerenteTV/index.m3u8'),
+              ('Óbuda TV', 'https://stream.streaming4u.hu:443/ObudaTV/index.m3u8'),
+              ('Pilis TV', 'https://stream.streaming4u.hu:443/PilisTV/index.m3u8'),
+          ]
+
+          def richness(item):
+              return (
+                  bool(item.get('tvg_id')),
+                  bool(item.get('expected_language_codes')),
+                  bool(item.get('observed_language_codes')),
+                  str(item.get('provenance') or '') != 'Manual playback review',
+              )
+
+          removed_ids = set()
+          repaired = []
+          for channel_name, target_url in targets:
+              canonical = canonical_stream_url(target_url)
+              matches = [
+                  (index, item)
+                  for index, item in enumerate(channels)
+                  if canonical_stream_url(str(item.get('stream_url') or '')) == canonical
+              ]
+              if not matches:
+                  raise SystemExit(f'No audit row found for {channel_name}: {target_url}')
+
+              survivor_index, survivor = max(
+                  matches,
+                  key=lambda pair: (richness(pair[1]), -pair[0]),
+              )
+              for index, item in matches:
+                  if item is not survivor:
+                      removed_ids.add(id(item))
+
+              survivor['tested_on'] = '2026-08-22'
+              survivor['discovery'] = 'Manual VLC + Samsung test (2026-08-22)'
+              survivor['vlc'] = 'generic_error'
+              survivor['samsung'] = 'format_error'
+              survivor['vlc_note'] = 'Immediately skips'
+              survivor['samsung_note'] = 'NOT_SUPPORTED_FILE'
+              survivor['decision'] = 'rejected'
+              survivor['exclude_from_playlist'] = True
+              survivor['reason'] = (
+                  'Manual test 2026-08-22: VLC immediately skips; '
+                  'Samsung reports NOT_SUPPORTED_FILE.'
+              )
+              repaired.append((channel_name, len(matches), survivor_index + 1))
+
+          channels[:] = [item for item in channels if id(item) not in removed_ids]
+
+          for channel_name, target_url in targets:
+              canonical = canonical_stream_url(target_url)
+              matches = [
+                  item for item in channels
+                  if canonical_stream_url(str(item.get('stream_url') or '')) == canonical
+              ]
+              if len(matches) != 1:
+                  raise SystemExit(
+                      f'Expected one canonical audit row for {channel_name}; found {len(matches)}.'
+                  )
+              item = matches[0]
+              if item.get('exclude_from_playlist') is not True:
+                  raise SystemExit(f'Exclusion flag not preserved for {channel_name}.')
+              if item.get('tested_on') != '2026-08-22':
+                  raise SystemExit(f'Test date not preserved for {channel_name}.')
+
+          data['channels'] = channels
+          path.write_text(
+              json.dumps(data, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(f'Removed {len(removed_ids)} canonical duplicate rows.')
+          for name, count, survivor in repaired:
+              print(f'{name}: merged {count} canonical rows into audit row {survivor}.')
+          PY
+
+      - name: Validate repaired audit
+        shell: bash
+        run: |
+          python3 -m json.tool audit.json >/dev/null
+          python3 run_tests.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from iptv.channel_identity import canonical_stream_url
+
+          rows = json.loads(Path('audit.json').read_text(encoding='utf-8'))['channels']
+          seen = {}
+          duplicates = []
+          for index, row in enumerate(rows, start=1):
+              raw = str(row.get('stream_url') or '').strip()
+              if not raw:
+                  continue
+              key = canonical_stream_url(raw)
+              if key in seen:
+                  duplicates.append((seen[key], index, raw))
+              else:
+                  seen[key] = index
+          if duplicates:
+              raise SystemExit(f'Canonical audit duplicates remain: {duplicates[:10]}')
+          print('No canonical duplicate stream URLs remain in audit.json.')
+          PY
+          git diff --check
+
+      - name: Commit repaired audit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          if git diff --cached --quiet; then
+            echo "No repair changes to commit."
+            exit 0
+          fi
+          git commit -m "Merge canonical duplicate manual audit rows"
+          git push origin HEAD:audit/manual-playback-2026-08-22
+
   validate:
     runs-on: ubuntu-latest
 
