@@ -1,0 +1,96 @@
+name: Temporary wanted-audit reconciliation trigger
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: reconcile-wanted-audit-2026-08-22
+          fetch-depth: 0
+
+      - name: Reconcile verified wanted channels
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, re, unicodedata
+          from pathlib import Path
+
+          countries = ["at", "hu", "sk", "cz", "ro", "rs"]
+          country_set = {c.upper() for c in countries}
+          audit = json.loads(Path("audit.json").read_text(encoding="utf-8"))["channels"]
+
+          def norm(s):
+              s = unicodedata.normalize("NFKC", s or "").casefold()
+              s = s.replace("&", " and ")
+              s = re.sub(r"\b(feed|stream)\s*\d+\b", " ", s)
+              s = re.sub(r"\b(hd|sd|uhd|4k|1080p|720p|576p|432p)\b", " ", s)
+              s = re.sub(r"[^a-z0-9\u00c0-\u024f]+", " ", s)
+              return " ".join(s.split())
+
+          verified = []
+          for row in audit:
+              if row.get("vlc") != "works" or row.get("samsung") != "works":
+                  continue
+              if row.get("exclude_from_playlist") is True:
+                  continue
+              cc = (row.get("output_country_code") or row.get("playlist_country_code") or "").upper()
+              if cc in country_set:
+                  verified.append(row)
+
+          removals, review, changed = [], [], []
+          for cc in countries:
+              path = Path(f"data/wanted_channels_{cc}.json")
+              data = json.loads(path.read_text(encoding="utf-8"))
+              key = "channels" if "channels" in data else "entries"
+              rows = data[key]
+              kept = []
+              for w in rows:
+                  wcc = (w.get("country_code") or w.get("country") or cc).upper()
+                  wc = w.get("channel") or ""
+                  wt = w.get("tvg_id") or ""
+                  matches = []
+                  for a in verified:
+                      acc = (a.get("output_country_code") or a.get("playlist_country_code") or "").upper()
+                      if acc != wcc:
+                          continue
+                      ac = a.get("channel") or ""
+                      at = a.get("tvg_id") or ""
+                      if wt and at and wt == at:
+                          matches.append(("exact_tvg_id", a))
+                      elif wc and ac and norm(wc) == norm(ac):
+                          matches.append(("normalized_channel", a))
+                  exact_tvg = [m for m in matches if m[0] == "exact_tvg_id"]
+                  selected = exact_tvg or [m for m in matches if m[0] == "normalized_channel"]
+                  if selected:
+                      if not exact_tvg and len({m[1].get("stream_url") for m in selected}) > 1:
+                          review.append({"country": wcc, "wanted": wc, "tvg_id": wt, "reason": "multiple_verified_same_name", "matches": [m[1].get("channel") for m in selected]})
+                          kept.append(w)
+                          continue
+                      why, a = selected[0]
+                      removals.append({"country": wcc, "wanted": wc or wt, "wanted_tvg_id": wt, "match_reason": why, "audit_channel": a.get("channel"), "audit_tvg_id": a.get("tvg_id"), "stream_url": a.get("stream_url"), "tested_on": a.get("tested_on")})
+                  else:
+                      kept.append(w)
+              if len(kept) != len(rows):
+                  data[key] = kept
+                  path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                  changed.append({"path": str(path), "before": len(rows), "after": len(kept)})
+
+          print("RECONCILE_RESULT=" + json.dumps({"removals": removals, "review": review, "changed": changed}, ensure_ascii=False))
+          PY
+
+          if ! git diff --quiet -- data/wanted_channels_*.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/wanted_channels_*.json
+            git commit -m "Reconcile wanted catalogs with verified audit"
+            git push origin HEAD:reconcile-wanted-audit-2026-08-22
+          fi
