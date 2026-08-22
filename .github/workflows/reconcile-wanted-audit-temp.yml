@@ -1,0 +1,137 @@
+name: Temporary wanted-vs-audit reconciliation
+
+on:
+  push:
+    branches:
+      - reconcile-wanted-audit-2026-08-22
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: reconcile-wanted-audit-2026-08-22
+          fetch-depth: 0
+
+      - name: Scan and reconcile verified wanted channels
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, re, unicodedata
+          from pathlib import Path
+
+          countries = ["at", "hu", "sk", "cz", "ro", "rs"]
+          audit = json.loads(Path("audit.json").read_text(encoding="utf-8"))["channels"]
+
+          def norm(s):
+              s = unicodedata.normalize("NFKC", s or "").casefold()
+              s = s.replace("&", " and ")
+              s = re.sub(r"\b(feed|stream)\s*\d+\b", " ", s)
+              s = re.sub(r"\b(hd|sd|uhd|4k|1080p|720p|576p|432p)\b", " ", s)
+              s = re.sub(r"[^a-z0-9\u00c0-\u024f]+", " ", s)
+              return " ".join(s.split())
+
+          verified = []
+          for row in audit:
+              if row.get("vlc") != "works" or row.get("samsung") != "works":
+                  continue
+              if row.get("exclude_from_playlist") is True:
+                  continue
+              cc = (row.get("output_country_code") or row.get("playlist_country_code") or "").upper()
+              if cc not in {c.upper() for c in countries}:
+                  continue
+              verified.append(row)
+
+          removals = []
+          review = []
+          changed = []
+
+          for cc in countries:
+              path = Path(f"data/wanted_channels_{cc}.json")
+              data = json.loads(path.read_text(encoding="utf-8"))
+              rows = data.get("channels", data.get("entries", []))
+              kept = []
+              for w in rows:
+                  wcc = (w.get("country_code") or w.get("country") or cc).upper()
+                  if wcc != cc.upper():
+                      kept.append(w)
+                      continue
+                  wc = w.get("channel") or ""
+                  wt = w.get("tvg_id") or ""
+                  matches = []
+                  for a in verified:
+                      acc = (a.get("output_country_code") or a.get("playlist_country_code") or "").upper()
+                      if acc != wcc:
+                          continue
+                      ac = a.get("channel") or ""
+                      at = a.get("tvg_id") or ""
+                      reason = None
+                      if wt and at and wt == at:
+                          reason = "exact_tvg_id"
+                      elif wc and ac and norm(wc) == norm(ac):
+                          reason = "normalized_channel"
+                      if reason:
+                          matches.append((reason, a))
+
+                  # Conservative rule: automatically remove only when an exact tvg-id or
+                  # normalized name identifies a verified VLC+Samsung row. Ambiguous
+                  # multiple-content same-name cases are left for review unless tvg-id agrees.
+                  exact_tvg = [m for m in matches if m[0] == "exact_tvg_id"]
+                  norm_matches = [m for m in matches if m[0] == "normalized_channel"]
+                  chosen = exact_tvg or norm_matches
+                  if chosen:
+                      # If only name matching is available and multiple verified exact URLs use
+                      # the same normalized name, keep as review rather than assume equivalence.
+                      if not exact_tvg and len({m[1].get("stream_url") for m in chosen}) > 1:
+                          review.append({"country": wcc, "wanted": wc, "tvg_id": wt, "reason": "multiple_verified_same_name", "matches": [m[1].get("channel") for m in chosen]})
+                          kept.append(w)
+                          continue
+                      why, a = chosen[0]
+                      removals.append({
+                          "country": wcc,
+                          "wanted": wc or wt,
+                          "wanted_tvg_id": wt,
+                          "match_reason": why,
+                          "audit_channel": a.get("channel"),
+                          "audit_tvg_id": a.get("tvg_id"),
+                          "stream_url": a.get("stream_url"),
+                          "tested_on": a.get("tested_on"),
+                      })
+                  else:
+                      kept.append(w)
+
+              if len(kept) != len(rows):
+                  if "channels" in data:
+                      data["channels"] = kept
+                  else:
+                      data["entries"] = kept
+                  path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                  changed.append((str(path), len(rows), len(kept)))
+
+          print("=== VERIFIED WANTED REMOVALS ===")
+          print(json.dumps(removals, ensure_ascii=False, indent=2))
+          print("=== REVIEW-ONLY AMBIGUITIES ===")
+          print(json.dumps(review, ensure_ascii=False, indent=2))
+          print("=== CATALOG COUNTS ===")
+          for item in changed:
+              print(f"{item[0]}: {item[1]} -> {item[2]}")
+
+          Path("/tmp/reconcile_result.json").write_text(json.dumps({"removals": removals, "review": review, "changed": changed}, ensure_ascii=False, indent=2), encoding="utf-8")
+          PY
+
+          if ! git diff --quiet -- data/wanted_channels_*.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/wanted_channels_*.json
+            git commit -m "Reconcile wanted catalogs with verified audit"
+            git push origin HEAD:reconcile-wanted-audit-2026-08-22
+          fi
+
+      - name: Show diff summary
+        run: |
+          git status --short
+          git log -2 --oneline
