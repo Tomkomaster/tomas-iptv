@@ -1,0 +1,4015 @@
+{
+  "total_rows": 928,
+  "already_true": 366,
+  "already_false": 4,
+  "filled_count": 526,
+  "filled_true": 14,
+  "filled_false": 512,
+  "unresolved_count": 32,
+  "changed": [
+    {
+      "index": 1,
+      "channel": "16tv Budapest",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/16tv.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 2,
+      "channel": "AMC Europe Hungary",
+      "stream_url": "http://88.212.15.19/live/amc_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 3,
+      "channel": "Apostol TV",
+      "stream_url": "https://live.apostoltv.hu/live/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 4,
+      "channel": "AXN CEE",
+      "stream_url": "http://88.212.15.19/live/axn_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 5,
+      "channel": "AXN White",
+      "stream_url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6950/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 6,
+      "channel": "Bajai TV",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay01/livestream002.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 7,
+      "channel": "Balaton TV (432p)",
+      "stream_url": "https://stream.iptvservice.eu/hls/balatontv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 8,
+      "channel": "Budapest Európa Televízió",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/bpetv.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 9,
+      "channel": "City TV",
+      "stream_url": "https://citytv.hu/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 10,
+      "channel": "Dikh TV",
+      "stream_url": "http://88.212.15.19/live/dikh/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 11,
+      "channel": "DTV",
+      "stream_url": "http://cloudfront44.lexanetwork.com:1732/hlsrelay003/hls/livestream.sdp.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 12,
+      "channel": "Duna",
+      "stream_url": "http://88.212.15.19/live/duna_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 13,
+      "channel": "Euronews Hungarian",
+      "stream_url": "https://cdn-euronews.akamaized.net/live/eds/euronews-hu/25075/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 14,
+      "channel": "EWTN/Bonum TV",
+      "stream_url": "https://dash2.antik.sk/live/ewtn_bonum/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 16,
+      "channel": "FEM3",
+      "stream_url": "http://88.212.15.19/live/test_fem3_atktv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 17,
+      "channel": "Film+",
+      "stream_url": "http://88.212.15.19/live/film_plus_hun_atk/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 18,
+      "channel": "Film Cafe",
+      "stream_url": "http://88.212.15.19/live/film_cafe/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 19,
+      "channel": "Film4",
+      "stream_url": "http://88.212.15.19/live/film4_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 20,
+      "channel": "FILMBOX+ Comedy Magyar & Romania",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_family_hun_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 21,
+      "channel": "FILMBOX+ Emotion Hungary",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_extra_hd_hun_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 22,
+      "channel": "FILMBOX+ Hits Hungary",
+      "stream_url": "http://88.212.15.19/live/fb_premium_hungary/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 23,
+      "channel": "FILMBOX+ One Magyar",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_plus_hun_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 25,
+      "channel": "Galaxy4",
+      "stream_url": "https://budapest-cache-1.antik.sk/live/test_galaxy_4_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 28,
+      "channel": "History",
+      "stream_url": "http://88.212.15.19/live/history_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 29,
+      "channel": "Hévízi TV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay03/livestream003.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 30,
+      "channel": "Izaura TV",
+      "stream_url": "http://88.212.15.19/live/izaura/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 31,
+      "channel": "Jocky TV",
+      "stream_url": "http://88.212.15.19/live/jocky/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 32,
+      "channel": "Kanizsa TV (400p)",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/kanizsavtv.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 33,
+      "channel": "Karcag TV",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay03/livestream003.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 35,
+      "channel": "Kolyokklub",
+      "stream_url": "http://88.212.15.19/live/kolyokklub_atk/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 36,
+      "channel": "Liceum TV",
+      "stream_url": "http://193.225.32.62:8890/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 37,
+      "channel": "Life TV",
+      "stream_url": "http://88.212.15.19/live/lifetv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 38,
+      "channel": "M1 HD",
+      "stream_url": "http://88.212.15.19/live/test_m_1_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 39,
+      "channel": "M2",
+      "stream_url": "http://88.212.15.19/live/m2_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 40,
+      "channel": "M5",
+      "stream_url": "http://88.212.15.19/live/test_m_5_hun_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 41,
+      "channel": "Magyar Mozi TV",
+      "stream_url": "http://88.212.15.19/live/mozi/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 42,
+      "channel": "Minimax",
+      "stream_url": "http://88.212.15.19/live/minimax_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 43,
+      "channel": "Mozi+",
+      "stream_url": "http://88.212.15.19/live/mozi_plusz/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 44,
+      "channel": "Moziklub",
+      "stream_url": "http://88.212.15.19/live/moziklub_atk/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 45,
+      "channel": "Moziverzum",
+      "stream_url": "http://88.212.15.19/live/moziverzum/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 46,
+      "channel": "Muzsika TV",
+      "stream_url": "http://88.212.15.19/live/test_muzsika_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 47,
+      "channel": "Móra-Net TV",
+      "stream_url": "https://stream.moranettv.hu/live/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 48,
+      "channel": "National Geographic",
+      "stream_url": "http://88.212.15.19/live/ngc_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 49,
+      "channel": "National Geographic Wild",
+      "stream_url": "http://88.212.15.19/live/ngw_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 50,
+      "channel": "Nick Jr.",
+      "stream_url": "http://88.212.15.19/live/nick_junior_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 51,
+      "channel": "Nickelodeon",
+      "stream_url": "http://88.212.15.19/live/test_nickelodeon_hu_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 52,
+      "channel": "Nicktoons",
+      "stream_url": "http://88.212.15.19/live/nicktoons_hungary/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 53,
+      "channel": "Oroszlányi Városi Televízió",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast002.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 54,
+      "channel": "Ozone TV",
+      "stream_url": "http://88.212.15.19/live/ozone/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 55,
+      "channel": "Prime",
+      "stream_url": "http://88.212.15.19/live/prime/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 56,
+      "channel": "RTL",
+      "stream_url": "http://88.212.15.19/live/test_rtl_klub_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 57,
+      "channel": "RTL Gold",
+      "stream_url": "https://budapest-cache-1.antik.sk/live/test_film_plus_2_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 58,
+      "channel": "RTL Harom",
+      "stream_url": "http://88.212.15.19/live/test_rtl_plus_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 59,
+      "channel": "RTL Ketto",
+      "stream_url": "http://88.212.15.19/live/test_rtl2_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 60,
+      "channel": "RTL Otthon",
+      "stream_url": "http://88.212.15.19/live/rtl_otthon_atk/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 61,
+      "channel": "Régió TV (406p)",
+      "stream_url": "http://tv.geniusnet.sk:8081/regiotv/pl.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 62,
+      "channel": "SIXO TV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/HDE038.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 63,
+      "channel": "Slager TV",
+      "stream_url": "http://88.212.15.19/live/test_slager_tv_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 64,
+      "channel": "Sorozat+",
+      "stream_url": "http://88.212.15.19/live/test_sorozat_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 65,
+      "channel": "Sorozatklub",
+      "stream_url": "http://88.212.15.19/live/sorozatklub_atk/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 66,
+      "channel": "Spektrum",
+      "stream_url": "http://88.212.15.19/live/spektrum_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 67,
+      "channel": "Spektrum Home",
+      "stream_url": "http://88.212.15.19/live/spektrum_home_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 68,
+      "channel": "Spiler 1",
+      "stream_url": "http://88.212.15.19/live/spiler1/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 69,
+      "channel": "Spiler 2",
+      "stream_url": "http://88.212.15.19/live/spiler2/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 70,
+      "channel": "Sport 1",
+      "stream_url": "http://88.212.15.19/live/sport1_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 71,
+      "channel": "Sport 2",
+      "stream_url": "http://88.212.15.19/live/sport2_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 72,
+      "channel": "Story4",
+      "stream_url": "http://88.212.15.19/live/test_story_4_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 73,
+      "channel": "Super TV2",
+      "stream_url": "http://88.212.15.19/live/test_super_tv2_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 74,
+      "channel": "Szolnok TV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/livestream004.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 76,
+      "channel": "The Fishing & Hunting Channel",
+      "stream_url": "http://88.212.15.19/live/test_fishing_hunting/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 77,
+      "channel": "TV Eger",
+      "stream_url": "http://stream.tveger.hu:8010/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 78,
+      "channel": "TV Keszthely",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/keszthelyivtv.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 79,
+      "channel": "TV2",
+      "stream_url": "http://88.212.15.19/live/test_tv_2_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 80,
+      "channel": "TV2 Comedy",
+      "stream_url": "http://88.212.15.19/live/tv2_comedy/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 81,
+      "channel": "TV2 Kids",
+      "stream_url": "http://88.212.15.19/live/tv2_kids/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 82,
+      "channel": "TV2 Sef",
+      "stream_url": "http://88.212.15.19/live/test_lichi_tv_atk_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 83,
+      "channel": "TV4",
+      "stream_url": "http://88.212.15.19/live/test_tv_4_hun_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 84,
+      "channel": "TV7 Bekescsaba",
+      "stream_url": "https://stream.y5.hu/stream/stream_bekescsaba/stream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 85,
+      "channel": "Viasat 3",
+      "stream_url": "http://88.212.15.19/live/viasat3/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 86,
+      "channel": "Viasat 6",
+      "stream_url": "http://88.212.15.19/live/viasat6/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 87,
+      "channel": "Viasat Film",
+      "stream_url": "http://88.212.15.19/live/viasat_film/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 88,
+      "channel": "Viasat2",
+      "stream_url": "http://88.212.15.19/live/viasat2/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 89,
+      "channel": "Zalaegerszegi TV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/freerelay/zegtv.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 90,
+      "channel": "Zenebutik",
+      "stream_url": "http://88.212.15.19/live/zenebutik/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 91,
+      "channel": "Ózdi Városi TV",
+      "stream_url": "http://stream.nmih.hu:7980/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 92,
+      "channel": "Classics TV",
+      "stream_url": "http://s01.diazol.hu:9150/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 94,
+      "channel": "Makói Városi Televízió",
+      "stream_url": "http://makomedia.mikrohalo.hu/hls/makotv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 95,
+      "channel": "Nyíregyházi Televízió",
+      "stream_url": "https://nytvlive.hu:443/nytv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 96,
+      "channel": "Halom TV",
+      "stream_url": "http://212.92.13.108:8080/live/livestream1.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 101,
+      "channel": "ESTV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay44_1/HDE040.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 105,
+      "channel": "ATV",
+      "stream_url": "http://88.212.15.19/live/test_atv_hungary_1200_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 107,
+      "channel": "ATV Spirit",
+      "stream_url": "http://88.212.15.19/live/test_atv_spirit/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 108,
+      "channel": "Duna World",
+      "stream_url": "http://88.212.15.19/live/duna_world_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 110,
+      "channel": "Kecskemeti TV",
+      "stream_url": "http://rtmp1.40e.hu:8000/live/ktv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 111,
+      "channel": "Kecskemeti TV",
+      "stream_url": "https://eurobioinvest.hu:444/live/ktv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 113,
+      "channel": "Országgyűlés (Plenáris)",
+      "stream_url": "https://plenaris.parlament.hu:446/edgelive/smil:mkogyplen.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 114,
+      "channel": "Oxygen Music",
+      "stream_url": "https://oxygenmusic.hu:2443/hls/oxygenmusic.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 115,
+      "channel": "Pannon RTV",
+      "stream_url": "https://stream.nmih.hu:4102/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 123,
+      "channel": "Gran TV Feed 2",
+      "stream_url": "https://grantv.medialivecdn.hu:443/gran/51328567842cc1ba78b4b851ee9c46b4.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 127,
+      "channel": "Alföld TV",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay01/livestream006.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 144,
+      "channel": "Tatai TV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast006.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 156,
+      "channel": "Vásárhelyi Televízió",
+      "stream_url": "https://stream.vasarhelyitelevizio.hu/stream/stream.m3u8",
+      "value": false,
+      "basis": "explicit decision=tv_verified"
+    },
+    {
+      "index": 173,
+      "channel": "Cegléd Városi TV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/HDE031.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 174,
+      "channel": "Debrecen Televízió",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay44_1/livestream002.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 176,
+      "channel": "Disney Channel Feed 1",
+      "stream_url": "http://88.212.15.19/live/test_disney/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 177,
+      "channel": "Disney Channel Feed 2",
+      "stream_url": "http://88.212.15.19/live/disney_channel_hun/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 210,
+      "channel": "Marosvásárhelyi Rádió [Visual Radio]",
+      "stream_url": "http://89.238.207.219:1935/live/radio-muresm/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 221,
+      "channel": "TV Panon",
+      "stream_url": "https://stream2.nmih.hu:4102/live.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 226,
+      "channel": "Play Music TV Feed 1",
+      "stream_url": "https://streaming4u.synology.me/PlayMusicTV/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 249,
+      "channel": "TV13",
+      "stream_url": "https://tv13.medialivecdn.hu:443/tv13/3e4c201d9e403330d294e24760e49164.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 256,
+      "channel": "Ózdi Városi TV [HTTPS alternate]",
+      "stream_url": "https://stream.nmih.hu:7982/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 287,
+      "channel": "Film+",
+      "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 288,
+      "channel": "FILMBOX+ Comedy Czechia",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_family_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 289,
+      "channel": "FILMBOX+ Emotion Czechia",
+      "stream_url": "http://88.212.15.19/live/test_film_boxextra_hd_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 290,
+      "channel": "FILMBOX+ Hits Czechia",
+      "stream_url": "http://88.212.15.19/live/test_film_boxpremium_hd_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 291,
+      "channel": "FILMBOX+ Love & Crime",
+      "stream_url": "http://88.212.15.19/live/test_filmbox_plus_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 292,
+      "channel": "FILMBOX+ One Czechia",
+      "stream_url": "http://88.212.15.19/live/test_filmbox/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 293,
+      "channel": "Doma",
+      "stream_url": "http://88.212.15.19/live/test_doma_hd_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 294,
+      "channel": "ducktv",
+      "stream_url": "https://jmp2.uk/stvp-ESBC4700001GR",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 295,
+      "channel": "ducktv",
+      "stream_url": "https://mmm-dk.otteravision.com/DexaYJdJXkLqFxTK_DuckTVHDSAMS/DuckTVHDSAMS.stream/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 296,
+      "channel": "ducktv",
+      "stream_url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=13168",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 297,
+      "channel": "ducktv HD",
+      "stream_url": "https://dash3.antik.sk/live/duck_tv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 298,
+      "channel": "ducktv PLUS",
+      "stream_url": "https://dash3.antik.sk/live/test_duck_plus/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 299,
+      "channel": "Dvojka",
+      "stream_url": "http://88.212.15.19/live/test_dvojka_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 300,
+      "channel": "LALA TV",
+      "stream_url": "http://88.212.15.19/live/test_lala_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 301,
+      "channel": "LifeTv",
+      "stream_url": "https://lifetv.mpks.sk/s.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 302,
+      "channel": "Maná Cirkev Online",
+      "stream_url": "https://w2.manasat.com/cirkev-online/smil:cirkev-online.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 303,
+      "channel": "Markíza",
+      "stream_url": "http://88.212.15.19/live/test_markiza_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 304,
+      "channel": "Markíza Klasik",
+      "stream_url": "https://cdnsk003.panaccess.com/local/Markiza_Klasik/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 305,
+      "channel": "Markíza Krimi",
+      "stream_url": "https://cdnsk003.panaccess.com/local/Markiza_krimi/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 306,
+      "channel": "Markíza Krimi",
+      "stream_url": "http://88.212.15.19/live/test_markiza_krimi_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 307,
+      "channel": "Markíza TN Live",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=Mark%C3%ADza+TN+Live",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 308,
+      "channel": "Mestská Televízia Partizánske",
+      "stream_url": "https://dash2.antik.sk/live/test_partizanske/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 314,
+      "channel": "TV Vita",
+      "stream_url": "https://dash3.antik.sk/live/test_vita/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 315,
+      "channel": "TV7 Prešov",
+      "stream_url": "https://cdnsk003.panaccess.com/local/TV7/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 316,
+      "channel": "TV9",
+      "stream_url": "https://dash4.antik.sk/live/test_tv9/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 317,
+      "channel": "TVT",
+      "stream_url": "https://5ca49f2417d90.streamlock.net/live/turzovka/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 318,
+      "channel": "TV Panorama",
+      "stream_url": "https://public.live.rebit.tv/live/20750f0b-e12d-4915-a4c3-47c5db9ccbf6/main.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 322,
+      "channel": "TV Povazie",
+      "stream_url": "https://dash3.antik.sk/live/test_povazie/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 323,
+      "channel": "TV Reduta",
+      "stream_url": "https://cdnsk003.panaccess.com/local/TV_SNV_REDUTA/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 324,
+      "channel": "TV Reduta",
+      "stream_url": "https://dash3.antik.sk/live/tv_reduta/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 327,
+      "channel": "TV Ružinov",
+      "stream_url": "http://lb.streaming.sk/tvruzinov/stream/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 329,
+      "channel": "TV SEN KULTÚRA",
+      "stream_url": "https://cdnsk003.panaccess.com/local/TV_SEN_DC/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 332,
+      "channel": "Západoslovenská TV",
+      "stream_url": "https://dash2.antik.sk/live/test_zapadoslovenska/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 334,
+      "channel": "Óčko",
+      "stream_url": "https://ocko-live-dash.ssl.cdn.cra.cz/cra_live2/ocko.stream.1.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 338,
+      "channel": "TV Kežmarok",
+      "stream_url": "https://dash2.antik.sk/live/test_severka/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 340,
+      "channel": "TV Liptov",
+      "stream_url": "http://95.105.255.137:1935/tvturiec/tvliptov.stream/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 341,
+      "channel": "TV LocAll",
+      "stream_url": "http://tv.geniusnet.sk:8081/localltv/pl.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 343,
+      "channel": "TV Lux",
+      "stream_url": "https://stream.tvlux.sk/luxtv/luxtv-livestream/chunklist_w617812057.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 344,
+      "channel": "TV Mistral",
+      "stream_url": "https://dash3.antik.sk/live/test_mistral_atktv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 346,
+      "channel": "TV Nitricka",
+      "stream_url": "https://dash4.antik.sk/live/test_nitricka/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 348,
+      "channel": "TV Bratislava",
+      "stream_url": "https://dash2.antik.sk/live/test_batv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 349,
+      "channel": "TV Bratislava",
+      "stream_url": "https://cdnsk003.panaccess.com/local/Bratislava/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 351,
+      "channel": "TV Central",
+      "stream_url": "https://arenasportslovakia.ddns.net/hls/cetv2.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 353,
+      "channel": "TV DK",
+      "stream_url": "https://5ca49f2417d90.streamlock.net/live/dolnykubin1/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 354,
+      "channel": "TV DOKTOR",
+      "stream_url": "https://live.tvdoktor.sk/high/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 355,
+      "channel": "TV Hronka",
+      "stream_url": "https://public.live.rebit.tv/live/a2ae9668-d37e-442d-ae98-070cb5d607a7/main.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 357,
+      "channel": "Televízia Močenok",
+      "stream_url": "https://5ca49f2417d90.streamlock.net/mocenok/livestream/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 358,
+      "channel": "Televízia OSEM",
+      "stream_url": "http://109.74.145.11:1935/tv8/ngrp:tv8.stream_all/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 359,
+      "channel": "Televízia OSEM",
+      "stream_url": "http://109.74.145.11:1935/tv8/mp4:tv8.stream_360p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 361,
+      "channel": "Televízia Turiec",
+      "stream_url": "https://cdnsk003.panaccess.com/local/Turiec/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 363,
+      "channel": "Televízia ZEMPLÍN",
+      "stream_url": "https://dash2.antik.sk/live/test_zemplin/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 364,
+      "channel": "Turbo TV",
+      "stream_url": "https://dash3.antik.sk/live/turbo_tv_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 365,
+      "channel": "Slager Muzika",
+      "stream_url": "https://stream-23.mazana.tv/slagrmuzika.m3u8s",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 366,
+      "channel": "Spektrum",
+      "stream_url": "http://88.212.15.19/live/test_spektrum/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 367,
+      "channel": "Spektrum Home",
+      "stream_url": "http://88.212.15.19/live/test_home_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 368,
+      "channel": "Sport1",
+      "stream_url": "http://88.212.15.19/live/test_sport1_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 369,
+      "channel": "Sport2",
+      "stream_url": "http://88.212.15.19/live/test_sport_2/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 370,
+      "channel": "Viasat Explore",
+      "stream_url": "http://88.212.15.29/live/test_viasat_explore_atk_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 371,
+      "channel": "Viasat History",
+      "stream_url": "http://88.212.15.29/live/test_viasat_history_atk_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 372,
+      "channel": "Viasat Nature",
+      "stream_url": "http://88.212.15.29/live/test_viasat_nature_atk_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 373,
+      "channel": "RiK TV",
+      "stream_url": "https://dash2.antik.sk/live/rik_atk/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 376,
+      "channel": "RVTV",
+      "stream_url": "https://dash2.antik.sk/live/test_roznava/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 377,
+      "channel": "Senzi",
+      "stream_url": "http://lb.streaming.sk/senzi/stream/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 378,
+      "channel": "Skvelé TV",
+      "stream_url": "https://dash3.antik.sk/live/test_skvele_tv_fhd/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 379,
+      "channel": "Slager Original",
+      "stream_url": "https://stream-13.mazana.tv/slagroriginal.m3u8s",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 380,
+      "channel": "STVR Live",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=STVR+Live",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 381,
+      "channel": "Moldava TV",
+      "stream_url": "https://dash2.antik.sk/live/test_moldava/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 382,
+      "channel": "MTR",
+      "stream_url": "https://cdnsk003.panaccess.com/local/Ruzomberok/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 383,
+      "channel": "PARK TV",
+      "stream_url": "https://dash2.antik.sk/live/test_park_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 385,
+      "channel": "Prima Cool SK",
+      "stream_url": "http://88.212.15.19/live/prima_cool_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 386,
+      "channel": "Prima Krimi SK",
+      "stream_url": "http://88.212.15.19/live/prima_krimi_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 387,
+      "channel": "Prima love SK",
+      "stream_url": "http://88.212.15.19/live/prima_love_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 390,
+      "channel": "Jojko",
+      "stream_url": "http://88.212.15.19/live/test_jojko_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 392,
+      "channel": "Kanal1",
+      "stream_url": "https://dash.antik.sk/live/test_upnetwork/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 395,
+      "channel": "Mestská televízia Trnava",
+      "stream_url": "https://dash3.antik.sk/live/test_trnava/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 396,
+      "channel": "Mestská TV Košice",
+      "stream_url": "https://dash2.antik.sk/live/test_mtv_kosice/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 397,
+      "channel": "Miestna TV Trebišov",
+      "stream_url": "https://dash3.antik.sk/live/test_trebisov/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 398,
+      "channel": "Dajto",
+      "stream_url": "http://88.212.15.19/live/test_dajto_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 402,
+      "channel": "Folklorika TV",
+      "stream_url": "http://88.212.15.19/live/test_folklorika_atktv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 404,
+      "channel": "GTTV",
+      "stream_url": "https://stream.ostv.sk/GTTV/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 405,
+      "channel": "HAHA TV",
+      "stream_url": "https://dash3.antik.sk/live/test_haha_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 406,
+      "channel": "HNTV",
+      "stream_url": "https://dash3.antik.sk/live/test_hntv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 407,
+      "channel": "Jednotka",
+      "stream_url": "http://88.212.15.19/live/test_jednotka_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 408,
+      "channel": "JOJ Svet",
+      "stream_url": "http://88.212.15.19/live/test_joj_svet/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 409,
+      "channel": "360 TuneBox",
+      "stream_url": "https://dash2.antik.sk/live/test_360_tunebox_medium_atk/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 410,
+      "channel": "Antik Info TV",
+      "stream_url": "https://dash4.antik.sk/live/test_infokanal_tizen/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 411,
+      "channel": "Arena Sport 1",
+      "stream_url": "http://88.212.15.19/live/test_arenasport/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 412,
+      "channel": "Arena Sport 2",
+      "stream_url": "http://88.212.15.19/live/test_arenasport_dva/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 413,
+      "channel": "ATV Žiar",
+      "stream_url": "https://dash3.antik.sk/live/test_atv_ziar/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 415,
+      "channel": "Bardejovská TV",
+      "stream_url": "https://fs3.kabelko.sk/9011/index.m3u8?token=btv",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 416,
+      "channel": "Nicktoons",
+      "stream_url": "http://88.212.15.19/live/test_nicktoons/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 417,
+      "channel": "AMC Europe Czech Republic",
+      "stream_url": "http://88.212.15.19/live/test_amc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 418,
+      "channel": "Barrandov Krimi",
+      "stream_url": "https://dash4.antik.sk/live/test_barrandov_plus_atk_1200/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 419,
+      "channel": "Canal+ Action Europe Czechia",
+      "stream_url": "http://46.149.191.219:9106/play/a01g",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 420,
+      "channel": "Kino Barrandov",
+      "stream_url": "http://88.212.15.19/live/test_kino_barrandov_sd_hevc50/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 421,
+      "channel": "Minimax",
+      "stream_url": "http://88.212.15.19/live/test_minimax/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 422,
+      "channel": "Retro Music Television",
+      "stream_url": "https://stream.mediawork.cz/retrotv/retrotvHQ1/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 425,
+      "channel": "Bunyó TV",
+      "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 432,
+      "channel": "Gyöngyösi TV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay44_1/HDE043.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 433,
+      "channel": "Lóverseny közvetítés",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/xrelay/loverseny2.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 438,
+      "channel": "Csurgó TV",
+      "stream_url": "https://cstv.medialivecdn.hu/csurgotv/27725804dc13aa23b3970414524d2dbf.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 441,
+      "channel": "Disco TV",
+      "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 442,
+      "channel": "Disco TV",
+      "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 444,
+      "channel": "EBS",
+      "stream_url": "https://streams.prd.commavservices.eu/live/ebs/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 445,
+      "channel": "EBS Plus",
+      "stream_url": "https://streams.prd.commavservices.eu/live/ebsplus/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 448,
+      "channel": "RTG int.",
+      "stream_url": "http://213.91.179.28:8000/play/a0bw",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 449,
+      "channel": "RTV 1 Vajdaság",
+      "stream_url": "http://212.200.230.50:1935/RTV/rtv1/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 450,
+      "channel": "RTV 2 Vajdaság",
+      "stream_url": "http://212.200.230.50:1935/RTV/rtv2/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 451,
+      "channel": "TVR Cluj",
+      "stream_url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 452,
+      "channel": "TVR Timisoara",
+      "stream_url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 453,
+      "channel": "TVR Targu-Mures",
+      "stream_url": "https://tvr-tgmures.lg.mncdn.com/tvrtgmures/smil:tvrtgmures.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 454,
+      "channel": ":24",
+      "stream_url": "http://88.212.15.27/live/test_trojka_25p/playlist.m3u8",
+      "value": false,
+      "basis": "explicit decision=tv_verified"
+    },
+    {
+      "index": 456,
+      "channel": "JOJ Šport 2",
+      "stream_url": "http://88.212.15.47/live/joj_sport_2_avc/index.m3u8",
+      "value": false,
+      "basis": "explicit decision=tv_verified"
+    },
+    {
+      "index": 463,
+      "channel": "TV Romana",
+      "stream_url": "http://88.212.7.11/live/test_tv_romana_web_player/playlist.m3u8",
+      "value": false,
+      "basis": "explicit decision=tv_verified"
+    },
+    {
+      "index": 464,
+      "channel": ":Šport",
+      "stream_url": "http://88.212.15.27/live/test_rtvs_sport_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "explicit decision=tv_verified"
+    },
+    {
+      "index": 465,
+      "channel": "A11",
+      "stream_url": "https://dash2.antik.sk/live/test_regionalni_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 466,
+      "channel": "AXN Black Czech Republic",
+      "stream_url": "http://88.212.15.19/live/test_black/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 467,
+      "channel": "AXN CEE Czech Republic",
+      "stream_url": "http://88.212.15.19/live/test_axn/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 468,
+      "channel": "AXN White CzechRepublic",
+      "stream_url": "http://88.212.15.19/live/test_white/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 469,
+      "channel": "BBC Earth Czechia",
+      "stream_url": "http://88.212.15.29/live/test_bbc_eartch_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 470,
+      "channel": "CNN Prima News",
+      "stream_url": "http://88.212.15.19/live/test_cnn_pirma_news/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 472,
+      "channel": "CS Mystery",
+      "stream_url": "http://88.212.15.17/live/test_cs_mystery_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 473,
+      "channel": "Current Time TV",
+      "stream_url": "http://stream.mcquack.net/384/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 474,
+      "channel": "DVTV Extra",
+      "stream_url": "https://antik.streaming.tivio.studio/channels/IxLi19VRasgu94bIaXbH/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 475,
+      "channel": "Elektrika TV",
+      "stream_url": "https://rtmp.elektrika.cz/live/myStream.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 476,
+      "channel": "Frýdek-Místek - Zámecké náměstí",
+      "stream_url": "https://stream.polar.cz/kamery/cam010/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 477,
+      "channel": "Golf Channel",
+      "stream_url": "https://dash4.antik.sk/live/test_golf_channel/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 478,
+      "channel": "Havířov - Náměstí Republiky",
+      "stream_url": "https://stream.polar.cz/kamery/cam001/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 479,
+      "channel": "History",
+      "stream_url": "http://88.212.15.19/live/test_history/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 480,
+      "channel": "History2",
+      "stream_url": "http://88.212.15.19/live/test_h2/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 481,
+      "channel": "Jablunkov - náměstí",
+      "stream_url": "https://stream.silesnet.net/webcams/jablunkov.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 482,
+      "channel": "Jihočeská televize",
+      "stream_url": "https://vysilani.zaktv.cz/broadcast/hls/jtv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 484,
+      "channel": "JČ1",
+      "stream_url": "https://stream.jc1.cz/hls/jc1.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 486,
+      "channel": "Krušná TV",
+      "stream_url": "https://kamery2.wolfnet.cz/krusna.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 487,
+      "channel": "Music Box Classic",
+      "stream_url": "http://88.212.15.19/live/mb_classic/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 488,
+      "channel": "Music Box Dance",
+      "stream_url": "http://88.212.15.19/live/mb_dance/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 489,
+      "channel": "Music Box Hits",
+      "stream_url": "http://88.212.15.19/live/mb_hits/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 490,
+      "channel": "Music Box Sexy",
+      "stream_url": "http://88.212.15.19/live/mb_sexy/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 491,
+      "channel": "Mňau TV",
+      "stream_url": "https://5ca49f2417d90.streamlock.net/mnau/livestream/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 492,
+      "channel": "Nickelodeon",
+      "stream_url": "http://88.212.15.19/live/test_nickelodeon_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 493,
+      "channel": "Nova",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 494,
+      "channel": "Nova Action",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_action_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 495,
+      "channel": "Nova Cinema",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_cinema_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 496,
+      "channel": "Nova Fun",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_fun_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 497,
+      "channel": "Nova Krimi",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_gold_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 498,
+      "channel": "Nova Lady",
+      "stream_url": "http://88.212.15.19:80/live/test_nova_lady_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 499,
+      "channel": "Ocko Black",
+      "stream_url": "https://dash2.antik.sk/live/test_ocko_black/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 500,
+      "channel": "Ocko Star",
+      "stream_url": "https://dash4.antik.sk/live/test_ocko_star/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 502,
+      "channel": "Panorama TV",
+      "stream_url": "https://kamery2.wolfnet.cz/panorama.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 503,
+      "channel": "Plzeň TV",
+      "stream_url": "https://vysilani.zaktv.cz/broadcast/hls/ptv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 505,
+      "channel": "Polar TV",
+      "stream_url": "https://stream.polar.cz/polar/polarlive-1/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 512,
+      "channel": "Prima",
+      "stream_url": "http://88.212.15.19/live/prima_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 514,
+      "channel": "Prima Cool",
+      "stream_url": "http://88.212.15.19/live/prima_cool_cz_avc/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 517,
+      "channel": "Prima Love",
+      "stream_url": "http://88.212.15.19/live/prima_love_cz_avc/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 520,
+      "channel": "Prima Show",
+      "stream_url": "http://88.212.15.19/live/test_prima_show_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 522,
+      "channel": "Prima Star",
+      "stream_url": "http://88.212.15.19/live/test_prima_star_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 524,
+      "channel": "Prima Zoom",
+      "stream_url": "http://88.212.15.19/live/prima_zoom_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 526,
+      "channel": "REBEL",
+      "stream_url": "https://dash3.antik.sk/live/test_rebel/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 527,
+      "channel": "RELAX",
+      "stream_url": "https://dash2.antik.sk/live/test_relax/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 529,
+      "channel": "Retro Music TV",
+      "stream_url": "https://stream.mediawork.cz/retrotv/smil:retrotv2.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 532,
+      "channel": "Sporty TV",
+      "stream_url": "https://dash2.antik.sk/live/sporty_tv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 533,
+      "channel": "Televize Prerov",
+      "stream_url": "https://173.212.247.21/live/tvprerov.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 534,
+      "channel": "Televize Seznam",
+      "stream_url": "http://88.212.15.19/live/test_seznam_hevc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 535,
+      "channel": "TN Live",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=Nova%20TN%20Live",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 536,
+      "channel": "TV Barrandov",
+      "stream_url": "http://88.212.15.19/live/test_barrandov/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 537,
+      "channel": "TV Brno 1",
+      "stream_url": "https://stream.polar.cz/tvbrno1/tvbrno1live-1/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 539,
+      "channel": "TV Noe",
+      "stream_url": "https://n105.quickmedia.tv/noetv/live/noetv/Ifd4_1_4/chunks_dvr_timeshift-0-7200.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 540,
+      "channel": "TV Noe+",
+      "stream_url": "https://n105.quickmedia.tv/noetvplus/live/noetvplus/Shz3_1_1/chunks_dvr_timeshift-0-7200.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 541,
+      "channel": "Viasat Epic Drama",
+      "stream_url": "http://88.212.15.29/live/test_epic_drama_atk_tv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 542,
+      "channel": "Východočeská TV",
+      "stream_url": "https://stream.polar.cz/vctv/vctvlive-1/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 543,
+      "channel": "Warner TV",
+      "stream_url": "http://88.212.15.19:80/live/warner_tv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 544,
+      "channel": "Yachting TV",
+      "stream_url": "https://streams2.sofast.tv/vglive-sk-461164/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 545,
+      "channel": "Óčko",
+      "stream_url": "https://ocko-live.ssl.cdn.cra.cz/channels/ocko/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 546,
+      "channel": "Óčko Expres",
+      "stream_url": "https://ocko-live.ssl.cdn.cra.cz/channels/ocko_expres/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 547,
+      "channel": "Óčko Gold",
+      "stream_url": "https://ocko-live.ssl.cdn.cra.cz/channels/ocko_gold/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 549,
+      "channel": "ÚTV",
+      "stream_url": "https://vysilani.zaktv.cz/broadcast/hls/utv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 550,
+      "channel": "Český Těšín - Náměstí ČSA",
+      "stream_url": "https://stream.silesnet.net/webcams/tesin.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 551,
+      "channel": "ČT 1",
+      "stream_url": "http://88.212.15.19/live/test_ct1_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 552,
+      "channel": "ČT 2",
+      "stream_url": "http://88.212.15.19/live/test_ct2_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 553,
+      "channel": "ČT:D/ČT art",
+      "stream_url": "http://88.212.15.19/live/ct_art_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 554,
+      "channel": "ČT Sport",
+      "stream_url": "http://88.212.15.19/live/test_ctsport_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 556,
+      "channel": "ČT24",
+      "stream_url": "http://88.212.15.19/live/test_ct24_hevc/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 558,
+      "channel": "Štramberk - náměstí",
+      "stream_url": "https://stream.polar.cz/kamery/stramberk.stream/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 559,
+      "channel": "Current Time TV",
+      "stream_url": "https://rfe-ingest.akamaized.net/hls/live/2033043/tvmc05/master.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 562,
+      "channel": "TV Myjava",
+      "stream_url": "https://videostudioris.sk/hls/tvm.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 563,
+      "channel": "INFO TV SEN",
+      "stream_url": "https://videostudioris.sk/hls/tvsen.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 564,
+      "channel": "TV Skalica",
+      "stream_url": "https://videostudioris.sk/hls/tvs.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 568,
+      "channel": "A7TV",
+      "stream_url": "https://a7tvlive.ro/A7TV/A7TV/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 569,
+      "channel": "Agro TV",
+      "stream_url": "https://agrotv.streamnet.ro/mobile_tv/agrotv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 570,
+      "channel": "Aleph Business (1280p)",
+      "stream_url": "https://streamw.m.ro/Aleph/ngrp:Alephbiz.stream_all/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 571,
+      "channel": "Aleph News",
+      "stream_url": "https://stream-aleph.m.ro/Aleph/ngrp:Alephnewsmain.stream_all/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 572,
+      "channel": "Alfa Omega TV",
+      "stream_url": "https://aom-live.maghost.ro/aomTV/streams/OOztu5o9Fx6dh9mD1711027803849.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 574,
+      "channel": "Angelus TV",
+      "stream_url": "https://video.angelustv.ro/hls/angelustv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 575,
+      "channel": "Antena International",
+      "stream_url": "https://stream1.antenaplay.ro/as/asrolive1/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 576,
+      "channel": "Antena Monden",
+      "stream_url": "https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 577,
+      "channel": "Atomic Academy TV",
+      "stream_url": "https://atomic.streamnet.ro/academia.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 578,
+      "channel": "Atomic TV",
+      "stream_url": "https://atomic.streamnet.ro/atomictv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 579,
+      "channel": "AXN Black Romania",
+      "stream_url": "http://315e5a5d.ottrast.com/iptv/MM4E93NGF5LADZ/6952/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 581,
+      "channel": "Bollywood HD Russia",
+      "stream_url": "https://xykt-fix.github.io/cinerama_edge01/hls/BOLLYWOOD_RU/Movie009.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 582,
+      "channel": "Boom TV",
+      "stream_url": "https://tvboom.ro/live-tv/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 583,
+      "channel": "Bucovina TV (576i)",
+      "stream_url": "https://www.bucovinatv.ro/proxy/video/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 584,
+      "channel": "Columna TV",
+      "stream_url": "https://cdn.streamnet.pro/columnatv/live/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 585,
+      "channel": "Credo TV",
+      "stream_url": "http://cdn.credonet.tv:1935/ctv/livecredo/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 587,
+      "channel": "Credo TV",
+      "stream_url": "https://651c69fa2ff4e.streamlock.net/ctv/_definst_/livecredo/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 588,
+      "channel": "Digi 24",
+      "stream_url": "https://edge-ar.rcs-rds.ro/digi24ar/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 589,
+      "channel": "Digi Sport 1",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/79/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 590,
+      "channel": "Disney Channel",
+      "stream_url": "http://213.91.179.28:8000/play/a059",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 591,
+      "channel": "Dotto TV",
+      "stream_url": "https://live.dottotv.ro/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 592,
+      "channel": "EMI TV",
+      "stream_url": "https://astra.emitv.ro/hls/emi/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 593,
+      "channel": "Exploris",
+      "stream_url": "http://89.38.8.130:39419",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 594,
+      "channel": "HD365 TV",
+      "stream_url": "https://s2.netstreaming.eu/hd365.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 595,
+      "channel": "Hello Taste",
+      "stream_url": "https://stream1.antenaplay.ro/live/HelloTaste/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 596,
+      "channel": "Hunedoara 1",
+      "stream_url": "https://netstreaming.eu/hd1.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 597,
+      "channel": "IasiTV Life",
+      "stream_url": "https://tv.streambox.ro/hls/itv/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 598,
+      "channel": "Impact TV",
+      "stream_url": "https://live.tvimpact.ro:8088/hevc/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 599,
+      "channel": "Impact TV Dance",
+      "stream_url": "https://online.tvimpact.live/hls/dancetv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 600,
+      "channel": "Impact TV Manele",
+      "stream_url": "https://online.tvimpact.live/hls/impact_tv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 601,
+      "channel": "Informatia TV",
+      "stream_url": "https://informatia.streamnet.ro/mobile_tv/informatiatv.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 602,
+      "channel": "JOB TV",
+      "stream_url": "https://jobtvserver.eu/hls/stream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 603,
+      "channel": "Kanal D",
+      "stream_url": "https://stream1.kanald.ro/iphone/knd-live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 605,
+      "channel": "Kanal D2 (1080i)",
+      "stream_url": "https://stream2.kanald.ro/iphone/knd2-live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 606,
+      "channel": "Kapital TV",
+      "stream_url": "https://1a-1791.com/live/qt9k24wa/live-hls/41w5-c26y/chunklist_i1_DVR.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 607,
+      "channel": "Kiss TV",
+      "stream_url": "https://tv.broadcasting.ro/kisstv/a629c031-2170-4ee9-a36d-87a891aa3131.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 608,
+      "channel": "Light Channel",
+      "stream_url": "http://streamer1.streamhost.org:1935/salive/GMIlcbgM/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 609,
+      "channel": "LiraTV",
+      "stream_url": "https://cloud2.streaminglivehd.com:1936/liratv/liratv/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 610,
+      "channel": "Magic TV",
+      "stream_url": "https://tv.broadcasting.ro/magictv/925f90db-5c88-4190-a53d-5163cdffe6f4.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 611,
+      "channel": "Metropola TV",
+      "stream_url": "https://www.livemetropolatv.ro/MetropolaTV/Metro/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 612,
+      "channel": "Mireasa",
+      "stream_url": "https://stream1.antenaplay.ro/live/MireasaExtra/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 613,
+      "channel": "MISA TV",
+      "stream_url": "https://vidl.misatv.ro:5050/MSTV/romanian_720p_baseline/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 614,
+      "channel": "Moldova TV",
+      "stream_url": "https://moldovatv.ro/live-tv/live.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 615,
+      "channel": "Muscel TV",
+      "stream_url": "https://cdn.streamnet.pro/musceltv/live/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 616,
+      "channel": "Nasul TV",
+      "stream_url": "https://live.nasul.tv/live/stream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 617,
+      "channel": "Nova TV Brasov",
+      "stream_url": "http://novapress.ro:2022/live/nova/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 618,
+      "channel": "Observator News",
+      "stream_url": "https://live77cdn2.antenaplay.ro/live_ObservatorNews/live_ObservatorNews.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 619,
+      "channel": "Pro TV News",
+      "stream_url": "https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-ro-voyo-news/playlist.m3u8?offsetSeconds=0&url=0",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 620,
+      "channel": "PROFI 24 TV",
+      "stream_url": "https://live.ro24tv.ro/hls/stream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 621,
+      "channel": "Qub TV",
+      "stream_url": "https://live.djemba.ro/memfs/474f9942-f72b-4130-817a-435cd54b2c36.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 622,
+      "channel": "Radio Fx Net",
+      "stream_url": "https://streamlov.alsolnet.com/radiofxnet/live/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 623,
+      "channel": "Radio Romania Antena Satelor",
+      "stream_url": "https://stream3.srr.ro/live/AntenaSatelor/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 624,
+      "channel": "Realitatea Plus",
+      "stream_url": "https://stream.realitatea.net/realitatea/plus_md/ts:playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 625,
+      "channel": "Realitatea Sportiva",
+      "stream_url": "https://stream.realitatea.net/realitatea/sportiva_md/ts:playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 626,
+      "channel": "Realitatea Star (576i)",
+      "stream_url": "https://stream.realitatea.net/realitatea/star_md/ts:playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 627,
+      "channel": "Rock TV",
+      "stream_url": "https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 628,
+      "channel": "ROTV Valencia",
+      "stream_url": "https://rotv.romediavalencia.com:3839/live/rotvlive.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 629,
+      "channel": "SperantaTV",
+      "stream_url": "https://jstre.am/live/jsl:2gNjpghXRLE.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 630,
+      "channel": "Super TV",
+      "stream_url": "http://iptv.supertv.ro:8000/play/a001/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 632,
+      "channel": "Tele7ABC HD",
+      "stream_url": "https://live.tele7abc.ro/hls/stream/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 633,
+      "channel": "TeleM Botosani",
+      "stream_url": "http://89.137.197.15:8080/testing/pl5/playlist/ram/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 634,
+      "channel": "TeleMoldova +",
+      "stream_url": "https://vdo.ssl-stream.com:3247/stream/play.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 635,
+      "channel": "Telestar1",
+      "stream_url": "https://dvb.tennet.ro/mobile_tv/telestar.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 636,
+      "channel": "Traditional TV",
+      "stream_url": "http://83.103.149.75:8085/udp/239.30.0.9:4000",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 637,
+      "channel": "TV Buzau",
+      "stream_url": "http://78.96.33.89:8080",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 639,
+      "channel": "TVPlus Suceava",
+      "stream_url": "http://85.186.22.140/testing/pl5/playlist/ram/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 640,
+      "channel": "TVPlus Suceava",
+      "stream_url": "http://85.186.146.34:8080",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 641,
+      "channel": "TVR 1",
+      "stream_url": "https://tvr-1.lg.mncdn.com/tvr1/smil:tvr1.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived TV verified"
+    },
+    {
+      "index": 642,
+      "channel": "TVR 2",
+      "stream_url": "https://tvr-2.lg.mncdn.com/tvr2/smil:tvr2.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 643,
+      "channel": "TVR 3",
+      "stream_url": "https://tvr-3.lg.mncdn.com/tvr3/smil:tvr3.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived TV verified"
+    },
+    {
+      "index": 644,
+      "channel": "TVR Craiova",
+      "stream_url": "https://tvr-craiova.lg.mncdn.com/tvrcraiova/smil:tvrcraiova.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 645,
+      "channel": "TVR Cultural",
+      "stream_url": "https://tvr-cultural.lg.mncdn.com/tvrcultural/smil:tvrcultural.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 646,
+      "channel": "TVR Folclor",
+      "stream_url": "https://tvr-folclor.lg.mncdn.com/tvrfolclor/smil:tvrfolclor.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 647,
+      "channel": "TVR Iasi",
+      "stream_url": "http://82.208.141.70:8778/1.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 649,
+      "channel": "TVR Iasi",
+      "stream_url": "https://tvr-iasi.lg.mncdn.com/tvriasi/smil:tvriasi.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 650,
+      "channel": "TVR Info",
+      "stream_url": "https://tvr-info.lg.mncdn.com/tvrinfo/smil:tvrinfo.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 651,
+      "channel": "TVR International",
+      "stream_url": "https://tvr-international.lg.mncdn.com/tvrinternational/smil:tvrinternational.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 652,
+      "channel": "TVR Sport",
+      "stream_url": "https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 653,
+      "channel": "TVSat",
+      "stream_url": "http://89.38.8.130:39443",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 654,
+      "channel": "TV Brezová",
+      "stream_url": "https://videostudioris.sk/hls/tvb.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 655,
+      "channel": "TV Nové Zámky",
+      "stream_url": "https://livestream.lznet.work/hls/nztv-playout/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 656,
+      "channel": "AXN White Test",
+      "stream_url": "https://t.freetv.fun/live/axn-white.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 657,
+      "channel": "Prima SK",
+      "stream_url": "http://88.212.15.19/live/test_prima_plus_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 669,
+      "channel": "Mór VTV",
+      "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/HDE041.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 670,
+      "channel": "Jászsági Térségi TV Feed 2",
+      "stream_url": "https://cloudfront41.lexanetwork.com:1344/relay41_1/livestream001.sdp/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 672,
+      "channel": "Antena 3 CNN",
+      "stream_url": "https://live3vox.antenaplay.ro/a3free/a3free.m3u8",
+      "value": false,
+      "basis": "explicit decision=tv_verified"
+    },
+    {
+      "index": 679,
+      "channel": "TV JOJ Feed 3",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=JOJ",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 681,
+      "channel": "JOJ 24 Feed 1",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=JOJ+24",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 683,
+      "channel": "TA3 Feed 2",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=TA3",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 687,
+      "channel": "90210",
+      "stream_url": "https://jmp2.uk/plu-65a67dd13af63d0008257f17.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 688,
+      "channel": "Alle hassen Chris",
+      "stream_url": "https://jmp2.uk/plu-622f6e1e2792150007e0b2ff.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 689,
+      "channel": "Antenne Kaernten",
+      "stream_url": "https://60efd7a2b4d02.streamlock.net/a_kaernten/ngrp:livestream_all/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 690,
+      "channel": "Antenne Steiermark",
+      "stream_url": "https://60efd7a2b4d02.streamlock.net/a_steiermark/ngrp:livestream_all/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 694,
+      "channel": "arte HD",
+      "stream_url": "https://dash4.antik.sk/live/test_arte_avc_25p/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 696,
+      "channel": "Auction Hunters",
+      "stream_url": "https://jmp2.uk/plu-5ede45d077746000072be0fe.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 697,
+      "channel": "Awkward",
+      "stream_url": "https://jmp2.uk/plu-62bc1784120ba80007935aaa.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 698,
+      "channel": "Becker",
+      "stream_url": "https://jmp2.uk/plu-630348a54c48ce00077eb6c7.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 699,
+      "channel": "Beverly Hills 90210",
+      "stream_url": "https://jmp2.uk/plu-60afb576053df900076fa2f0.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 700,
+      "channel": "BIG BROTHER CLASSIC",
+      "stream_url": "https://jmp2.uk/plu-663e09e4b18d700008e48dcf.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 701,
+      "channel": "CC Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-5d4947590ba40f75dc29c26b.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 702,
+      "channel": "Cheers",
+      "stream_url": "https://jmp2.uk/plu-611e7f224676bf00076a4d8d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 703,
+      "channel": "Comedy Central South Park",
+      "stream_url": "https://jmp2.uk/plu-60c716084d842c00085f6e64.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 704,
+      "channel": "DAZN Darts x Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-64b67f0424ade50008a3be17.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 705,
+      "channel": "DAZN Heldinnen x Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-64afe50c5dc16600087f3227.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 706,
+      "channel": "Drake & Josh",
+      "stream_url": "https://jmp2.uk/plu-65a67c494a10d800085cab06.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 707,
+      "channel": "FIFA+ German",
+      "stream_url": "https://4397879b.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWRlX0ZJRkFQbHVzR2VybWFuX0hMUw/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 708,
+      "channel": "Frasier",
+      "stream_url": "https://jmp2.uk/plu-62cebf042ffc6d0007c4e59a.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 709,
+      "channel": "Frasier: Berühmte Gäste",
+      "stream_url": "https://jmp2.uk/plu-6790fa9e1cfc4aa96dfadcef.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 710,
+      "channel": "FS1 Salzburg",
+      "stream_url": "http://stream.fs1.tv:8080/hls/webstream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 711,
+      "channel": "FS1 Salzburg",
+      "stream_url": "https://stream.fs1.tv/hls/webstream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 712,
+      "channel": "FUEL TV",
+      "stream_url": "https://amg01074-fueltv-fueltvemeaen-rakuten-b6j62.amagi.tv/hls/amagi_hls_data_rakutenAA-fueltvemeaen/CDN/master.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 713,
+      "channel": "Germany Shore",
+      "stream_url": "https://jmp2.uk/plu-6447dea7e94c380008dba94c.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 714,
+      "channel": "Hitradio O3",
+      "stream_url": "https://studiocam-oe3.mdn.ors.at/orf/studiocam_oe3/q6a/manifest.mpd",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 715,
+      "channel": "Hitradio O3",
+      "stream_url": "https://studiocam-oe3.mdn.ors.at/orf/studiocam_oe3/q6a/master.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 716,
+      "channel": "Hitradio Ö3",
+      "stream_url": "https://studiocam-oe3.mdn.ors.at/out/u/studiocam_oe3/q6a/manifest_1.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 717,
+      "channel": "iCarly",
+      "stream_url": "https://jmp2.uk/plu-5e8b580a233dc90007f0cb9d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 720,
+      "channel": "KIT-TV",
+      "stream_url": "https://everest.pa-hosting.de:3591/live/joseflive.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 721,
+      "channel": "Kronehit",
+      "stream_url": "https://bitcdn-kronehit.bitmovin.com/v2/hls/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 723,
+      "channel": "Ländle TV",
+      "stream_url": "https://streaming13.huberwebmedia.at/LiveApp/streams/985585225397790082777809.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 724,
+      "channel": "McLeods Töchter",
+      "stream_url": "https://jmp2.uk/plu-66c6fcfc6838ee00085beb1a.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 725,
+      "channel": "Mission Impossible",
+      "stream_url": "https://jmp2.uk/plu-634fe5afece2e60007c9d8b8.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 726,
+      "channel": "MTV Catfish TV Show",
+      "stream_url": "https://jmp2.uk/plu-5db6a697d5f34a000934cd13.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 727,
+      "channel": "MTV Dating",
+      "stream_url": "https://jmp2.uk/plu-5caf330ea5068259a32320fd.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 728,
+      "channel": "MTV Pluto TV",
+      "stream_url": "https://jmp2.uk/plu-5caf325764025859afdd6c4d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 729,
+      "channel": "MTV Reality",
+      "stream_url": "https://jmp2.uk/plu-685136fb33a52de120bbb086.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 730,
+      "channel": "MTV Ridiculousness",
+      "stream_url": "https://jmp2.uk/plu-5f9847fd513250000728a9a5.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 731,
+      "channel": "MTV Teen Mom",
+      "stream_url": "https://jmp2.uk/plu-5cffcf5686dfe15595fb3f56.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 733,
+      "channel": "NDR Fernsehen International",
+      "stream_url": "https://ndrint.akamaized.net/hls/live/2020766/ndr_int/index.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 734,
+      "channel": "Nick Jr. Club",
+      "stream_url": "https://jmp2.uk/plu-67f3eb1c443f0671bc03ece8.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 735,
+      "channel": "Nickelodeon",
+      "stream_url": "https://ma.anixa.tv/clips/stream/nickelodeon/playlist.php",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 736,
+      "channel": "Nickelodeon Classics",
+      "stream_url": "https://jmp2.uk/plu-67f3eb800a1beb98767ca748.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 737,
+      "channel": "Nickelodeon Teen",
+      "stream_url": "https://jmp2.uk/plu-5f0d668b872e4400073acc68.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 738,
+      "channel": "Nickelodeon Toons",
+      "stream_url": "https://jmp2.uk/plu-5ede448d3d50590007a4419e.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 739,
+      "channel": "Okto TV",
+      "stream_url": "https://cdn3.wowza.com/1/MHFtazJReW5rOFhP/N2NWNDZ2/hls/live/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 740,
+      "channel": "ORF 1",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/50/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 742,
+      "channel": "ORF 2",
+      "stream_url": "http://88.212.15.19/live/test_orf_zwei_tizen/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 747,
+      "channel": "Perry Mason",
+      "stream_url": "https://jmp2.uk/plu-64eddc3485efec00085b0369.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 748,
+      "channel": "Pluto TV Action",
+      "stream_url": "https://jmp2.uk/plu-65004605110545000842035d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 749,
+      "channel": "Pluto TV Adult Animation",
+      "stream_url": "https://jmp2.uk/plu-67f68bd2135aeda9ddf0ef54.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 750,
+      "channel": "Pluto TV Animals",
+      "stream_url": "https://jmp2.uk/plu-5d767ae7b456c8cf265ce922.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 751,
+      "channel": "Pluto TV Anime",
+      "stream_url": "https://jmp2.uk/plu-608181d420fc8500075f612a.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 752,
+      "channel": "Pluto TV Britische Serien",
+      "stream_url": "https://jmp2.uk/plu-677e5a3d7bffa6000808dbf2.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 753,
+      "channel": "Pluto TV Bud & Terence",
+      "stream_url": "https://jmp2.uk/plu-64be7398e4391c0008cdedfe.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 754,
+      "channel": "Pluto TV Comedy Therapie",
+      "stream_url": "https://jmp2.uk/plu-69b968ba255fecb01f602257.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 755,
+      "channel": "Pluto TV Crime",
+      "stream_url": "https://jmp2.uk/plu-5e7b6c60fd20c50007910bf5.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 756,
+      "channel": "Pluto TV Deutsche Comedy",
+      "stream_url": "https://jmp2.uk/plu-6672f49f61a39900089db68e.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 757,
+      "channel": "Pluto TV Explore",
+      "stream_url": "https://jmp2.uk/plu-5ad9b8551b95267e225e59c1.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 758,
+      "channel": "Pluto TV Ferne Galaxien",
+      "stream_url": "https://jmp2.uk/plu-68ada46d5190a45dc9c45af1.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 759,
+      "channel": "Pluto TV Food",
+      "stream_url": "https://jmp2.uk/plu-5dc280c9aa218c0009724b4b.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 760,
+      "channel": "Pluto TV Fran: Beste Mama-Momente",
+      "stream_url": "https://jmp2.uk/plu-69b968e011fc7b9e27c0d958.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 761,
+      "channel": "Pluto TV Haialarm",
+      "stream_url": "https://jmp2.uk/plu-69b015c5d29cc97de7da4af8.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 762,
+      "channel": "Pluto TV Historische Serien",
+      "stream_url": "https://jmp2.uk/plu-68ada3395190a45dc9c445cf.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 763,
+      "channel": "Pluto TV History",
+      "stream_url": "https://jmp2.uk/plu-5d767b1c126c65d0a307355f.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 764,
+      "channel": "Pluto TV Horror",
+      "stream_url": "https://jmp2.uk/plu-62f4f4b88157cf00075c22db.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 765,
+      "channel": "Pluto TV Horror-Serien",
+      "stream_url": "https://jmp2.uk/plu-67ff7d9c7fc25e0e72451bc9.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 766,
+      "channel": "Pluto TV Kult Comedies",
+      "stream_url": "https://jmp2.uk/plu-66337de656fc840008ff7a65.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 767,
+      "channel": "Pluto TV Kultfilme",
+      "stream_url": "https://jmp2.uk/plu-5dde47b63585b500099f74ec.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 768,
+      "channel": "Pluto TV Laughs in Spanish",
+      "stream_url": "https://jmp2.uk/plu-69a554179a3f3bb488c7d2be.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 769,
+      "channel": "Pluto TV Movies",
+      "stream_url": "https://jmp2.uk/plu-5c5c3b948002db3c3e0b262e.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 770,
+      "channel": "Pluto TV Mystery",
+      "stream_url": "https://jmp2.uk/plu-617aad99b68ef100072608cd.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 771,
+      "channel": "Pluto TV Nature",
+      "stream_url": "https://jmp2.uk/plu-5be1c3f9851dd5632e2c91b2.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 772,
+      "channel": "Pluto TV Nordic Crime",
+      "stream_url": "https://jmp2.uk/plu-67d984408d8dc3d7754dccf2.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 773,
+      "channel": "Pluto TV Paranormal",
+      "stream_url": "https://jmp2.uk/plu-5f98487036af340008da1e37.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 774,
+      "channel": "Pluto TV Polizeiserien",
+      "stream_url": "https://jmp2.uk/plu-64be64445dc166000899ce75.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 775,
+      "channel": "Pluto TV Reportagen",
+      "stream_url": "https://jmp2.uk/plu-68ada3edf84960586ad31c7d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 776,
+      "channel": "Pluto TV Romance",
+      "stream_url": "https://jmp2.uk/plu-5dc287ce3086a20009f5024c.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 777,
+      "channel": "Pluto TV Sci-Fi",
+      "stream_url": "https://jmp2.uk/plu-60ed498c4248a400077c0b9d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 778,
+      "channel": "Pluto TV Science",
+      "stream_url": "https://jmp2.uk/plu-5d767b4889bca2ce7b73ef2e.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 779,
+      "channel": "Pluto TV Serie",
+      "stream_url": "https://jmp2.uk/plu-5dc190f7bfed110009d934c3.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 780,
+      "channel": "Pluto TV Sitcoms",
+      "stream_url": "https://jmp2.uk/plu-5d767ab2b456c8cf265ce921.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 781,
+      "channel": "Pluto TV Snooker 900",
+      "stream_url": "https://jmp2.uk/plu-68ac5543a1ac0c90f2c8943e.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 782,
+      "channel": "Pluto TV Space",
+      "stream_url": "https://jmp2.uk/plu-61409f8d6feb30000766b675.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 783,
+      "channel": "Pluto TV Star Trek",
+      "stream_url": "https://jmp2.uk/plu-6152ee71bf99590007893a11.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 784,
+      "channel": "Pluto TV Star Trek: Animation",
+      "stream_url": "https://jmp2.uk/plu-69492467ae33e24d916e56cf.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 785,
+      "channel": "Pluto TV True Crime",
+      "stream_url": "https://jmp2.uk/plu-615333098185f00008715a56.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 786,
+      "channel": "Pluto TV Weihnachten im Sommer",
+      "stream_url": "https://jmp2.uk/plu-642ad072283aa4000806148c.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 787,
+      "channel": "Pluto TV Western",
+      "stream_url": "https://jmp2.uk/plu-630dd3b2605f140007e002f5.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 788,
+      "channel": "Pluto TV Western Serien",
+      "stream_url": "https://jmp2.uk/plu-682453215c646751955e1204.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 789,
+      "channel": "Pluto TV Worst of Bundy",
+      "stream_url": "https://jmp2.uk/plu-69b968ca1c36025fd0a3d92d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 790,
+      "channel": "R9",
+      "stream_url": "https://ms01.w24.at/R9/smil:liveeventR9.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 795,
+      "channel": "Red Bull TV",
+      "stream_url": "https://3ea22335.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWdiX1JlZEJ1bGxUVl9ITFM/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 796,
+      "channel": "Red Bull TV",
+      "stream_url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 797,
+      "channel": "Red Bull TV",
+      "stream_url": "https://76b17ec8b2424026b8e1523836cc90e7.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-641-WORBEUENFAST-WHALETVPLUS/641/whaletvplus/hls/master/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 799,
+      "channel": "Red Bull TV AU",
+      "stream_url": "https://db34cc6127ac459db55cab5f97cd66b9.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-680-WORBAUENFAST-WHALETVPLUS/680/whaletvplus/hls/master/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 800,
+      "channel": "Red Bull TV BR",
+      "stream_url": "https://d03ae6b5c6724c24867e97a3dc04934a.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-1026-WORBBRPTFAST-WHALETVPLUS/1026/hls/master/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 801,
+      "channel": "Red Bull TV DE",
+      "stream_url": "https://46cfeb23c7f74853bba7a256655a3119.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-582-WORBDACHDEFAST-WHALETVPLUS/582/whaletvplus/hls/master/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 802,
+      "channel": "Red Bull TV ES",
+      "stream_url": "https://886bd3fbc782459f8de7555d32d7e9ce.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-957-WORBLATAMESFAST-WHALETVPLUS/957/whaletvplus/hls/master/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 803,
+      "channel": "Red Bull TV SD",
+      "stream_url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 804,
+      "channel": "Red Bull TV UK",
+      "stream_url": "https://1a3566cb46914c5499fbc86fbc4ac87e.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-932-WORBUKENFAST-WHALETVPLUS/932/whaletvplus/hls/master/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 805,
+      "channel": "Red Bull TV US",
+      "stream_url": "https://0b73ace69ebb45eaa249bb87837cb958.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-644-WORBUSENFAST-LG_US/644/lgtv/hls/master/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 806,
+      "channel": "RTV",
+      "stream_url": "http://iptv.rtv-ooe.at/stream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 807,
+      "channel": "Sabrina Total verhext!",
+      "stream_url": "https://jmp2.uk/plu-622f40c901d4b70007ad7609.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 808,
+      "channel": "Schladming-Dachstein TV",
+      "stream_url": "https://m317.video-stream-hosting.de/gzSoftware-live/_definst_/smil:livestream.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 810,
+      "channel": "Sky Sport Austria 1",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/31/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 811,
+      "channel": "South Park: Butters Collection",
+      "stream_url": "https://jmp2.uk/plu-646b14a0e94c3800082a8d3a.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 812,
+      "channel": "South Park: Cartman Collection",
+      "stream_url": "https://jmp2.uk/plu-646b14747cb4b1000875724d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 813,
+      "channel": "South Park: Kenny Collection",
+      "stream_url": "https://jmp2.uk/plu-646b1404ee6a2f00082b5d66.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 814,
+      "channel": "South Park: Kyle Collection",
+      "stream_url": "https://jmp2.uk/plu-646b14d0e1979c0008915a09.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 815,
+      "channel": "South Park: Original Version",
+      "stream_url": "https://jmp2.uk/plu-646b150a15939400089e2702.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 816,
+      "channel": "South Park: Stan Collection",
+      "stream_url": "https://jmp2.uk/plu-646b1438e94c3800082a8cff.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 817,
+      "channel": "SpongeBob Schwammkopf",
+      "stream_url": "https://jmp2.uk/plu-5d00e8adaab96b5635b2a005.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 818,
+      "channel": "Sportdigital FUSSBALL",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/15/index.m3u8",
+      "value": true,
+      "basis": "derived PC only / Samsung unsafe"
+    },
+    {
+      "index": 819,
+      "channel": "Star Trek: The Next Generation",
+      "stream_url": "https://jmp2.uk/plu-69776ce979545c21a1220bff.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 820,
+      "channel": "Star Trek: The Original Series",
+      "stream_url": "https://jmp2.uk/plu-69776b58036e883f39e5ab8a.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 821,
+      "channel": "Steiermark TV",
+      "stream_url": "https://h056.video-stream-hosting.de/easycast8-live/_definst_/mp4:livestreamhd4/playlist.m3u8?ref=",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 823,
+      "channel": "Swamiji TV American",
+      "stream_url": "https://stream.swamiji.tv/YogaIPTV/smil:YogaStreamUS.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 824,
+      "channel": "Swamiji TV Australian",
+      "stream_url": "https://stream.swamiji.tv/YogaIPTV/smil:YogaStreamAU.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 825,
+      "channel": "Swamiji TV European",
+      "stream_url": "https://stream.swamiji.tv/YogaIPTV/smil:YogaStream.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 826,
+      "channel": "Takeshi's Castle",
+      "stream_url": "https://jmp2.uk/plu-6054a9f4bc8a5f000771504c.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 827,
+      "channel": "Terra Mater WILD",
+      "stream_url": "https://53ff3982.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmxheHhUVi1ldV9UZXJyYU1hdGVyV2lsZF9ITFM/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 829,
+      "channel": "The L Word – Wenn Frauen lieben",
+      "stream_url": "https://jmp2.uk/plu-68d2759a59fd82da3226492d.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 830,
+      "channel": "Tirol TV",
+      "stream_url": "https://streaming14.huberwebmedia.at/LiveApp/streams/livestream.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 831,
+      "channel": "Totally Turtles",
+      "stream_url": "https://jmp2.uk/plu-5d6792bd6be2998ad0ccce30.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 834,
+      "channel": "W24",
+      "stream_url": "https://ms01.w24.at/W24/smil:liveevent.smil/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 835,
+      "channel": "Zee One German",
+      "stream_url": "https://e4955b54.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1kZV9aZWVPbmVfSExT/playlist.m3u8",
+      "value": false,
+      "basis": "derived Verified"
+    },
+    {
+      "index": 855,
+      "channel": "AXN Adria",
+      "stream_url": "http://5.57.74.130:8000/play/a0at/index.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 859,
+      "channel": "IDJTV",
+      "stream_url": "https://best-str.umn.cdn.united.cloud/stream?channel=idjhd&p=In$trum300na765ta&player=m3u8&sp=idjtv&stream=hp1400&u=idjtv",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 864,
+      "channel": "Nova",
+      "stream_url": "https://best-str.umn.cdn.united.cloud/stream?channel=novashd&p=n0v43!23t001&player=m3u8&sp=novas&stream=hp7000&u=novas",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 873,
+      "channel": "Radio Hit FM TV",
+      "stream_url": "https://peer2.tdiradio.com/static/streaming-playlists/hls/bab99862-ec1c-474f-9a02-4f8c8677d565/0.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 874,
+      "channel": "Radio Karolina TV",
+      "stream_url": "https://peer2.tdiradio.com/static/streaming-playlists/hls/4207de1d-52e8-4591-ad9e-218069b864d1/0.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 875,
+      "channel": "Radio Lola",
+      "stream_url": "https://peer2.tdiradio.com/static/streaming-playlists/hls/7c3ea8d3-49dc-4e1b-8b1e-dc6fab71f5cf/0.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 893,
+      "channel": "RTV Novi Pazar",
+      "stream_url": "https://tv.rtvnp.rs/stream.m3u8",
+      "value": false,
+      "basis": "explicit decision=tv_verified"
+    },
+    {
+      "index": 894,
+      "channel": "Sandzak TV",
+      "stream_url": "https://streaming.iptv.nextfiber.rs/nxt004/master.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 896,
+      "channel": "TDI Radio TV",
+      "stream_url": "https://peer2.tdiradio.com/static/streaming-playlists/hls/8f5d84ce-e8ac-4109-9975-9665f5605557/master.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 898,
+      "channel": "TV Arta",
+      "stream_url": "https://gjirafa-video-live.gjirafa.net/gjvideo-live/mps-vgx-u9p-qv1/index.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 901,
+      "channel": "TV Hram",
+      "stream_url": "https://vod1.laki.eu/live/hram/index.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 903,
+      "channel": "TV Pi Kanal",
+      "stream_url": "https://stream.pikanal.rs/pikanal/pgm.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    },
+    {
+      "index": 905,
+      "channel": "ZICO TV",
+      "stream_url": "https://gjirafa-video-live.gjirafa.net/gjvideo-live/j3a-n14-2pf-g3s/index.m3u8",
+      "value": false,
+      "basis": "explicit decision=verified"
+    }
+  ],
+  "unresolved": [
+    {
+      "index": 120,
+      "channel": "Neshama TV",
+      "stream_url": null,
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": null,
+      "samsung": null,
+      "language_match": null
+    },
+    {
+      "index": 246,
+      "channel": "Televízia Nové Zámky [SK/HU] [Legacy alternate]",
+      "stream_url": "http://s1.media-planet.sk/live/novezamky/BratuMarian.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 282,
+      "channel": "TV Budakalasz",
+      "stream_url": "https://stream.streaming4u.hu/TVBudakalasz/tracks-v1a1/mono.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 310,
+      "channel": "TV Severka",
+      "stream_url": "https://cdnsk003.panaccess.com/local/Severka/index.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": null,
+      "language_match": null
+    },
+    {
+      "index": 313,
+      "channel": "TV Vega",
+      "stream_url": "http://88.212.7.11/live/test_tv_vega_web_player/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": null,
+      "language_match": null
+    },
+    {
+      "index": 321,
+      "channel": "TV Poprad",
+      "stream_url": "http://213.81.153.221:8080/poprad",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": null,
+      "language_match": null
+    },
+    {
+      "index": 342,
+      "channel": "TV Lux",
+      "stream_url": "https://stream.tvlux.sk/lux/ngrp:lux.stream_all/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": null,
+      "language_match": null
+    },
+    {
+      "index": 356,
+      "channel": "Tanečné súťaže HD",
+      "stream_url": "http://88.212.7.10/live/tanecnesutaze/index.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 426,
+      "channel": "Bunyó TV",
+      "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-BUNYOTVFTA/index.fmp4.m3u8",
+      "decision": "pc_only",
+      "derived_decision": "PC only",
+      "vlc": "works",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 427,
+      "channel": "Classics TV",
+      "stream_url": "https://s01.diazol.hu:9152/live.m3u8",
+      "decision": "pc_only",
+      "derived_decision": "PC only",
+      "vlc": "works",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 435,
+      "channel": "M4 Sport",
+      "stream_url": "https://7nyaler.streamhostingcdn.top/stream/80/index.m3u8",
+      "decision": "pc_only",
+      "derived_decision": "PC only",
+      "vlc": "works",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 443,
+      "channel": "Disco TV",
+      "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.fmp4.m3u8",
+      "decision": "pc_only",
+      "derived_decision": "PC only",
+      "vlc": "works",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 446,
+      "channel": "Országgyűlés (Törvényalkotási bizottság)",
+      "stream_url": "http://tab.parlament.hu:1935/edgelive/smil:mkogytab.smil/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 447,
+      "channel": "Országgyűlés (Törvényalkotási bizottság)",
+      "stream_url": "https://tab.parlament.hu:446/edgelive/smil:mkogytab.smil/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 461,
+      "channel": "TV NRSR",
+      "stream_url": "https://n11.stv.livebox.sk/stv-tv/stv4.stream/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "works_with_warning",
+      "samsung": "works_with_warning",
+      "language_match": null
+    },
+    {
+      "index": 501,
+      "channel": "Oik TV",
+      "stream_url": "https://streamer05.low-latency.cz/oiktv/index.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 504,
+      "channel": "POLAR 2",
+      "stream_url": "https://stream.polar.cz/polar2/polarlive2-1/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 506,
+      "channel": "Poslanecká sněmovna ČR",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream1/playlist/cze.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 507,
+      "channel": "Poslanecká sněmovna ČR - Stream 3",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream3/playlist/cze.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 508,
+      "channel": "Poslanecká sněmovna ČR - Stream 4",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream4/playlist/cze.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 509,
+      "channel": "Poslanecká sněmovna ČR - Stream 5",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream5/playlist/cze.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 510,
+      "channel": "Poslanecká sněmovna ČR - Tiskové konference",
+      "stream_url": "https://pspcr-ott-live.ssl.cdn.cra.cz/channels/ps-stream2/playlist/cze.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 511,
+      "channel": "Praha TV",
+      "stream_url": "https://stream.polar.cz/prahatv/prahatvlive-1/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 530,
+      "channel": "RT Ústecko",
+      "stream_url": "https://1459594018.rsc.cdn77.org/1459594018/index.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 538,
+      "channel": "TV Gimi",
+      "stream_url": "https://stream-35.mazana.tv/jc2.jc.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "loads",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 555,
+      "channel": "ČT Sport Plus",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=%C4%8CT%20sport%20Plus",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "mrl_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 557,
+      "channel": "Šlágr Premium",
+      "stream_url": "https://stream-15.mazana.tv/slagrpremium.m3u",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "loads",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 561,
+      "channel": "Telke",
+      "stream_url": "https://tvgo02.antik.sk/live/test_telke/playlist_key_url.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "works",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 573,
+      "channel": "Alfa Omega TV",
+      "stream_url": "http://s5.alfaomega.tv:1935/alfaomega/smil:alfaomegatv/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 586,
+      "channel": "Credo TV",
+      "stream_url": "https://5bb3298db4821.streamlock.net/ctv/livecredo/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "generic_error",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 631,
+      "channel": "Super TV (1080i)",
+      "stream_url": "https://live.supertv.ro/live/supertv/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "works",
+      "samsung": "format_error",
+      "language_match": null
+    },
+    {
+      "index": 684,
+      "channel": "TV NRSR Feed 3",
+      "stream_url": "https://n15.stv.livebox.sk/stv-tv/_definst_/stv7.smil/playlist.m3u8",
+      "decision": "needs_review",
+      "derived_decision": "Needs review",
+      "vlc": "works_with_warning",
+      "samsung": "works_with_warning",
+      "language_match": null
+    }
+  ]
+}
