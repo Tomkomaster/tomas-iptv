@@ -490,3 +490,31 @@ http://46.36.41.106:8888/rebit/173.m3u8
 # Current direct Andromeda feed; test VLC + Samsung
 #EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema" group-title="Movies",JOJ Cinema
 https://live.cdn.joj.sk/live/andromeda/cinema-1080.m3u8
+# ============================================================
+# HUNT BATCH 2026-08-22 — FRESH UNTESTED CANDIDATES
+# ============================================================
+# JOJ Plus — 720p alternate of current JOJ broadcaster CDN candidate
+# Exact 720p URL is new to our audit; test whether Samsung handles it better than 1080p.
+#EXTINF:-1 tvg-id="JOJPlus.sk" tvg-name="JOJ Plus",JOJ Plus [TEST] [720p alternate]
+https://live.cdn.joj.sk/live/andromeda/plus-720.m3u8
+
+# JOJ Krimi — former WAU CDN path, 720p alternate
+# JOJ Krimi replaced WAU in 2026; test whether this lower-bitrate CDN variant is TV-safe.
+#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ Krimi",JOJ Krimi [TEST] [720p alternate]
+https://live.cdn.joj.sk/live/andromeda/wau-720.m3u8
+
+# JOJ Šport — 720p alternate of current JOJ broadcaster CDN candidate
+# Exact 720p URL is new to our audit; test on VLC + Samsung.
+#EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport [TEST] [720p alternate]
+https://live.cdn.joj.sk/live/andromeda/joj_sport-720.m3u8
+
+# JOJ Cinema — 720p JOJ CDN alternate
+# Current audit has other JOJ Cinema candidates; this exact 720p broadcaster-CDN URL is new.
+#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema",JOJ Cinema [TEST] [720p alternate]
+https://live.cdn.joj.sk/live/andromeda/cinema-720.m3u8
+
+# Nova International — current external pass-through candidate
+# Recent maintained playlist source; exact URL is new to our audit.
+#EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [Pass-through]
+http://tvh.cyn.cz/stream/channelid/1406456571?profile=pass
+

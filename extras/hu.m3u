@@ -808,3 +808,11 @@ https://dstv.medialivecdn.hu:443/dstv/5b72522f9d6849c5b94ea26bf75c9a24.sdp/playl
 # Externally online 1080p H.264/AAC; TEST VLC + Samsung
 #EXTINF:-1 tvg-id="PilisTV.hu" tvg-name="Pilis TV" group-title="Regional",Pilis TV
 https://stream.streaming4u.hu:443/PilisTV/index.m3u8
+# ============================================================
+# HUNT BATCH 2026-08-22 — FRESH UNTESTED CANDIDATES
+# ============================================================
+# M4 Sport Plus — P2 fresh candidate from current maintained Hungary list
+# Forwarder candidate; test exact URL on VLC + Samsung before audit approval.
+#EXTINF:-1 tvg-id="M4SportPlus.hu" tvg-name="M4 Sport Plus",M4 Sport Plus [TEST] [Forwarder]
+https://sktv-forwarders.7m.pl/get.php?x=M4Plus
+
