@@ -1,0 +1,109 @@
+name: Temporary record failed batch and add hunt 3
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  record-and-hunt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: record-failed-hunt2-2026-08-22
+          fetch-depth: 0
+
+      - name: Record failures and add fresh candidates
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          tested = [
+              ('JOJ Plus', 'JOJPlus.sk', 'https://st01-1.iptv.joj.sk/102-tv-pc.m3u8'),
+              ('JOJ Plus', 'JOJPlus.sk', 'http://46.36.41.106:8888/rebit/7.m3u8'),
+              ('JOJ Krimi', 'JOJWAU.sk', 'https://st01-1.iptv.joj.sk/103-tv-pc.m3u8'),
+              ('JOJ Krimi', 'JOJWAU.sk', 'http://46.36.41.106:8888/rebit/12.m3u8'),
+              ('JOJ Šport', 'JOJSport.sk', 'https://st01-1.iptv.joj.sk/110-tv-pc.m3u8'),
+              ('JOJ Šport', 'JOJSport.sk', 'http://46.36.41.106:8888/rebit/79.m3u8'),
+              ('Nova International', None, 'http://46.36.41.106:8888/rebit/24.m3u8'),
+          ]
+
+          audit_path = Path('audit.json')
+          payload = json.loads(audit_path.read_text(encoding='utf-8'))
+          rows = payload['channels']
+          by_url = {str(r.get('stream_url') or '').strip(): r for r in rows if r.get('stream_url')}
+
+          added = updated = 0
+          for channel, tvg_id, url in tested:
+              row = by_url.get(url)
+              if row is None:
+                  row = {'channel': channel, 'stream_url': url}
+                  rows.append(row)
+                  by_url[url] = row
+                  added += 1
+              else:
+                  updated += 1
+              row['channel'] = channel
+              if tvg_id:
+                  row['tvg_id'] = tvg_id
+              row['playlist_country_code'] = 'SK'
+              row['output_country_code'] = 'SK'
+              row['expected_language_codes'] = ['slk']
+              row['observed_language_codes'] = ['slk']
+              row['language_match'] = 'yes'
+              row['vlc'] = 'generic_error'
+              row['samsung'] = 'generic_error'
+              row['vlc_note'] = 'User reported no playback on PC.'
+              row['samsung_note'] = 'User reported no playback on Samsung.'
+              row['decision'] = 'rejected'
+              row['exclude_from_playlist'] = True
+              row['tested_on'] = '2026-08-22'
+              row['reason'] = 'This exact feed failed on both tested devices.'
+              row['notes'] = 'Reject this exact URL only; continue searching for a different source.'
+              row['provenance'] = 'User-provided manual playback result'
+              row['discovery'] = 'Manual PC + Samsung test supplied 2026-08-22'
+
+          audit_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          fresh = [
+              ('https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20Plus', '# JOJ Plus — current Free-TV/mxnticek forwarder candidate\n#EXTINF:-1 tvg-id="JOJPlus.sk" tvg-name="JOJ Plus",JOJ Plus [TEST] [mxnticek]\nhttps://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20Plus\n'),
+              ('https://sktv.mxnticek.eu/new/stream.php?ch=Wau', '# JOJ Krimi — current Free-TV/mxnticek legacy WAU route\n# WAU was rebranded to JOJ KRIMI in 2026; verify current content identity while testing playback.\n#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ Krimi",JOJ Krimi [TEST] [mxnticek WAU route]\nhttps://sktv.mxnticek.eu/new/stream.php?ch=Wau\n'),
+              ('https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20%C5%A0port', '# JOJ Šport — current Free-TV/mxnticek forwarder candidate\n#EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport [TEST] [mxnticek]\nhttps://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20%C5%A0port\n'),
+              ('http://88.212.7.10/live/test_nova_int_25p/playlist.m3u8', '# Nova International — alternate Antik-origin candidate from CZ/SK playlist history\n# Different host/path from the failed REBIT and tvh.cyn candidates.\n#EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [Antik alternate]\nhttp://88.212.7.10/live/test_nova_int_25p/playlist.m3u8\n'),
+          ]
+
+          audit_text = audit_path.read_text(encoding='utf-8')
+          extras_path = Path('extras/sk.m3u')
+          text = extras_path.read_text(encoding='utf-8')
+          blocks = []
+          for url, block in fresh:
+              if url in audit_text:
+                  raise SystemExit(f'Fresh candidate already present in audit: {url}')
+              if url not in text:
+                  blocks.append(block)
+          if len(blocks) != 4:
+              raise SystemExit(f'Expected 4 fresh candidates, got {len(blocks)}')
+          marker = '\n# ============================================================\n# HUNT BATCH 3 — 2026-08-22 — FRESH UNTESTED CANDIDATES\n# ============================================================\n'
+          extras_path.write_text(text.rstrip() + marker + '\n'.join(blocks) + '\n', encoding='utf-8')
+
+          # Guards
+          final = json.loads(audit_path.read_text(encoding='utf-8'))['channels']
+          lookup = {r.get('stream_url'): r for r in final}
+          for _, _, url in tested:
+              row = lookup[url]
+              if row.get('exclude_from_playlist') is not True or row.get('decision') != 'rejected':
+                  raise SystemExit(f'Failure not recorded decisively: {url}')
+          print(f'Recorded 7 failed tests ({added} new, {updated} updated) and added 4 fresh candidates.')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json extras/sk.m3u
+          git commit -m "Record failed channel tests and add next candidates"
+          git push origin HEAD:record-failed-hunt2-2026-08-22
