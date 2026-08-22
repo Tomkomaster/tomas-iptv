@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from iptv.audit import validate_audit_items
+from iptv.playback_status import normalize_test_status
 from iptv.audit_storage import (
     GENERATED_CONTEXT_FIELDS,
     MANUAL_AUDIT_SCHEMA_VERSION,
@@ -71,6 +72,37 @@ class AuditStorageTests(unittest.TestCase):
         self.assertEqual(compact["decision"], "rejected")
         self.assertIs(compact["exclude_from_playlist"], True)
         self.assertEqual(compact["reason"], "Manual decision.")
+
+    def test_pc_only_may_be_explicitly_excluded(self):
+        warnings, ambiguities = validate_audit_items([{
+            "channel": "PC-only example",
+            "stream_url": "https://example.test/pc-only.m3u8",
+            "vlc": "works",
+            "samsung": "format_error",
+            "decision": "pc_only",
+            "exclude_from_playlist": True,
+        }], [])
+        self.assertEqual(warnings, [])
+        self.assertEqual(ambiguities, [])
+
+    def test_repository_decisive_rows_have_explicit_exclusion(self):
+        payload = json.loads((ROOT / "audit.json").read_text(encoding="utf-8"))
+        failures = []
+        decisive_decisions = {"verified", "tv_verified", "rejected", "pc_only"}
+        decisive_samsung = {"works", "format_error", "generic_error", "loads"}
+
+        for index, row in enumerate(payload["channels"], start=1):
+            if "exclude_from_playlist" in row:
+                continue
+            decision = str(row.get("decision") or "").strip().casefold().replace(" ", "_")
+            samsung = normalize_test_status(str(row.get("samsung") or ""))
+            if decision in decisive_decisions or samsung in decisive_samsung:
+                failures.append(
+                    f"row {index} ({row.get('channel')}): decision={decision or 'auto'}, "
+                    f"samsung={samsung}"
+                )
+
+        self.assertEqual(failures, [], "\n".join(failures))
 
     def test_machine_telemetry_is_rejected(self):
         row = {"channel": "Example", "probe_status": "HTTP error", "http_status": 503}

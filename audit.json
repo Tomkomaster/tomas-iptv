@@ -5328,7 +5328,8 @@
       "discovery": "extras/hu.m3u manual candidate test",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Tokod [Időkép Webcam] (2560x1440)",
@@ -6075,7 +6076,8 @@
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Veszprém TV [TEST] [Official YouTube Live]",
@@ -7787,7 +7789,8 @@
       "discovery": "Manual VLC + Samsung test",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Televízia Močenok",
@@ -9383,7 +9386,8 @@
       "reason": "The stream works correctly in VLC but Samsung does not support this feed.",
       "notes": "PC-only Bunyó TV fMP4 alternative. Keep for testing/history but prefer Feed 1, which is verified on both VLC and Samsung.",
       "provenance": "Curated extras/hu.m3u EuroCable fragmented-MP4 HLS alternative; manually tested",
-      "discovery": "extras/hu.m3u manual playback test; Bunyó TV Feed 2"
+      "discovery": "extras/hu.m3u manual playback test; Bunyó TV Feed 2",
+      "exclude_from_playlist": true
     },
     {
       "channel": "Classics TV",
@@ -9405,7 +9409,8 @@
       "reason": "The HTTPS alternate works correctly in VLC but fails on Samsung.",
       "notes": "PC-only Classics TV alternative. Keep the existing HTTP :9150 feed as the preferred verified stream because it works on both VLC and Samsung.",
       "provenance": "Curated extras/hu.m3u Diazol HTTPS alternative; manually tested",
-      "discovery": "extras/hu.m3u manual playback test; Classics TV HTTPS alternate"
+      "discovery": "extras/hu.m3u manual playback test; Classics TV HTTPS alternate",
+      "exclude_from_playlist": true
     },
     {
       "channel": "Club Dance Online TV",
@@ -9591,7 +9596,8 @@
       "reason": "The stream works correctly in VLC but Samsung does not support this feed.",
       "notes": "PC-only M4 Sport alternative. The host is a third-party source rather than a broadcaster-owned endpoint, so do not treat it as the preferred stable family feed.",
       "provenance": "IPTV-org raw third-party M4 Sport alternative; manually tested",
-      "discovery": "IPTV-org raw alternative; M4 Sport Feed 2"
+      "discovery": "IPTV-org raw alternative; M4 Sport Feed 2",
+      "exclude_from_playlist": true
     },
     {
       "channel": "M4 Sport",
@@ -9775,7 +9781,8 @@
       "reason": "The stream works correctly in VLC but Samsung does not support this fMP4 feed.",
       "notes": "PC-only Disco TV alternative. Prefer Feed 1 or Feed 2 because both are verified on VLC and Samsung.",
       "provenance": "Curated extras/hu.m3u EuroCable fragmented-MP4 HLS alternative; manually retested",
-      "discovery": "extras/hu.m3u manual playback test; Disco TV Feed 3"
+      "discovery": "extras/hu.m3u manual playback test; Disco TV Feed 3",
+      "exclude_from_playlist": true
     },
     {
       "channel": "EBS",
@@ -9843,7 +9850,8 @@
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Országgyűlés (Törvényalkotási bizottság)",
@@ -9869,7 +9877,8 @@
       "discovery": "Manual VLC + Samsung retest",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "RTG int.",
@@ -11080,7 +11089,8 @@
       "reason": "Manual playback failed, but possible non-24/7 availability makes this test inconclusive.",
       "notes": "The feed failed on both tested devices, but it may have been off-air at test time. Re-test during a confirmed Oik TV broadcast before permanently rejecting this exact URL.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "Panorama TV",
@@ -11146,7 +11156,8 @@
       "reason": "Manual playback failed, but possible non-24/7 availability makes this test inconclusive.",
       "notes": "The feed failed on both tested devices, but it may have been off-air at test time. Re-test during a confirmed POLAR 2 broadcast before permanently rejecting this exact URL.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "Polar TV",
@@ -11193,7 +11204,8 @@
       "discovery": "Manual VLC + Samsung test",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Poslanecká sněmovna ČR - Stream 3",
@@ -11218,7 +11230,8 @@
       "discovery": "Manual VLC + Samsung test",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Poslanecká sněmovna ČR - Stream 4",
@@ -11243,7 +11256,8 @@
       "discovery": "Manual VLC + Samsung test",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Poslanecká sněmovna ČR - Stream 5",
@@ -11268,7 +11282,8 @@
       "discovery": "Manual VLC + Samsung test",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Poslanecká sněmovna ČR - Tiskové konference",
@@ -11293,7 +11308,8 @@
       "discovery": "Manual VLC + Samsung test",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Praha TV",
@@ -11315,7 +11331,8 @@
       "reason": "Manual playback failed, but possible non-24/7 availability makes this test inconclusive.",
       "notes": "The feed failed on both tested devices, but it may have been off-air at test time. Re-test during a confirmed Praha TV broadcast before permanently rejecting this exact URL.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "Prima",
@@ -11742,7 +11759,8 @@
       "reason": "Manual playback failed, but possible non-24/7 availability makes this test inconclusive.",
       "notes": "The feed failed on both tested devices, but a possible off-air period cannot be ruled out. Re-test during confirmed RT Ústecko programming before permanently rejecting this exact URL.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "RTM Plus Feed 2",
@@ -11920,7 +11938,8 @@
       "reason": "Manual playback failed, but possible non-24/7 availability makes this test inconclusive.",
       "notes": "The feed did not produce usable playback on either tested device, but a possible off-air period cannot be ruled out. Re-test during confirmed TV Gimi programming before permanently rejecting this exact URL.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "TV Noe",
@@ -12286,7 +12305,8 @@
       "reason": "Manual playback failed, but possible non-24/7 availability makes this test inconclusive.",
       "notes": "The feed failed on both tested devices, but a possible event-only/off-air period cannot be ruled out. Re-test during a confirmed ČT Sport Plus event before permanently rejecting this exact URL.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "ČT24",
@@ -12330,7 +12350,8 @@
       "reason": "Manual playback failed, but possible intermittent availability makes this test inconclusive.",
       "notes": "VLC only kept loading and Samsung reported NOT_SUPPORTED_FILE. A temporary off-air period cannot be ruled out, so re-test before permanently rejecting this exact URL.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "Štramberk - náměstí",
@@ -12417,7 +12438,8 @@
       "reason": "VLC worked earlier, but Samsung was tested more than 2 hours later; retest both at approximately the same time.",
       "notes": "VLC: ok. Samsung: NOT_SUPPORTED_FILE. Needs review.",
       "provenance": "User-provided stream (manual playback review)",
-      "discovery": "Manual VLC + Samsung test"
+      "discovery": "Manual VLC + Samsung test",
+      "exclude_from_playlist": true
     },
     {
       "channel": "TV Myjava",
@@ -12696,7 +12718,8 @@
       "discovery": "IPTV-org Romania raw alternatives",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Angelus TV",
@@ -12997,7 +13020,8 @@
       "discovery": "IPTV-org Romania raw alternatives",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Credo TV",
@@ -14045,7 +14069,8 @@
       "discovery": "IPTV-org Romania",
       "source_flags": [
         "Not 24/7"
-      ]
+      ],
+      "exclude_from_playlist": true
     },
     {
       "channel": "Tele7ABC HD",
