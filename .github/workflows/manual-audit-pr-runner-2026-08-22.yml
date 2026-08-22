@@ -1,18 +1,14 @@
 name: Temporary manual audit runner
 
 on:
-  workflow_run:
-    workflows:
-      - Validate pull requests
-    types:
-      - completed
+  schedule:
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
 
 jobs:
   patch-audit:
-    if: github.event.workflow_run.id == 31934390045
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
