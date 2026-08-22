@@ -589,4 +589,31 @@ http://88.212.15.50/live/test_joj_sport_hd_hevc/playlist.m3u8
 # Different exact host from previously rejected Nova International candidates.
 #EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [88.212.15.50]
 http://88.212.15.50/live/test_nova_int_25p/playlist.m3u8
+# ============================================================
+# HUNT BATCH 5 — 2026-08-22 — FRESH UNTESTED CANDIDATES
+# ============================================================
+# JOJ Cinema — alternate 88.212.15.50 candidate
+# Same host family that produced the verified JOJ Sport/Nova International feeds; exact URL is untested.
+#EXTINF:-1 tvg-id="JOJCinema.sk" tvg-name="JOJ Cinema",JOJ Cinema [TEST] [88.212.15.50]
+http://88.212.15.50/live/test_joj_cinema_25p/playlist.m3u8
+
+# FILMBOX+ One — alternate 88.212.15.50 candidate
+# Source labels this as FilmBox+ One / Filmbox; verify current channel identity during playback.
+#EXTINF:-1 tvg-name="FILMBOX+ One",FILMBOX+ One [TEST] [88.212.15.50]
+http://88.212.15.50/live/test_filmbox/playlist.m3u8
+
+# Nova Sport 3 SK — January 2026 community candidate
+# Exact endpoint published as Nova Sport 3; manual PC + Samsung test required.
+#EXTINF:-1 tvg-name="Nova Sport 3 SK",Nova Sport 3 SK [TEST] [185.188.188.237]
+http://185.188.188.237:5000/live/novasport3/playlist.m3u8
+
+# Nova Sport 4 SK — January 2026 community candidate
+# Exact endpoint published as Nova Sport 4; manual PC + Samsung test required.
+#EXTINF:-1 tvg-name="Nova Sport 4 SK",Nova Sport 4 SK [TEST] [185.188.188.237]
+http://185.188.188.237:5000/live/novasport4/playlist.m3u8
+
+# Nova Sport 5 SK — January 2026 community candidate
+# Exact endpoint published as Nova Sport 5; manual PC + Samsung test required.
+#EXTINF:-1 tvg-name="Nova Sport 5 SK",Nova Sport 5 SK [TEST] [185.188.188.237]
+http://185.188.188.237:5000/live/novasport5/playlist.m3u8
 
