@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Finalize explicit exclusion decisions
-        run: python3 tools/_audit_exclusion_finalize_temp.py
+        run: PYTHONPATH=. python3 tools/_audit_exclusion_finalize_temp.py
 
       - name: Commit finalized audit decisions
         shell: bash
