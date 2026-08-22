@@ -112,12 +112,6 @@
     },
     {
       "country_code": "HU",
-      "channel": "Fishing and Hunting",
-      "priority": "P2",
-      "reason": "Known tested source is Czech-language; a Hungarian-language working source is still needed."
-    },
-    {
-      "country_code": "HU",
       "channel": "Eurosport 1",
       "priority": "P2",
       "reason": "Major sports channel with Hungarian-language service."
@@ -522,13 +516,6 @@
       "tvg_id": "TelePaks.hu",
       "priority": "P3",
       "reason": "Local Hungarian broadcaster; the current tested stream failed on both target devices and a replacement source is needed."
-    },
-    {
-      "country_code": "HU",
-      "channel": "Kapos TV",
-      "tvg_id": "KaposTV.hu",
-      "priority": "P3",
-      "reason": "Regional Hungarian broadcaster; current feed works in VLC but not on Samsung, so a TV-safe replacement or compatible alternate is needed."
     },
     {
       "country_code": "HU",
