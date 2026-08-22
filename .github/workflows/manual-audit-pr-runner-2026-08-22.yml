@@ -55,3 +55,5 @@ jobs:
           fi
           git commit -m "Record manual VLC and Samsung playback tests"
           git push origin HEAD:audit/manual-playback-2026-08-22
+
+# Second push trigger after workflow already exists on main.
