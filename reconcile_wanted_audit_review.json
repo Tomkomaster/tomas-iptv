@@ -1,0 +1,1416 @@
+{
+  "verified_count": 504,
+  "countries": {
+    "AT": {
+      "wanted_count": 54,
+      "candidates": [
+        {
+          "wanted": "ORF 1",
+          "wanted_tvg_id": "ORF1.at",
+          "priority": "P1",
+          "matches": [
+            {
+              "score": 0.8,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "ORF 2",
+              "audit_tvg_id": "ORF2.at@SD",
+              "stream_url": "http://88.212.15.19/live/test_orf_zwei_tizen/playlist.m3u8",
+              "tested_on": "2026-08-15"
+            }
+          ]
+        },
+        {
+          "wanted": "krone.tv",
+          "wanted_tvg_id": "kronetv.at",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Kronehit",
+              "audit_tvg_id": "Kronehit.at@SD",
+              "stream_url": "https://bitcdn-kronehit.bitmovin.com/v2/hls/playlist.m3u8",
+              "tested_on": "2026-08-15"
+            }
+          ]
+        },
+        {
+          "wanted": "kanal3 Steiermark",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Steiermark TV",
+              "audit_tvg_id": "SteiermarkTV.at@SD",
+              "stream_url": "https://h056.video-stream-hosting.de/easycast8-live/_definst_/mp4:livestreamhd4/playlist.m3u8?ref=",
+              "tested_on": "2026-08-15"
+            },
+            {
+              "score": 0.743,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Antenne Steiermark",
+              "audit_tvg_id": "AntenneSteiermark.at@SD",
+              "stream_url": "https://60efd7a2b4d02.streamlock.net/a_steiermark/ngrp:livestream_all/playlist.m3u8",
+              "tested_on": "2026-08-15"
+            }
+          ]
+        }
+      ]
+    },
+    "HU": {
+      "wanted_count": 83,
+      "candidates": [
+        {
+          "wanted": "Discovery Channel",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Discovery Turbo Xtra",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Discovery Science",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Investigation Discovery",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/index.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disco TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://iptv02.eurocable.co.hu:15400/ECS-DISCOTVHD/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Viasat History",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "History",
+              "audit_tvg_id": "History.hu@SD",
+              "stream_url": "http://88.212.15.19/live/history_hun/index.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        },
+        {
+          "wanted": "Eurosport 1",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sport 1",
+              "audit_tvg_id": "Sport1.hu@SD",
+              "stream_url": "http://88.212.15.19/live/sport1_hun/index.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        },
+        {
+          "wanted": "Eurosport 2",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sport 2",
+              "audit_tvg_id": "Sport2.hu@SD",
+              "stream_url": "http://88.212.15.19/live/sport2_hun/index.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        },
+        {
+          "wanted": "DSTV",
+          "wanted_tvg_id": "DSTV.hu",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.857,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "DTV",
+              "audit_tvg_id": "DTV.hu@SD",
+              "stream_url": "http://cloudfront44.lexanetwork.com:1732/hlsrelay003/hls/livestream.sdp.m3u8",
+              "tested_on": "2026-08-09"
+            },
+            {
+              "score": 0.75,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "ESTV",
+              "audit_tvg_id": "ESTV.hu@SD",
+              "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay44_1/HDE040.sdp/playlist.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        },
+        {
+          "wanted": "Komáromi Televízió",
+          "wanted_tvg_id": "KomaromiTelevizio.hu",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.75,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Makói Városi Televízió",
+              "audit_tvg_id": "",
+              "stream_url": "http://makomedia.mikrohalo.hu/hls/makotv.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        },
+        {
+          "wanted": "Bicskei Városi Televízió",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.826,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Makói Városi Televízió",
+              "audit_tvg_id": "",
+              "stream_url": "http://makomedia.mikrohalo.hu/hls/makotv.m3u8",
+              "tested_on": "2026-08-09"
+            },
+            {
+              "score": 0.745,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Oroszlányi Városi Televízió",
+              "audit_tvg_id": "OroszlanyiVarosiTelevizio.hu@SD",
+              "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast002.sdp/playlist.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        },
+        {
+          "wanted": "Bátor Televízió",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.727,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Debrecen Televízió",
+              "audit_tvg_id": "",
+              "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay44_1/livestream002.sdp/playlist.m3u8",
+              "tested_on": "2026-08-10"
+            }
+          ]
+        },
+        {
+          "wanted": "Orosházi Városi Televízió",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.885,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Oroszlányi Városi Televízió",
+              "audit_tvg_id": "OroszlanyiVarosiTelevizio.hu@SD",
+              "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/broadcast002.sdp/playlist.m3u8",
+              "tested_on": "2026-08-09"
+            },
+            {
+              "score": 0.766,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Makói Városi Televízió",
+              "audit_tvg_id": "",
+              "stream_url": "http://makomedia.mikrohalo.hu/hls/makotv.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        },
+        {
+          "wanted": "Kecel Városi TV",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.8,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Cegléd Városi TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://cloudfront44.lexanetwork.com:1344/relay01/HDE031.sdp/playlist.m3u8",
+              "tested_on": "2026-08-10"
+            }
+          ]
+        },
+        {
+          "wanted": "KisDuna TV Dunaharaszti",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Duna",
+              "audit_tvg_id": "Duna.hu@SD",
+              "stream_url": "http://88.212.15.19/live/duna_hun/index.m3u8",
+              "tested_on": "2026-08-09"
+            }
+          ]
+        }
+      ]
+    },
+    "SK": {
+      "wanted_count": 71,
+      "candidates": [
+        {
+          "wanted": "DOK TV",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.8,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "TV DK",
+              "audit_tvg_id": "TVDK.sk@SD",
+              "stream_url": "https://5ca49f2417d90.streamlock.net/live/dolnykubin1/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "CANAL+ SPORT SK",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.741,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Arena Sport 1",
+              "audit_tvg_id": "ArenaSport1.sk@SD",
+              "stream_url": "http://88.212.15.19/live/test_arenasport/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.741,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Arena Sport 2",
+              "audit_tvg_id": "ArenaSport2.sk@SD",
+              "stream_url": "http://88.212.15.19/live/test_arenasport_dva/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "NZTV",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.75,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "HNTV",
+              "audit_tvg_id": "",
+              "stream_url": "https://dash3.antik.sk/live/test_hntv/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "TV Prešov",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "TV7 Prešov",
+              "audit_tvg_id": "",
+              "stream_url": "https://cdnsk003.panaccess.com/local/TV7/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Spartak.tv",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.727,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "PARK TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://dash2.antik.sk/live/test_park_tv/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Televízia VECTER",
+          "wanted_tvg_id": "",
+          "priority": "P4",
+          "matches": [
+            {
+              "score": 0.75,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Televízia Turiec",
+              "audit_tvg_id": "",
+              "stream_url": "https://cdnsk003.panaccess.com/local/Turiec/index.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.733,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Televízia OSEM",
+              "audit_tvg_id": "TV8.sk@SD",
+              "stream_url": "http://109.74.145.11:1935/tv8/ngrp:tv8.stream_all/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.733,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Televízia OSEM",
+              "audit_tvg_id": "TV8.sk@SD",
+              "stream_url": "http://109.74.145.11:1935/tv8/mp4:tv8.stream_360p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        }
+      ]
+    },
+    "CZ": {
+      "wanted_count": 169,
+      "candidates": [
+        {
+          "wanted": "Prima +1",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/prima_avc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Prima Krimi",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/prima_avc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Prima Max",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/prima_avc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.737,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima Star",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/test_prima_star_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.737,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima Zoom",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/prima_zoom_avc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Prima sport",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/prima_avc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.762,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima Show",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/test_prima_show_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.762,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Prima Star",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/test_prima_star_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "CS Film",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Film+",
+              "audit_tvg_id": "FilmPlus.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Filmbox+ Action",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Film+",
+              "audit_tvg_id": "FilmPlus.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Filmbox+ Stream",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Film+",
+              "audit_tvg_id": "FilmPlus.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Film Europe Channel",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Film+",
+              "audit_tvg_id": "FilmPlus.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Film Europe Plus",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Film+",
+              "audit_tvg_id": "FilmPlus.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "CS History",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "History",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/test_history/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.778,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "History2",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/test_h2/playlist.m3u8",
+              "tested_on": "2026-08-14"
+            },
+            {
+              "score": 0.75,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Viasat History",
+              "audit_tvg_id": "ViasatHistory.cz@SD",
+              "stream_url": "http://88.212.15.29/live/test_viasat_history_atk_tv/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Nova Sport 1",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Nova",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Nova Sport 2",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Nova",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Nova Sport 3",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Nova",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Nova Sport 4",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Nova",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Nova Sport 5",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Nova",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Nova Sport 6",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Nova",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19:80/live/test_nova_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Sport 3",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.769,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sport1",
+              "audit_tvg_id": "Sport1.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_sport1_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.769,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sport2",
+              "audit_tvg_id": "Sport2.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_sport_2/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.769,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sporty TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://dash2.antik.sk/live/sporty_tv/index.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Disney Junior",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disney Channel Feed 1",
+              "audit_tvg_id": "DisneyChannel.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_disney/playlist.m3u8",
+              "tested_on": "2026-08-10"
+            }
+          ]
+        },
+        {
+          "wanted": "DVTV",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "DVTV Extra",
+              "audit_tvg_id": "",
+              "stream_url": "https://antik.streaming.tivio.studio/channels/IxLi19VRasgu94bIaXbH/index.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "TV FILMpro",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Film+",
+              "audit_tvg_id": "FilmPlus.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Televize R",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.8,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Televize Prerov",
+              "audit_tvg_id": "",
+              "stream_url": "https://173.212.247.21/live/tvprerov.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.72,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Televize Seznam",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/test_seznam_hevc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "AXN Mystery",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.762,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "CS Mystery",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.17/live/test_cs_mystery_avc_25p/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Filmbox+ Arthouse",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Film+",
+              "audit_tvg_id": "FilmPlus.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_film_plus_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            }
+          ]
+        },
+        {
+          "wanted": "Mňam TV",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.75,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Mňau TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://5ca49f2417d90.streamlock.net/mnau/livestream/playlist.m3u8",
+              "tested_on": "2026-08-14"
+            }
+          ]
+        },
+        {
+          "wanted": "eSports TV",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.769,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sport1",
+              "audit_tvg_id": "Sport1.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_sport1_25p/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.769,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sport2",
+              "audit_tvg_id": "Sport2.cz@SD",
+              "stream_url": "http://88.212.15.19/live/test_sport_2/playlist.m3u8",
+              "tested_on": "2026-08-11"
+            },
+            {
+              "score": 0.769,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Sporty TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://dash2.antik.sk/live/sporty_tv/index.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Music Box",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Classic",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_classic/index.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Dance",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_dance/index.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Hits",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_hits/index.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Sexy",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_sexy/index.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        },
+        {
+          "wanted": "Music Channel",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Classic",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_classic/index.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Dance",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_dance/index.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Hits",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_hits/index.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Music Box Sexy",
+              "audit_tvg_id": "",
+              "stream_url": "http://88.212.15.19/live/mb_sexy/index.m3u8",
+              "tested_on": "2026-08-12"
+            },
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Retro Music TV",
+              "audit_tvg_id": "",
+              "stream_url": "https://stream.mediawork.cz/retrotv/smil:retrotv2.smil/playlist.m3u8",
+              "tested_on": "2026-08-12"
+            }
+          ]
+        }
+      ]
+    },
+    "RO": {
+      "wanted_count": 167,
+      "candidates": [
+        {
+          "wanted": "Prima News",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.778,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Pro TV News",
+              "audit_tvg_id": "PROTVNews.ro@SD",
+              "stream_url": "https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-ro-voyo-news/playlist.m3u8?offsetSeconds=0&url=0",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "AXN White",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "AXN White Test",
+              "audit_tvg_id": "",
+              "stream_url": "https://t.freetv.fun/live/axn-white.m3u8",
+              "tested_on": "2026-08-14"
+            }
+          ]
+        },
+        {
+          "wanted": "Disney Jr.",
+          "wanted_tvg_id": "",
+          "priority": "P2",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Disney Channel",
+              "audit_tvg_id": "DisneyChannel.bg@SD",
+              "stream_url": "http://213.91.179.28:8000/play/a059",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "PRO TV Internațional",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.824,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "TVR International",
+              "audit_tvg_id": "TVRInternational.ro@SD",
+              "stream_url": "https://tvr-international.lg.mncdn.com/tvrinternational/smil:tvrinternational.smil/playlist.m3u8",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "Zoom TV",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.75,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Boom TV",
+              "audit_tvg_id": "BoomTV.ro@HD",
+              "stream_url": "https://tvboom.ro/live-tv/live.m3u8",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "Music Channel",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.727,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Muscel TV",
+              "audit_tvg_id": "MuscelTV.ro@SD",
+              "stream_url": "https://cdn.streamnet.pro/musceltv/live/playlist.m3u8",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "Bollywood Classic",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.788,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Bollywood HD Russia",
+              "audit_tvg_id": "BollywoodHD.ro@Russia",
+              "stream_url": "https://xykt-fix.github.io/cinerama_edge01/hls/BOLLYWOOD_RU/Movie009.m3u8",
+              "tested_on": "2026-08-14"
+            }
+          ]
+        },
+        {
+          "wanted": "Bollywood Film",
+          "wanted_tvg_id": "",
+          "priority": "P3",
+          "matches": [
+            {
+              "score": 0.733,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Bollywood HD Russia",
+              "audit_tvg_id": "BollywoodHD.ro@Russia",
+              "stream_url": "https://xykt-fix.github.io/cinerama_edge01/hls/BOLLYWOOD_RU/Movie009.m3u8",
+              "tested_on": "2026-08-14"
+            }
+          ]
+        },
+        {
+          "wanted": "TVR Moldova",
+          "wanted_tvg_id": "",
+          "priority": "P4",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Moldova TV",
+              "audit_tvg_id": "MoldovaTV.md@SD",
+              "stream_url": "https://moldovatv.ro/live-tv/live.m3u8",
+              "tested_on": "2026-08-13"
+            },
+            {
+              "score": 0.727,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "TeleMoldova +",
+              "audit_tvg_id": "TeleMoldovaPlus.ro@SD",
+              "stream_url": "https://vdo.ssl-stream.com:3247/stream/play.m3u8",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "Cinemaraton Moldova",
+          "wanted_tvg_id": "",
+          "priority": "P4",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Moldova TV",
+              "audit_tvg_id": "MoldovaTV.md@SD",
+              "stream_url": "https://moldovatv.ro/live-tv/live.m3u8",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "Prima TV Moldova",
+          "wanted_tvg_id": "",
+          "priority": "P4",
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Moldova TV",
+              "audit_tvg_id": "MoldovaTV.md@SD",
+              "stream_url": "https://moldovatv.ro/live-tv/live.m3u8",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        },
+        {
+          "wanted": "CNN International",
+          "wanted_tvg_id": "",
+          "priority": "P4",
+          "matches": [
+            {
+              "score": 0.865,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "Antena International",
+              "audit_tvg_id": "AntenaInternational.ro@SD",
+              "stream_url": "https://stream1.antenaplay.ro/as/asrolive1/playlist.m3u8",
+              "tested_on": "2026-08-13"
+            },
+            {
+              "score": 0.824,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "TVR International",
+              "audit_tvg_id": "TVRInternational.ro@SD",
+              "stream_url": "https://tvr-international.lg.mncdn.com/tvrinternational/smil:tvrinternational.smil/playlist.m3u8",
+              "tested_on": "2026-08-13"
+            }
+          ]
+        }
+      ]
+    },
+    "RS": {
+      "wanted_count": 79,
+      "candidates": [
+        {
+          "wanted": "TV Panonija",
+          "wanted_tvg_id": "",
+          "priority": null,
+          "matches": [
+            {
+              "score": 0.9,
+              "tvg_match": false,
+              "exact_name": false,
+              "compact_exact": false,
+              "audit_channel": "TV Panon",
+              "audit_tvg_id": "",
+              "stream_url": "https://stream2.nmih.hu:4102/live.m3u8",
+              "tested_on": "2026-08-16"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
