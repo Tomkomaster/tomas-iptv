@@ -27,21 +27,6 @@
     },
     {
       "country_code": "SK",
-      "channel": "JOJ Plus",
-      "tvg_id": "JOJPlus.sk",
-      "priority": "P2",
-      "reason": "Active Slovak channel; the currently known/tested candidate is not stable, so a replacement or verified working feed is still needed.",
-      "notes": "Listed as PLUS on Slovak Wikipedia; audit identity uses JOJ Plus."
-    },
-    {
-      "country_code": "SK",
-      "channel": "JOJ Krimi",
-      "tvg_id": "JOJWAU.sk",
-      "priority": "P2",
-      "reason": "Active Slovak channel; the currently known/tested candidate is not stable, so a replacement or verified working feed is still needed."
-    },
-    {
-      "country_code": "SK",
       "channel": "JOJ Cinema",
       "tvg_id": "JOJCinema.sk",
       "priority": "P2",

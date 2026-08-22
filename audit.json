@@ -19849,6 +19849,101 @@
       "notes": "Reject this exact URL only; continue searching for a different source.",
       "provenance": "User-provided manual playback result",
       "discovery": "Manual PC + Samsung test supplied 2026-08-22"
+    },
+    {
+      "channel": "JOJ Plus",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20Plus",
+      "tvg_id": "JOJPlus.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "tested_on": "2026-08-22",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "notes": "Passed both manual playback tests.",
+      "exclude_from_playlist": false
+    },
+    {
+      "channel": "JOJ Krimi",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=Wau",
+      "tvg_id": "JOJWAU.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "tested_on": "2026-08-22",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "notes": "Passed both manual playback tests. Playback identity manually confirmed: the channel displays JOJ KRIMI, not legacy WAU branding.",
+      "exclude_from_playlist": false
+    },
+    {
+      "channel": "JOJ Šport",
+      "stream_url": "https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20%C5%A0port",
+      "tvg_id": "JOJSport.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "tested_on": "2026-08-22",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "exclude_from_playlist": true
+    },
+    {
+      "channel": "Nova International",
+      "stream_url": "http://88.212.7.10/live/test_nova_int_25p/playlist.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "tested_on": "2026-08-22",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "exclude_from_playlist": true
     }
   ]
 }
