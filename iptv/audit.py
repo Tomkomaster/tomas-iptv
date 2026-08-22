@@ -480,7 +480,9 @@ def validate_audit_items(
             )
 
         exclude = audit_excluded(item)
-        if exclude and decision_token in {"verified", "tv_verified", "pc_only"}:
+        # PC-only describes playback capability. It may also be explicitly
+        # excluded from the Samsung-safe shared playlist.
+        if exclude and decision_token in {"verified", "tv_verified"}:
             errors.append(
                 f"{label}: exclude_from_playlist=true conflicts with "
                 f"decision {item.get('decision')!r}."
