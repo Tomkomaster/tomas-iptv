@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  alias-review:
+  strong-reconcile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,70 +17,79 @@ jobs:
           ref: reconcile-wanted-audit-2026-08-22
           fetch-depth: 0
 
-      - name: Build alias-aware review report
+      - name: Reconcile by base tvg-id and normalized channel identity
         shell: bash
         run: |
           python3 - <<'PY'
           import json, re, unicodedata
-          from difflib import SequenceMatcher
           from pathlib import Path
 
           countries = ["at", "hu", "sk", "cz", "ro", "rs"]
-          country_set = {c.upper() for c in countries}
+          cset = {c.upper() for c in countries}
           audit = json.loads(Path("audit.json").read_text(encoding="utf-8"))["channels"]
 
-          def norm(s):
+          def norm_name(s):
               s = unicodedata.normalize("NFKC", s or "").casefold().replace("&", " and ")
               s = re.sub(r"\b(feed|stream)\s*\d+\b", " ", s)
               s = re.sub(r"\b(hd|sd|uhd|4k|1080p|720p|576p|432p)\b", " ", s)
               s = re.sub(r"[^a-z0-9\u00c0-\u024f]+", " ", s)
               return " ".join(s.split())
 
-          def compact(s):
-              return " ".join(t for t in norm(s).split() if t not in {"tv", "television", "televizia", "televizija", "channel", "kanal", "the"})
+          def tvg_base(s):
+              return (s or "").split("@", 1)[0].strip().casefold()
 
           verified = []
-          for row in audit:
-              if row.get("vlc") != "works" or row.get("samsung") != "works" or row.get("exclude_from_playlist") is True:
+          for a in audit:
+              if a.get("vlc") != "works" or a.get("samsung") != "works" or a.get("exclude_from_playlist") is True:
                   continue
-              cc = (row.get("output_country_code") or row.get("playlist_country_code") or "").upper()
-              if cc in country_set:
-                  verified.append(row)
+              cc = (a.get("output_country_code") or a.get("playlist_country_code") or "").upper()
+              if cc in cset:
+                  verified.append(a)
 
-          report = {"verified_count": len(verified), "countries": {}}
+          removed = []
+          changed = []
           for cc in countries:
-              data = json.loads(Path(f"data/wanted_channels_{cc}.json").read_text(encoding="utf-8"))
-              rows = data.get("channels", data.get("entries", []))
-              candidates = []
-              for w in rows:
-                  wc, wt = w.get("channel") or "", w.get("tvg_id") or ""
+              path = Path(f"data/wanted_channels_{cc}.json")
+              data = json.loads(path.read_text(encoding="utf-8"))
+              key = "channels" if "channels" in data else "entries"
+              before = data[key]
+              kept = []
+              for w in before:
                   wcc = (w.get("country_code") or w.get("country") or cc).upper()
-                  wn, wc2 = norm(wc), compact(wc)
+                  wn = norm_name(w.get("channel"))
+                  wt = tvg_base(w.get("tvg_id"))
                   matches = []
                   for a in verified:
                       acc = (a.get("output_country_code") or a.get("playlist_country_code") or "").upper()
                       if acc != wcc:
                           continue
-                      ac, at = a.get("channel") or "", a.get("tvg_id") or ""
-                      an, ac2 = norm(ac), compact(ac)
-                      tvg = bool(wt and at and wt == at)
-                      exact = bool(wn and an and wn == an)
-                      compact_exact = bool(wc2 and ac2 and wc2 == ac2)
-                      ratio = SequenceMatcher(None, wc2 or wn, ac2 or an).ratio() if (wc2 or wn) and (ac2 or an) else 0.0
-                      contained = bool(wc2 and ac2 and min(len(wc2), len(ac2)) >= 4 and (wc2 in ac2 or ac2 in wc2))
-                      score = 1.0 if tvg else (0.99 if exact else (0.96 if compact_exact else max(ratio, 0.90 if contained else 0.0)))
-                      if score >= 0.72:
-                          matches.append({"score": round(score, 3), "tvg_match": tvg, "exact_name": exact, "compact_exact": compact_exact, "audit_channel": ac, "audit_tvg_id": at, "stream_url": a.get("stream_url"), "tested_on": a.get("tested_on")})
-                  matches.sort(key=lambda x: (-x["score"], x["audit_channel"] or ""))
+                      an = norm_name(a.get("channel"))
+                      at = tvg_base(a.get("tvg_id"))
+                      why = None
+                      if wt and at and wt == at:
+                          why = "base_tvg_id"
+                      elif wn and an and wn == an:
+                          why = "normalized_channel"
+                      if why:
+                          matches.append((why, a))
                   if matches:
-                      candidates.append({"wanted": wc or wt, "wanted_tvg_id": wt, "priority": w.get("priority"), "matches": matches[:5]})
-              report["countries"][cc.upper()] = {"wanted_count": len(rows), "candidates": candidates}
+                      # Base tvg-id is authoritative when present; otherwise exact normalized name.
+                      matches.sort(key=lambda x: 0 if x[0] == "base_tvg_id" else 1)
+                      why, a = matches[0]
+                      removed.append({"country": wcc, "wanted": w.get("channel") or w.get("tvg_id"), "wanted_tvg_id": w.get("tvg_id"), "reason": why, "audit_channel": a.get("channel"), "audit_tvg_id": a.get("tvg_id"), "url": a.get("stream_url"), "tested_on": a.get("tested_on")})
+                  else:
+                      kept.append(w)
+              if len(kept) != len(before):
+                  data[key] = kept
+                  path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                  changed.append({"path": str(path), "before": len(before), "after": len(kept)})
 
-          Path("reconcile_wanted_audit_review.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          Path("reconcile_wanted_audit_strong_report.json").write_text(json.dumps({"verified_rows": len(verified), "removed": removed, "changed": changed}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"removed": removed, "changed": changed}, ensure_ascii=False, indent=2))
           PY
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reconcile_wanted_audit_review.json
-          git commit -m "Add temporary wanted-audit review report" || true
+          git add data/wanted_channels_*.json reconcile_wanted_audit_strong_report.json
+          git commit -m "Reconcile wanted catalogs by verified channel identity" || true
           git push origin HEAD:reconcile-wanted-audit-2026-08-22
