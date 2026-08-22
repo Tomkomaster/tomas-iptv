@@ -3,12 +3,6 @@
   "channels": [
     {
       "country_code": "HU",
-      "channel": "M4 Sport",
-      "priority": "P2",
-      "reason": "Major Hungarian sports channel; tested candidates do not provide a stable TV-safe Hungarian feed yet."
-    },
-    {
-      "country_code": "HU",
       "channel": "HBO",
       "priority": "P2",
       "reason": "Major premium movie channel with Hungarian-language service."

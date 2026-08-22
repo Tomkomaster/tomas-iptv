@@ -815,4 +815,10 @@ https://stream.streaming4u.hu:443/PilisTV/index.m3u8
 # Forwarder candidate; test exact URL on VLC + Samsung before audit approval.
 #EXTINF:-1 tvg-id="M4SportPlus.hu" tvg-name="M4 Sport Plus",M4 Sport Plus [TEST] [Forwarder]
 https://sktv-forwarders.7m.pl/get.php?x=M4Plus
+# ============================================================
+# MANUALLY VERIFIED FINDS — 2026-08-22
+# ============================================================
+# M4 Sport — manually verified on VLC + Samsung 2026-08-22
+#EXTINF:-1 tvg-id="M4Sport.hu@SD" tvg-name="M4 Sport",M4 Sport
+http://88.212.15.19/live/uatlmvixrr/index.m3u8
 

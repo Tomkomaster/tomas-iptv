@@ -517,4 +517,14 @@ https://live.cdn.joj.sk/live/andromeda/cinema-720.m3u8
 # Recent maintained playlist source; exact URL is new to our audit.
 #EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [Pass-through]
 http://tvh.cyn.cz/stream/channelid/1406456571?profile=pass
+# ============================================================
+# MANUALLY VERIFIED FINDS — 2026-08-22
+# ============================================================
+# National Geographic — manually verified on VLC + Samsung 2026-08-22
+#EXTINF:-1 tvg-name="National Geographic",National Geographic
+http://88.212.15.19/live/test_ngc/playlist.m3u8
+
+# National Geographic Wild — manually verified on VLC + Samsung 2026-08-22
+#EXTINF:-1 tvg-name="National Geographic Wild",National Geographic Wild
+http://88.212.15.29/live/test_ngw/playlist.m3u8
 
