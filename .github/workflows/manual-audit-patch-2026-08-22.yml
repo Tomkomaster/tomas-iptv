@@ -1,0 +1,211 @@
+name: One-time manual playback audit patch
+
+on:
+  push:
+    branches:
+      - audit/manual-playback-2026-08-22
+
+permissions:
+  contents: write
+
+jobs:
+  patch-audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/manual-playback-2026-08-22
+
+      - name: Apply manual playback results
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          TESTED_ON = "2026-08-22"
+
+          def norm_url(value):
+              value = str(value or "").strip().replace("\\", "/")
+              value = re.sub(r"^(https?):/+", r"\1://", value, flags=re.I)
+              return value.rstrip("/")
+
+          rows = [
+              # Austria
+              {"country":"AT","channel":"DORF TV","url":"https://stream.openplayout.org/hls/dorf_high/index.m3u8","kind":"fail"},
+              {"country":"AT","channel":"Gemeinde TV","url":"https://5a32c05065c79.streamlock.net/live/stream/playlist.m3u8","kind":"fail"},
+              {"country":"AT","channel":"K19","url":"https://cdn2.k19.at/K19/tv_1080/chunks.m3u8","kind":"fail"},
+              {"country":"AT","channel":"K19","url":"https://1853185335.rsc.cdn77.org/K192/tv/playlist.m3u8","kind":"fail"},
+              {"country":"AT","channel":"krone.tv","url":"https://kronetv.mdn.ors.at/out/u/kronetv-nodrm.m3u8","kind":"fail"},
+              {"country":"AT","channel":"K-TV","url":"https://d1pz8zear993v8.cloudfront.net/hlsme/kathtv.m3u8","kind":"fail"},
+              {"country":"AT","channel":"KURIER TV","url":"https://schautv.mdn.ors.at/out/u/schautv-nodrm.m3u8","kind":"fail"},
+              {"country":"AT","channel":"oe24.TV","url":"https://varoe24live.sf.apa.at/oe24-live1/oe24.smil/playlist.m3u8","kind":"fail"},
+              {"country":"AT","channel":"ORF 1","url":"http://88.212.15.19/live/test_orf_eins_tizen/playlist.m3u8","kind":"fail"},
+              {"country":"AT","channel":"ORF III","url":"https://orf3.mdn.ors.at/out/u/orf3/qxb/manifest.m3u8","kind":"fail"},
+              {"country":"AT","channel":"ORF III","url":"https://orf3.mdn.ors.at/orf/orf3/qxa/manifest.m3u8","kind":"fail"},
+              {"country":"AT","channel":"ORF Sport+","url":"https://orfs.mdn.ors.at/out/u/orfs/q8c/manifest.m3u8","kind":"fail"},
+              {"country":"AT","channel":"ORF Sport+","url":"https://orfs.mdn.ors.at/out/u/orfs/qxb/manifest.m3u8","kind":"fail"},
+              {"country":"AT","channel":"P3tv","url":"http://p3-6.mov.at:1935/live/weekstream/master.m3u8","kind":"fail"},
+              {"country":"AT","channel":"RTS Regional TV Salzburg","url":"https://58b42f6c8c9bf.streamlock.net:8080/live/RTS2015/playlist.m3u8","kind":"fail"},
+              {"country":"AT","channel":"ServusTV","url":"https://stv-live.akamaized.net/hls/live/2031011/lingeoSTVATwebPri/master.m3u8","kind":"fail"},
+              {"country":"AT","channel":"TV 1 Oberösterreich","url":"https://streaming10.huberwebmedia.at/LiveApp/streams/238985177034727564068269_adaptive.m3u8","kind":"works"},
+
+              # Hungary
+              {"country":"HU","channel":"Berente TV","url":"https://stream.streaming4u.hu:443/BerenteTV/index.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Daru TV","url":"https://darutv.medialivecdn.hu:443/darutv/7ca4e13b035b7c1ff5608c2c1e6f71e2.sdp/playlist.m3u8","kind":"fail"},
+              {"country":"HU","channel":"DSTV","url":"https://dstv.medialivecdn.hu:443/dstv/5b72522f9d6849c5b94ea26bf75c9a24.sdp/playlist.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Hegyvidék TV","url":"https://iptv02.eurocable.co.hu:15400/EC-HEGYVIDEKTV-FTA/index.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Kapos TV","url":"https://cloudfront44.lexanetwork.com:1344/relay01/broadcast004.sdp/playlist.m3u8","kind":"works","special":"Distinct Kapos TV feed. Keep separate from the other Kapos TV URL because they carry different programming."},
+              {"country":"HU","channel":"Kapos TV","url":"https://cloudfront63.lexanetwork.com:1344/relay01/livestream004.sdp/playlist.m3u8","kind":"pc_only_fail","special":"Distinct Kapos TV feed. Keep separate from the other Kapos TV URL because they carry different programming."},
+              {"country":"HU","channel":"Kiskőrös TV","url":"https://kiskorostv.medialivecdn.hu:443/kiskorostv/76eba7141912f897d4962dd55547cf67.sdp/playlist.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Komlós TV","url":"https://stream.streaming4u.hu/KomlosTV/tracks-v1a1/mono.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Komlós TV","url":"https://stream.streaming4u.hu:443/KomlosTV/index.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Óbuda TV","url":"https://stream.streaming4u.hu:443/ObudaTV/index.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Pilis TV","url":"https://stream.streaming4u.hu:443/PilisTV/index.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Rákosmente TV","url":"http://rakosmentetv.hu:8080/hls/rmtv.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Soltvadkerti Televízió","url":"https://soltvadkert.medialivecdn.hu:443/soltvadkerttv/135f0ef3069df243438549b446f911ab.sdp/playlist.m3u8","kind":"fail"},
+              {"country":"HU","channel":"TelePaks","url":"https://cloudfront44.lexanetwork.com:1344/relay02/livestream004.sdp/playlist.m3u8","kind":"fail"},
+              {"country":"HU","channel":"The Fishing and Hunting Channel HD","url":"http://88.212.15.19/live/fishing_hun/index.m3u8","kind":"works"},
+              {"country":"HU","channel":"Tisza TV","url":"https://www.tiszatv.hu/onlinetv/tiszatv_1.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Trimedio TV","url":"https://stream.streaming4u.hu/TriMedioTV/index.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Völgyhíd TV","url":"https://volgyhidtv.medialivecdn.hu/volgyhidtv/790283f9e4f5b818790551d075c335cf.sdp/playlist.m3u8","kind":"fail"},
+              {"country":"HU","channel":"VTV Füzesabony","url":"https://stream.nmih.hu:7962/live.m3u8","kind":"fail"},
+              {"country":"HU","channel":"Williams TV","url":"https://wtv.medialivecdn.hu:443/williams/9cc445f3fe303261970006b8e5b4949f.sdp/playlist.m3u8","kind":"fail"},
+              {"country":"HU","channel":"XV TV","url":"https://cloudfront44.lexanetwork.com:1344/relay01/HDE051.sdp/playlist.m3u8","kind":"fail"},
+
+              # Romania
+              {"country":"RO","channel":"Inedit TV","url":"http://edge8.imcr.ro:1359/live/myStream/playlist.m3u8","kind":"fail"},
+
+              # Serbia
+              {"country":"RS","channel":"DM Sat","url":"https://viamotionhsi.netplus.ch/live/eds/dmsat/browser-HLS8/dmsat.m3u8","kind":"fail"},
+              {"country":"RS","channel":"EDU TV","url":"https://5aa64ca8b95b8.streamlock.net:4443/edutv/edutelevizija/playlist.m3u8","kind":"fail"},
+              {"country":"RS","channel":"Happy","url":"https://stream1.happytv.rs/Happytv/myStream/playlist.m3u8","kind":"fail"},
+              {"country":"RS","channel":"Marsh TV","url":"http://cdn.dovecher.tv:8081/live/marsh/playlist.m3u8","kind":"fail"},
+              {"country":"RS","channel":"N1","url":"https://best-str.umn.cdn.united.cloud/stream?stream=sp1400&sp=n1info&channel=n1srp&u=n1info&p=n1Sh4redSecre7iNf0&player=m3u8","kind":"works"},
+              {"country":"RS","channel":"Narodna TV","url":"https://edge8.pink.rs/narodnatv/index.m3u8","kind":"fail"},
+              {"country":"RS","channel":"Pink","url":"https://edge8.pink.rs/pinktv/index.m3u8","kind":"fail"},
+              {"country":"RS","channel":"RTS 1","url":"https://webtvstream.bhtelecom.ba/rts1.m3u8","kind":"fail"},
+              {"country":"RS","channel":"RTS 2","url":"https://webtvstream.bhtelecom.ba/rts2.m3u8","kind":"fail"},
+              {"country":"RS","channel":"RTS Svet","url":"https://viamotionhsi.netplus.ch/live/eds/rtssat/browser-HLS8/rtssat.m3u8","kind":"fail"},
+              {"country":"RS","channel":"RTV BAP","url":"https://53be5ef2d13aa.streamlock.net/rtvbap/uzivo/playlist.m3u8","kind":"pc_only_fail"},
+              {"country":"RS","channel":"RTV Kragujevac","url":"https://6069699a9e3f3.streamlock.net/rtvkg/uzivo/chunklist_w1807951792.m3u8","kind":"black_samsung_fail"},
+              {"country":"RS","channel":"SOS Kanal Plus","url":"https://53be5ef2d13aa.streamlock.net/soskanalplus/soskanalplus.stream/playlist.m3u8","kind":"pc_only_fail"},
+              {"country":"RS","channel":"Top TV","url":"http://82.165.71.58:8081/TopTV/live/playlist.m3u8","kind":"fail"},
+              {"country":"RS","channel":"TV Belle Amie","url":"http://92.60.238.10:1935/live/belleamie/chunklist_w1811501290.m3u8","kind":"fail"},
+              {"country":"RS","channel":"TV Duga Plus","url":"http://109.92.29.10:1935/tvduga/tvduga/chunklist_w1097511114.m3u8","kind":"fail"},
+              {"country":"RS","channel":"TV Pirot","url":"https://5bc45691ca49f.streamlock.net/tvpirot/uzivo/playlist.m3u8","kind":"fail"},
+
+              # Slovakia
+              {"country":"SK","channel":"JOJ Cinema","url":"https://live.cdn.joj.sk/live/andromeda/cinema-1080.m3u8","kind":"fail"},
+              {"country":"SK","channel":"TV Pezinok","url":"http://46.36.41.106:8888/rebit/173.m3u8","kind":"fail"},
+              {"country":"SK","channel":"TV Severka","url":"http://88.212.7.11/live/test_severka_web_player/playlist.m3u8","kind":"fail"},
+          ]
+
+          path = Path("audit.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          channels = data.get("channels", [])
+          if len(rows) != 59:
+              raise SystemExit(f"Expected 59 supplied tests, got {len(rows)}")
+
+          missing = []
+          updated = 0
+          match_report = []
+
+          for row in rows:
+              target = norm_url(row["url"])
+              matches = [
+                  item for item in channels
+                  if norm_url(item.get("stream_url")) == target
+                  and str(item.get("playlist_country_code") or item.get("output_country_code") or "").upper() == row["country"]
+              ]
+              if not matches:
+                  # URL is the identity here; country metadata may have changed, so try URL-only before declaring missing.
+                  matches = [item for item in channels if norm_url(item.get("stream_url")) == target]
+              if not matches:
+                  missing.append(f'{row["country"]} {row["channel"]} :: {row["url"]}')
+                  continue
+
+              match_report.append((row["channel"], row["url"], len(matches)))
+              for item in matches:
+                  kind = row["kind"]
+                  item["tested_on"] = TESTED_ON
+                  item["discovery"] = "Manual VLC + Samsung test (2026-08-22)"
+
+                  if kind == "works":
+                      item["vlc"] = "works"
+                      item["samsung"] = "works"
+                      item["vlc_note"] = "ok"
+                      item["samsung_note"] = "ok"
+                      item["decision"] = "verified"
+                      item["exclude_from_playlist"] = False
+                      item["reason"] = "Passed both manual playback tests."
+                  elif kind == "fail":
+                      item["vlc"] = "generic_error"
+                      item["samsung"] = "format_error"
+                      item["vlc_note"] = "Immediately skips."
+                      item["samsung_note"] = "NOT_SUPPORTED_FILE"
+                      item["decision"] = "rejected"
+                      item["exclude_from_playlist"] = True
+                      item["reason"] = "Manual test 2026-08-22: VLC immediately skips; Samsung reports NOT_SUPPORTED_FILE."
+                  elif kind == "pc_only_fail":
+                      item["vlc"] = "works"
+                      item["samsung"] = "format_error"
+                      item["vlc_note"] = "ok"
+                      item["samsung_note"] = "NOT_SUPPORTED_FILE"
+                      item["decision"] = "rejected"
+                      item["exclude_from_playlist"] = True
+                      item["reason"] = "Manual test 2026-08-22: VLC works; Samsung reports NOT_SUPPORTED_FILE."
+                  elif kind == "black_samsung_fail":
+                      item["vlc"] = "works_with_warning"
+                      item["samsung"] = "format_error"
+                      item["vlc_note"] = "Opens, but video is black; possibly off-air/not 24/7."
+                      item["samsung_note"] = "NOT_SUPPORTED_FILE"
+                      item["decision"] = "rejected"
+                      item["exclude_from_playlist"] = True
+                      item["reason"] = "Manual test 2026-08-22: Samsung reports NOT_SUPPORTED_FILE; VLC opens but shows only black video (possibly off-air/not 24/7)."
+                  else:
+                      raise AssertionError(kind)
+
+                  special = row.get("special")
+                  if special:
+                      old = str(item.get("notes") or "").strip()
+                      if special not in old:
+                          item["notes"] = (old + " " + special).strip()
+                  updated += 1
+
+          if missing:
+              print("Missing audit URLs:")
+              print("\n".join(missing))
+              raise SystemExit(2)
+
+          # Every supplied URL must be independently represented. Multiple history rows for one exact URL are okay;
+          # all such rows receive the same device result so stale copies cannot re-enable a failed feed.
+          for channel, url, count in match_report:
+              print(f"MATCH {count}: {channel} :: {url}")
+          print(f"Updated {updated} audit row(s) from 59 supplied stream tests.")
+
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
+      - name: Validate JSON and tests
+        shell: bash
+        run: |
+          python -m json.tool audit.json >/dev/null
+          python run_tests.py
+          git diff --check
+          git diff --stat
+
+      - name: Commit audit update
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit."
+            exit 0
+          fi
+          git commit -m "Record manual VLC and Samsung playback tests"
+          git push origin HEAD:audit/manual-playback-2026-08-22
