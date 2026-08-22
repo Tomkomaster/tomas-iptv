@@ -56,13 +56,6 @@
     },
     {
       "country_code": "SK",
-      "channel": "JOJ 24",
-      "tvg_id": "JOJ24.sk",
-      "priority": "P1",
-      "reason": "Active Slovak channel; the currently known/tested candidate is not stable, so a replacement or verified working feed is still needed."
-    },
-    {
-      "country_code": "SK",
       "channel": "DVTV EXTRA SK",
       "priority": "P2",
       "reason": "Active nationwide Slovak television service; no stable Slovak stream is currently tracked."
