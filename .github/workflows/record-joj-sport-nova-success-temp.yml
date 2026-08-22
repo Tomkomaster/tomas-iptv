@@ -1,0 +1,145 @@
+name: Temporary record JOJ Sport and Nova successes
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: record-joj-sport-nova-success-2026-08-22
+          fetch-depth: 0
+
+      - name: Record exact manual playback results
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          tests = [
+              {
+                  'channel': 'JOJ Šport',
+                  'tvg_id': 'JOJSport.sk',
+                  'country': 'SK',
+                  'lang': 'slk',
+                  'url': 'http://88.212.15.50/live/test_joj_sport_hd_hevc/playlist.m3u8',
+                  'works': True,
+              },
+              {
+                  'channel': 'Nova International',
+                  'tvg_id': None,
+                  'country': 'SK',
+                  'lang': 'ces',
+                  'url': 'http://88.212.15.50/live/test_nova_int_25p/playlist.m3u8',
+                  'works': True,
+              },
+              {
+                  'channel': 'M4 Sport Plus',
+                  'tvg_id': 'M4SportPlus.hu',
+                  'country': 'HU',
+                  'lang': 'hun',
+                  'url': 'http://152.66.115.226:33391/bysid/103',
+                  'works': False,
+              },
+          ]
+
+          audit_path = Path('audit.json')
+          payload = json.loads(audit_path.read_text(encoding='utf-8'))
+          rows = payload['channels']
+          by_url = {}
+          for row in rows:
+              url = str(row.get('stream_url') or '').strip()
+              if url:
+                  if url in by_url:
+                      raise SystemExit(f'Duplicate exact audit URL before update: {url}')
+                  by_url[url] = row
+
+          added = updated = 0
+          for test in tests:
+              row = by_url.get(test['url'])
+              if row is None:
+                  row = {'channel': test['channel'], 'stream_url': test['url']}
+                  rows.append(row)
+                  by_url[test['url']] = row
+                  added += 1
+              else:
+                  updated += 1
+
+              row['channel'] = test['channel']
+              row['stream_url'] = test['url']
+              if test['tvg_id']:
+                  row['tvg_id'] = test['tvg_id']
+              row['playlist_country_code'] = test['country']
+              row['output_country_code'] = test['country']
+              row['expected_language_codes'] = [test['lang']]
+              row['observed_language_codes'] = [test['lang']]
+              row['language_match'] = 'yes'
+              row['tested_on'] = '2026-08-22'
+              row['provenance'] = 'User-provided manual playback result'
+              row['discovery'] = 'Manual PC + Samsung test supplied 2026-08-22'
+
+              if test['works']:
+                  row['vlc'] = 'works'
+                  row['samsung'] = 'works'
+                  row['vlc_note'] = 'ok'
+                  row['samsung_note'] = 'ok'
+                  row.pop('decision', None)
+                  row.pop('reason', None)
+                  row['notes'] = 'Passed both manual playback tests.'
+                  row['exclude_from_playlist'] = False
+              else:
+                  row['vlc'] = 'generic_error'
+                  row['samsung'] = 'generic_error'
+                  row['vlc_note'] = 'User reported no playback on PC.'
+                  row['samsung_note'] = 'User reported no playback on Samsung.'
+                  row['decision'] = 'rejected'
+                  row['reason'] = 'This exact feed failed on both tested devices.'
+                  row['notes'] = 'Reject this exact URL only; continue searching for a different source.'
+                  row['exclude_from_playlist'] = True
+
+          audit_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          wanted_path = Path('data/wanted_channels_sk.json')
+          wanted = json.loads(wanted_path.read_text(encoding='utf-8'))
+          before = len(wanted['channels'])
+          solved = {'JOJ ŠPORT', 'JOJ Šport', 'Nova International'}
+          wanted['channels'] = [r for r in wanted['channels'] if r.get('channel') not in solved]
+          removed = before - len(wanted['channels'])
+          if removed != 2:
+              raise SystemExit(f'Expected to remove exactly two SK wanted rows, removed {removed}')
+          wanted_path.write_text(json.dumps(wanted, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Guards.
+          final = json.loads(audit_path.read_text(encoding='utf-8'))['channels']
+          lookup = {r.get('stream_url'): r for r in final}
+          for test in tests:
+              row = lookup[test['url']]
+              expected_exclude = not test['works']
+              if row.get('exclude_from_playlist') is not expected_exclude:
+                  raise SystemExit(f'Wrong exclusion flag for {test["url"]}')
+              if test['works']:
+                  if row.get('vlc') != 'works' or row.get('samsung') != 'works':
+                      raise SystemExit(f'Working result not preserved for {test["url"]}')
+              elif row.get('decision') != 'rejected':
+                  raise SystemExit(f'Failed result not rejected for {test["url"]}')
+
+          remaining = {r.get('channel') for r in json.loads(wanted_path.read_text(encoding='utf-8'))['channels']}
+          if 'Nova International' in remaining or 'JOJ ŠPORT' in remaining or 'JOJ Šport' in remaining:
+              raise SystemExit('Solved SK targets remain in wanted list')
+
+          print(f'Recorded 3 results: {added} new audit rows, {updated} updated; removed two solved SK wanted targets.')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json data/wanted_channels_sk.json
+          git commit -m "Record JOJ Sport and Nova International successes"
+          git push origin HEAD:record-joj-sport-nova-success-2026-08-22
