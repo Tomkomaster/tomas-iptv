@@ -73,7 +73,6 @@ jobs:
         shell: bash
         run: |
           python3 run_tests.py
-          python3 -m tools.research_exports --public-dir public --priority-policy data/research_priority.json --wanted-channels data/wanted_channels.json
           git diff --check
 
       - name: Commit cleanup to branch
