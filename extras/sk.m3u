@@ -616,4 +616,21 @@ http://185.188.188.237:5000/live/novasport4/playlist.m3u8
 # Exact endpoint published as Nova Sport 5; manual PC + Samsung test required.
 #EXTINF:-1 tvg-name="Nova Sport 5 SK",Nova Sport 5 SK [TEST] [185.188.188.237]
 http://185.188.188.237:5000/live/novasport5/playlist.m3u8
+# ============================================================
+# HUNT BATCH 6 — 2026-08-22 — FRESH UNTESTED CANDIDATES
+# ============================================================
+# Premier Sport 1 SK — current community-listed HLS candidate
+# Fresh exact URL; manual PC + Samsung test required.
+#EXTINF:-1 tvg-name="PREMIER SPORT 1 SK",PREMIER SPORT 1 SK [TEST] [185.188.188.235]
+http://185.188.188.235/live/premiersport/playlist.m3u8
+
+# Premier Sport 3 — alternate direct IPTV candidate
+# Fresh exact URL from a separate source family; manual PC + Samsung test required.
+#EXTINF:-1 tvg-name="PREMIER SPORT 3",PREMIER SPORT 3 [TEST] [82.202.173.201]
+http://82.202.173.201:25461/okverd/123456/16117
+
+# CANAL+ SPORT SK — direct HLS candidate
+# Endpoint is publicly identified as CANAL+ Sport; verify playback and channel identity/audio suitability for the SK target.
+#EXTINF:-1 tvg-name="CANAL+ SPORT SK",CANAL+ SPORT SK [TEST] [78.130.250.2]
+http://78.130.250.2:8023/play/a02v/index.m3u8
 
