@@ -19944,6 +19944,76 @@
       "reason": "This exact feed failed on both tested devices.",
       "notes": "Reject this exact URL only; continue searching for a different source.",
       "exclude_from_playlist": true
+    },
+    {
+      "channel": "JOJ Šport",
+      "stream_url": "http://88.212.15.50/live/test_joj_sport_hd_hevc/playlist.m3u8",
+      "tvg_id": "JOJSport.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "tested_on": "2026-08-22",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "notes": "Passed both manual playback tests.",
+      "exclude_from_playlist": false
+    },
+    {
+      "channel": "Nova International",
+      "stream_url": "http://88.212.15.50/live/test_nova_int_25p/playlist.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "ces"
+      ],
+      "observed_language_codes": [
+        "ces"
+      ],
+      "language_match": "yes",
+      "tested_on": "2026-08-22",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22",
+      "vlc": "works",
+      "samsung": "works",
+      "vlc_note": "ok",
+      "samsung_note": "ok",
+      "notes": "Passed both manual playback tests.",
+      "exclude_from_playlist": false
+    },
+    {
+      "channel": "M4 Sport Plus",
+      "stream_url": "http://152.66.115.226:33391/bysid/103",
+      "tvg_id": "M4SportPlus.hu",
+      "playlist_country_code": "HU",
+      "output_country_code": "HU",
+      "expected_language_codes": [
+        "hun"
+      ],
+      "observed_language_codes": [
+        "hun"
+      ],
+      "language_match": "yes",
+      "tested_on": "2026-08-22",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "exclude_from_playlist": true
     }
   ]
 }
