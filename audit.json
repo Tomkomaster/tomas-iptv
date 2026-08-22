@@ -19675,6 +19675,180 @@
       "discovery": "Manual VLC + Samsung test supplied 2026-08-22",
       "notes": "Passed both manual playback tests.",
       "exclude_from_playlist": false
+    },
+    {
+      "channel": "JOJ Plus",
+      "stream_url": "https://st01-1.iptv.joj.sk/102-tv-pc.m3u8",
+      "tvg_id": "JOJPlus.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-22",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22"
+    },
+    {
+      "channel": "JOJ Plus",
+      "stream_url": "http://46.36.41.106:8888/rebit/7.m3u8",
+      "tvg_id": "JOJPlus.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-22",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22"
+    },
+    {
+      "channel": "JOJ Krimi",
+      "stream_url": "https://st01-1.iptv.joj.sk/103-tv-pc.m3u8",
+      "tvg_id": "JOJWAU.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-22",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22"
+    },
+    {
+      "channel": "JOJ Krimi",
+      "stream_url": "http://46.36.41.106:8888/rebit/12.m3u8",
+      "tvg_id": "JOJWAU.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-22",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22"
+    },
+    {
+      "channel": "JOJ Šport",
+      "stream_url": "https://st01-1.iptv.joj.sk/110-tv-pc.m3u8",
+      "tvg_id": "JOJSport.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-22",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22"
+    },
+    {
+      "channel": "JOJ Šport",
+      "stream_url": "http://46.36.41.106:8888/rebit/79.m3u8",
+      "tvg_id": "JOJSport.sk",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-22",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22"
+    },
+    {
+      "channel": "Nova International",
+      "stream_url": "http://46.36.41.106:8888/rebit/24.m3u8",
+      "playlist_country_code": "SK",
+      "output_country_code": "SK",
+      "expected_language_codes": [
+        "slk"
+      ],
+      "observed_language_codes": [
+        "slk"
+      ],
+      "language_match": "yes",
+      "vlc": "generic_error",
+      "samsung": "generic_error",
+      "vlc_note": "User reported no playback on PC.",
+      "samsung_note": "User reported no playback on Samsung.",
+      "decision": "rejected",
+      "exclude_from_playlist": true,
+      "tested_on": "2026-08-22",
+      "reason": "This exact feed failed on both tested devices.",
+      "notes": "Reject this exact URL only; continue searching for a different source.",
+      "provenance": "User-provided manual playback result",
+      "discovery": "Manual PC + Samsung test supplied 2026-08-22"
     }
   ]
 }

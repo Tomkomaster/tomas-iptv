@@ -557,4 +557,24 @@ http://46.36.41.106:8888/rebit/79.m3u8
 # Nova International — REBIT candidate
 #EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [REBIT]
 http://46.36.41.106:8888/rebit/24.m3u8
+# ============================================================
+# HUNT BATCH 3 — 2026-08-22 — FRESH UNTESTED CANDIDATES
+# ============================================================
+# JOJ Plus — current Free-TV/mxnticek forwarder candidate
+#EXTINF:-1 tvg-id="JOJPlus.sk" tvg-name="JOJ Plus",JOJ Plus [TEST] [mxnticek]
+https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20Plus
+
+# JOJ Krimi — current Free-TV/mxnticek legacy WAU route
+# WAU was rebranded to JOJ KRIMI in 2026; verify current content identity while testing playback.
+#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ Krimi",JOJ Krimi [TEST] [mxnticek WAU route]
+https://sktv.mxnticek.eu/new/stream.php?ch=Wau
+
+# JOJ Šport — current Free-TV/mxnticek forwarder candidate
+#EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport [TEST] [mxnticek]
+https://sktv.mxnticek.eu/new/stream.php?ch=JOJ%20%C5%A0port
+
+# Nova International — alternate Antik-origin candidate from CZ/SK playlist history
+# Different host/path from the failed REBIT and tvh.cyn candidates.
+#EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [Antik alternate]
+http://88.212.7.10/live/test_nova_int_25p/playlist.m3u8
 
