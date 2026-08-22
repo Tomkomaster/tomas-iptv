@@ -45,11 +45,12 @@ class AuditStorageTests(unittest.TestCase):
         self.assertEqual(compact["vlc_note"], "manual VLC check")
         self.assertEqual(compact["tested_on"], "2026-08-13")
         self.assertEqual(compact["notes"], "Keep this manual note.")
+        self.assertIs(compact["exclude_from_playlist"], False)
 
         for field in (
             "protocol", "language", "language_code", "language_codes",
             "playlist_language_code", "output_language_code", "samsung",
-            "samsung_note", "decision", "exclude_from_playlist",
+            "samsung_note", "decision",
         ):
             self.assertNotIn(field, compact)
 
@@ -96,8 +97,6 @@ class AuditStorageTests(unittest.TestCase):
                 failures.append(f"row {index}: generated context {generated}")
             if row.get("decision") == "auto":
                 failures.append(f"row {index}: explicit default decision")
-            if row.get("exclude_from_playlist") is False:
-                failures.append(f"row {index}: explicit default exclusion")
 
         self.assertEqual(failures, [], "\n".join(failures))
 
