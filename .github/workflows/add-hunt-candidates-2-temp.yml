@@ -1,0 +1,58 @@
+name: Temporary add second hunt candidates
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hunt-candidates-2026-08-22-2
+          fetch-depth: 0
+
+      - name: Append fresh Slovak candidates
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          candidates = [
+              ('https://st01-1.iptv.joj.sk/102-tv-pc.m3u8', '# JOJ Plus — official JOJ IPTV endpoint candidate\n#EXTINF:-1 tvg-id="JOJPlus.sk" tvg-name="JOJ Plus",JOJ Plus [TEST] [JOJ IPTV]\nhttps://st01-1.iptv.joj.sk/102-tv-pc.m3u8\n'),
+              ('http://46.36.41.106:8888/rebit/7.m3u8', '# JOJ Plus — REBIT candidate\n#EXTINF:-1 tvg-id="JOJPlus.sk" tvg-name="JOJ Plus",JOJ Plus [TEST] [REBIT]\nhttp://46.36.41.106:8888/rebit/7.m3u8\n'),
+              ('https://st01-1.iptv.joj.sk/103-tv-pc.m3u8', '# JOJ Krimi / former WAU — official JOJ IPTV endpoint candidate\n#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ Krimi",JOJ Krimi [TEST] [JOJ IPTV]\nhttps://st01-1.iptv.joj.sk/103-tv-pc.m3u8\n'),
+              ('http://46.36.41.106:8888/rebit/12.m3u8', '# JOJ Krimi / former WAU — REBIT candidate\n#EXTINF:-1 tvg-id="JOJWAU.sk" tvg-name="JOJ Krimi",JOJ Krimi [TEST] [REBIT]\nhttp://46.36.41.106:8888/rebit/12.m3u8\n'),
+              ('https://st01-1.iptv.joj.sk/110-tv-pc.m3u8', '# JOJ Šport — official JOJ IPTV endpoint candidate\n#EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport [TEST] [JOJ IPTV]\nhttps://st01-1.iptv.joj.sk/110-tv-pc.m3u8\n'),
+              ('http://46.36.41.106:8888/rebit/79.m3u8', '# JOJ Šport — REBIT candidate\n#EXTINF:-1 tvg-id="JOJSport.sk" tvg-name="JOJ Šport",JOJ Šport [TEST] [REBIT]\nhttp://46.36.41.106:8888/rebit/79.m3u8\n'),
+              ('http://46.36.41.106:8888/rebit/24.m3u8', '# Nova International — REBIT candidate\n#EXTINF:-1 tvg-name="Nova International",Nova International [TEST] [REBIT]\nhttp://46.36.41.106:8888/rebit/24.m3u8\n'),
+          ]
+
+          audit = Path('audit.json').read_text(encoding='utf-8')
+          path = Path('extras/sk.m3u')
+          text = path.read_text(encoding='utf-8')
+          added = []
+          for url, block in candidates:
+              if url in audit:
+                  raise SystemExit(f'Candidate already in audit: {url}')
+              if url not in text:
+                  added.append(block)
+          if len(added) != 7:
+              raise SystemExit(f'Expected 7 new candidates, got {len(added)}')
+          marker = '\n# ============================================================\n# HUNT BATCH 2 — 2026-08-22 — FRESH UNTESTED CANDIDATES\n# ============================================================\n'
+          text = text.rstrip() + marker + '\n'.join(added) + '\n'
+          path.write_text(text, encoding='utf-8')
+          print('Added 7 fresh Slovak hunt candidates')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add extras/sk.m3u
+          git commit -m "Add second fresh channel hunt batch"
+          git push origin HEAD:hunt-candidates-2026-08-22-2
