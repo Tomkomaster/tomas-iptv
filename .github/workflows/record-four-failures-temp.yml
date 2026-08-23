@@ -1,0 +1,106 @@
+name: Temporary record four failed channel tests
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: record-four-failures-2026-08-23
+          fetch-depth: 0
+
+      - name: Record exact manual playback failures
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          tests = [
+              ('PREMIER SPORT 1 SK', 'SK', 'http://185.188.188.235/live/premiersport/playlist.m3u8'),
+              ('PREMIER SPORT 3', 'SK', 'http://82.202.173.201:25461/okverd/123456/16117'),
+              ('CANAL+ SPORT SK', 'SK', 'http://78.130.250.2:8023/play/a02v/index.m3u8'),
+              ('Auto Motor Sport', 'HU', 'http://78.130.250.2:8023/play/a018/index.m3u8'),
+          ]
+
+          audit_path = Path('audit.json')
+          payload = json.loads(audit_path.read_text(encoding='utf-8'))
+          rows = payload['channels']
+          by_url = {}
+          for row in rows:
+              url = str(row.get('stream_url') or '').strip()
+              if url:
+                  if url in by_url:
+                      raise SystemExit(f'Duplicate exact audit URL before update: {url}')
+                  by_url[url] = row
+
+          added = updated = 0
+          for channel, country, url in tests:
+              row = by_url.get(url)
+              if row is None:
+                  row = {'channel': channel, 'stream_url': url}
+                  rows.append(row)
+                  by_url[url] = row
+                  added += 1
+              else:
+                  updated += 1
+
+              row['channel'] = channel
+              row['stream_url'] = url
+              row['playlist_country_code'] = country
+              row['output_country_code'] = country
+              row.pop('observed_language_codes', None)
+              row.pop('language_match', None)
+              row['vlc'] = 'generic_error'
+              row['samsung'] = 'generic_error'
+              row['vlc_note'] = 'User reported no playback on PC.'
+              row['samsung_note'] = 'User reported no playback on Samsung.'
+              row['decision'] = 'rejected'
+              row['reason'] = 'This exact feed failed on both tested devices.'
+              row['notes'] = 'Reject this exact URL only; continue searching for a different source.'
+              row['exclude_from_playlist'] = True
+              row['tested_on'] = '2026-08-23'
+              row['provenance'] = 'User-provided manual playback result'
+              row['discovery'] = 'Manual PC + Samsung test supplied 2026-08-23'
+
+          audit_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Guard exact results.
+          final = json.loads(audit_path.read_text(encoding='utf-8'))['channels']
+          lookup = {r.get('stream_url'): r for r in final}
+          for channel, country, url in tests:
+              row = lookup[url]
+              if row.get('vlc') != 'generic_error' or row.get('samsung') != 'generic_error':
+                  raise SystemExit(f'Failure statuses not preserved: {url}')
+              if row.get('decision') != 'rejected':
+                  raise SystemExit(f'Failure not rejected: {url}')
+              if row.get('exclude_from_playlist') is not True:
+                  raise SystemExit(f'Failure not explicitly excluded: {url}')
+              if row.get('playlist_country_code') != country:
+                  raise SystemExit(f'Wrong country for: {url}')
+
+          # The wanted targets must stay unresolved after these failed exact feeds.
+          sk_wanted = {r.get('channel') for r in json.loads(Path('data/wanted_channels_sk.json').read_text(encoding='utf-8'))['channels']}
+          hu_wanted = {r.get('channel') for r in json.loads(Path('data/wanted_channels_hu.json').read_text(encoding='utf-8'))['channels']}
+          for required in {'PREMIER SPORT 1 SK', 'PREMIER SPORT 3', 'CANAL+ SPORT SK'}:
+              if required not in sk_wanted:
+                  raise SystemExit(f'Failed target unexpectedly missing from SK wanted list: {required}')
+          if 'Auto Motor Sport' not in hu_wanted:
+              raise SystemExit('Failed Auto Motor Sport target unexpectedly missing from HU wanted list')
+
+          print(f'Recorded four dual-device failures: {added} new audit rows, {updated} updated.')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit.json
+          git commit -m "Record four failed channel tests"
+          git push origin HEAD:record-four-failures-2026-08-23
