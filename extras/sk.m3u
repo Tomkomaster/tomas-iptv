@@ -634,3 +634,16 @@ http://82.202.173.201:25461/okverd/123456/16117
 #EXTINF:-1 tvg-name="CANAL+ SPORT SK",CANAL+ SPORT SK [TEST] [78.130.250.2]
 http://78.130.250.2:8023/play/a02v/index.m3u8
 
+
+# ============================================================
+# VLC PC + HISENSE TEST BATCH — 2026-10-06
+# Unverified CRA HbbTV candidates from IPTV-org streams/sk.m3u.
+# Confirm channel logo, spoken language, sound and sustained playback.
+# JOJ 24 resolver is already listed above; retain its existing entry.
+# ============================================================
+#EXTINF:-1 tvg-id="CanalPlusSportSK.sk" tvg-name="CANAL+ SPORT SK" group-title="Sports",CANAL+ SPORT SK [TEST] [CRA HbbTV]
+http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-sk-canal-plus-sport/live_fullhd?offsetSeconds=0
+#EXTINF:-1 tvg-id="CanalPlusSport2SK.sk" tvg-name="CANAL+ SPORT 2 SK" group-title="Sports",CANAL+ SPORT 2 SK [TEST] [CRA HbbTV]
+http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-sk-canal-plus-sport2/live_fullhd?offsetSeconds=0
+#EXTINF:-1 tvg-id="CanalPlusSport3SK.sk" tvg-name="CANAL+ SPORT 3 SK" group-title="Sports",CANAL+ SPORT 3 SK [TEST] [CRA HbbTV]
+http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-sk-canal-plus-sport3/live_fullhd?offsetSeconds=0
