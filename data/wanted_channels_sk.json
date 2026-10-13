@@ -41,6 +41,7 @@
     {
       "country_code": "SK",
       "channel": "CANAL+ SPORT SK",
+      "tvg_id": "CanalPlusSportSK.sk",
       "priority": "P2",
       "reason": "Active nationwide Slovak television service; no stable Slovak stream is currently tracked."
     },
