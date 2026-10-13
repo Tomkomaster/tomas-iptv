@@ -338,6 +338,31 @@ def write_m3u_playlist(
         rewrite_entry_lines=rewrite_entry_lines,
     )
 
+def select_prima_cool_cz_entries(entries: list[dict]) -> list[dict]:
+    """Pick just Czech Prima Cool from the already-selected stable channels.
+
+    Use the canonical TV guide ID where possible and fall back to the
+    published channel name. Never include the separate Slovak Prima Cool SK.
+    """
+    matches = []
+    for entry in entries:
+        if str(entry.get("country_code") or "").strip().upper() != "CZ":
+            continue
+
+        tvg_id = str(entry.get("tvg_id") or "").strip().casefold().split("@", 1)[0]
+        published_name = str(
+            entry.get("published_name") or entry.get("display_name") or ""
+        )
+        clean_name = normalize_text(
+            strip_display_annotations(strip_custom_prefix(published_name))
+        )
+        if tvg_id == "primacool.cz" or clean_name == "prima cool":
+            matches.append(entry)
+
+    # A single-channel playlist must never publish more than one feed.
+    return matches[:1]
+
+
 def make_dashboard(
     cfg: dict,
     generated: str,
@@ -568,6 +593,24 @@ def main(strict: bool = False) -> None:
         generated,
         "Stable family playlist",
         name_style="country",
+    )
+
+    # A dedicated, stable one-channel link. Take the selected stream from the
+    # main playlist instead of hardcoding a URL that can expire or be rejected.
+    prima_cool_cz = select_prima_cool_cz_entries(published_entries)
+    if not prima_cool_cz:
+        print(
+            "WARNING: Czech Prima Cool is not in the stable playlist; "
+            "prima-cool.m3u will contain no stream.",
+            file=sys.stderr,
+        )
+    write_m3u_playlist(
+        public_dir / "prima-cool.m3u",
+        cfg,
+        prima_cool_cz,
+        generated,
+        "Prima Cool (Czechia) only",
+        name_style="plain",
     )
 
     # Full testing/research playlist.
