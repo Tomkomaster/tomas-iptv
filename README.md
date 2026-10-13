@@ -12,6 +12,12 @@ Main family/friends playlist:
 https://tomkomaster.github.io/tomas-iptv/tv.m3u
 ```
 
+Czech Prima Cool only (one channel, using the current verified feed selected for the main playlist):
+
+```text
+https://tomkomaster.github.io/tomas-iptv/prima-cool.m3u
+```
+
 Stable country playlists:
 
 ```text
